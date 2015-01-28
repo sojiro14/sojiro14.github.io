@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T12:41:36+09:00</updated>
+  <updated>2015-01-28T12:50:32+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -103,26 +103,26 @@ disqus_show_comment_count: false
 <h3>テーマをダウンロード</h3>
 
 <p>テーマ毎にclone元とclone先のpathを指定する
-<code>bash
+<code>
 $ cd git/octopress
 $ git clone GIT_URL .themes/THEME_NAME
 </code></p>
 
 <p>テーマ: Whitespaceの場合
-<code>bash
+<code>
 $ git clone git://github.com/lucaslew/whitespace.git .themes/whitespace
 </code></p>
 
 <h3>テーマをインストール</h3>
 
 <p>テーマを指定して <code>rake install</code>
-<code>bash
+<code>
 $ rake install['THEME_NAME']
 $ rake generate
 </code></p>
 
 <p>テーマ: Whitespaceの場合
-&#8220;`bash
+&#8220;`
 $ rake install[&lsquo;whitespace&rsquo;]
 A theme is already installed, proceeding will overwrite existing files. Are you sure? [y/n] y</p>
 
@@ -137,7 +137,7 @@ mkdir -p public
 <code>
 テーマを上書きするか？と聞かれたので</code>y&#8220;` で答える</p>
 
-<pre><code class="bash">$ rake generate
+<pre><code>$ rake generate
 ## Generating Site with Jekyll
 overwrite source/stylesheets/screen.css 
 Configuration from /Users/user.name/git/octopress/_config.yml
@@ -148,7 +148,7 @@ Successfully generated site: source -&gt; public
 <h2>デプロイ</h2>
 
 <p>テーマをインストールしたらデプロイ
-<code>bash
+<code>
 $ rake deploy
 </code>
 ページにアクセスしてテーマが変更されていることを確認できればok</p>
@@ -156,7 +156,7 @@ $ rake deploy
 <h2>テーマがアップデートされたら</h2>
 
 <p>テーマが開発者によってアップデートされたら手元のファイルもアップデートする
-<code>bash
+<code>
 $ cd octopress/.themes/THEME_NAME
 $ git pull
 $ rake install['THEME_NAME']
@@ -164,7 +164,7 @@ $ rake generate
 </code></p>
 
 <p>テーマ: Whitespaceの場合
-<code>bash
+<code>
 $ cd octopress/.themes/whitespace
 $ git pull
 $ rake install['whitespace']
@@ -172,7 +172,7 @@ $ rake generate
 </code></p>
 
 <p>デプロイしてアップデート完了
-<code>bash
+<code>
 $ rake deploy
 </code></p>
 ]]></content>
@@ -187,20 +187,20 @@ $ rake deploy
 
 <h3>octopressリポジトリをクローン</h3>
 
-<pre><code class="bash">$ cd git/
+<pre><code>$ cd git/
 $ git clone git://github.com/imathis/octopress.git octopress
 </code></pre>
 
 <h3>Bundlerを使って必要なパッケージをインストール</h3>
 
-<pre><code class="bash">$ cd octopress/
+<pre><code>$ cd octopress/
 $ sudo gem install bundler
 $ sudo bundle install
 </code></pre>
 
 <h3>bundle installがエラーになる</h3>
 
-<pre><code class="bash">$ sudo bundle install
+<pre><code>$ sudo bundle install
 Fetching gem metadata from https://rubygems.org/.......
 Fetching additional metadata from https://rubygems.org/..
 Using rake 0.9.2.2
@@ -231,12 +231,12 @@ Make sure that `gem install RedCloth -v '4.2.9'` succeeds before bundling.
 
 <h3>オプションをつけてやり直し</h3>
 
-<pre><code class="bash">$ sudo ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future bundle install
+<pre><code>$ sudo ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future bundle install
 </code></pre>
 
 <h3>ビルドツール、rakeをインストール</h3>
 
-<pre><code class="bash">$ rake install
+<pre><code>$ rake install
 </code></pre>
 
 <h2>②GitHubにリポジトリを作成</h2>
@@ -267,7 +267,7 @@ Make sure that `gem install RedCloth -v '4.2.9'` succeeds before bundling.
 
 <p>を入力した</p>
 
-<pre><code class="bash">$ rake setup_github_pages
+<pre><code>$ rake setup_github_pages
 Enter the read/write url for your repository
 (For example, 'git@github.com:your_username/your_username.github.io.git)
            or 'https://github.com/your_username/your_username.github.io')
@@ -289,7 +289,7 @@ cd -
 <h3>ページの作成</h3>
 
 <p>必要ファイルを作成
-&#8220;`bash
+&#8220;`
 $ rake generate</p>
 
 <h2>Generating Site with Jekyll</h2>
@@ -302,7 +302,7 @@ Successfully generated site: source -> public
 &#8220;`</p>
 
 <p>deploy
-&#8220;`bash
+&#8220;`
 $ rake deploy</p>
 
 <h2>Deploying branch to Github Pages</h2>
@@ -332,7 +332,7 @@ http://sojiro14.github.io
 
 <p>_config.ymlファイルにてブログのタイトル、サブタイトル、筆者などを設定できる</p>
 
-<pre><code class="bash">$ vim _config.yml
+<pre><code>$ vim _config.yml
 </code></pre>
 
 <p>例えばタイトル、サブタイトルは以下のように設定
@@ -342,7 +342,7 @@ subtitle: This is nothing much.
 </code></p>
 
 <p>設定したらdeploy。Task: gen_deployを使う
-<code>bash
+<code>
 $ rake gen_deploy
 </code>
 もう一度ページにアクセスしてタイトルなどが変更されているのを確認できればok</p>
@@ -352,14 +352,14 @@ $ rake gen_deploy
 <h2>記事を書く</h2>
 
 <p>new_postの後には記事のタイトルを指定。英数字のみ使用可
-<code>bash
+<code>
 $ rake new_post["IRC-bot by HUBOT"]
 mkdir -p source/_posts
 Creating new post: source/_posts/2014-04-19-irc-bot-by-hubot.markdown
 </code></p>
 
 <p>source/_posts/2014-04-19-irc-bot-by-hubot.markdownというファイルが生成されるのでそこに内容をマークダウンで記述
-<code>bash
+<code>
 $ vim source/_posts/2014-04-19-irc-bot-by-hubot.markdown
 </code></p>
 
@@ -376,7 +376,7 @@ categories:
 <h3>記事をデプロイ</h3>
 
 <p>記事を書いたらデプロイする
-<code>bash
+<code>
 $ rake gen_deploy
 </code></p>
 
@@ -398,7 +398,7 @@ $ rake gen_deploy
 <h3>取得したトラッキングIDを設定</h3>
 
 <p>_config.ymlにトラッキングIDを設定する
-<code>bash
+<code>
 $ vim _config.yml
 </code></p>
 
@@ -411,7 +411,7 @@ $ vim _config.yml
 &#8220;`</p>
 
 <p>設定が終わったらデプロイ
-<code>bash
+<code>
 $ rake gen_deploy
 </code>
 Google Analyticsのサイト上でトラッキングできていることを確認できればok</p>

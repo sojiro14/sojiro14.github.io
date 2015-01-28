@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Hubot | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/hubot/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T12:41:36+09:00</updated>
+  <updated>2015-01-28T12:50:32+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -142,7 +142,7 @@ $ ./runhubot
 <p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
 
 <p>実行ファイル(runhubot)に追記
-&#8220;`bash</p>
+&#8220;`</p>
 
 <h1>!/bin/bash</h1>
 

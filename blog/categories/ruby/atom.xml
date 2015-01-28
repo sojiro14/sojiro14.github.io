@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T12:41:36+09:00</updated>
+  <updated>2015-01-28T12:50:32+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -217,7 +217,7 @@ Railsがインストールされたことを確認できた</p>
 <h2>RVMのインストール</h2>
 
 <p>新しいRubyをインストールする前にRVM(Ruby Version Manager)をインストールする。これはRubyをバージョンごとに管理するツール
-<code>bash
+<code>
 $ curl -L https://get.rvm.io | bash -s
 </code></p>
 
@@ -228,7 +228,7 @@ $ curl -L https://get.rvm.io | bash -s
 <p>また、 <code>.bash_profile</code> <code>.zlogin</code> にRVMをロードする記述が追加される。</p>
 
 <p>RVMのインストールが完了したらロードする。ここではbashを使っているので以下のようにする。
-<code>bash
+<code>
 $ source .bash_profile
 </code></p>
 
@@ -238,7 +238,7 @@ $ source .bash_profile
 
 <p>まずはRubyのインストールに必要なパーツを調べ、無ければインストールする。
 以下のコマンドで必要なものをピックアップしインストールまで行ってくれる。
-<code>bash
+<code>
 $ rvm requirements
 /your/home/directry/.rvm/scripts/functions/support: line 314: rvm_debug: command not found
 Checking requirements for freebsd.
@@ -258,11 +258,11 @@ Error running 'requirements_freebsd_libs_install automake bison readline libyaml
 ここでも <code>$ rvm requirements</code> が転ける。</p>
 
 <p>そこで今度はCentOSだったので <code>yum</code> を使ってインストールを試みる。以下のコマンドは <code>$ rvm requirements</code> が教えてくれる。Errorの原因が <code>sudo</code> で実行していなかったことなので <code>sudo</code> 付きで実行する。
-<code>bash
+<code>
 sudo yum install -y patch libyaml-devel libffi-devel glibc-headers autoconf gcc-c++ glibc-devel patch readline-devel zlib-devel openssl-devel automake libtool bison
 </code>
 これで成功。
-<code>bash
+<code>
 $ rvm requirements
 Checking requirements for amazon.
 Requirements installation successful.
@@ -270,7 +270,7 @@ Requirements installation successful.
  <code>$ rvm requirements</code>も成功。</p>
 
 <p>このサーバーではすでにバージョン2.0.0のRubyがインストールされていたが、RVMの配下に新たにバージョン2.0.0のRubyをインストールする。
-<code>bash
+<code>
 $ rvm install 2.0.0 --with-openssl-dir=$HOME/.rvm/usr
 </code>
 インストール完了。</p>
