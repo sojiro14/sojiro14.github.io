@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Vim | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/vim/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T16:17:49+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vimで連番を振る方法]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/06/14/writing-serial-numbers-with-vim/"/>
+    <updated>2014-06-14T02:01:05+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/06/14/writing-serial-numbers-with-vim</id>
+    <content type="html"><![CDATA[<p>大量のvalueに連番を振りたくなったのでvimの機能を調べて使ってみた。
+目標は以下のようにurlのリストをPerlのハッシュ化すること。</p>
+
+<pre><code>example_1.com
+example_2.com
+example_3.com
+~
+example_254.com
+example_255.com
+example_256.com
+</code></pre>
+
+<pre><code class="perl">my %urls = (
+    1   =&gt; 'example_1.com',
+    2   =&gt; 'example_2.com',
+    3   =&gt; 'example_3.com',
+~
+    254 =&gt; 'example_254.com',
+    255 =&gt; 'example_255.com',
+    256 =&gt; 'example_256.com',
+);
+</code></pre>
+
+<h2>使うvimの機能</h2>
+
+<ul>
+<li>数字のインクリメント/デクリメント</li>
+<li>操作の記録（complex repeat）</li>
+</ul>
+
+
+<h2>①数字のインクリメント/デクリメント</h2>
+
+<h3>数字のインクリメント</h3>
+
+<p>数字にカーソルを合わせて
+<code>
+Ctrl + a
+</code></p>
+
+<h3>数字のデクリメント</h3>
+
+<p>数字にカーソルを合わせて
+<code>
+Ctrl + x
+</code></p>
+
+<h2>②操作の記録（complex repeat）</h2>
+
+<p>操作の記録は以下の順序で行う</p>
+
+<ol>
+<li>準備</li>
+<li>一連の操作に名前をつけて記録を開始</li>
+<li>一連の操作を行う</li>
+<li>記録を終了</li>
+<li>記録した操作を繰り返し実行</li>
+</ol>
+
+
+<h3>1. 準備</h3>
+
+<pre><code class="perl">1 =&gt; example_1.com
+example_2.com
+example_3.com
+~
+</code></pre>
+
+<p>最初のキーである1だけ用意しておく。</p>
+
+<h3>2. 一連の操作に名前をつけて記録を開始</h3>
+
+<pre><code>q
+</code></pre>
+
+<pre><code>a
+</code></pre>
+
+<p>操作を開始する位置（キー1の上）にカーソルを合わせ、q, aの順でキーを押すと、&#8217;a&#8217;という名前で操作が記録される。</p>
+
+<p>操作の名前は&#8217;a&#8217;の大文字、小文字のアルファベット、もしくは数字から1字を選んで付けることができる。</p>
+
+<h3>3. 一連の操作を行う</h3>
+
+<pre><code>v (visual mode)
+</code></pre>
+
+<pre><code>llllll (=&gt; までを選択)
+</code></pre>
+
+<pre><code>y (yank)
+</code></pre>
+
+<pre><code>j P (1行下がってpaste)
+</code></pre>
+
+<pre><code>0 (行頭へカーソルを移動)
+</code></pre>
+
+<pre><code>Ctrl + a (インクリメント)
+</code></pre>
+
+<pre><code>0 (行頭へカーソルを移動)
+</code></pre>
+
+<h3>4. 記録を終了</h3>
+
+<pre><code>q
+</code></pre>
+
+<p>qを押して記録を終了</p>
+
+<h3>5. 記録した操作を繰り返し実行</h3>
+
+<pre><code>254 (繰り返す回数)
+</code></pre>
+
+<pre><code>@a ('a'と名付けた操作を指定)
+</code></pre>
+
+<p>ここまで完了時点で以下のようになる。
+<code>perl
+1   =&gt; example_1.com
+2   =&gt; example_2.com
+3   =&gt; example_3.com
+~
+254 =&gt; example_254.com
+255 =&gt; example_255.com
+256 =&gt; example_256.com
+</code></p>
+
+<h2>Perlの記法に合わせて整形</h2>
+
+<p>vimの矩形選択( <code>Ctrl + v</code> )などをつかって正しいハッシュの文法に整形する</p>
+]]></content>
+  </entry>
+  
+</feed>

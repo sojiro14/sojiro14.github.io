@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Redisに用意されたデータ型とその扱い - Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="Redisで扱えるデータ型 String
+List
+Set
+Sorted Set
+Hash String 文字列型 文字列や数値など、Keyに対して1つに定まる値。 値のset 1
+2
+set key value # 1つのkey-valueをsetする
+mset key_1 value_1 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-50182043-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Redisに用意されたデータ型とその扱い</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-27T00:47:21+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:47 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Redisで扱えるデータ型</h2>
+
+<ul>
+<li>String</li>
+<li>List</li>
+<li>Set</li>
+<li>Sorted Set</li>
+<li>Hash</li>
+</ul>
+
+
+<h2>String</h2>
+
+<p>文字列型</p>
+
+<p>文字列や数値など、Keyに対して1つに定まる値。</p>
+
+<h3>値のset</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>set key value                     # 1つのkey-valueをsetする
+</span><span class='line'>mset key_1 value_1 key_2 value_2  # key-valueの組を複数setする</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値のget</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>get key                 # 1つのkeyに対するvalueをgetする
+</span><span class='line'>mget key_1 key_2 key_3  # 複数のkeyに対するvalueをgetする</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; set name Steven
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; get name
+</span><span class='line'>"Steven"
+</span><span class='line'>redis&gt; mset number 8 color red
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; mget name number color
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "8"
+</span><span class='line'>3) "red"</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>List</h2>
+
+<p>リスト型</p>
+
+<p>順番をもった値の集合。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpush key member  # リストの末尾に値を追加
+</span><span class='line'>lpush key member  # リストの先頭に値を追加</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpop key  # リストの末尾の値を削除
+</span><span class='line'>lpop key  # リストの先頭の値を削除</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>範囲を指定して値を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lrange key 0 3   # 1番目から4番目まで値を取得
+</span><span class='line'>lrange key 0 -1  # 1番目から最後（最後から1番目）までの値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>位置を指定して値を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lindex key 2   # 3番目の値を取得
+</span><span class='line'>lindex key -1  # 最後の値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>要素の数を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>llen key</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; rpush player Steven
+</span><span class='line'>redis&gt; rpush player Michael James
+</span><span class='line'>redis&gt; lrange player 0 -1
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>3) "James"
+</span><span class='line'>redis&gt; lrange player 0 1
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; lindex player 1
+</span><span class='line'>"Michael"
+</span><span class='line'>redis&gt; lindex player -1
+</span><span class='line'>"James"
+</span><span class='line'>redis&gt; rpop player
+</span><span class='line'>"James"
+</span><span class='line'>redis&gt; lrange player 0 -1
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; llen player
+</span><span class='line'>(integer) 2</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Set</h2>
+
+<p>セット型</p>
+
+<p>順不同の値の集合。値の重複を許さない。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sadd key member  # keyに対応するセットに指定した値を追加</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>srem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の参照</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>smembers key  # keyに対応するセットの値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>和集合の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sunion key1 key2  # key1に対応するセットとkey2に対応するセットの値の集合を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>差集合の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sdiff key1 key2  # key1に対応するセットとkey2に対応するセットの値の差分の集合を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>積集合の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sinter key1 key2  # key1に対応するセットとkey2に対応するセットの値の重複部分の集合を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; sadd reds Steven
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1) "Steven"
+</span><span class='line'>redis&gt; sadd reds Steve
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; sadd reds Michael
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>3) "Steve"
+</span><span class='line'>redis&gt; srem reds Michael
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Steve"
+</span><span class='line'>redis&gt; sadd three_lions Steven Michael
+</span><span class='line'>(integer) 2
+</span><span class='line'>redis&gt; smembers three_lions
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; sunion reds three_lions
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>3) "Steve"
+</span><span class='line'>redis&gt; sdiff reds three_lions
+</span><span class='line'>1) "Steve"
+</span><span class='line'>redis&gt; sdiff three_lions reds  # sdiffの後のkeyの順番により結果が違うことに注意
+</span><span class='line'>1) "Michael"
+</span><span class='line'>redis&gt; sinter reds three_lions
+</span><span class='line'>1) "Steven"</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sorted Set</h2>
+
+<p>ソート済みセット型</p>
+
+<p>セット型と同様の特徴に加えて個々の値がスコアを持つ。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zadd key score member  # keyに対応するセットにスコア付きで値を追加</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zrem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zrange key 0 3     # keyに対応するセットからスコアの低い順に1番目から4番目の値を取得
+</span><span class='line'>zrevrange key 0 3  # keyに対応するセットからスコアの高い順に1番目から4番目の値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の順位を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zrank key member     # 指定した値の、keyに対応するセット中のランクを取得（スコアの低い順）
+</span><span class='line'>zrevrank key member  # 指定した値の、keyに対応するセット中のランクを取得（スコアの高い順）</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; zadd fifa 1 germany
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; zrange fifa 0 0
+</span><span class='line'>1) "germany"
+</span><span class='line'>redis&gt; zadd fifa 2 argentina
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; zadd fifa 3 holland 4 colombia 45 japan
+</span><span class='line'>(integer) 3
+</span><span class='line'>redis&gt; zrange fifa 0 -1
+</span><span class='line'>1) "germany"
+</span><span class='line'>2) "argentina"
+</span><span class='line'>3) "holland"
+</span><span class='line'>4) "colombia"
+</span><span class='line'>5) "japan"
+</span><span class='line'>redis&gt; zrevrange fifa 0 -1
+</span><span class='line'>1) "japan"
+</span><span class='line'>2) "colombia"
+</span><span class='line'>3) "holland"
+</span><span class='line'>4) "argentina"
+</span><span class='line'>5) "germany"
+</span><span class='line'>redis&gt; zrank fifa japan
+</span><span class='line'>(integer) 4                      # 0番目から数えた値が返るので注意
+</span><span class='line'>redis&gt; zrevrank fifa argentina
+</span><span class='line'>(integer) 3                      # 0番目から数えた値が返るので注意
+</span><span class='line'>redis&gt; zrem fifa japan
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; zrange fifa 0 -1
+</span><span class='line'>1) "germany"
+</span><span class='line'>2) "argentina"
+</span><span class='line'>3) "holland"
+</span><span class='line'>4) "colombia"</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Hash</h2>
+
+<p>ハッシュ型</p>
+
+<p>field（valueについた名前）とvalueを1セットとする値の集合（ハッシュ）。</p>
+
+<h3>値のset</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>hset key field value                       # keyにfieldとvalueのハッシュをset
+</span><span class='line'>hmset key field_1 value_1 field_2 value_2  # keyにハッシュのfieldとvalueを複数セット</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値のget</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>hget key field             # keyに対応するハッシュから指定したfieldのvalueを取得
+</span><span class='line'>hmget key field_1 field_2  # keyに対応するハッシュから指定した複数のfieldのvalueを取得
+</span><span class='line'>hkeys key                  # keyに対応するハッシュのすべてのfieldを取得
+</span><span class='line'>hvals key                  # keyに対応するハッシュのすべてのvalueを取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; hset steven position mf
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; hget steven position
+</span><span class='line'>"mf"
+</span><span class='line'>redis&gt; hmset steven nationality england club reds
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; hmget steven club position
+</span><span class='line'>1) "reds"
+</span><span class='line'>2) "mf"
+</span><span class='line'>redis&gt; hkeys steven
+</span><span class='line'>1) "position"
+</span><span class='line'>2) "nationality"
+</span><span class='line'>3) "club"
+</span><span class='line'>redis&gt; hvals steven
+</span><span class='line'>1) "mf"
+</span><span class='line'>2) "england"
+</span><span class='line'>3) "reds"</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-07-27T00:47:21+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:47 am</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/redis/'>redis</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage/" data-via="" data-counturl="http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/17/html5-canvas-number-1/" title="Previous Post: HTML5 Canvas #1  -Canvasを初めて使う-">&laquo; HTML5 Canvas #1  -Canvasを初めて使う-</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/" title="Next Post: HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-">HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる- &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

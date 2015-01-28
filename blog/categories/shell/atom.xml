@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Shell | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/shell/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T16:17:49+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[シェルの変更について]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/07/06/changing-login-shell/"/>
+    <updated>2014-07-06T20:43:22+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/07/06/changing-login-shell</id>
+    <content type="html"><![CDATA[<p>さくらでレンタルサーバーを借りたが、デフォルトのシェルが使い慣れたbashではなかったので変更した際のメモ。</p>
+
+<h2>現在のシェルを確認</h2>
+
+<pre><code class="csh">% echo $SHELL
+/bin/csh
+</code></pre>
+
+<p>環境変数 <code>$SHELL</code> に現在のシェルのパスが入っている。</p>
+
+<h2>変更できるシェルの確認</h2>
+
+<pre><code class="csh">% cat /etc/shells 
+# $FreeBSD: release/9.1.0/etc/shells 59717 2000-04-27 21:58:46Z ache $
+#
+# List of acceptable shells for chpass(1).
+# Ftpd will not allow users to connect who are not using
+# one of these shells.
+
+/bin/sh
+/bin/csh
+/bin/tcsh
+/usr/local/bin/bash
+/usr/local/bin/rbash
+/usr/local/bin/zsh
+/usr/local/bin/rzsh
+/usr/bin/passwd
+</code></pre>
+
+<p>bashが使えることが確認できる。</p>
+
+<h2>シェルを変更する</h2>
+
+<pre><code class="csh">% chsh -s /usr/local/bin/bash
+</code></pre>
+
+<p> <code>chsh</code> はログインシェルを変更するコマンド。 <code>-s</code> オプションを付けないとインタラクティブに動作する。</p>
+
+<p>ログインシェルはユーザー毎に設定できるログイン時に起動されるシェルのことで、 <code>/etc/passwd</code> ファイルで設定されている。</p>
+
+<p> <code>chsh</code> はこのファイルを書き換える。</p>
+
+<h2>bashの設定ファイルを書く</h2>
+
+<p>ログインシェルをbashに変更したら</p>
+
+<ul>
+<li>.bash_profile</li>
+<li>.bashrc</li>
+</ul>
+
+
+<p>など、いつもの設定ファイルを記述する</p>
+
+<h2>再度サーバーにログイン</h2>
+
+<p>設定を終えて再度サーバーにログインするとbashが立ち上がる。</p>
+
+<h2>メモ</h2>
+
+<pre><code class="csh">% exec /usr/local/bin/bash -l
+</code></pre>
+
+<p>でbashをログインシェルとして立ち上げることもできるが設定ファイルは変わらないのでログインの度にデフォルトのシェルに戻る。</p>
+
+<p><code>exec</code> コマンドは引数で渡された処理にプロセスを置き換える。</p>
+
+<p>よって上記コマンドが実行されるとbashがログインシェルとして置き換わる。</p>
+]]></content>
+  </entry>
+  
+</feed>

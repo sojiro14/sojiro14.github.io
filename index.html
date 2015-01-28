@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Octopressのテーマを変更する Octopressの公式ドキュメント 今回は既に作られ、公開されているテーマを拝借する 好みのテーマを探す 3rd Party Octopress Themesにテーマリストが公開されている。ここから使いたいテーマを探す。 Octopress &hellip;">
+  <meta name="description" content="こちらの記事でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため） HUBOT_IRC_SEND_NOTICE_MODE 環境変数 HUBOT_IRC_SEND_NOTICE_MODE を true &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +88,1101 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/">HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-31T04:45:04+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>4:45 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">こちらの記事</a>でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため）</p>
+
+<h2>HUBOT_IRC_SEND_NOTICE_MODE</h2>
+
+<p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
+
+<p>実行ファイル(runhubot)に追記</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SEND_NOTICE_MODE</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
+</span><span class='line'>
+</span><span class='line'>bin/hubot -a irc --name myhubot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>この実行ファイルからirc-botを起動すると当該irc-botの発言はすべてnoticeとなる。</p>
+
+<h2>処理の実体</h2>
+
+<p>HUBOT_IRC_SEND_NOTICE_MODEフラグが立っている場合は <code>bot</code> オブジェクトから <code>notice</code> メソッドが呼ばれる。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L18">フラグの確認</a></li>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L56-76">noticeメソッド呼び出し</a></li>
+</ul>
+
+
+<p><code>notice</code> メソッドが呼ばれている <code>bot</code> オブジェクトの実体は <code>new Irc.Client</code> である。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L192">botオブジェクトの生成</a></li>
+</ul>
+
+
+<p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/27/rediss-data-type-and-usage/">Redisに用意されたデータ型とその扱い</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-27T00:47:21+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:47 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Redisで扱えるデータ型</h2>
+
+<ul>
+<li>String</li>
+<li>List</li>
+<li>Set</li>
+<li>Sorted Set</li>
+<li>Hash</li>
+</ul>
+
+
+<h2>String</h2>
+
+<p>文字列型</p>
+
+<p>文字列や数値など、Keyに対して1つに定まる値。</p>
+
+<h3>値のset</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>set key value                     # 1つのkey-valueをsetする
+</span><span class='line'>mset key_1 value_1 key_2 value_2  # key-valueの組を複数setする</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値のget</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>get key                 # 1つのkeyに対するvalueをgetする
+</span><span class='line'>mget key_1 key_2 key_3  # 複数のkeyに対するvalueをgetする</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; set name Steven
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; get name
+</span><span class='line'>"Steven"
+</span><span class='line'>redis&gt; mset number 8 color red
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; mget name number color
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "8"
+</span><span class='line'>3) "red"</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>List</h2>
+
+<p>リスト型</p>
+
+<p>順番をもった値の集合。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpush key member  # リストの末尾に値を追加
+</span><span class='line'>lpush key member  # リストの先頭に値を追加</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpop key  # リストの末尾の値を削除
+</span><span class='line'>lpop key  # リストの先頭の値を削除</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>範囲を指定して値を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lrange key 0 3   # 1番目から4番目まで値を取得
+</span><span class='line'>lrange key 0 -1  # 1番目から最後（最後から1番目）までの値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>位置を指定して値を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lindex key 2   # 3番目の値を取得
+</span><span class='line'>lindex key -1  # 最後の値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>要素の数を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>llen key</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; rpush player Steven
+</span><span class='line'>redis&gt; rpush player Michael James
+</span><span class='line'>redis&gt; lrange player 0 -1
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>3) "James"
+</span><span class='line'>redis&gt; lrange player 0 1
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; lindex player 1
+</span><span class='line'>"Michael"
+</span><span class='line'>redis&gt; lindex player -1
+</span><span class='line'>"James"
+</span><span class='line'>redis&gt; rpop player
+</span><span class='line'>"James"
+</span><span class='line'>redis&gt; lrange player 0 -1
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; llen player
+</span><span class='line'>(integer) 2</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Set</h2>
+
+<p>セット型</p>
+
+<p>順不同の値の集合。値の重複を許さない。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sadd key member  # keyに対応するセットに指定した値を追加</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>srem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の参照</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>smembers key  # keyに対応するセットの値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>和集合の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sunion key1 key2  # key1に対応するセットとkey2に対応するセットの値の集合を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>差集合の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sdiff key1 key2  # key1に対応するセットとkey2に対応するセットの値の差分の集合を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>積集合の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sinter key1 key2  # key1に対応するセットとkey2に対応するセットの値の重複部分の集合を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; sadd reds Steven
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1) "Steven"
+</span><span class='line'>redis&gt; sadd reds Steve
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; sadd reds Michael
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>3) "Steve"
+</span><span class='line'>redis&gt; srem reds Michael
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Steve"
+</span><span class='line'>redis&gt; sadd three_lions Steven Michael
+</span><span class='line'>(integer) 2
+</span><span class='line'>redis&gt; smembers three_lions
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; sunion reds three_lions
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>3) "Steve"
+</span><span class='line'>redis&gt; sdiff reds three_lions
+</span><span class='line'>1) "Steve"
+</span><span class='line'>redis&gt; sdiff three_lions reds  # sdiffの後のkeyの順番により結果が違うことに注意
+</span><span class='line'>1) "Michael"
+</span><span class='line'>redis&gt; sinter reds three_lions
+</span><span class='line'>1) "Steven"</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sorted Set</h2>
+
+<p>ソート済みセット型</p>
+
+<p>セット型と同様の特徴に加えて個々の値がスコアを持つ。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zadd key score member  # keyに対応するセットにスコア付きで値を追加</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zrem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zrange key 0 3     # keyに対応するセットからスコアの低い順に1番目から4番目の値を取得
+</span><span class='line'>zrevrange key 0 3  # keyに対応するセットからスコアの高い順に1番目から4番目の値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の順位を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zrank key member     # 指定した値の、keyに対応するセット中のランクを取得（スコアの低い順）
+</span><span class='line'>zrevrank key member  # 指定した値の、keyに対応するセット中のランクを取得（スコアの高い順）</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; zadd fifa 1 germany
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; zrange fifa 0 0
+</span><span class='line'>1) "germany"
+</span><span class='line'>redis&gt; zadd fifa 2 argentina
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; zadd fifa 3 holland 4 colombia 45 japan
+</span><span class='line'>(integer) 3
+</span><span class='line'>redis&gt; zrange fifa 0 -1
+</span><span class='line'>1) "germany"
+</span><span class='line'>2) "argentina"
+</span><span class='line'>3) "holland"
+</span><span class='line'>4) "colombia"
+</span><span class='line'>5) "japan"
+</span><span class='line'>redis&gt; zrevrange fifa 0 -1
+</span><span class='line'>1) "japan"
+</span><span class='line'>2) "colombia"
+</span><span class='line'>3) "holland"
+</span><span class='line'>4) "argentina"
+</span><span class='line'>5) "germany"
+</span><span class='line'>redis&gt; zrank fifa japan
+</span><span class='line'>(integer) 4                      # 0番目から数えた値が返るので注意
+</span><span class='line'>redis&gt; zrevrank fifa argentina
+</span><span class='line'>(integer) 3                      # 0番目から数えた値が返るので注意
+</span><span class='line'>redis&gt; zrem fifa japan
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; zrange fifa 0 -1
+</span><span class='line'>1) "germany"
+</span><span class='line'>2) "argentina"
+</span><span class='line'>3) "holland"
+</span><span class='line'>4) "colombia"</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Hash</h2>
+
+<p>ハッシュ型</p>
+
+<p>field（valueについた名前）とvalueを1セットとする値の集合（ハッシュ）。</p>
+
+<h3>値のset</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>hset key field value                       # keyにfieldとvalueのハッシュをset
+</span><span class='line'>hmset key field_1 value_1 field_2 value_2  # keyにハッシュのfieldとvalueを複数セット</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値のget</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>hget key field             # keyに対応するハッシュから指定したfieldのvalueを取得
+</span><span class='line'>hmget key field_1 field_2  # keyに対応するハッシュから指定した複数のfieldのvalueを取得
+</span><span class='line'>hkeys key                  # keyに対応するハッシュのすべてのfieldを取得
+</span><span class='line'>hvals key                  # keyに対応するハッシュのすべてのvalueを取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; hset steven position mf
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; hget steven position
+</span><span class='line'>"mf"
+</span><span class='line'>redis&gt; hmset steven nationality england club reds
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; hmget steven club position
+</span><span class='line'>1) "reds"
+</span><span class='line'>2) "mf"
+</span><span class='line'>redis&gt; hkeys steven
+</span><span class='line'>1) "position"
+</span><span class='line'>2) "nationality"
+</span><span class='line'>3) "club"
+</span><span class='line'>redis&gt; hvals steven
+</span><span class='line'>1) "mf"
+</span><span class='line'>2) "england"
+</span><span class='line'>3) "reds"</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/17/html5-canvas-number-1/">HTML5 Canvas #1 -Canvasを初めて使う-</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-17T02:13:46+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:13 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Canvasとは</h1>
+
+<ul>
+<li>ブラウザ上に図形を描画するためのHTML5の仕様の一つ</li>
+<li>プラグインを使わずにJavaScriptベースで図形を描画することができる。</li>
+<li>アニメーションメソッドはないので動きをつけるためには1コマずつ描画し直す必要がある</li>
+</ul>
+
+
+<p>今回はCanvasを使った図形の描画とそれを動的に消す操作をしてみる。</p>
+
+<h1>今回使う要素</h1>
+
+<ul>
+<li>メソッド
+
+<ul>
+<li>getContext()</li>
+<li>fillRect()</li>
+<li>clearRect()</li>
+</ul>
+</li>
+<li>プロパティ
+
+<ul>
+<li>fillStyle</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>getContext()</h2>
+
+<p>Canvasはこのメソッドから始まる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">targetElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">ctx</span> <span class="o">=</span> <span class="nx">targetElement</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>getElementById</code> などでCanvasの対象となるDOM要素を取得し、その要素に対して <code>getContext()</code> メソッドを呼ぶ</p>
+
+<p>引数は <code>'2d'</code> のみが認められている。（今後&#8217;3d&#8217;とかつかえるようになるかも）</p>
+
+<p> <code>getContext('2d')</code> で取得した <code>ctx</code> オブジェクトに対してメソッドやプロパティを適用していく</p>
+
+<h2>fillRect()</h2>
+
+<p>canvas上の指定した位置に指定した大きさの長方形を描画する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>fillRect()</code> メソッドは4つの引数を取る。</p>
+
+<ul>
+<li>1つめ: 描画する長方形の左上頂点の<strong>x座標</strong></li>
+<li>2つめ: 描画する長方形の左上頂点の<strong>y座標</strong></li>
+<li>3つめ: 描画する長方形の<strong>幅</strong></li>
+<li>4つめ: 描画する長方形の<strong>高さ</strong></li>
+</ul>
+
+
+<p>上記例ではcanvasの左上頂点（原点）から</p>
+
+<ul>
+<li>右方向（x軸方向）に80px</li>
+<li>下方向（y軸方向）に100px</li>
+</ul>
+
+
+<p>の点に左上の頂点を持つ、</p>
+
+<ul>
+<li>幅40px</li>
+<li>高さ40px</li>
+</ul>
+
+
+<p>の長方形（正方形）を描画することになる</p>
+
+<h2>clearRect()</h2>
+
+<p>指定された長方形を消す</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>clearRect()</code> は <code>fillRect()</code> 同様に4つの引数を取る</p>
+
+<ul>
+<li>1つめ: 消す長方形の左上頂点の<strong>x座標</strong></li>
+<li>2つめ: 消す長方形の左上頂点の<strong>y座標</strong></li>
+<li>3つめ: 消す長方形の<strong>幅</strong></li>
+<li>4つめ: 消す長方形の<strong>高さ</strong></li>
+</ul>
+
+
+<p>よって上記例ではcanvasの原点から幅200px、高さ400pxの長方形（範囲）に渡ってクリアする</p>
+
+<h2>fillStyle</h2>
+
+<p>オブジェクトのStyleを変更する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;rgb(255, 0, 0)&#39;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>主にオブジェクトの色を指定するのに使う（Canvasではデフォルトの色は黒）</p>
+
+<p>指定の仕方はCSSに準拠している</p>
+
+<p>上記例ではオブジェクトを赤で描画できるようになる</p>
+
+<h1>サンプル</h1>
+
+<p>赤い正方形を描いたり消したりする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;head&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">utf-8</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;title&gt;</span>Canvas Sample1<span class="nt">&lt;/title&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="kd">var</span> <span class="nx">ctx</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kd">function</span> <span class="nx">load</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                <span class="kd">var</span> <span class="nx">targetElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">);</span>
+</span><span class='line'>                <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">targetElement</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+</span><span class='line'>                <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;rgb(255, 0, 0)&#39;</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kd">function</span> <span class="nx">paint</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kd">function</span> <span class="nx">erase</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nx">ctx</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;body</span> <span class="na">onload=</span><span class="s">&quot;load()&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;target&quot;</span> <span class="na">style=</span><span class="s">&quot;border: 5px solid gray&quot;</span> <span class="na">width=</span><span class="s">&quot;200&quot;</span> <span class="na">height=</span><span class="s">&quot;400&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">value=</span><span class="s">&quot;Paint&quot;</span> <span class="na">onclick=</span><span class="s">&quot;paint()&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">value=</span><span class="s">&quot;Erase&quot;</span> <span class="na">onclick=</span><span class="s">&quot;erase()&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>幅200px、高さ400pxのcanvasを用意し、そこに正方形を描くpaint関数とクリアするerase関数を定義した</p>
+
+<h2>参考資料</h2>
+
+<ul>
+<li><a href="http://www.html5.jp/canvas/index.html">HTML5.jp Canvas</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/06/changing-login-shell/">シェルの変更について</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-06T20:43:22+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:43 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>さくらでレンタルサーバーを借りたが、デフォルトのシェルが使い慣れたbashではなかったので変更した際のメモ。</p>
+
+<h2>現在のシェルを確認</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csh'><span class='line'>% <span class="nb">echo</span> <span class="nv">$SHELL</span>
+</span><span class='line'>/bin/csh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>環境変数 <code>$SHELL</code> に現在のシェルのパスが入っている。</p>
+
+<h2>変更できるシェルの確認</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='csh'><span class='line'>% cat /etc/shells
+</span><span class='line'><span class="c"># $FreeBSD: release/9.1.0/etc/shells 59717 2000-04-27 21:58:46Z ache $</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># List of acceptable shells for chpass(1).</span>
+</span><span class='line'><span class="c"># Ftpd will not allow users to connect who are not using</span>
+</span><span class='line'><span class="c"># one of these shells.</span>
+</span><span class='line'>
+</span><span class='line'>/bin/sh
+</span><span class='line'>/bin/csh
+</span><span class='line'>/bin/tcsh
+</span><span class='line'>/usr/local/bin/bash
+</span><span class='line'>/usr/local/bin/rbash
+</span><span class='line'>/usr/local/bin/zsh
+</span><span class='line'>/usr/local/bin/rzsh
+</span><span class='line'>/usr/bin/passwd
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>bashが使えることが確認できる。</p>
+
+<h2>シェルを変更する</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csh'><span class='line'>% chsh -s /usr/local/bin/bash
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>chsh</code> はログインシェルを変更するコマンド。 <code>-s</code> オプションを付けないとインタラクティブに動作する。</p>
+
+<p>ログインシェルはユーザー毎に設定できるログイン時に起動されるシェルのことで、 <code>/etc/passwd</code> ファイルで設定されている。</p>
+
+<p> <code>chsh</code> はこのファイルを書き換える。</p>
+
+<h2>bashの設定ファイルを書く</h2>
+
+<p>ログインシェルをbashに変更したら</p>
+
+<ul>
+<li>.bash_profile</li>
+<li>.bashrc</li>
+</ul>
+
+
+<p>など、いつもの設定ファイルを記述する</p>
+
+<h2>再度サーバーにログイン</h2>
+
+<p>設定を終えて再度サーバーにログインするとbashが立ち上がる。</p>
+
+<h2>メモ</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csh'><span class='line'>% <span class="nb">exec</span> /usr/local/bin/bash -l
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>でbashをログインシェルとして立ち上げることもできるが設定ファイルは変わらないのでログインの度にデフォルトのシェルに戻る。</p>
+
+<p><code>exec</code> コマンドは引数で渡された処理にプロセスを置き換える。</p>
+
+<p>よって上記コマンドが実行されるとbashがログインシェルとして置き換わる。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/14/writing-serial-numbers-with-vim/">Vimで連番を振る方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-06-14T02:01:05+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:01 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>大量のvalueに連番を振りたくなったのでvimの機能を調べて使ってみた。
+目標は以下のようにurlのリストをPerlのハッシュ化すること。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>example_1.com
+</span><span class='line'>example_2.com
+</span><span class='line'>example_3.com
+</span><span class='line'>~
+</span><span class='line'>example_254.com
+</span><span class='line'>example_255.com
+</span><span class='line'>example_256.com</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">my</span> <span class="nv">%urls</span> <span class="o">=</span> <span class="p">(</span>
+</span><span class='line'>    <span class="mi">1</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_1.com&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="mi">2</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_2.com&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="mi">3</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_3.com&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="o">~</span>
+</span><span class='line'>    <span class="mi">254</span> <span class="o">=&gt;</span> <span class="s">&#39;example_254.com&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="mi">255</span> <span class="o">=&gt;</span> <span class="s">&#39;example_255.com&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="mi">256</span> <span class="o">=&gt;</span> <span class="s">&#39;example_256.com&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使うvimの機能</h2>
+
+<ul>
+<li>数字のインクリメント/デクリメント</li>
+<li>操作の記録（complex repeat）</li>
+</ul>
+
+
+<h2>①数字のインクリメント/デクリメント</h2>
+
+<h3>数字のインクリメント</h3>
+
+<p>数字にカーソルを合わせて</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">a</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>数字のデクリメント</h3>
+
+<p>数字にカーソルを合わせて</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>②操作の記録（complex repeat）</h2>
+
+<p>操作の記録は以下の順序で行う</p>
+
+<ol>
+<li>準備</li>
+<li>一連の操作に名前をつけて記録を開始</li>
+<li>一連の操作を行う</li>
+<li>記録を終了</li>
+<li>記録した操作を繰り返し実行</li>
+</ol>
+
+
+<h3>1. 準備</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">1</span> <span class="o">=&gt;</span> <span class="n">example_1</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="n">example_2</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="n">example_3</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="o">~</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最初のキーである1だけ用意しておく。</p>
+
+<h3>2. 一連の操作に名前をつけて記録を開始</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">q</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">a</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>操作を開始する位置（キー1の上）にカーソルを合わせ、q, aの順でキーを押すと、&#8217;a&#8217;という名前で操作が記録される。</p>
+
+<p>操作の名前は&#8217;a&#8217;の大文字、小文字のアルファベット、もしくは数字から1字を選んで付けることができる。</p>
+
+<h3>3. 一連の操作を行う</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">v</span> <span class="p">(</span><span class="n">visual</span> <span class="n">mode</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">llllll</span> <span class="p">(</span><span class="o">=&gt;</span> <span class="err">までを選択</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">y</span> <span class="p">(</span><span class="n">yank</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">j</span> <span class="n">P</span> <span class="p">(</span><span class="mi">1</span><span class="err">行下がって</span><span class="n">paste</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">0</span> <span class="p">(</span><span class="err">行頭へカーソルを移動</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">a</span> <span class="p">(</span><span class="err">インクリメント</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">0</span> <span class="p">(</span><span class="err">行頭へカーソルを移動</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4. 記録を終了</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">q</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>qを押して記録を終了</p>
+
+<h3>5. 記録した操作を繰り返し実行</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">254</span> <span class="p">(</span><span class="err">繰り返す回数</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nv">@a</span> <span class="p">(</span><span class="s">&#39;a&#39;</span><span class="err">と名付けた操作を指定</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここまで完了時点で以下のようになる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">1</span>   <span class="o">=&gt;</span> <span class="n">example_1</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="mi">2</span>   <span class="o">=&gt;</span> <span class="n">example_2</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="mi">3</span>   <span class="o">=&gt;</span> <span class="n">example_3</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="o">~</span>
+</span><span class='line'><span class="mi">254</span> <span class="o">=&gt;</span> <span class="n">example_254</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="mi">255</span> <span class="o">=&gt;</span> <span class="n">example_255</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="mi">256</span> <span class="o">=&gt;</span> <span class="n">example_256</span><span class="o">.</span><span class="n">com</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Perlの記法に合わせて整形</h2>
+
+<p>vimの矩形選択( <code>Ctrl + v</code> )などをつかって正しいハッシュの文法に整形する</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -925,15 +2020,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/05/03/changing-octopress-theme/">Octopressのテーマを変える</a>
+        <a href="/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/">HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress/">Github PagesとOctopressを使ったブログの作成</a>
+        <a href="/blog/2014/07/27/rediss-data-type-and-usage/">Redisに用意されたデータ型とその扱い</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>
+        <a href="/blog/2014/07/17/html5-canvas-number-1/">HTML5 Canvas #1  -Canvasを初めて使う-</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/06/changing-login-shell/">シェルの変更について</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/14/writing-serial-numbers-with-vim/">vimで連番を振る方法</a>
       </li>
     
   </ul>

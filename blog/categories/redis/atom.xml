@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Redis | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/redis/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T16:17:49+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Redisに用意されたデータ型とその扱い]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage/"/>
+    <updated>2014-07-27T00:47:21+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage</id>
+    <content type="html"><![CDATA[<h2>Redisで扱えるデータ型</h2>
+
+<ul>
+<li>String</li>
+<li>List</li>
+<li>Set</li>
+<li>Sorted Set</li>
+<li>Hash</li>
+</ul>
+
+
+<h2>String</h2>
+
+<p>文字列型</p>
+
+<p>文字列や数値など、Keyに対して1つに定まる値。</p>
+
+<h3>値のset</h3>
+
+<pre><code>set key value                     # 1つのkey-valueをsetする
+mset key_1 value_1 key_2 value_2  # key-valueの組を複数setする
+</code></pre>
+
+<h3>値のget</h3>
+
+<pre><code>get key                 # 1つのkeyに対するvalueをgetする
+mget key_1 key_2 key_3  # 複数のkeyに対するvalueをgetする
+</code></pre>
+
+<h3>使用例</h3>
+
+<pre><code>redis&gt; set name Steven
+OK
+redis&gt; get name
+"Steven"
+redis&gt; mset number 8 color red
+OK
+redis&gt; mget name number color
+1) "Steven"
+2) "8"
+3) "red"
+</code></pre>
+
+<h2>List</h2>
+
+<p>リスト型</p>
+
+<p>順番をもった値の集合。</p>
+
+<h3>値の追加</h3>
+
+<pre><code>rpush key member  # リストの末尾に値を追加
+lpush key member  # リストの先頭に値を追加
+</code></pre>
+
+<h3>値の削除</h3>
+
+<pre><code>rpop key  # リストの末尾の値を削除
+lpop key  # リストの先頭の値を削除
+</code></pre>
+
+<h3>範囲を指定して値を取得</h3>
+
+<pre><code>lrange key 0 3   # 1番目から4番目まで値を取得
+lrange key 0 -1  # 1番目から最後（最後から1番目）までの値を取得
+</code></pre>
+
+<h3>位置を指定して値を取得</h3>
+
+<pre><code>lindex key 2   # 3番目の値を取得
+lindex key -1  # 最後の値を取得
+</code></pre>
+
+<h3>要素の数を取得</h3>
+
+<pre><code>llen key
+</code></pre>
+
+<h3>使用例</h3>
+
+<pre><code>redis&gt; rpush player Steven
+redis&gt; rpush player Michael James
+redis&gt; lrange player 0 -1
+1) "Steven"
+2) "Michael"
+3) "James"
+redis&gt; lrange player 0 1
+1) "Steven"
+2) "Michael"
+redis&gt; lindex player 1
+"Michael"
+redis&gt; lindex player -1
+"James"
+redis&gt; rpop player
+"James"
+redis&gt; lrange player 0 -1
+1) "Steven"
+2) "Michael"
+redis&gt; llen player
+(integer) 2
+</code></pre>
+
+<h2>Set</h2>
+
+<p>セット型</p>
+
+<p>順不同の値の集合。値の重複を許さない。</p>
+
+<h3>値の追加</h3>
+
+<pre><code>sadd key member  # keyに対応するセットに指定した値を追加
+</code></pre>
+
+<h3>値の削除</h3>
+
+<pre><code>srem key member  # keyに対応するセットから指定した値を削除
+</code></pre>
+
+<h3>値の参照</h3>
+
+<pre><code>smembers key  # keyに対応するセットの値を取得
+</code></pre>
+
+<h3>和集合の取得</h3>
+
+<pre><code>sunion key1 key2  # key1に対応するセットとkey2に対応するセットの値の集合を取得
+</code></pre>
+
+<h3>差集合の取得</h3>
+
+<pre><code>sdiff key1 key2  # key1に対応するセットとkey2に対応するセットの値の差分の集合を取得
+</code></pre>
+
+<h3>積集合の取得</h3>
+
+<pre><code>sinter key1 key2  # key1に対応するセットとkey2に対応するセットの値の重複部分の集合を取得
+</code></pre>
+
+<h3>使用例</h3>
+
+<pre><code>redis&gt; sadd reds Steven
+(integer) 1
+redis&gt; smembers reds
+1) "Steven"
+redis&gt; sadd reds Steve
+(integer) 1
+redis&gt; sadd reds Michael
+(integer) 1
+redis&gt; smembers reds
+1) "Steven"
+2) "Michael"
+3) "Steve"
+redis&gt; srem reds Michael
+(integer) 1
+redis&gt; smembers reds
+1) "Steven"
+2) "Steve"
+redis&gt; sadd three_lions Steven Michael
+(integer) 2
+redis&gt; smembers three_lions
+1) "Steven"
+2) "Michael"
+redis&gt; sunion reds three_lions
+1) "Steven"
+2) "Michael"
+3) "Steve"
+redis&gt; sdiff reds three_lions
+1) "Steve"
+redis&gt; sdiff three_lions reds  # sdiffの後のkeyの順番により結果が違うことに注意
+1) "Michael"
+redis&gt; sinter reds three_lions
+1) "Steven"
+</code></pre>
+
+<h2>Sorted Set</h2>
+
+<p>ソート済みセット型</p>
+
+<p>セット型と同様の特徴に加えて個々の値がスコアを持つ。</p>
+
+<h3>値の追加</h3>
+
+<pre><code>zadd key score member  # keyに対応するセットにスコア付きで値を追加
+</code></pre>
+
+<h3>値の削除</h3>
+
+<pre><code>zrem key member  # keyに対応するセットから指定した値を削除
+</code></pre>
+
+<h3>値の取得</h3>
+
+<pre><code>zrange key 0 3     # keyに対応するセットからスコアの低い順に1番目から4番目の値を取得
+zrevrange key 0 3  # keyに対応するセットからスコアの高い順に1番目から4番目の値を取得
+</code></pre>
+
+<h3>値の順位を取得</h3>
+
+<pre><code>zrank key member     # 指定した値の、keyに対応するセット中のランクを取得（スコアの低い順）
+zrevrank key member  # 指定した値の、keyに対応するセット中のランクを取得（スコアの高い順）
+</code></pre>
+
+<h3>使用例</h3>
+
+<pre><code>redis&gt; zadd fifa 1 germany
+(integer) 1
+redis&gt; zrange fifa 0 0
+1) "germany"
+redis&gt; zadd fifa 2 argentina
+(integer) 1
+redis&gt; zadd fifa 3 holland 4 colombia 45 japan
+(integer) 3
+redis&gt; zrange fifa 0 -1
+1) "germany"
+2) "argentina"
+3) "holland"
+4) "colombia"
+5) "japan"
+redis&gt; zrevrange fifa 0 -1
+1) "japan"
+2) "colombia"
+3) "holland"
+4) "argentina"
+5) "germany"
+redis&gt; zrank fifa japan
+(integer) 4                      # 0番目から数えた値が返るので注意
+redis&gt; zrevrank fifa argentina
+(integer) 3                      # 0番目から数えた値が返るので注意
+redis&gt; zrem fifa japan
+(integer) 1
+redis&gt; zrange fifa 0 -1
+1) "germany"
+2) "argentina"
+3) "holland"
+4) "colombia"
+</code></pre>
+
+<h2>Hash</h2>
+
+<p>ハッシュ型</p>
+
+<p>field（valueについた名前）とvalueを1セットとする値の集合（ハッシュ）。</p>
+
+<h3>値のset</h3>
+
+<pre><code>hset key field value                       # keyにfieldとvalueのハッシュをset
+hmset key field_1 value_1 field_2 value_2  # keyにハッシュのfieldとvalueを複数セット
+</code></pre>
+
+<h3>値のget</h3>
+
+<pre><code>hget key field             # keyに対応するハッシュから指定したfieldのvalueを取得
+hmget key field_1 field_2  # keyに対応するハッシュから指定した複数のfieldのvalueを取得
+hkeys key                  # keyに対応するハッシュのすべてのfieldを取得
+hvals key                  # keyに対応するハッシュのすべてのvalueを取得
+</code></pre>
+
+<h3>使用例</h3>
+
+<pre><code>redis&gt; hset steven position mf
+(integer) 1
+redis&gt; hget steven position
+"mf"
+redis&gt; hmset steven nationality england club reds
+OK
+redis&gt; hmget steven club position
+1) "reds"
+2) "mf"
+redis&gt; hkeys steven
+1) "position"
+2) "nationality"
+3) "club"
+redis&gt; hvals steven
+1) "mf"
+2) "england"
+3) "reds"
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

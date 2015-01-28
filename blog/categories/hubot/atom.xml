@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Hubot | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/hubot/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T16:14:24+09:00</updated>
+  <updated>2015-01-28T16:17:49+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/"/>
+    <updated>2014-07-31T04:45:04+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1</id>
+    <content type="html"><![CDATA[<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">こちらの記事</a>でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため）</p>
+
+<h2>HUBOT_IRC_SEND_NOTICE_MODE</h2>
+
+<p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
+
+<p>実行ファイル(runhubot)に追記</p>
+
+<pre><code class="bash">#!/bin/bash
+
+export HUBOT_IRC_NICK="bot_kun"
+export HUBOT_IRC_ROOMS="#target_channel"
+export HUBOT_IRC_SERVER="irc.hogehoge.local"
+export HUBOT_IRC_SEND_NOTICE_MODE=true
+#export HUBOT_IRC_PASSWORD="hoge"
+
+bin/hubot -a irc --name myhubot
+</code></pre>
+
+<p>この実行ファイルからirc-botを起動すると当該irc-botの発言はすべてnoticeとなる。</p>
+
+<h2>処理の実体</h2>
+
+<p>HUBOT_IRC_SEND_NOTICE_MODEフラグが立っている場合は <code>bot</code> オブジェクトから <code>notice</code> メソッドが呼ばれる。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L18">フラグの確認</a></li>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L56-76">noticeメソッド呼び出し</a></li>
+</ul>
+
+
+<p><code>notice</code> メソッドが呼ばれている <code>bot</code> オブジェクトの実体は <code>new Irc.Client</code> である。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L192">botオブジェクトの生成</a></li>
+</ul>
+
+
+<p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[HUBOTを使ったirc-bot作成メモ]]></title>
