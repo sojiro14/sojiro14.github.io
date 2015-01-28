@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる- - Sojiro&#8217;s Blog</title>
+  <title>OctopressにDISQUSのコメント欄を導入する - Sojiro&#8217;s Blog</title>
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="こちらの記事でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため） HUBOT_IRC_SEND_NOTICE_MODE 環境変数 HUBOT_IRC_SEND_NOTICE_MODE を true &hellip;">
+  <meta name="description" content="ブログにコメント欄を追加したい 本ブログにコメント欄を追加しようと思い立った。 DISQUSというコミュニケーションサービスが好評のようなので導入してみる。 DISQUSを使うための準備
+OctopressでのDISQUS導入方法 DISQUSを使うための準備 DISQUSのアカウントを作成する &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1">
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
@@ -92,7 +93,7 @@
   <header>
     
       
-        <h1 class="entry-title">HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-</h1>
+        <h1 class="entry-title">OctopressにDISQUSのコメント欄を導入する</h1>
       
     
     
@@ -102,7 +103,7 @@
 
 
 
-<time class='entry-date' datetime='2014-07-31T04:45:04+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>4:45 am</span></time>
+<time class='entry-date' datetime='2014-08-09T16:02:24+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:02 pm</span></time>
         
         
       </p>
@@ -110,55 +111,60 @@
   </header>
 
 
-<div class="entry-content"><p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">こちらの記事</a>でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため）</p>
+<div class="entry-content"><h2>ブログにコメント欄を追加したい</h2>
 
-<h2>HUBOT_IRC_SEND_NOTICE_MODE</h2>
+<p>本ブログにコメント欄を追加しようと思い立った。</p>
 
-<p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
+<p><a href="https://disqus.com/">DISQUS</a>というコミュニケーションサービスが好評のようなので導入してみる。</p>
 
-<p>実行ファイル(runhubot)に追記</p>
+<ul>
+<li>DISQUSを使うための準備</li>
+<li>OctopressでのDISQUS導入方法</li>
+</ul>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+
+<h2>DISQUSを使うための準備</h2>
+
+<h3>DISQUSのアカウントを作成する</h3>
+
+<p><a href="https://disqus.com/">DISQUS</a>のWebサイトからアカウントを作成。登録に必要なのはメールアドレスのみ。</p>
+
+<h3>自分のWebサイトをDISQUSに登録する</h3>
+
+<p>DISQUSの<a href="https://disqus.com/admin/create/">サイト登録ページ</a>から自分のサイトを登録する</p>
+
+<p>登録が完了すると設定ページが表示されるので、ここで設定をしつつ、ページ中段に表示されている<code>Shortname</code>の文字列を確認する</p>
+
+<h2>OctopressでのDISQUS導入方法</h2>
+
+<h3>configファイルへの記載</h3>
+
+<p>OctopressでのDISQUS導入はconfigファイルに先ほどDISQUSで取得したShortnameを記載するのみで完了する。</p>
+
+<p> <code>_config.yml</code> の<code>disqus_short_name</code>に自分のサイトのShortnameを指定する。</p>
+
+<figure class='code'><figcaption><span>_config.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SEND_NOTICE_MODE</span><span class="o">=</span><span class="nb">true</span>
-</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
-</span><span class='line'>
-</span><span class='line'>bin/hubot -a irc --name myhubot
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Disqus Comments</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_short_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yoursitesshortname</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_show_comment_count</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>この実行ファイルからirc-botを起動すると当該irc-botの発言はすべてnoticeとなる。</p>
+<p>これでブログの各ページの下部にDISQUSのコメント欄が表示されるようになる。</p>
 
-<h2>処理の実体</h2>
+<h3>disqus_show_comment_count</h3>
 
-<p>HUBOT_IRC_SEND_NOTICE_MODEフラグが立っている場合は <code>bot</code> オブジェクトから <code>notice</code> メソッドが呼ばれる。</p>
+<p><code>disqus_show_comment_count</code> はDISQUSコメント欄を導入するページのヘッダにコメント欄へのリンクを表示させるかどうかを指定する項目。</p>
 
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L18">フラグの確認</a></li>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L56-76">noticeメソッド呼び出し</a></li>
-</ul>
+<h4>trueのとき</h4>
 
+<p><img src="/images/disqus/header_with_comment_link.png"></p>
 
-<p><code>notice</code> メソッドが呼ばれている <code>bot</code> オブジェクトの実体は <code>new Irc.Client</code> である。</p>
+<h4>falseのとき</h4>
 
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L192">botオブジェクトの生成</a></li>
-</ul>
-
-
-<p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
+<p><img src="/images/disqus/header_without_comment_link.png"></p>
 </div>
 
 
@@ -181,13 +187,13 @@
 
 
 
-<time class='entry-date' datetime='2014-07-31T04:45:04+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>4:45 am</span></time>
+<time class='entry-date' datetime='2014-08-09T16:02:24+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:02 pm</span></time>
       
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/hubot/'>hubot</a>
+    <a class='category' href='/blog/categories/octopress/'>octopress</a>
   
 </span>
 
@@ -196,7 +202,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/" data-via="" data-counturl="http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/" data-via="" data-counturl="http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/" >Tweet</a>
   
   
   
@@ -207,10 +213,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/07/27/rediss-data-type-and-usage/" title="Previous Post: Redisに用意されたデータ型とその扱い">&laquo; Redisに用意されたデータ型とその扱い</a>
+        <a class="basic-alignment left" href="/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/" title="Previous Post: HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-">&laquo; HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/" title="Next Post: OctopressにDISQUSのコメント欄を導入する">OctopressにDISQUSのコメント欄を導入する &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/08/22/add-users-on-aws-instance/" title="Next Post: AWSに複数のユーザーを設定した手順">AWSに複数のユーザーを設定した手順 &raquo;</a>
       
     </p>
   </footer>
@@ -240,8 +246,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/';
-        var disqus_url = 'http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/';
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/';
         var disqus_script = 'embed.js';
       
     (function () {

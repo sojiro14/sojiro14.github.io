@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T16:17:49+09:00</updated>
+  <updated>2015-01-28T16:27:59+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,506 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[reveal.jsを使ったプレゼンテーションの作成]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/08/31/presentation-by-reveal-dot-js/"/>
+    <updated>2014-08-31T19:17:21+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/08/31/presentation-by-reveal-dot-js</id>
+    <content type="html"><![CDATA[<p><a href="http://yapcasia.org/2014/">YAPC::Asia 2014</a>のLTに登壇させていただいた。その際、サクッとオシャレなプレゼンテーションを作ることができるということでreveal.jsを使って作ったのでメモ。</p>
+
+<ul>
+<li><a href="http://sojiro14.github.io/presentation/2014/08/30/YAPC-Asia-LT/">実際のプレゼンテーション</a>（一部の画像を削除したもの）</li>
+</ul>
+
+
+<h2>reveal.jsとは</h2>
+
+<p>htmlやmarkdown形式で簡単にリッチなプレゼンテーションを書くことができるjsやcssを中心としたライブラリ</p>
+
+<ul>
+<li><a href="https://github.com/hakimel/reveal.js/">reveal.jsの実体</a></li>
+<li><a href="http://lab.hakim.se/reveal-js/#/">本家Demo</a></li>
+</ul>
+
+
+<h2>reveal.jsの入手</h2>
+
+<p><a href="https://github.com/hakimel/reveal.js">GitHubのreveal.jsリポジトリ</a>からzipをダウンロードする。右下の<code>Download ZIP</code>ボタンを押すだけで完了。</p>
+
+<h2>プレゼンテーションの作成</h2>
+
+<p>基本的に<code>index.html</code>を編集していく。特に以下の部分を編集していけば良い。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;slides&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="c">&lt;!---...</span>
+</span><span class='line'><span class="c">ここを編集</span>
+</span><span class='line'><span class="c">...--&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>デフォルトでは<a href="http://lab.hakim.se/reveal-js/#/">本家Demo</a>の仕様となっている。</p>
+
+<h2>ページの追加</h2>
+
+<p> <code>&lt;section&gt;&lt;/section&gt;</code>タグを追加することで新しいページを追加することができる。新しいページは右側に追加されていく。</p>
+
+<p>さらに<code>&lt;section&gt;&lt;/section&gt;</code>タグの中に<code>&lt;section&gt;&lt;/section&gt;</code>タグをネストすることで、縦方向にスライドを追加することができる。</p>
+
+<h2>スライドの動きの設定</h2>
+
+<p> <code>&lt;section&gt;</code>タグに<code>data-transition</code>や<code>data-background-transition</code>を指定することでスライドの動きを設定できる。</p>
+
+<p>デフォルトではスライドが回転するように動いていくが、例えば以下のように設定することで横方向にスライドが流れるようになる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section</span> <span class="na">data-transition=</span><span class="s">&quot;linear&quot;</span> <span class="na">data-background-transition=</span><span class="s">&quot;slide&quot;</span><span class="nt">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>data-transition
+
+<ul>
+<li>スライドに載っているコンテンツの動きを指定</li>
+</ul>
+</li>
+<li>data-background-transition
+
+<ul>
+<li>スライド自体の動きを指定</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>背景の設定</h2>
+
+<p> <code>&lt;section&gt;</code>タグに<code>data-background</code>を指定することでスライドの背景を設定できる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section</span> <span class="na">data-background=</span><span class="s">&quot;#000000&quot;</span><span class="nt">&gt;</span>  <span class="c">&lt;!--背景色を指定--&gt;</span>
+</span><span class='line'><span class="nt">&lt;section</span> <span class="na">data-background=</span><span class="s">&quot;img.jpg&quot;</span><span class="nt">&gt;</span>  <span class="c">&lt;!--背景画像をパスで指定--&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>コードブロックを設定</h2>
+
+<p>コードブロックを挿入するには<code>&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</code>タグを挿入する。</p>
+
+<p> <code>&lt;code&gt;</code>タグのclassに言語を指定することで適切なハイライトが適用される。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;pre&gt;&lt;code</span> <span class="na">class=</span><span class="s">&quot;html&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;example&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>                test
+</span><span class='line'>            <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'><span class="nt">&lt;/section&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>スライド内コンテンツの動きの設定</h2>
+
+<p>スライドのページ内でいくつかの動きを設定したいときは</p>
+
+<ul>
+<li><code>section</code>タグのidに<code>fragments</code>を指定する。</li>
+<li>ページ内のコンテンツのclassに<code>fragment</code>を指定する。</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section</span> <span class="na">id=</span><span class="s">&quot;fragments&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;h2&gt;</span>example<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ol&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;fragment&quot;</span><span class="nt">&gt;</span>test1<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;fragment&quot;</span><span class="nt">&gt;</span>test2<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;fragment&quot;</span><span class="nt">&gt;</span>test3<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/ol&gt;</span>
+</span><span class='line'><span class="nt">&lt;/section&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上記のように設定するとリストの要素が一つずつ出現する。</p>
+
+<p> <code>fragment</code>classにはオプションを設定することができ、オプションによって動作をが変わる。</p>
+
+<ul>
+<li><code>class="fragment current-visible"</code>: 要素が出現する（デフォルト）</li>
+<li><code>class="fragment grow"</code>: 要素が大きくなる</li>
+<li><code>class="fragment shrink"</code>: 要素が小さくなる</li>
+<li><code>class="fragment roll-in"</code>: 要素が回転しながら出現</li>
+<li><code>class="fragment fade-out"</code>: 要素が消える</li>
+<li><code>class="fragment highlight-green"</code>: 要素が指定した色になる(red, blueなども指定可能)</li>
+<li><code>class="fragment highlight-current-blue"</code>: 要素が指定した色で出現する(red, greenなども指定可能)</li>
+</ul>
+
+
+<h2>マークダウンでの記述</h2>
+
+<p>reveal.jsではプレゼンテーションをマークダウンで記述することもできる</p>
+
+<ul>
+<li><code>section</code>タグに<code>data-markdown</code>を指定</li>
+<li><code>&lt;script type="text/template"&gt;&lt;/script&gt;</code>ブロック内に記述</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section</span> <span class="na">data-markdown</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/template&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="err">#</span> <span class="err">ここに</span><span class="nx">markdown</span><span class="err">形式で記述</span>
+</span><span class='line'>    <span class="err">```</span>
+</span><span class='line'>    <span class="nx">echo</span> <span class="s2">&quot;you can also write code.&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="err">````</span>
+</span><span class='line'><span class="nt">&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/section&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>コードブロック内でも<code>&lt;/script&gt;</code>タグが出現するとマークダウンの終了と誤解されるので注意</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="https://github.com/hakimel/reveal.js">GitHub</a></li>
+<li><a href="http://qiita.com/budougumi0617/items/19b19019bbe01f86e251">Reveal.js、Markdown、Githubでスライドを作成する。</a></li>
+<li><a href="http://qiita.com/ryurock/items/9c6de36b9d6a716e7992">なんかかっこいいプレゼンテーションテンプレートを探しているならreveal.js使ってみろって</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Amazon Linux AMIにagをインストールした手順]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami/"/>
+    <updated>2014-08-25T23:38:16+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami</id>
+    <content type="html"><![CDATA[<p>AWSでWebサーバーを借りた。このサーバーに<code>ag</code>をインストールした際の手順。</p>
+
+<h2>agとは</h2>
+
+<p>ソースコードから特定のwordを検索する際に使うコマンド<code>grep</code>がより賢く改良されたのが<code>ack</code>コマンド。</p>
+
+<p>この<code>ack</code>をさらに改良し、検索を高速化させたのが<code>ag</code>コマンド（正式名称:The Silver Searcher）である。</p>
+
+<h2>Amazon Linux AMIへのインストール</h2>
+
+<p>MacにはHomebrewを使って<code>brew install the_silver_searcher</code>とするだけで簡単に入れることができた。</p>
+
+<p>AWSで借りたサーバーはAmazon Linux AMIという独自のイメージだったが、<code>yum</code>が使えるのでCentOSと同じ以下の手順で入れることができた。</p>
+
+<h3>ディレクトリの作成とソースのダウンロード</h3>
+
+<p>ソースをダウンロード、インストールするディレクトリを作成し、gitから<code>ag</code>のソースを持ってくる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir -p <span class="nv">$HOME</span>/local/source
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source
+</span><span class='line'><span class="nv">$ </span>git clone https://github.com/ggreer/the_silver_searcher
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>ソースをmakeするための準備</h3>
+
+<p>対象のサーバーはまっさらな状態でコンパイラなどもなかったため、それぞれインストールする。</p>
+
+<p>前述の通りAmazon Linux AMIではyumを使うことができる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo su -
+</span><span class='line'>yum -y groupinstall <span class="s2">&quot;Development Tools&quot;</span>
+</span><span class='line'>yum -y install pcre-devel xz-devel
+</span><span class='line'><span class="nb">exit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>インストール</h3>
+
+<p>コンパイルしてインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source/the_silver_searcher
+</span><span class='line'><span class="nv">$ </span>./build.sh
+</span><span class='line'><span class="nv">$ </span>sudo make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>パスを通す</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span>
+</span><span class='line'><span class="nv">$ </span>vim .bashrc
+</span><span class='line'><span class="nv">$ </span>cat .bashrc
+</span><span class='line'>...
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/local/bin:<span class="nv">$PATH</span>
+</span><span class='line'>...
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bashrc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで<code>ag</code>が使えるようになった</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="https://github.com/ggreer/the_silver_searcher">the_silver_searcher</a></li>
+<li><a href="http://qiita.com/sifue/items/55d0c5c11a0571af3b8e">grepやackよりも速いコード検索ツールのagをローカルビルドインストールする</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AWSに複数のユーザーを設定した手順]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/08/22/add-users-on-aws-instance/"/>
+    <updated>2014-08-22T00:58:55+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/08/22/add-users-on-aws-instance</id>
+    <content type="html"><![CDATA[<p>AWSでサーバーを借りて複数人で共同開発することになった。
+それに伴い、借りたサーバーに各々がアクセスできるようユーザーの設定をした際の手順メモ。</p>
+
+<h2>AWSでWEBサーバーを借りる</h2>
+
+<p>AWSのWebサーバーレンタルサービスはEC2と呼ばれる。
+サーバーをレンタルするには様々あるサービス群からEC2を選択し、<code>Launch Instance</code> ボタンを押してInstanceの立ち上げを開始する。</p>
+
+<ul>
+<li>AMI(Amazon Machine Image)の選択
+
+<ul>
+<li>借りるマシンの種類を選ぶ。用途によって様々な種類がある（WordPressが既に設定されているものなど）</li>
+</ul>
+</li>
+<li>Instance Typeの選択
+
+<ul>
+<li>マシンのスペックを選ぶ。メモリやストレージのサイズなど</li>
+</ul>
+</li>
+<li>Instanceの詳細設定</li>
+<li>Storageの設定</li>
+<li>Instanceへのtag付け</li>
+<li>Security Groupの選択
+
+<ul>
+<li>アクセスを許可するプロトコルやIPなどを指定してその設定をグループとして扱う</li>
+</ul>
+</li>
+</ul>
+
+
+<p>上記のほとんどの設定は後から変更できる。AMIの選択がしっかりできれば問題なさそう。</p>
+
+<p>最後まで完了すると秘密鍵(hogehoge.pem)が発行される。これは絶対になくしてはいけない。</p>
+
+<h2>立ち上げたInstanceに複数ユーザーを設定する</h2>
+
+<p>立ち上げたInstanceにアクセスする。
+今回はWebサーバーとして立ち上げるのでSecurity GroupにはHTTPとSSHでのアクセスを許可するよう設定しておく。</p>
+
+<h3>秘密鍵でアクセスする</h3>
+
+<p>まずはInstance立ち上げ時に発行された秘密鍵でアクセスする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">600</span> hogehoge.pem  <span class="c"># 秘密鍵の権限を設定（厳しすぎても甘過ぎても使えない）</span>
+</span><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>ssh -i hogehoge.pem ec2-user@xx.xx.xx.xxx  <span class="c"># ec2-userでログイン</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>ダウンロード直後の秘密鍵は権限が適切ではない可能性がある。その場合は600に設定する。</li>
+<li><code>ssh</code>の<code>-i</code>オプションを使って秘密鍵を指定してログイン（秘密鍵を指定しないと~/.ssh/id_rsaが使われる）
+
+<ul>
+<li>最初は初期設定されているec2-userというユーザーでログインする</li>
+<li>コマンドはEC2のメニューバーからInstancesページに行き、Instanceを選択してページ上部の<code>Connect</code>ボタンを押すと表示される</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>ユーザーの作成</h3>
+
+<p>Instanceにログインできたら早速ユーザーを作成していく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>ec2-user@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>sudo su -  <span class="c"># rootユーザーになる</span>
+</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> adduser sojiro  <span class="c"># ユーザー(sojiro)を作成</span>
+</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> passwd sojiro   <span class="c"># sojiroにパスワードを設定</span>
+</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> vim /etc/sudoers  <span class="c"># sojiroに権限を設定</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ユーザーを作り、ユーザーに権限を付与する。今回は大雑把にrootと同じことができる権限を付与。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> cat /etc/sudors
+</span><span class='line'>...
+</span><span class='line'>root    <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL
+</span><span class='line'>sojiro  <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>公開鍵の登録</h3>
+
+<p>作成したユーザーにlocalからアクセスするための公開鍵を設定する。
+（鍵のペアはlocalで予め<code>ssh-keygen -t rsa</code>で作成しておく）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> su sojiro
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge root<span class="o">]</span><span class="nv">$ </span><span class="nb">cd</span>  <span class="c"># sojiroのホームディレクトリに移動</span>
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>mkdir .ssh
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>vim .ssh/authorized_keys  <span class="c"># 公開鍵を置く（今回はlocalのid_rsa.pubをコピペした）</span>
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">700</span> .ssh
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">600</span> .ssh/authorized_keys
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>公開鍵を置くファイルの名前は<code>.ssh</code>ディレクトリ配下の<code>authorized_keys</code>と決まっている</li>
+<li><code>.ssh</code>ディレクトリと<code>authorized_keys</code>の権限にも気をつける</li>
+</ul>
+
+
+<h3>作成したユーザーでInstanceにログインできることを確認</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>ssh sojiro@xx.xx.xx.xxx  <span class="c"># ログインできればOK</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>localのrsa鍵でログインできることを確認できれば完了。</p>
+
+<p>この操作で必要なユーザーを適宜作成する。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://d.hatena.ne.jp/torazuka/20110420/ssh">新規に作成した鍵でEC2インスタンスにSSH接続する</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OctopressにDISQUSのコメント欄を導入する]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/"/>
+    <updated>2014-08-09T16:02:24+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress</id>
+    <content type="html"><![CDATA[<h2>ブログにコメント欄を追加したい</h2>
+
+<p>本ブログにコメント欄を追加しようと思い立った。</p>
+
+<p><a href="https://disqus.com/">DISQUS</a>というコミュニケーションサービスが好評のようなので導入してみる。</p>
+
+<ul>
+<li>DISQUSを使うための準備</li>
+<li>OctopressでのDISQUS導入方法</li>
+</ul>
+
+
+<h2>DISQUSを使うための準備</h2>
+
+<h3>DISQUSのアカウントを作成する</h3>
+
+<p><a href="https://disqus.com/">DISQUS</a>のWebサイトからアカウントを作成。登録に必要なのはメールアドレスのみ。</p>
+
+<h3>自分のWebサイトをDISQUSに登録する</h3>
+
+<p>DISQUSの<a href="https://disqus.com/admin/create/">サイト登録ページ</a>から自分のサイトを登録する</p>
+
+<p>登録が完了すると設定ページが表示されるので、ここで設定をしつつ、ページ中段に表示されている<code>Shortname</code>の文字列を確認する</p>
+
+<h2>OctopressでのDISQUS導入方法</h2>
+
+<h3>configファイルへの記載</h3>
+
+<p>OctopressでのDISQUS導入はconfigファイルに先ほどDISQUSで取得したShortnameを記載するのみで完了する。</p>
+
+<p> <code>_config.yml</code> の<code>disqus_short_name</code>に自分のサイトのShortnameを指定する。</p>
+
+<figure class='code'><figcaption><span>_config.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Disqus Comments</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_short_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yoursitesshortname</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_show_comment_count</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでブログの各ページの下部にDISQUSのコメント欄が表示されるようになる。</p>
+
+<h3>disqus_show_comment_count</h3>
+
+<p><code>disqus_show_comment_count</code> はDISQUSコメント欄を導入するページのヘッダにコメント欄へのリンクを表示させるかどうかを指定する項目。</p>
+
+<h4>trueのとき</h4>
+
+<p><img src="http://sojiro14.github.io/images/disqus/header_with_comment_link.png"></p>
+
+<h4>falseのとき</h4>
+
+<p><img src="http://sojiro14.github.io/images/disqus/header_without_comment_link.png"></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-]]></title>

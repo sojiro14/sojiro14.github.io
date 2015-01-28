@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T16:27:59+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Amazon Linux AMIにagをインストールした手順]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami/"/>
+    <updated>2014-08-25T23:38:16+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami</id>
+    <content type="html"><![CDATA[<p>AWSでWebサーバーを借りた。このサーバーに<code>ag</code>をインストールした際の手順。</p>
+
+<h2>agとは</h2>
+
+<p>ソースコードから特定のwordを検索する際に使うコマンド<code>grep</code>がより賢く改良されたのが<code>ack</code>コマンド。</p>
+
+<p>この<code>ack</code>をさらに改良し、検索を高速化させたのが<code>ag</code>コマンド（正式名称:The Silver Searcher）である。</p>
+
+<h2>Amazon Linux AMIへのインストール</h2>
+
+<p>MacにはHomebrewを使って<code>brew install the_silver_searcher</code>とするだけで簡単に入れることができた。</p>
+
+<p>AWSで借りたサーバーはAmazon Linux AMIという独自のイメージだったが、<code>yum</code>が使えるのでCentOSと同じ以下の手順で入れることができた。</p>
+
+<h3>ディレクトリの作成とソースのダウンロード</h3>
+
+<p>ソースをダウンロード、インストールするディレクトリを作成し、gitから<code>ag</code>のソースを持ってくる
+<code>bash
+$ mkdir -p $HOME/local/source
+$ cd $HOME/local/source
+$ git clone https://github.com/ggreer/the_silver_searcher
+</code></p>
+
+<h3>ソースをmakeするための準備</h3>
+
+<p>対象のサーバーはまっさらな状態でコンパイラなどもなかったため、それぞれインストールする。</p>
+
+<p>前述の通りAmazon Linux AMIではyumを使うことができる
+<code>bash
+$ sudo su -
+yum -y groupinstall "Development Tools"
+yum -y install pcre-devel xz-devel
+exit
+</code></p>
+
+<h3>インストール</h3>
+
+<p>コンパイルしてインストールする
+<code>bash
+$ cd $HOME/local/source/the_silver_searcher
+$ ./build.sh
+$ sudo make install
+</code></p>
+
+<h3>パスを通す</h3>
+
+<pre><code class="bash">$ cd
+$ vim .bashrc
+$ cat .bashrc
+...
+export PATH=$HOME/local/bin:$PATH
+...
+$ source .bashrc
+</code></pre>
+
+<p>これで<code>ag</code>が使えるようになった</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="https://github.com/ggreer/the_silver_searcher">the_silver_searcher</a></li>
+<li><a href="http://qiita.com/sifue/items/55d0c5c11a0571af3b8e">grepやackよりも速いコード検索ツールのagをローカルビルドインストールする</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AWSに複数のユーザーを設定した手順]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/08/22/add-users-on-aws-instance/"/>
+    <updated>2014-08-22T00:58:55+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/08/22/add-users-on-aws-instance</id>
+    <content type="html"><![CDATA[<p>AWSでサーバーを借りて複数人で共同開発することになった。
+それに伴い、借りたサーバーに各々がアクセスできるようユーザーの設定をした際の手順メモ。</p>
+
+<h2>AWSでWEBサーバーを借りる</h2>
+
+<p>AWSのWebサーバーレンタルサービスはEC2と呼ばれる。
+サーバーをレンタルするには様々あるサービス群からEC2を選択し、<code>Launch Instance</code> ボタンを押してInstanceの立ち上げを開始する。</p>
+
+<ul>
+<li>AMI(Amazon Machine Image)の選択
+
+<ul>
+<li>借りるマシンの種類を選ぶ。用途によって様々な種類がある（WordPressが既に設定されているものなど）</li>
+</ul>
+</li>
+<li>Instance Typeの選択
+
+<ul>
+<li>マシンのスペックを選ぶ。メモリやストレージのサイズなど</li>
+</ul>
+</li>
+<li>Instanceの詳細設定</li>
+<li>Storageの設定</li>
+<li>Instanceへのtag付け</li>
+<li>Security Groupの選択
+
+<ul>
+<li>アクセスを許可するプロトコルやIPなどを指定してその設定をグループとして扱う</li>
+</ul>
+</li>
+</ul>
+
+
+<p>上記のほとんどの設定は後から変更できる。AMIの選択がしっかりできれば問題なさそう。</p>
+
+<p>最後まで完了すると秘密鍵(hogehoge.pem)が発行される。これは絶対になくしてはいけない。</p>
+
+<h2>立ち上げたInstanceに複数ユーザーを設定する</h2>
+
+<p>立ち上げたInstanceにアクセスする。
+今回はWebサーバーとして立ち上げるのでSecurity GroupにはHTTPとSSHでのアクセスを許可するよう設定しておく。</p>
+
+<h3>秘密鍵でアクセスする</h3>
+
+<p>まずはInstance立ち上げ時に発行された秘密鍵でアクセスする
+<code>bash
+[sojiro@local ~]$ chmod 600 hogehoge.pem  # 秘密鍵の権限を設定（厳しすぎても甘過ぎても使えない）
+[sojiro@local ~]$ ssh -i hogehoge.pem ec2-user@xx.xx.xx.xxx  # ec2-userでログイン
+</code>
+* ダウンロード直後の秘密鍵は権限が適切ではない可能性がある。その場合は600に設定する。
+* <code>ssh</code>の<code>-i</code>オプションを使って秘密鍵を指定してログイン（秘密鍵を指定しないと~/.ssh/id_rsaが使われる）
+    * 最初は初期設定されているec2-userというユーザーでログインする
+    * コマンドはEC2のメニューバーからInstancesページに行き、Instanceを選択してページ上部の<code>Connect</code>ボタンを押すと表示される</p>
+
+<h3>ユーザーの作成</h3>
+
+<p>Instanceにログインできたら早速ユーザーを作成していく
+<code>bash
+[ec2-user@ip-hogehoge ~]$ sudo su -  # rootユーザーになる
+[root@ip-hogehoge ~] adduser sojiro  # ユーザー(sojiro)を作成
+[root@ip-hogehoge ~] passwd sojiro   # sojiroにパスワードを設定
+[root@ip-hogehoge ~] vim /etc/sudoers  # sojiroに権限を設定
+</code>
+ユーザーを作り、ユーザーに権限を付与する。今回は大雑把にrootと同じことができる権限を付与。
+<code>bash
+[root@ip-hogehoge ~] cat /etc/sudors
+...
+root    ALL=(ALL)       ALL
+sojiro  ALL=(ALL)       ALL
+...
+</code></p>
+
+<h3>公開鍵の登録</h3>
+
+<p>作成したユーザーにlocalからアクセスするための公開鍵を設定する。
+（鍵のペアはlocalで予め<code>ssh-keygen -t rsa</code>で作成しておく）
+<code>bash
+[root@ip-hogehoge ~] su sojiro
+[sojiro@ip-hogehoge root]$ cd  # sojiroのホームディレクトリに移動
+[sojiro@ip-hogehoge ~]$ mkdir .ssh
+[sojiro@ip-hogehoge ~]$ vim .ssh/authorized_keys  # 公開鍵を置く（今回はlocalのid_rsa.pubをコピペした）
+[sojiro@ip-hogehoge ~]$ chmod 700 .ssh
+[sojiro@ip-hogehoge ~]$ chmod 600 .ssh/authorized_keys
+</code>
+* 公開鍵を置くファイルの名前は<code>.ssh</code>ディレクトリ配下の<code>authorized_keys</code>と決まっている
+* <code>.ssh</code>ディレクトリと<code>authorized_keys</code>の権限にも気をつける</p>
+
+<h3>作成したユーザーでInstanceにログインできることを確認</h3>
+
+<pre><code class="bash">[sojiro@local ~]$ ssh sojiro@xx.xx.xx.xxx  # ログインできればOK
+</code></pre>
+
+<p>localのrsa鍵でログインできることを確認できれば完了。</p>
+
+<p>この操作で必要なユーザーを適宜作成する。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://d.hatena.ne.jp/torazuka/20110420/ssh">新規に作成した鍵でEC2インスタンスにSSH接続する</a></p>
+]]></content>
+  </entry>
+  
+</feed>
