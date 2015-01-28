@@ -1,159 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://sojiro14.github.io/blog/2015/01/07/making-a-web-server-with-node-dot-js/</loc>
-    <lastmod>2015-01-07T00:55:25+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2015/01/02/the-first-step-for-mongodb/</loc>
-    <lastmod>2015-01-02T02:20:55+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/12/30/installing-mongodb-on-linux-aws/</loc>
-    <lastmod>2014-12-30T13:32:15+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/12/26/tab-and-space-on-vim/</loc>
-    <lastmod>2014-12-26T10:52:26+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/12/15/slack-bot-by-hubot/</loc>
-    <lastmod>2014-12-15T03:02:30+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/</loc>
-    <lastmod>2014-12-07T18:30:01+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/12/01/screen-introduction/</loc>
-    <lastmod>2014-12-01T17:15:25+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view/</loc>
-    <lastmod>2014-11-29T23:58:09+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources/</loc>
-    <lastmod>2014-11-27T16:32:38+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/</loc>
-    <lastmod>2014-11-16T23:59:05+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/</loc>
-    <lastmod>2014-11-12T12:06:23+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/</loc>
-    <lastmod>2014-11-10T03:27:49+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/11/05/installing-ruby-on-rails-on-linux/</loc>
-    <lastmod>2014-11-05T03:58:11+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/</loc>
-    <lastmod>2014-10-31T05:29:00+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/</loc>
-    <lastmod>2014-10-20T13:44:28+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/09/14/what-is-rest/</loc>
-    <lastmod>2014-09-14T13:57:07+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/09/13/stateful-and-stateless/</loc>
-    <lastmod>2014-09-13T18:00:03+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/08/31/presentation-by-reveal-dot-js/</loc>
-    <lastmod>2014-08-31T19:17:21+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami/</loc>
-    <lastmod>2014-08-25T23:38:16+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/08/22/add-users-on-aws-instance/</loc>
-    <lastmod>2014-08-22T00:58:55+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/</loc>
-    <lastmod>2014-08-09T16:02:24+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/</loc>
-    <lastmod>2014-07-31T04:45:04+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage/</loc>
-    <lastmod>2014-07-27T00:47:21+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/07/17/html5-canvas-number-1/</loc>
-    <lastmod>2014-07-17T02:13:46+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/07/06/changing-login-shell/</loc>
-    <lastmod>2014-07-06T20:43:22+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/06/14/writing-serial-numbers-with-vim/</loc>
-    <lastmod>2014-06-14T02:01:05+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/05/03/changing-octopress-theme/</loc>
-    <lastmod>2014-05-03T17:37:29+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>http://sojiro14.github.io/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress/</loc>
-    <lastmod>2014-04-26T17:05:36+09:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/</loc>
     <lastmod>2014-04-19T21:05:49+09:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>http://sojiro14.github.io/blog/archives/</loc>
-    <lastmod>2015-01-28T13:10:07+09:00</lastmod>
+    <lastmod>2015-01-28T13:12:58+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://sojiro14.github.io/</loc>
-    <lastmod>2015-01-28T13:10:07+09:00</lastmod>
+    <lastmod>2015-01-28T13:12:58+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>

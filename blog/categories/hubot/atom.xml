@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Hubot | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/hubot/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T13:10:07+09:00</updated>
+  <updated>2015-01-28T13:12:58+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,171 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[HUBOTを使ったSlack Bot作成メモ]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/12/15/slack-bot-by-hubot/"/>
-    <updated>2014-12-15T03:02:30+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/12/15/slack-bot-by-hubot</id>
-    <content type="html"><![CDATA[<p>SlackにBotを入れたいと思い、少し調べてみたところHUBOTがやはり簡単らしいのでやってみた</p>
-
-<h2>HUBOT用のAPI Tokenを取得する</h2>
-
-<p>まずはSlackのチームメニューからConfigure Integrationsを選択</p>
-
-<p>{% img /images/slack_hubot/team_menu.png %}</p>
-
-<p>様々な外部サービスとの連携メニューからHUBOTを選択する</p>
-
-<p>{% img /images/slack_hubot/add_hubot.png %}</p>
-
-<p>追加するbotの名前を入力</p>
-
-<p>{% img /images/slack_hubot/set_botname.png %}</p>
-
-<p>ここまでのステップを踏むとAPI Tokenが記されたページが表示される</p>
-
-<p>そしてこの段階でbotがSlackにjoinする</p>
-
-<p>{% img /images/slack_hubot/join_bot.png %}</p>
-
-<h2>HUBOTの設定をする</h2>
-
-<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>にも記したHUBOTのセットアップを進める。</p>
-
-<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>の「②HUBOTをインストールする」までを済ませておく。</p>
-
-<p>新たなbotの生成
-<code>bash
-$ hubot --create slack_sojiro_test
-</code>
-slack用のpluginをインストール
-<code>bash
-$ cd slack_sojiro_test/
-$ npm install hubot-slack --save
-</code>
-起動用スクリプトの作成。先ほど取得したAPI Tokenを使用する。
-&#8220;` bash
-$ vim runhubot
-$ cat runhubot</p>
-
-<h1>!/bin/bash</h1>
-
-<p>export HUBOT_SLACK_TOKEN=xxxx-123456789-ABCDEFGHIJKLMN
-export HUBOT_SLACK_TEAM=Sojiro-test
-export HUBOT_SLACK_BOTNAME=test-bot</p>
-
-<p>bin/hubot &ndash;adapter slack
-$ chmod u+x runhubot
-<code>
-botの起動
-</code> bash
-$ ./runhubot
-&#8220;`
-これでSlack上のbotがHUBOTのスクリプトに沿って反応するようになったはず</p>
-
-<h2>botを使ってみる</h2>
-
-<p>HUBOTではデフォルトでいくつかのスクリプトが用意されているので使って試してみる</p>
-
-<h3>ping</h3>
-
-<p>生存確認</p>
-
-<p>{% img /images/slack_hubot/ping.png %}</p>
-
-<h3>image me</h3>
-
-<p>画像検索</p>
-
-<p>{% img /images/slack_hubot/image_me.png %}</p>
-
-<h3>animate me</h3>
-
-<p>アニメーション検索</p>
-
-<p>{% img /images/slack_hubot/animate_me.png %}</p>
-
-<h3>youtube me</h3>
-
-<p>動画検索</p>
-
-<p>{% img /images/slack_hubot/youtube_me.png %}</p>
-
-<h3>translate me</h3>
-
-<p>翻訳（日本語から英語）</p>
-
-<p>{% img /images/slack_hubot/translate_me_1.png %}</p>
-
-<p>翻訳（英語から日本語）</p>
-
-<p>{% img /images/slack_hubot/translate_me_2.png %}</p>
-
-<h3>map me</h3>
-
-<p>地図検索</p>
-
-<p>{% img /images/slack_hubot/map_me.png %}</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
-<li><a href="http://memo.sanographix.net/post/88371442780">Hubotで西木野真姫bot作ってSlackに呼ぶ</a></li>
-<li><a href="http://qiita.com/Katsumata_RYO/items/dc4543aa5827d4c3211c">slackにHubotを導入(Heroku経由)</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/"/>
-    <updated>2014-07-31T04:45:04+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1</id>
-    <content type="html"><![CDATA[<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">こちらの記事</a>でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため）</p>
-
-<h2>HUBOT_IRC_SEND_NOTICE_MODE</h2>
-
-<p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
-
-<p>実行ファイル(runhubot)に追記
-&#8220;`</p>
-
-<h1>!/bin/bash</h1>
-
-<p>export HUBOT_IRC_NICK=&ldquo;bot_kun&rdquo;
-export HUBOT_IRC_ROOMS=&ldquo;#target_channel&rdquo;
-export HUBOT_IRC_SERVER=&ldquo;irc.hogehoge.local&rdquo;
-export HUBOT_IRC_SEND_NOTICE_MODE=true</p>
-
-<h1>export HUBOT_IRC_PASSWORD=&ldquo;hoge&rdquo;</h1>
-
-<p>bin/hubot -a irc &ndash;name myhubot
-&#8220;`
-この実行ファイルからirc-botを起動すると当該irc-botの発言はすべてnoticeとなる。</p>
-
-<h2>処理の実体</h2>
-
-<p>HUBOT_IRC_SEND_NOTICE_MODEフラグが立っている場合は <code>bot</code> オブジェクトから <code>notice</code> メソッドが呼ばれる。</p>
-
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L18">フラグの確認</a></li>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L56-76">noticeメソッド呼び出し</a></li>
-</ul>
-
-
-<p><code>notice</code> メソッドが呼ばれている <code>bot</code> オブジェクトの実体は <code>new Irc.Client</code> である。</p>
-
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L192">botオブジェクトの生成</a></li>
-</ul>
-
-
-<p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[HUBOTを使ったirc-bot作成メモ]]></title>
@@ -196,7 +31,7 @@ export HUBOT_IRC_SEND_NOTICE_MODE=true</p>
 
 <h3>上記をインストールするためにHomebrewのインストールから始める</h3>
 
-<pre><code>$ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+<pre><code class="bash">$ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 </code></pre>
 
 <p>これでHomebrewが入るはず</p>
@@ -205,12 +40,12 @@ export HUBOT_IRC_SEND_NOTICE_MODE=true</p>
 
 <p>まずnode.jsとnpm</p>
 
-<pre><code>$ brew install node
+<pre><code class="bash">$ brew install node
 </code></pre>
 
 <p>このコマンド一発でnode.jsとnpmが入るはず</p>
 
-<pre><code>$ node -v
+<pre><code class="bash">$ node -v
 v0.10.26
 $ npm -v
 1.4.6
@@ -218,19 +53,19 @@ $ npm -v
 
 <h3>Redisもインストール</h3>
 
-<pre><code>$ brew install redis
+<pre><code class="bash">$ brew install redis
 </code></pre>
 
 <h3>Redisを起動しておく</h3>
 
-<pre><code>$ redis-server &amp;
+<pre><code class="bash">$ redis-server &amp;
 </code></pre>
 
 <h2>②HUBOTをインストールする</h2>
 
 <h3>GitHubからリポジトリをクローンしてインストール</h3>
 
-<pre><code>$ cd git/
+<pre><code class="bash">$ cd git/
 $ git clone git://github.com/github/hubot.git
 $ cd hubot/
 $ npm install -g hubot coffee-script
@@ -238,7 +73,7 @@ $ npm install -g hubot coffee-script
 
 <h3>動くか確認</h3>
 
-<pre><code>$ hubot
+<pre><code class="bash">$ hubot
 Hubot&gt; 
 </code></pre>
 
@@ -248,25 +83,25 @@ Hubot&gt;
 
 <h3>自分用のHUBOTを作る</h3>
 
-<pre><code>$ hubot --create myhubot
+<pre><code class="bash">$ hubot --create myhubot
 </code></pre>
 
 <p>myhubotの部分は自由に変更可。この名前のディレクトリが作られる</p>
 
 <h3>自分用HUBOTにhubot-ircをインストール</h3>
 
-<pre><code>$ cd myhubot/
+<pre><code class="bash">$ cd myhubot/
 $ npm install hubot-irc --save &amp;&amp; npm install
 </code></pre>
 
 <h3>irc連携のためのスクリプトを書く</h3>
 
-<pre><code>$ vim runhubot
+<pre><code class="bash">$ vim runhubot
 </code></pre>
 
 <p>中身はこんな感じ</p>
 
-<pre><code>$ cat runhubot
+<pre><code class="bash">$ cat runhubot
 #!/bin/bash
 
 export HUBOT_IRC_NICK="bot_kun"
@@ -279,12 +114,12 @@ bin/hubot -a irc --name myhubot
 
 <h3>スクリプトの実行権限追加</h3>
 
-<pre><code>$ chmod u+x runhubot 
+<pre><code class="bash">$ chmod u+x runhubot 
 </code></pre>
 
 <h3>起動スクリプト実行！</h3>
 
-<pre><code>$ ./runhubot &amp;
+<pre><code class="bash">$ ./runhubot &amp;
 </code></pre>
 
 <h3>irc上でbotがいるか確認する</h3>
@@ -297,7 +132,7 @@ bin/hubot -a irc --name myhubot
 
 <p>最初からいくつかのスクリプトが存在するので、それを参考に書けばOK</p>
 
-<pre><code>$ vim scripts/tell_fuga.coffee
+<pre><code class="bash">$ vim scripts/tell_fuga.coffee
 $ cat scripts/tell_fuga.coffee
 module.exports = (robot) -&gt;
 
@@ -307,24 +142,24 @@ module.exports = (robot) -&gt;
 
 <h3>スクリプトを書いたら、再起動すると読み込んでくれる</h3>
 
-<pre><code>$ ./runhubot &amp;
+<pre><code class="bash">$ ./runhubot &amp;
 </code></pre>
 
 <h2>⑤cronが使えるようにする</h2>
 
 <h3>node-cronをインストール</h3>
 
-<pre><code>$ npm install cron
+<pre><code class="bash">$ npm install cron
 </code></pre>
 
 <h3>cronを使ったスクリプトを書く</h3>
 
-<pre><code>$ vim scripts/mention_hoge.coffee
+<pre><code class="bash">$ vim scripts/mention_hoge.coffee
 </code></pre>
 
 <h3>今回は2時間おきに発言するスクリプトを書いてみた</h3>
 
-<pre><code>$ cat scripts/mention_hoge.coffee 
+<pre><code class="bash">$ cat scripts/mention_hoge.coffee 
 cron = require('cron').CronJob
 module.exports = (robot) -&gt;
   robot.enter -&gt;
