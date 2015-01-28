@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://sojiro14.github.io/blog/2014/05/03/changing-octopress-theme/</loc>
+    <lastmod>2014-05-03T17:37:29+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://sojiro14.github.io/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress/</loc>
     <lastmod>2014-04-26T17:05:36+09:00</lastmod>
     <priority>0.8</priority>
@@ -12,19 +17,19 @@
   </url>
   <url>
     <loc>http://sojiro14.github.io/blog/archives/</loc>
-    <lastmod>2015-01-28T13:39:49+09:00</lastmod>
+    <lastmod>2015-01-28T16:13:16+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://sojiro14.github.io/blog/categories/</loc>
-    <lastmod>2015-01-28T13:39:49+09:00</lastmod>
+    <lastmod>2015-01-28T16:13:16+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://sojiro14.github.io/</loc>
-    <lastmod>2015-01-28T13:39:49+09:00</lastmod>
+    <lastmod>2015-01-28T16:13:16+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
