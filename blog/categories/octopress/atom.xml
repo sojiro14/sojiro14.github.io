@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T16:13:16+09:00</updated>
+  <updated>2015-01-28T16:14:24+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -44,40 +44,39 @@
 
 <h3>テーマをダウンロード</h3>
 
-<p>テーマ毎にclone元とclone先のpathを指定する
-<code>bash
-$ cd git/octopress
-$ git clone GIT_URL .themes/THEME_NAME
-</code></p>
+<p>テーマ毎にclone元とclone先のpathを指定する</p>
 
-<p>テーマ: Whitespaceの場合
-<code>bash
-$ git clone git://github.com/lucaslew/whitespace.git .themes/whitespace
-</code></p>
+<pre><code class="bash">$ cd git/octopress
+$ git clone GIT_URL .themes/THEME_NAME
+</code></pre>
+
+<p>テーマ: Whitespaceの場合</p>
+
+<pre><code class="bash">$ git clone git://github.com/lucaslew/whitespace.git .themes/whitespace
+</code></pre>
 
 <h3>テーマをインストール</h3>
 
-<p>テーマを指定して <code>rake install</code>
-<code>bash
-$ rake install['THEME_NAME']
+<p>テーマを指定して <code>rake install</code></p>
+
+<pre><code class="bash">$ rake install['THEME_NAME']
 $ rake generate
-</code></p>
+</code></pre>
 
-<p>テーマ: Whitespaceの場合
-&#8220;`bash
-$ rake install[&lsquo;whitespace&rsquo;]
-A theme is already installed, proceeding will overwrite existing files. Are you sure? [y/n] y</p>
+<p>テーマ: Whitespaceの場合</p>
 
-<h2>Copying whitespace theme into ./source and ./sass</h2>
-
-<p>mkdir -p source
+<pre><code class="bash">$ rake install['whitespace']
+A theme is already installed, proceeding will overwrite existing files. Are you sure? [y/n] y
+## Copying whitespace theme into ./source and ./sass
+mkdir -p source
 cp -r .themes/whitespace/source/. source
 mkdir -p sass
 cp -r .themes/whitespace/sass/. sass
 mkdir -p source/_posts
 mkdir -p public
-<code>
-テーマを上書きするか？と聞かれたので</code>y&#8220;` で答える</p>
+</code></pre>
+
+<p>テーマを上書きするか？と聞かれたので <code>y</code> で答える</p>
 
 <pre><code class="bash">$ rake generate
 ## Generating Site with Jekyll
@@ -89,34 +88,35 @@ Successfully generated site: source -&gt; public
 
 <h2>デプロイ</h2>
 
-<p>テーマをインストールしたらデプロイ
-<code>bash
-$ rake deploy
-</code>
-ページにアクセスしてテーマが変更されていることを確認できればok</p>
+<p>テーマをインストールしたらデプロイ</p>
+
+<pre><code class="bash">$ rake deploy
+</code></pre>
+
+<p>ページにアクセスしてテーマが変更されていることを確認できればok</p>
 
 <h2>テーマがアップデートされたら</h2>
 
-<p>テーマが開発者によってアップデートされたら手元のファイルもアップデートする
-<code>bash
-$ cd octopress/.themes/THEME_NAME
+<p>テーマが開発者によってアップデートされたら手元のファイルもアップデートする</p>
+
+<pre><code class="bash">$ cd octopress/.themes/THEME_NAME
 $ git pull
 $ rake install['THEME_NAME']
 $ rake generate
-</code></p>
+</code></pre>
 
-<p>テーマ: Whitespaceの場合
-<code>bash
-$ cd octopress/.themes/whitespace
+<p>テーマ: Whitespaceの場合</p>
+
+<pre><code class="bash">$ cd octopress/.themes/whitespace
 $ git pull
 $ rake install['whitespace']
 $ rake generate
-</code></p>
+</code></pre>
 
-<p>デプロイしてアップデート完了
-<code>bash
-$ rake deploy
-</code></p>
+<p>デプロイしてアップデート完了</p>
+
+<pre><code class="bash">$ rake deploy
+</code></pre>
 ]]></content>
   </entry>
   
@@ -231,34 +231,54 @@ cd -
 <h3>ページの作成</h3>
 
 <p>必要ファイルを作成
-&#8220;`bash
-$ rake generate</p>
-
-<h2>Generating Site with Jekyll</h2>
-
-<p>directory source/stylesheets/
-   create source/stylesheets/screen.css
-Configuration from /Your/Octopress/Directory/git/octopress/_config.yml
-Building site: source -> public
-Successfully generated site: source -> public
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Generating Site with Jekyll&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;directory <span class="nb">source</span>/stylesheets/
+</span><span class='line'>   create <span class="nb">source</span>/stylesheets/screen.css
+</span><span class='line'>Configuration from /Your/Octopress/Directory/git/octopress/_config.yml
+</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
+</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>deploy
-&#8220;`bash
-$ rake deploy</p>
-
-<h2>Deploying branch to Github Pages</h2>
-
-<h2>Pulling any updates from Github Pages</h2>
-
-<p>cd _deploy</p>
-
-<p>・・・・（略）</p>
-
-<h2>Github Pages deploy complete</h2>
-
-<p>cd -
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Deploying branch to Github Pages&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Pulling any updates from Github Pages&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd _deploy&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;・・・・（略）&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Github Pages deploy <span class="nb">complete</span>&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd -
+</span></code></pre></td></tr></table></div></figure></p>
 
 <h3>deployの確認</h3>
 
