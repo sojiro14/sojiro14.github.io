@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Hubot | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/hubot/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T12:37:27+09:00</updated>
+  <updated>2015-01-28T12:41:36+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -196,7 +196,7 @@ export HUBOT_IRC_SEND_NOTICE_MODE=true</p>
 
 <h3>上記をインストールするためにHomebrewのインストールから始める</h3>
 
-<pre><code class="bash">$ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+<pre><code>$ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 </code></pre>
 
 <p>これでHomebrewが入るはず</p>
@@ -205,12 +205,12 @@ export HUBOT_IRC_SEND_NOTICE_MODE=true</p>
 
 <p>まずnode.jsとnpm</p>
 
-<pre><code class="bash">$ brew install node
+<pre><code>$ brew install node
 </code></pre>
 
 <p>このコマンド一発でnode.jsとnpmが入るはず</p>
 
-<pre><code class="bash">$ node -v
+<pre><code>$ node -v
 v0.10.26
 $ npm -v
 1.4.6
@@ -218,19 +218,19 @@ $ npm -v
 
 <h3>Redisもインストール</h3>
 
-<pre><code class="bash">$ brew install redis
+<pre><code>$ brew install redis
 </code></pre>
 
 <h3>Redisを起動しておく</h3>
 
-<pre><code class="bash">$ redis-server &amp;
+<pre><code>$ redis-server &amp;
 </code></pre>
 
 <h2>②HUBOTをインストールする</h2>
 
 <h3>GitHubからリポジトリをクローンしてインストール</h3>
 
-<pre><code class="bash">$ cd git/
+<pre><code>$ cd git/
 $ git clone git://github.com/github/hubot.git
 $ cd hubot/
 $ npm install -g hubot coffee-script
@@ -238,7 +238,7 @@ $ npm install -g hubot coffee-script
 
 <h3>動くか確認</h3>
 
-<pre><code class="bash">$ hubot
+<pre><code>$ hubot
 Hubot&gt; 
 </code></pre>
 
@@ -248,25 +248,25 @@ Hubot&gt;
 
 <h3>自分用のHUBOTを作る</h3>
 
-<pre><code class="bash">$ hubot --create myhubot
+<pre><code>$ hubot --create myhubot
 </code></pre>
 
 <p>myhubotの部分は自由に変更可。この名前のディレクトリが作られる</p>
 
 <h3>自分用HUBOTにhubot-ircをインストール</h3>
 
-<pre><code class="bash">$ cd myhubot/
+<pre><code>$ cd myhubot/
 $ npm install hubot-irc --save &amp;&amp; npm install
 </code></pre>
 
 <h3>irc連携のためのスクリプトを書く</h3>
 
-<pre><code class="bash">$ vim runhubot
+<pre><code>$ vim runhubot
 </code></pre>
 
 <p>中身はこんな感じ</p>
 
-<pre><code class="bash">$ cat runhubot
+<pre><code>$ cat runhubot
 #!/bin/bash
 
 export HUBOT_IRC_NICK="bot_kun"
@@ -279,12 +279,12 @@ bin/hubot -a irc --name myhubot
 
 <h3>スクリプトの実行権限追加</h3>
 
-<pre><code class="bash">$ chmod u+x runhubot 
+<pre><code>$ chmod u+x runhubot 
 </code></pre>
 
 <h3>起動スクリプト実行！</h3>
 
-<pre><code class="bash">$ ./runhubot &amp;
+<pre><code>$ ./runhubot &amp;
 </code></pre>
 
 <h3>irc上でbotがいるか確認する</h3>
@@ -297,7 +297,7 @@ bin/hubot -a irc --name myhubot
 
 <p>最初からいくつかのスクリプトが存在するので、それを参考に書けばOK</p>
 
-<pre><code class="bash">$ vim scripts/tell_fuga.coffee
+<pre><code>$ vim scripts/tell_fuga.coffee
 $ cat scripts/tell_fuga.coffee
 module.exports = (robot) -&gt;
 
@@ -307,24 +307,24 @@ module.exports = (robot) -&gt;
 
 <h3>スクリプトを書いたら、再起動すると読み込んでくれる</h3>
 
-<pre><code class="bash">$ ./runhubot &amp;
+<pre><code>$ ./runhubot &amp;
 </code></pre>
 
 <h2>⑤cronが使えるようにする</h2>
 
 <h3>node-cronをインストール</h3>
 
-<pre><code class="bash">$ npm install cron
+<pre><code>$ npm install cron
 </code></pre>
 
 <h3>cronを使ったスクリプトを書く</h3>
 
-<pre><code class="bash">$ vim scripts/mention_hoge.coffee
+<pre><code>$ vim scripts/mention_hoge.coffee
 </code></pre>
 
 <h3>今回は2時間おきに発言するスクリプトを書いてみた</h3>
 
-<pre><code class="bash">$ cat scripts/mention_hoge.coffee 
+<pre><code>$ cat scripts/mention_hoge.coffee 
 cron = require('cron').CronJob
 module.exports = (robot) -&gt;
   robot.enter -&gt;
