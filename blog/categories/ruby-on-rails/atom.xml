@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby on Rails | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/ruby-on-rails/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T12:24:49+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #5 -controllerとviewの追加-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view/"/>
+    <updated>2014-11-29T23:58:09+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view</id>
+    <content type="html"><![CDATA[<p>生成したリソースに対応するcontrollerを作成し、このリソースに対するviewとそのためのアクションを追加していく。</p>
+
+<h2>rails generate controller</h2>
+
+<p>controllerを作成する。controllerの名前は1文字目が大文字で、複数形を指定するのがrailsの規約である。
+&#8220;` bash
+$ rails g controller Stocks</p>
+
+<h1>rails generateコマンドは rails g と省略できる</h1>
+
+<pre><code>このコマンドでcontrollerのファイルとviewのファイルが生成される。
+
+## routesの設定
+railsでは ```config/routes``` ファイルにてdispatch管理をしている。このファイルの設定でRESTfulなURLを自動生成してくれる。
+
+今回追加したcontrollerの設定も追加する。
+ ```config/routes``` に以下の行を追加する
+</code></pre>
+
+<p>resources :stocks
+&#8220;`
+この設定により、リソースの基本的な操作を行うURLが生成される。</p>
+
+<p>この他にもroutesの設定方法はいくつかあり、それにより自由にエンドポイントの追加ができるがここでは省略。</p>
+
+<h2>設定されているroutesの確認</h2>
+
+<p>routesの設定が完了したら、生成されたURLの確認をする。
+<code>bash
+$ rake routes
+        Prefix Verb   URI Pattern                    Controller#Action
+        stocks GET    /stocks(.:format)              stocks#index
+               POST   /stocks(.:format)              stocks#create
+     new_stock GET    /stocks/new(.:format)          stocks#new
+    edit_stock GET    /stocks/:id/edit(.:format)     stocks#edit
+         stock GET    /stocks/:id(.:format)          stocks#show
+               PATCH  /stocks/:id(.:format)          stocks#update
+               PUT    /stocks/:id(.:format)          stocks#update
+               DELETE /stocks/:id(.:format)          stocks#destroy
+</code></p>
+
+<h2>アクションの追加</h2>
+
+<p> <code>$ rake routes</code> で示されたController#Actionに沿って、controllerにアクションを追加していく。
+&#8220;` ruby
+app/controllers/stocks_controller.rb
+class StocksController &lt; ApplicationController
+  before_action :set_stock, only: [:show, :edit, :update, :destroy]</p>
+
+<p>  # GET /stocks
+  # GET /stocks.json
+  def index
+    @stocks = Stock.all
+  end</p>
+
+<p>  # GET /stocks/1
+  # GET /stocks/1.json
+  def show
+  end</p>
+
+<p>  # GET /stocks/new
+  def new
+    @stock = Stock.new
+  end</p>
+
+<p>  # GET /stocks/1/edit
+  def edit
+  end</p>
+
+<p>  # POST /stocks
+  # POST /stocks.json
+  def create
+    @stock = Stock.new(stock_params)</p>
+
+<pre><code>respond_to do |format|
+  if @stock.save
+    format.html { redirect_to @stock, notice: 'Stock was successfully created.' }
+    format.json { render action: 'show', status: :created, location: @stock }
+  else
+    format.html { render action: 'new' }
+    format.json { render json: @stock.errors, status: :unprocessable_entity }
+  end
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  # PATCH/PUT /stocks/1
+  # PATCH/PUT /stocks/1.json
+  def update
+    respond_to do |format|
+      if @stock.update(stock_params)
+        format.html { redirect_to @stock, notice: &lsquo;Stock was successfully updated.&rsquo; }
+        format.json { head :no_content }
+      else
+        format.html { render action: &lsquo;edit&rsquo; }
+        format.json { render json: @stock.errors, status: :unprocessable_entity }
+      end
+    end
+  end</p>
+
+<p>  # DELETE /stocks/1
+  # DELETE /stocks/1.json
+  def destroy
+    @stock.destroy
+    respond_to do |format|
+      format.html { redirect_to stocks_url }
+      format.json { head :no_content }
+    end
+  end</p>
+
+<p>  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_stock
+      @stock = Stock.find(params[:id])
+    end</p>
+
+<pre><code># Never trust parameters from the scary internet, only allow the white list through.
+def stock_params
+  params.require(:stock).permit(:title)
+end
+</code></pre>
+
+<p>end
+&#8220;`</p>
+
+<h2>参照</h2>
+
+<p><a href="http://dotinstall.com/lessons/basic_rails_v2">ドットインストール</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #4 -リソースの生成-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources/"/>
+    <updated>2014-11-27T16:32:38+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources</id>
+    <content type="html"><![CDATA[<p><a href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/">Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-</a> で <code>scaffold</code> コマンドを使ったリソースの生成を行ったが、このコマンドでは決められた形式でのリソースの生成にしか対応できないため、手動で自由にリソースを作成してみる。</p>
+
+<h2>rails generate model</h2>
+
+<p>まずはモデルを作成する。railsの規約に従って、モデルは単数系、最初の文字を大文字で始める。
+<code>bash
+$ rails generate model Stock title:string
+</code>
+このコマンドで <code>generate</code> は <code>g</code> と省略できる。また、要素の属性はデフォルトが <code>string</code> なので、 <code>string</code> も省略することができる。</p>
+
+<p>省略したコマンドが以下。
+<code>bash
+$ rails g model Stock title
+</code>
+このコマンドでmodelに加えてmigrateファイルが生成されるのでDBをmigrateする。
+<code>bash
+$ bundle exec rake db:migrate
+</code></p>
+
+<h2>rails db</h2>
+
+<p>作成したmodelを確認するため、現在使用しているDBのクライアントを立ち上げてみる。
+<code>bash
+$ rails db
+sqlite&gt; .schema
+CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL);
+CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version");
+CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "email" varchar(255), "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "microposts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "content" varchar(255), "user_id" integer, "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "stocks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "created_at" datetime, "updated_at" datetime);
+</code>
+sqliteのクライアントが立ち上がったら <code>.schema</code> コマンドでこれまで作成されてきたテーブルが確認できる。
+ <code>id</code> や <code>created_at</code> 、 <code>updated_at</code> はrailsが自動で生成する</p>
+
+<p>ちなみにsqliteクライアントから抜けるには <code>.exit</code> とする。 <code>.</code> が付くことに注意。</p>
+
+<h2>rails console</h2>
+
+<p>railsが用意しているconsoleを立ち上げてリソースを追加したり、確認したりすることもできる。</p>
+
+<p>Stockオブジェクトを生成して保存する
+<code>bash
+$ rails console
+2.0.0-p594 :001 &gt; s = Stock.new(title: "stock1")
+=&gt; #&lt;Stock id: nil, title: "stock1", created_at: nil, updated_at: nil&gt;
+2.0.0-p594 :002 &gt; s.save
+  (0.1ms)  begin transaction
+ SQL (2.1ms)  INSERT INTO "stocks" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Sat, 15 Nov 2014 15:02:39 UTC +00:00], ["title", "stock1"], ["updated_at", Sat, 15 Nov 2014 15:02:39 UTC +00:00]]
+  (4.9ms)  commit transaction
+=&gt; true
+</code>
+作られたオブジェクトを確認
+<code>bash
+2.0.0-p594 :003 &gt; s
+=&gt; #&lt;Stock id: 1, title: "stock1", created_at: "2014-11-15 15:02:39", updated_at: "2014-11-15 15:02:39"&gt;
+</code>
+ <code>new</code> と <code>save</code> を一括で行ってくれるコマンドが <code>create</code>
+<code>bash
+2.0.0-p594 :004 &gt; Stock.create(title: "stock2")
+  (0.1ms)  begin transaction
+ SQL (0.3ms)  INSERT INTO "stocks" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Sat, 15 Nov 2014 15:03:44 UTC +00:00], ["title", "stock2"], ["updated_at", Sat, 15 Nov 2014 15:03:44 UTC +00:00]]
+  (5.8ms)  commit transaction
+=&gt; #&lt;Stock id: 2, title: "stock2", created_at: "2014-11-15 15:03:44", updated_at: "2014-11-15 15:03:44"&gt;
+</code>
+作られたオブジェクト全てを確認
+<code>bash
+2.0.0-p594 :005 &gt; Stock.all
+ Stock Load (0.2ms)  SELECT "stocks".* FROM "stocks"
+=&gt; #&lt;ActiveRecord::Relation [#&lt;Stock id: 1, title: "stock1", created_at: "2014-11-15 15:02:39", updated_at: "2014-11-15 15:02:39"&gt;, #&lt;Stock id: 2, title: "stock2", created_at: "2014-11-15 15:03:44", updated_at: "2014-11-15 15:03:44"&gt;]&gt;
+2.0.0-p594 :006 &gt; quit
+</code></p>
+
+<h2>最後にもう一度 <code>rails db</code> で直接確認する</h2>
+
+<pre><code class="bash">[sojiro@ip-172-31-2-112 demo_app]$ rails db
+SQLite version 3.7.17 2013-05-20 00:56:22
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+sqlite&gt; select * from stocks;
+1|stock1|2014-11-15 15:02:39.781183|2014-11-15 15:02:39.781183
+2|stock2|2014-11-15 15:03:44.294543|2014-11-15 15:03:44.294543
+</code></pre>
+
+<h2>参照</h2>
+
+<p><a href="http://dotinstall.com/lessons/basic_rails_v2">ドットインストール</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/"/>
+    <updated>2014-11-16T23:59:05+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator</id>
+    <content type="html"><![CDATA[<p>railsには <code>scaffold</code> という単純なリソースを一気に生成するコマンドが存在する。
+今回はこのコマンドを使ってみる。</p>
+
+<h2>Usersリソースの生成</h2>
+
+<p>今回は <code>scaffold</code> コマンドを使ってリソースを生成する。
+ここでは以下の要素をもつUsersリソースを生成する。</p>
+
+<ul>
+<li>id int</li>
+<li>name string</li>
+<li>email string</li>
+</ul>
+
+
+<p> <code>rails generate</code> スクリプトに <code>scaffold</code> コマンドを指定し、リソースの単数系と要素の情報を渡す
+<code>bash
+$ rails generate scaffold User name:string email:string
+</code>
+id要素はRailsが主キーとしてデフォルトで設定する</p>
+
+<h2>DBにusersのセットアップを行う</h2>
+
+<p> <code>rake</code> コマンドを使ってDBをmigrate（更新）する。
+<code>bash
+$ bundle exec rake db:migrate
+== 20141111170736 CreateUsers: migrating ======================================
+-- create_table(:users)
+   -&gt; 0.0012s
+== 20141111170736 CreateUsers: migrated (0.0014s) =============================
+</code>
+出力から <code>users</code> テーブルが作られたことがわかる</p>
+
+<h2>ブラウザで確認</h2>
+
+<p> <code>rails server</code> コマンドの短縮版である <code>rails s</code> を使って3000番portにアプリを立ち上げる
+<code>bash
+$ rails s
+</code></p>
+
+<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
+
+<p>にブラウザでアクセスすると <code>#1 railsのセットアップ</code> で見たデフォルトのRailsページが表示される</p>
+
+<p>次に以下のエンドポイントにアクセスしてみる</p>
+
+<p><a href="http://xx.xxx.xxx.xxx:3000/users">http://xx.xxx.xxx.xxx:3000/users</a></p>
+
+<p>すると既にUser一覧ページができあがっているのがわかる。この他に</p>
+
+<ul>
+<li>新規ユーザーを作成するページ</li>
+<li>特定のidのユーザー情報を表示するページ</li>
+<li>特定のidのユーザー情報を編集するページ</li>
+</ul>
+
+
+<p>が作られている。</p>
+
+<h2>Micropostsリソースの生成</h2>
+
+<p>Usersリソースと同様に <code>scaffold</code> コマンドと <code>rake</code> の <code>migrate</code> タスクで生成する
+<code>bash
+$ rails generate scaffold Micropost content:string user_id:integer
+$ bundle exec rake db:migrate
+== 20141112174234 CreateMicroposts: migrating =================================
+-- create_table(:microposts)
+   -&gt; 0.0029s
+== 20141112174234 CreateMicroposts: migrated (0.0031s) ========================
+</code>
+ <code>config/routes.rb</code> にmicropostsリソースの設定が追加された</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/"/>
+    <updated>2014-11-12T12:06:23+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
+
+<h2>Herokuに必要なgemのインストール</h2>
+
+<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する
+<code>ruby
+group :production do
+  gem 'pg', '0.15.1'
+  gem 'rails_12factor', '0.0.2'
+end
+</code>
+production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
+これによりGemfile.lockが更新され、production環境に備えることができる。
+<code>bash
+$ bundle install --without production
+Your bundle is complete!
+Gems in the group production were not installed.
+Use `bundle show [gemname]` to see where a bundled gem is installed.
+</code>
+ここまでできたらgitにcommitしておく。
+<code>bash
+$ git commit -a -m "Update Gemfile.lock for Heroku"
+</code>
+ <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
+
+<h2>herokuコマンドが使えるようにする</h2>
+
+<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
+
+<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
+
+<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
+今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
+
+<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
+
+<pre><code class="bash">$ wget -qO- https://toolbelt.heroku.com/install.sh | sh
+This script requires superuser access to install software.
+You will be prompted for your password by sudo.
+[sudo] password for sojiro: 
+Add the Heroku CLI to your PATH using:
+$ echo 'PATH="/usr/local/heroku/bin:$PATH"' &gt;&gt; ~/.profile
+Installation complete
+</code></pre>
+
+<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。
+<code>bash
+$ echo 'PATH="/usr/local/heroku/bin:$PATH"' &gt;&gt; ~/.bashrc
+$ source ~/.bashrc
+$ heroku version
+heroku-toolbelt/3.15.2 (x86_64-linux) ruby/2.0.0
+</code></p>
+
+<h2>Herokuのセットアップ</h2>
+
+<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。
+<code>bash
+$ heroku login
+Enter your Heroku credentials.
+Email: your.account@email.com
+Password (typing will be hidden):
+Your Heroku account does not have a public ssh key uploaded.
+Could not find an existing public key at ~/.ssh/id_rsa.pub
+Would you like to generate one? [Yn] Y
+Generating new SSH public key.
+Uploading SSH public key /home/user/.ssh/id_rsa.pub... done
+Authentication successful.
+</code>
+認証が完了したらHerokuのセットアップをする
+<code>bash
+$ heroku create
+Creating infinite-peak-4923... done, stack is cedar-14
+https://infinite-peak-4923.herokuapp.com/ | git@heroku.com:infinite-peak-4923.git
+Git remote heroku added
+</code>
+これでgitのremoteにherokuが追加される
+<code>bash
+$ git remote -v
+heroku  git@heroku.com:infinite-peak-4923.git (fetch)
+heroku  git@heroku.com:infinite-peak-4923.git (push)
+origin  https://github.com/sojiro14/first_app.git (fetch)
+origin  https://github.com/sojiro14/first_app.git (push)
+</code></p>
+
+<h2>Herokuへデプロイ</h2>
+
+<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了
+<code>bash
+$ git push heroku master
+</code></p>
+
+<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
+
+<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/"/>
+    <updated>2014-11-10T03:27:49+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsで初めてアプリを作ってみます。
+今回はRailsの立ち上がりを確認するところまで。</p>
+
+<h2>アプリのセットアップ（rails new）</h2>
+
+<p>railsのアプリ作成は <code>rails new</code> コマンドで始まる。
+<code>bash
+$ mkdir rails_projects
+$ cd rails_projects
+</code>
+今回のアプリ作成の為にディレクトリを作成し、早速コマンドを実行。
+<code>bash
+$ rails new first_app
+...
+An error occurred while installing sqlite3 (1.3.10), and Bundler cannot continue.
+...
+</code>
+いくつかのディレクトリやファイルが作成されるが、最後にこのようなエラーが出てbundle失敗。
+そこでGemfileを編集してbundleをやり直す。</p>
+
+<pre><code class="bash">$ cd first_app/
+</code></pre>
+
+<p>Gemfileを編集。内容は<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-bundler">Ruby on Rails #Bundler</a>を参照。
+&#8220;` bash
+$ bundle update
+&hellip;
+Building native extensions.  This could take a while&hellip;
+ERROR:  Error installing sqlite3:
+    ERROR: Failed to build gem native extension.</p>
+
+<pre><code>/home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
+</code></pre>
+
+<p>checking for sqlite3.h&hellip; no
+sqlite3.h is missing. Try &lsquo;port install sqlite3 +universal&rsquo;
+or &lsquo;yum install sqlite-devel&rsquo; and check your shared library search path (the
+location where your sqlite3 shared library is located).
+<strong><em> extconf.rb failed </em></strong>
+Could not create Makefile due to some reason, probably lack of necessary
+libraries and/or headers.  Check the mkmf.log file for more details.  You may
+need configuration options.
+&hellip;
+<code>
+またも失敗。よく見るとsqlite-develが足りていないらしい
+</code> bash
+$ sudo yum install sqlite-devel
+<code>
+sqlite-develをインストール後再度bundleによるgemのインストールを試みる
+</code> bash
+$ bundle update
+Installing sqlite3 1.3.8
+Installing turbolinks 1.1.1
+Installing uglifier 2.1.1
+Your bundle is updated!
+$ bundle install
+Your bundle is complete!
+Use <code>bundle show [gemname]</code> to see where a bundled gem is installed.
+&#8220;`
+インストール成功。</p>
+
+<h2>サーバーの立ち上げ（rails server）</h2>
+
+<p>ローカルでrailsを立ち上げるコマンド <code>rails server</code> を実行。
+<code>bash
+$ rails server
+...
+Could not find a JavaScript runtime. See https://github.com/sstephenson/execjs for a list of available runtimes. (ExecJS::RuntimeUnavailable)
+...
+</code></p>
+
+<h3>Node.jsのインストール</h3>
+
+<p> <code>rails server</code> コマンド実行でエラーが出てしまう。JavaScript runtimeがインストールされていないことが原因のよう。メッセージ通り <a href="https://github.com/sstephenson/execjs">https://github.com/sstephenson/execjs</a> に行ってみるとJavaScript runtimeとしてNode.jsが有効と書いてあるのでNode.jsをインストールする。</p>
+
+<pre><code class="bash">$ sudo rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+$ sudo yum install nodejs npm --enablerepo=epel
+</code></pre>
+
+<p>今回はyumでインストールした。そして再度 <code>rails server</code>
+<code>bash
+$ rails server
+=&gt; Booting WEBrick
+=&gt; Rails 4.0.5 application starting in development on http://0.0.0.0:3000
+=&gt; Run `rails server -h` for more startup options
+=&gt; Ctrl-C to shutdown server
+</code>
+ローカルでサーバーが立ち上がる。
+今回はAWS上で作業しているので、AWS該当インスタンスのSecurity Groupで3000番portを空ける。</p>
+
+<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
+
+<p>にブラウザでアクセスして以下の画面が見えればOK</p>
+
+<p>{% img /images/rails/rails_starting.png %}</p>
+
+<h2>GitHubに上げておく</h2>
+
+<pre><code class="bash">$ git init
+$ git remote add origin https://github.com/sojiro14/first_app.git
+</code></pre>
+
+<p>GitHubでリポジトリ作成
+<code>bash
+$ git add .
+$ git commit -m 'Initialize repository'
+$ git push -u origin master
+</code></p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/you21979@github/items/4efd9fc4363573191b5c">node.jsをyumでインストールする(centos6.5)</a></li>
+<li><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

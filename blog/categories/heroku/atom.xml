@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Heroku | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/heroku/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T12:24:49+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/"/>
+    <updated>2014-11-12T12:06:23+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
+
+<h2>Herokuに必要なgemのインストール</h2>
+
+<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する
+<code>ruby
+group :production do
+  gem 'pg', '0.15.1'
+  gem 'rails_12factor', '0.0.2'
+end
+</code>
+production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
+これによりGemfile.lockが更新され、production環境に備えることができる。
+<code>bash
+$ bundle install --without production
+Your bundle is complete!
+Gems in the group production were not installed.
+Use `bundle show [gemname]` to see where a bundled gem is installed.
+</code>
+ここまでできたらgitにcommitしておく。
+<code>bash
+$ git commit -a -m "Update Gemfile.lock for Heroku"
+</code>
+ <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
+
+<h2>herokuコマンドが使えるようにする</h2>
+
+<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
+
+<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
+
+<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
+今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
+
+<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
+
+<pre><code class="bash">$ wget -qO- https://toolbelt.heroku.com/install.sh | sh
+This script requires superuser access to install software.
+You will be prompted for your password by sudo.
+[sudo] password for sojiro: 
+Add the Heroku CLI to your PATH using:
+$ echo 'PATH="/usr/local/heroku/bin:$PATH"' &gt;&gt; ~/.profile
+Installation complete
+</code></pre>
+
+<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。
+<code>bash
+$ echo 'PATH="/usr/local/heroku/bin:$PATH"' &gt;&gt; ~/.bashrc
+$ source ~/.bashrc
+$ heroku version
+heroku-toolbelt/3.15.2 (x86_64-linux) ruby/2.0.0
+</code></p>
+
+<h2>Herokuのセットアップ</h2>
+
+<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。
+<code>bash
+$ heroku login
+Enter your Heroku credentials.
+Email: your.account@email.com
+Password (typing will be hidden):
+Your Heroku account does not have a public ssh key uploaded.
+Could not find an existing public key at ~/.ssh/id_rsa.pub
+Would you like to generate one? [Yn] Y
+Generating new SSH public key.
+Uploading SSH public key /home/user/.ssh/id_rsa.pub... done
+Authentication successful.
+</code>
+認証が完了したらHerokuのセットアップをする
+<code>bash
+$ heroku create
+Creating infinite-peak-4923... done, stack is cedar-14
+https://infinite-peak-4923.herokuapp.com/ | git@heroku.com:infinite-peak-4923.git
+Git remote heroku added
+</code>
+これでgitのremoteにherokuが追加される
+<code>bash
+$ git remote -v
+heroku  git@heroku.com:infinite-peak-4923.git (fetch)
+heroku  git@heroku.com:infinite-peak-4923.git (push)
+origin  https://github.com/sojiro14/first_app.git (fetch)
+origin  https://github.com/sojiro14/first_app.git (push)
+</code></p>
+
+<h2>Herokuへデプロイ</h2>
+
+<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了
+<code>bash
+$ git push heroku master
+</code></p>
+
+<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
+
+<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+</feed>

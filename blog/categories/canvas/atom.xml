@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Canvas | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/canvas/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T12:24:49+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HTML5 Canvas #1 -Canvasを初めて使う-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/07/17/html5-canvas-number-1/"/>
+    <updated>2014-07-17T02:13:46+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/07/17/html5-canvas-number-1</id>
+    <content type="html"><![CDATA[<h1>Canvasとは</h1>
+
+<ul>
+<li>ブラウザ上に図形を描画するためのHTML5の仕様の一つ</li>
+<li>プラグインを使わずにJavaScriptベースで図形を描画することができる。</li>
+<li>アニメーションメソッドはないので動きをつけるためには1コマずつ描画し直す必要がある</li>
+</ul>
+
+
+<p>今回はCanvasを使った図形の描画とそれを動的に消す操作をしてみる。</p>
+
+<h1>今回使う要素</h1>
+
+<ul>
+<li>メソッド
+
+<ul>
+<li>getContext()</li>
+<li>fillRect()</li>
+<li>clearRect()</li>
+</ul>
+</li>
+<li>プロパティ
+
+<ul>
+<li>fillStyle</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>getContext()</h2>
+
+<p>Canvasはこのメソッドから始まる
+<code>javascript
+var targetElement = document.getElementById('target');
+ctx = targetElement.getContext('2d');
+</code>
+ <code>getElementById</code> などでCanvasの対象となるDOM要素を取得し、その要素に対して <code>getContext()</code> メソッドを呼ぶ</p>
+
+<p>引数は <code>'2d'</code> のみが認められている。（今後&#8217;3d&#8217;とかつかえるようになるかも）</p>
+
+<p> <code>getContext('2d')</code> で取得した <code>ctx</code> オブジェクトに対してメソッドやプロパティを適用していく</p>
+
+<h2>fillRect()</h2>
+
+<p>canvas上の指定した位置に指定した大きさの長方形を描画する
+<code>javascript
+ctx.fillRect(80, 100, 40, 40);
+</code>
+ <code>fillRect()</code> メソッドは4つの引数を取る。</p>
+
+<ul>
+<li>1つめ: 描画する長方形の左上頂点の<strong>x座標</strong></li>
+<li>2つめ: 描画する長方形の左上頂点の<strong>y座標</strong></li>
+<li>3つめ: 描画する長方形の<strong>幅</strong></li>
+<li>4つめ: 描画する長方形の<strong>高さ</strong></li>
+</ul>
+
+
+<p>上記例ではcanvasの左上頂点（原点）から</p>
+
+<ul>
+<li>右方向（x軸方向）に80px</li>
+<li>下方向（y軸方向）に100px</li>
+</ul>
+
+
+<p>の点に左上の頂点を持つ、</p>
+
+<ul>
+<li>幅40px</li>
+<li>高さ40px</li>
+</ul>
+
+
+<p>の長方形（正方形）を描画することになる</p>
+
+<h2>clearRect()</h2>
+
+<p>指定された長方形を消す
+<code>javascript
+ctx.clearRect(0, 0, 200, 400);
+</code>
+ <code>clearRect()</code> は <code>fillRect()</code> 同様に4つの引数を取る</p>
+
+<ul>
+<li>1つめ: 消す長方形の左上頂点の<strong>x座標</strong></li>
+<li>2つめ: 消す長方形の左上頂点の<strong>y座標</strong></li>
+<li>3つめ: 消す長方形の<strong>幅</strong></li>
+<li>4つめ: 消す長方形の<strong>高さ</strong></li>
+</ul>
+
+
+<p>よって上記例ではcanvasの原点から幅200px、高さ400pxの長方形（範囲）に渡ってクリアする</p>
+
+<h2>fillStyle</h2>
+
+<p>オブジェクトのStyleを変更する
+<code>javascript
+ctx.fillStyle = 'rgb(255, 0, 0)';
+</code>
+主にオブジェクトの色を指定するのに使う（Canvasではデフォルトの色は黒）</p>
+
+<p>指定の仕方はCSSに準拠している</p>
+
+<p>上記例ではオブジェクトを赤で描画できるようになる</p>
+
+<h1>サンプル</h1>
+
+<p>赤い正方形を描いたり消したりする
+&#8220;`html
+&lt;!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <title>Canvas Sample1</title>
+        <script type="text/javascript">
+            var ctx;</p>
+
+<pre><code>        function load() {
+            var targetElement = document.getElementById('target');
+            ctx = targetElement.getContext('2d');
+            ctx.fillStyle = 'rgb(255, 0, 0)';
+        }
+
+        function paint() {
+            ctx.fillRect(80, 100, 40, 40);
+        }
+
+        function erase() {
+            ctx.clearRect(0, 0, 200, 400);
+        }
+
+
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body onload="load()"&gt;
+    &lt;canvas id="target" style="border: 5px solid gray" width="200" height="400"&gt;&lt;/canvas&gt;
+    &lt;input type="button" value="Paint" onclick="paint()" /&gt;
+    &lt;input type="button" value="Erase" onclick="erase()" /&gt;
+&lt;/body&gt;
+</code></pre>
+
+<p></html>
+&#8220;`
+幅200px、高さ400pxのcanvasを用意し、そこに正方形を描くpaint関数とクリアするerase関数を定義した</p>
+
+<h2>参考資料</h2>
+
+<ul>
+<li><a href="http://www.html5.jp/canvas/index.html">HTML5.jp Canvas</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
