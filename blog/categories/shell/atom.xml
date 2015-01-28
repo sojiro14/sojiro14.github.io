@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Shell | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/shell/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T16:36:42+09:00</updated>
+  <updated>2015-01-28T16:50:50+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,170 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Screenを使ってみる]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/01/screen-introduction/"/>
+    <updated>2014-12-01T17:15:25+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/01/screen-introduction</id>
+    <content type="html"><![CDATA[<p>デタッチ/アタッチという強力な機能をもった仮想端末管理アプリケーションであるscreenを使ってみた。</p>
+
+<h2>screenの設定ファイルを編集する</h2>
+
+<p>screenの操作に使うほとんどのコマンドはプレフィックスを用いる。
+このプレフィクスがデフォルトでは <code>ctrl + a</code> のため、Shellの行頭移動と被ってしまうので設定を編集する。</p>
+
+<p>ついでに色々編集してみた。（ <code>ctrl +</code> を <code>^</code> で表す）
+<code>bash
+escape ^j^j
+startup_message off
+defkanji utf-8
+defencoding utf-8
+encoding utf-8 utf-8
+caption always "%{= wb} %-w%{=bu dr}%n %t%{-}%+w %= %{=b wk} [%l] %{=b wb}%y/%m/%d(%D) %{=b wm}%c"
+autodetach on
+bell_msg "^G"
+defscrollback 10000
+vbell off
+bind n screen
+bind h prev
+bind j next
+bind l windowlist
+</code></p>
+
+<ul>
+<li>escape
+
+<ul>
+<li>escape keyの設定（ここでは <code>^j</code> をescape keyとして登録）</li>
+</ul>
+</li>
+<li>startup_message
+
+<ul>
+<li>起動時に表示されるメッセージをoff</li>
+</ul>
+</li>
+<li>encoding関連の設定</li>
+<li>caption
+
+<ul>
+<li>画面下部に表示されるcaptionの設定</li>
+</ul>
+</li>
+<li>autodetach
+
+<ul>
+<li>起動時に自動でデタッチ（後述）</li>
+</ul>
+</li>
+<li>bell_msg
+
+<ul>
+<li>バックグラウンドで出力されたベル文字をscreenに出力する（ <code>^G</code> はベル文字に置換される）</li>
+</ul>
+</li>
+<li>defscrollback
+
+<ul>
+<li>スクロールバックバッファの行数を設定</li>
+</ul>
+</li>
+<li>vbell
+
+<ul>
+<li>可視ベルの設定</li>
+</ul>
+</li>
+<li>windowlist
+
+<ul>
+<li>全ウィンドウをリスト表示し、使用するウィンドウを選択できるようにする</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>screenを立ち上げてみる</h2>
+
+<pre><code class="bash">$ screen
+</code></pre>
+
+<p>名前を付けて立ち上げる
+<code>bash
+$ screen -t test
+</code>
+ウィンドウが複数立ち上がると用途に合わせて移動が必要になる。上記 <code>.screenrc</code> の設定がなされた状態で以下のように移動できる。
+<code>bash
+$ ^j + [number]  # [number]に指定した番号のウィンドウに移動
+$ ^j + h         # 1つ前のウィンドウに移動
+$ ^j + j         # 1つ後のウィンドウに移動
+$ ^j + l         # 表示されるウィンドウリストから移動先のウィンドウを選択
+</code></p>
+
+<h2>ウィンドウの分割</h2>
+
+<p>ウィンドウを上下に分割する（縦方向の分割はscreenのバージョンを変えないといけないようなので割愛）
+<code>bash
+$ ^j + S
+</code>
+分割された領域間の移動
+<code>bash
+$ ^j + [tab]
+</code>
+領域の破棄
+<code>bash
+$ ^j + X  # 現在の領域を破棄
+$ ^j + Q  # 現在の領域以外の全ての領域を破棄
+</code></p>
+
+<h2>デタッチとアタッチ</h2>
+
+<ul>
+<li>デタッチ（detach）
+
+<ul>
+<li>screen上での作業をセッションという形で保存しておくこと</li>
+</ul>
+</li>
+<li>アタッチ（attach）
+
+<ul>
+<li>デタッチによって保存されたセッションから作業に復帰すること</li>
+</ul>
+</li>
+</ul>
+
+
+<p>デタッチする
+<code>bash
+$ ^j + d
+</code>
+セッションを確認する
+<code>bash
+$ screen -ls
+There is a screen on:
+    72181.ttys010.your-pc   (Detached)
+1 Socket in /var/folders/56/dlftkv4d4191qwj6r_gxs_shmspdv_/T/.screen.
+</code>
+アタッチ
+&#8220;` bash
+$ screen -r [session_number | session_name]</p>
+
+<h1>上の例では 72181 もしくは ttys010 を指定する</h1>
+
+<p>&#8220;`</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.limy.org/program/screen.html">screenコマンド一覧 3.9.13対応 </a></li>
+<li><a href="http://linuxjm.sourceforge.jp/html/GNU_screen/man1/screen.1.html">SCREEN</a></li>
+<li><a href="http://sixeight.hatenablog.com/entry/20090730/1248973178">screenのデタッチ/アタッチ</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[シェルの変更について]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Vim | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T16:36:42+09:00</updated>
+  <updated>2015-01-28T16:50:50+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,107 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[VimにおけるTABとスペースの扱いについて]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/26/tab-and-space-on-vim/"/>
+    <updated>2014-12-26T10:52:26+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/26/tab-and-space-on-vim</id>
+    <content type="html"><![CDATA[<p>Vimでは <code>&lt;TAB&gt;</code> やインデントについてその挙動を設定することができる。いくつか設定方法があるが、これまでこれらに関する <code>.vimrc</code> の設定は何も考えずにただコピペしていたので記述を見直してみた。</p>
+
+<h2>tabstop</h2>
+
+<p> <code>tabstop</code> で <code>&lt;TAB&gt;</code> にいくつのスペースを設定するか決めることができる。
+<code>vim
+set tabstop=4
+</code>
+これで <code>&lt;TAB&gt;</code> に半角4つ分が設定される。</p>
+
+<h2><code>&lt;TAB&gt;</code> の挙動</h2>
+
+<p>そもそも <code>&lt;TAB&gt;</code> はどのような挙動をするのか。</p>
+
+<p>何となく、指定した数の分だけ半角スペースを入れてくれるもの、と思っていたが、</p>
+
+<p>正確には行頭からの文字数が<code>&lt;TAB&gt;</code> に指定された半角数の倍数になるようにスペースを補完するもの、というのが正しいかもしれない。何を言っているかわからないと思うので以下で実験する。
+<code>vim
+set tabstop=4
+set list
+set listchars=tab:&gt;.,trail:_,eol:↲,extends:&gt;,precedes:&lt;,nbsp:%
+</code>
+実験用に上記のように <code>.vimrc</code> を設定しておく。
+&#8220;`vim sample1</p>
+
+<blockquote><p>&hellip;↲
+a>..↲
+bb>.↲
+ccc>↲
+<code>
+これは以下のように打ち込んだ結果で、</code><TAB><code>により、それぞれの行が</code>tabstop&#8220;` で設定した半角4つ分で終わるように（タブ文字により）スペースが補完されているのがわかる。</p></blockquote>
+
+<ul>
+<li><code>&lt;TAB&gt;</code></li>
+<li>a <code>&lt;TAB&gt;</code></li>
+<li>bb <code>&lt;TAB&gt;</code></li>
+<li>ccc <code>&lt;TAB&gt;</code></li>
+</ul>
+
+
+<pre><code class="vim sample2">&gt;...&gt;...↲
+test&gt;...↲
+sample&gt;.↲
+</code></pre>
+
+<p>一行に半角4つ分以上の文字が打ち込まれている場合も同じく、 <code>&lt;TAB&gt;</code> はそれぞれの行が <code>tabstop</code> で指定した半角4つの倍数の文字数になるようにタブ文字を補完する。（この場合は一行につき半角8文字）</p>
+
+<h2>smarttabとshiftwidthとsmartindent</h2>
+
+<p> <code>smarttab</code> をONにすることで <code>shiftwidth</code> を設定することが可能になる。</p>
+
+<p> <code>shiftwidth</code> は行頭のインデントの幅を規定するもので、 <code>smarttab</code> が効いているときには行頭の <code>&lt;TAB&gt;</code> は <code>shiftwidth</code> の幅のスペース（タブ文字）を挿入する役目を果たす。</p>
+
+<p> <code>smartindent</code> をONにすると改行時に前の行の行末を見て自動でインデントが挿入される。例えば行末が <code>{</code> の場合は次の行に自動的にインデントが入る。このインデントの幅は <code>shiftwidth</code> で指定された幅となる。</p>
+
+<h2>autoindent</h2>
+
+<p> <code>autoindent</code> は改行時に前の行のインデントと同じ幅でインデントを挿入する。</p>
+
+<h2>expandtab</h2>
+
+<p> <code>expandtab</code> は <code>&lt;TAB&gt;</code> により挿入されるタブ文字を純粋なスペースに変換する。</p>
+
+<p>上記のsample1、2を以下の設定で記述してみる。
+<code>vim
+set expandtab
+set tabstop=4
+set list
+set listchars=tab:&gt;.,trail:_,eol:↲,extends:&gt;,precedes:&lt;,nbsp:%
+</code>
+<code>vim sample1'
+____↲
+a___↲
+bb__↲
+ccc_↲
+</code>
+<code>vim sample2'
+________↲
+test____↲
+sample__↲
+</code>
+ <code>expandtab</code> をONにした状態で一時的にタブ文字を記述したいときは、VimをINSERTモードにした状態で以下のように打つ。
+<code>vim
+Control-v &lt;TAB&gt;
+</code></p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://vimwiki.net/?FrontPage">VIM wiki</a></li>
+<li><a href="http://nanasi.jp/articles/howto/editing/et-inserttab.html">:set expandtab（:set et）設定の時に、タブ文字を挿入する </a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Vimで連番を振る方法]]></title>

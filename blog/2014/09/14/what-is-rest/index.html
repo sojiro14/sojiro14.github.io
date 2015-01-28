@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>RESTとはなにか - Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="APIを実装することになり、今更ながらWebのアーキテクチャスタイルであるRESTとはなにか理解するためにまとめてみた。 Webのアーキテクチャスタイル Webのアーキテクチャスタイルはクライアント/サーバーというスタイルを中心に、いくつかの制限（アーキテクチャ）を複合的に組み合わせたREST( &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2014/09/14/what-is-rest">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-50182043-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">RESTとはなにか</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-09-14T13:57:07+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:57 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>APIを実装することになり、今更ながらWebのアーキテクチャスタイルであるRESTとはなにか理解するためにまとめてみた。</p>
+
+<h2>Webのアーキテクチャスタイル</h2>
+
+<p>Webのアーキテクチャスタイルはクライアント/サーバーというスタイルを中心に、いくつかの制限（アーキテクチャ）を複合的に組み合わせたREST(Representational State Transfer)を理想としている</p>
+
+<h2>RESTはどのようなスタイルなのか</h2>
+
+<p>RESTは以下のスタイルを複合的に組み合わせたアーキテクチャである</p>
+
+<ul>
+<li>クライアント/サーバー</li>
+<li>ステートレスサーバー</li>
+<li>キャッシュ</li>
+<li>統一インターフェース</li>
+<li>階層化システム</li>
+<li>コードオンデマンド</li>
+</ul>
+
+
+<h3>クライアント/サーバー</h3>
+
+<p>WebではHTTPでクライアントとサーバーが通信する、クライアント/サーバーアーキテクチャを採用している。クライアントはサーバーにリクエストを送り、サーバーはそれに対してレスポンスを返す。</p>
+
+<p>ユーザーインターフェースはクライアントに任せればよく、サーバーは処理に専念できるので様々なデバイス（PC・携帯電話・ゲーム機）に対応でき、サーバーの冗長化も容易である。</p>
+
+<h3>ステートレスサーバー</h3>
+
+<p>ステートフル/ステートレスという考え方があるが、サーバーがステートレスなやり取りを前提としていること。</p>
+
+<p>ステートフル/ステートレスに関しては以下のエントリを参照</p>
+
+<ul>
+<li><a href="http://sojiro14.github.io/blog/2014/09/13/stateful-and-stateless/">ステートフル/ステートレスとはどういうことか</a></li>
+</ul>
+
+
+<h3>キャッシュ</h3>
+
+<p>一度取得したリソースをクライアント側である程度の期間保持して使い回すこと。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>同じリソースを取得するためにその都度クライアント/サーバー間で通信する必要がなくなる</li>
+<li>これによりネットワークの帯域節約や処理の高速化を実現できる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>適切に制御しないと意図せず古いリソースを参照してしまうことがある</li>
+<li>特に大規模なシステムではどこで何がキャッシュされているか正確に把握するのは容易ではない</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>統一インターフェース</h3>
+
+<p>リソースに対する操作を統一したインターフェースで行う。</p>
+
+<p>HTTP/1.1ではリソースに対するメソッドが8つのみ定義されている。このようにインターフェースを限定することで様々なコンポーネントが生まれても統一された仕様としてリソースへの操作が行われ、それぞれの独立性が保たれることで多様性を受け入れることができる。</p>
+
+<h3>階層化システム</h3>
+
+<p>統一インターフェースを採用することにより、クライアント/サーバー間にプロキシなどのコンポーネントを設置してもクライアントはそのままリクエストを送ることができる。</p>
+
+<p>これにより大規模システムではロードバランサーを導入したり、HTTPインターフェースを持たないコンポーネントに対してHTTPインターフェースをもつサーバーを返して処理をするなどの階層化が可能となる。</p>
+
+<p>このようなアーキテクチャを階層化システムと呼ぶ。</p>
+
+<h3>コードオンデマンド</h3>
+
+<p>プログラムをサーバーからクライアントが受け取り、それをクライアント上で実行するアーキテクチャスタイル。JavaScriptやFlashがこれに該当する。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>サーバーと都度通信することなくクライアント側のみで処理できることが増える</li>
+<li>これによりユーザーのアクションに対する処理の速度が向上する</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>クライアント/サーバー間でやり取りされるリソースが不明確になる</li>
+<li>クライアント側の裁量が増える分、サーバーとやり取りされるリソースの内容が明確ではなくなる</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>RESTful</h2>
+
+<p>RESTの思想に忠実に設計されていることをRESTfulである、と言う。</p>
+
+<p>RESTは上記の通り分散ネットワークを効率的に、可用性・冗長性高く利用するための理論であり、Webが理想とするアーキテクチャスタイルである。</p>
+
+<p>この思想に則った設計がされることで多様なシステムの中にも仕様の統一感が生まれ、Webの世界が広がったと言える。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-09-14T13:57:07+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:57 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/web/'>web</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2014/09/14/what-is-rest/" data-via="" data-counturl="http://sojiro14.github.io/blog/2014/09/14/what-is-rest/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/09/13/stateful-and-stateless/" title="Previous Post: ステートフル ステートレスとはどういうことか">&laquo; ステートフル ステートレスとはどういうことか</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/" title="Next Post: MySQLにおけるNOT NULLカラムへのインサート時の挙動">MySQLにおけるNOT NULLカラムへのインサート時の挙動 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2014/09/14/what-is-rest/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2014/09/14/what-is-rest/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

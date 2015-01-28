@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Slack | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/slack/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T16:50:50+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HUBOTを使ったSlack Bot作成メモ]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/15/slack-bot-by-hubot/"/>
+    <updated>2014-12-15T03:02:30+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/15/slack-bot-by-hubot</id>
+    <content type="html"><![CDATA[<p>SlackにBotを入れたいと思い、少し調べてみたところHUBOTがやはり簡単らしいのでやってみた</p>
+
+<h2>HUBOT用のAPI Tokenを取得する</h2>
+
+<p>まずはSlackのチームメニューからConfigure Integrationsを選択</p>
+
+<p><img src="/images/slack_hubot/team_menu.png"></p>
+
+<p>様々な外部サービスとの連携メニューからHUBOTを選択する</p>
+
+<p><img src="/images/slack_hubot/add_hubot.png"></p>
+
+<p>追加するbotの名前を入力</p>
+
+<p><img src="/images/slack_hubot/set_botname.png"></p>
+
+<p>ここまでのステップを踏むとAPI Tokenが記されたページが表示される</p>
+
+<p>そしてこの段階でbotがSlackにjoinする</p>
+
+<p><img src="/images/slack_hubot/join_bot.png"></p>
+
+<h2>HUBOTの設定をする</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>にも記したHUBOTのセットアップを進める。</p>
+
+<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>の「②HUBOTをインストールする」までを済ませておく。</p>
+
+<p>新たなbotの生成
+<code>bash
+$ hubot --create slack_sojiro_test
+</code>
+slack用のpluginをインストール
+<code>bash
+$ cd slack_sojiro_test/
+$ npm install hubot-slack --save
+</code>
+起動用スクリプトの作成。先ほど取得したAPI Tokenを使用する。
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim runhubot
+</span><span class='line'><span class="nv">$ </span>cat runhubot&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">HUBOT_SLACK_TOKEN</span><span class="o">=</span>xxxx-123456789-ABCDEFGHIJKLMN
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_TEAM</span><span class="o">=</span>Sojiro-test
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_BOTNAME</span><span class="o">=</span><span class="nb">test</span>-bot&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;bin/hubot <span class="p">&amp;</span>ndash<span class="p">;</span>adapter slack
+</span><span class='line'><span class="nv">$ </span>chmod u+x runhubot
+</span><span class='line'>&lt;code&gt;
+</span><span class='line'>botの起動
+</span><span class='line'>&lt;/code&gt; bash
+</span><span class='line'><span class="nv">$ </span>./runhubot
+</span></code></pre></td></tr></table></div></figure>
+これでSlack上のbotがHUBOTのスクリプトに沿って反応するようになったはず</p>
+
+<h2>botを使ってみる</h2>
+
+<p>HUBOTではデフォルトでいくつかのスクリプトが用意されているので使って試してみる</p>
+
+<h3>ping</h3>
+
+<p>生存確認</p>
+
+<p><img src="/images/slack_hubot/ping.png"></p>
+
+<h3>image me</h3>
+
+<p>画像検索</p>
+
+<p><img src="/images/slack_hubot/image_me.png"></p>
+
+<h3>animate me</h3>
+
+<p>アニメーション検索</p>
+
+<p><img src="/images/slack_hubot/animate_me.png"></p>
+
+<h3>youtube me</h3>
+
+<p>動画検索</p>
+
+<p><img src="/images/slack_hubot/youtube_me.png"></p>
+
+<h3>translate me</h3>
+
+<p>翻訳（日本語から英語）</p>
+
+<p><img src="/images/slack_hubot/translate_me_1.png"></p>
+
+<p>翻訳（英語から日本語）</p>
+
+<p><img src="/images/slack_hubot/translate_me_2.png"></p>
+
+<h3>map me</h3>
+
+<p>地図検索</p>
+
+<p><img src="/images/slack_hubot/map_me.png"></p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
+<li><a href="http://memo.sanographix.net/post/88371442780">Hubotで西木野真姫bot作ってSlackに呼ぶ</a></li>
+<li><a href="http://qiita.com/Katsumata_RYO/items/dc4543aa5827d4c3211c">slackにHubotを導入(Heroku経由)</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

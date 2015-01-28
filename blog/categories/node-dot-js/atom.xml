@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: node.js | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/node-dot-js/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T16:50:50+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[MacにNode.jsとMongoDBをインストールしたメモ]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/"/>
+    <updated>2014-12-07T18:30:01+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac</id>
+    <content type="html"><![CDATA[<p>某勉強会でNode.jsとMongoDBを使うということがあったので、インストールした際のメモを残しておく。</p>
+
+<h2>Homebrewのインストール</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>でも触れた通り、以下の方法でインストールを試みる。
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.github.com/mxcl/homebrew/go/install&quot;</span>&gt;https://raw.github.com/mxcl/homebrew/go/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>Whoops, the Homebrew installer has moved! Please instead run:&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.githubusercontent.com/Homebrew/install/master/install&quot;</span>&gt;https://raw.githubusercontent.com/Homebrew/install/master/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Also, please ask wherever you got this link from to update it to the above.
+</span><span class='line'>Thanks!
+</span></code></pre></td></tr></table></div></figure>
+どうやらHomebrewのインストーラーの場所があれから変わったようで、以下のパスで再度実行。</p>
+
+<p>コマンドのレスポンスとして新しいパスをメッセージに残してくれるのはありがたい。
+<code>bash
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code>
+これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
+
+<h2>Node.jsのインストール</h2>
+
+<pre><code class="bash">$ brew install node
+</code></pre>
+
+<p>これで完了。
+<code>bash
+$ node -v
+v0.10.33
+</code>
+npmもばっちり入っている
+<code>bash
+$ npm -v
+2.1.10
+</code></p>
+
+<h2>MongoDBのインストール</h2>
+
+<p>これも以下を実行するだけ。
+<code>bash
+$ brew install mongodb
+</code>
+<code>bash
+$ mongo --version
+MongoDB shell version: 2.6.5
+</code>
+おしまい。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
+<li><a href="http://qiita.com/hajimeni/items/3c93fd981e92f66a20ce">Macにhomebrewを使ってmongodbをインストール</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

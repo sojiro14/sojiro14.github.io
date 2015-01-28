@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Screenを使ってみる - Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="デタッチ/アタッチという強力な機能をもった仮想端末管理アプリケーションであるscreenを使ってみた。 screenの設定ファイルを編集する screenの操作に使うほとんどのコマンドはプレフィックスを用いる。
+このプレフィクスがデフォルトでは ctrl + a のため、 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2014/12/01/screen-introduction">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-50182043-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Screenを使ってみる</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-01T17:15:25+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>5:15 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>デタッチ/アタッチという強力な機能をもった仮想端末管理アプリケーションであるscreenを使ってみた。</p>
+
+<h2>screenの設定ファイルを編集する</h2>
+
+<p>screenの操作に使うほとんどのコマンドはプレフィックスを用いる。
+このプレフィクスがデフォルトでは <code>ctrl + a</code> のため、Shellの行頭移動と被ってしまうので設定を編集する。</p>
+
+<p>ついでに色々編集してみた。（ <code>ctrl +</code> を <code>^</code> で表す）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>escape ^j^j
+</span><span class='line'>startup_message off
+</span><span class='line'>defkanji utf-8
+</span><span class='line'>defencoding utf-8
+</span><span class='line'>encoding utf-8 utf-8
+</span><span class='line'>caption always <span class="s2">&quot;%{= wb} %-w%{=bu dr}%n %t%{-}%+w %= %{=b wk} [%l] %{=b wb}%y/%m/%d(%D) %{=b wm}%c&quot;</span>
+</span><span class='line'>autodetach on
+</span><span class='line'>bell_msg <span class="s2">&quot;^G&quot;</span>
+</span><span class='line'>defscrollback 10000
+</span><span class='line'>vbell off
+</span><span class='line'><span class="nb">bind </span>n screen
+</span><span class='line'><span class="nb">bind </span>h prev
+</span><span class='line'><span class="nb">bind </span>j next
+</span><span class='line'><span class="nb">bind </span>l windowlist
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>escape
+
+<ul>
+<li>escape keyの設定（ここでは <code>^j</code> をescape keyとして登録）</li>
+</ul>
+</li>
+<li>startup_message
+
+<ul>
+<li>起動時に表示されるメッセージをoff</li>
+</ul>
+</li>
+<li>encoding関連の設定</li>
+<li>caption
+
+<ul>
+<li>画面下部に表示されるcaptionの設定</li>
+</ul>
+</li>
+<li>autodetach
+
+<ul>
+<li>起動時に自動でデタッチ（後述）</li>
+</ul>
+</li>
+<li>bell_msg
+
+<ul>
+<li>バックグラウンドで出力されたベル文字をscreenに出力する（ <code>^G</code> はベル文字に置換される）</li>
+</ul>
+</li>
+<li>defscrollback
+
+<ul>
+<li>スクロールバックバッファの行数を設定</li>
+</ul>
+</li>
+<li>vbell
+
+<ul>
+<li>可視ベルの設定</li>
+</ul>
+</li>
+<li>windowlist
+
+<ul>
+<li>全ウィンドウをリスト表示し、使用するウィンドウを選択できるようにする</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>screenを立ち上げてみる</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>名前を付けて立ち上げる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -t <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ウィンドウが複数立ち上がると用途に合わせて移動が必要になる。上記 <code>.screenrc</code> の設定がなされた状態で以下のように移動できる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + <span class="o">[</span>number<span class="o">]</span>  <span class="c"># [number]に指定した番号のウィンドウに移動</span>
+</span><span class='line'><span class="nv">$ </span>^j + h         <span class="c"># 1つ前のウィンドウに移動</span>
+</span><span class='line'><span class="nv">$ </span>^j + j         <span class="c"># 1つ後のウィンドウに移動</span>
+</span><span class='line'><span class="nv">$ </span>^j + l         <span class="c"># 表示されるウィンドウリストから移動先のウィンドウを選択</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ウィンドウの分割</h2>
+
+<p>ウィンドウを上下に分割する（縦方向の分割はscreenのバージョンを変えないといけないようなので割愛）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + S
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>分割された領域間の移動</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + <span class="o">[</span>tab<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>領域の破棄</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + X  <span class="c"># 現在の領域を破棄</span>
+</span><span class='line'><span class="nv">$ </span>^j + Q  <span class="c"># 現在の領域以外の全ての領域を破棄</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>デタッチとアタッチ</h2>
+
+<ul>
+<li>デタッチ（detach）
+
+<ul>
+<li>screen上での作業をセッションという形で保存しておくこと</li>
+</ul>
+</li>
+<li>アタッチ（attach）
+
+<ul>
+<li>デタッチによって保存されたセッションから作業に復帰すること</li>
+</ul>
+</li>
+</ul>
+
+
+<p>デタッチする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + d
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>セッションを確認する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -ls
+</span><span class='line'>There is a screen on:
+</span><span class='line'>    72181.ttys010.your-pc   <span class="o">(</span>Detached<span class="o">)</span>
+</span><span class='line'><span class="m">1</span> Socket in /var/folders/56/dlftkv4d4191qwj6r_gxs_shmspdv_/T/.screen.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>アタッチ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -r <span class="o">[</span>session_number <span class="p">|</span> session_name<span class="o">]</span>
+</span><span class='line'><span class="c"># 上の例では 72181 もしくは ttys010 を指定する</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.limy.org/program/screen.html">screenコマンド一覧 3.9.13対応 </a></li>
+<li><a href="http://linuxjm.sourceforge.jp/html/GNU_screen/man1/screen.1.html">SCREEN</a></li>
+<li><a href="http://sixeight.hatenablog.com/entry/20090730/1248973178">screenのデタッチ/アタッチ</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-12-01T17:15:25+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>5:15 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/screen/'>screen</a>, <a class='category' href='/blog/categories/shell/'>shell</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2014/12/01/screen-introduction/" data-via="" data-counturl="http://sojiro14.github.io/blog/2014/12/01/screen-introduction/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view/" title="Previous Post: Ruby on Railsで初めてアプリを作ってみる #5 -controllerとviewの追加-">&laquo; Ruby on Railsで初めてアプリを作ってみる #5 -controllerとviewの追加-</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/" title="Next Post: MacにNode.jsとMongoDBをインストールしたメモ">MacにNode.jsとMongoDBをインストールしたメモ &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2014/12/01/screen-introduction/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2014/12/01/screen-introduction/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

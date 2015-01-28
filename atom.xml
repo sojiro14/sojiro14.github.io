@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T16:36:42+09:00</updated>
+  <updated>2015-01-28T16:50:50+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,1992 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[AWSのLinuxにMongoDBをインストール]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/30/installing-mongodb-on-linux-aws/"/>
+    <updated>2014-12-30T13:32:15+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/30/installing-mongodb-on-linux-aws</id>
+    <content type="html"><![CDATA[<p>AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順</p>
+
+<h2>YUMの設定</h2>
+
+<p>パッケージ管理システムであるYUMにmongoDB用の設定を追加する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo vim /etc/yum.repos.d/mongodb.repo
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>/etc/yum.repos.d/mongodb.repo </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>mongodb<span class="o">]</span>
+</span><span class='line'><span class="nv">name</span><span class="o">=</span>MongoDB Repository
+</span><span class='line'><span class="nv">baseurl</span><span class="o">=</span>http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
+</span><span class='line'><span class="nv">gpgcheck</span><span class="o">=</span>0
+</span><span class='line'><span class="nv">enabled</span><span class="o">=</span>1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでYUMにmongoDBのリポジトリが追加される</p>
+
+<h2>mongoDBのインストール</h2>
+
+<p>今回は何も考えず最新のバージョンをインストールするので以下のコマンドで実行する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install mongodb-org
+</span><span class='line'>読み込んだプラグイン:priorities, update-motd, upgrade-helper
+</span><span class='line'>...
+</span><span class='line'><span class="o">============================================================================================================================================================================================================</span>
+</span><span class='line'> Package                                                  アーキテクチャー                             バージョン                                       リポジトリー                                   容量
+</span><span class='line'><span class="o">============================================================================================================================================================================================================</span>
+</span><span class='line'>インストール中:
+</span><span class='line'> mongodb-org                                              x86_64                                       2.6.6-1                                          mongodb                                       4.9 k
+</span><span class='line'>依存性関連でのインストールをします:
+</span><span class='line'> mongodb-org-mongos                                       x86_64                                       2.6.6-1                                          mongodb                                       6.8 M
+</span><span class='line'> mongodb-org-server                                       x86_64                                       2.6.6-1                                          mongodb                                       9.0 M
+</span><span class='line'> mongodb-org-shell                                        x86_64                                       2.6.6-1                                          mongodb                                       4.3 M
+</span><span class='line'> mongodb-org-tools                                        x86_64                                       2.6.6-1                                          mongodb                                        <span class="m">90</span> M
+</span><span class='line'>
+</span><span class='line'>トランザクションの要約
+</span><span class='line'><span class="o">============================================================================================================================================================================================================</span>
+</span><span class='line'>インストール  <span class="m">1</span> パッケージ <span class="o">(</span>+4 個の依存関係のパッケージ<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>総ダウンロード容量: <span class="m">110</span> M
+</span><span class='line'>インストール容量: <span class="m">277</span> M
+</span><span class='line'>Is this ok <span class="o">[</span>y/d/N<span class="o">]</span>: y
+</span><span class='line'>Downloading packages:
+</span><span class='line'>...
+</span><span class='line'>完了しました!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>確認</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mongo --version
+</span><span class='line'>MongoDB shell version: 2.6.6
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストール完了</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat-centos-or-fedora-linux/">Install MongoDB on Red Hat Enterprise, CentOS, Fedora, or Amazon Linux</a></li>
+<li><a href="http://qiita.com/nownabe/items/123a8fd04ff5252b3036">CentOS6.5にMongoDBをインストールする</a></li>
+<li><a href="http://qiita.com/ykyk1218/items/1c1824e77fb8af78bcf5">MongoDBをLinuxにインストール</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[VimにおけるTABとスペースの扱いについて]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/26/tab-and-space-on-vim/"/>
+    <updated>2014-12-26T10:52:26+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/26/tab-and-space-on-vim</id>
+    <content type="html"><![CDATA[<p>Vimでは <code>&lt;TAB&gt;</code> やインデントについてその挙動を設定することができる。いくつか設定方法があるが、これまでこれらに関する <code>.vimrc</code> の設定は何も考えずにただコピペしていたので記述を見直してみた。</p>
+
+<h2>tabstop</h2>
+
+<p> <code>tabstop</code> で <code>&lt;TAB&gt;</code> にいくつのスペースを設定するか決めることができる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで <code>&lt;TAB&gt;</code> に半角4つ分が設定される。</p>
+
+<h2><code>&lt;TAB&gt;</code> の挙動</h2>
+
+<p>そもそも <code>&lt;TAB&gt;</code> はどのような挙動をするのか。</p>
+
+<p>何となく、指定した数の分だけ半角スペースを入れてくれるもの、と思っていたが、</p>
+
+<p>正確には行頭からの文字数が<code>&lt;TAB&gt;</code> に指定された半角数の倍数になるようにスペースを補完するもの、というのが正しいかもしれない。何を言っているかわからないと思うので以下で実験する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
+</span><span class='line'><span class="k">set</span> <span class="nb">list</span>
+</span><span class='line'><span class="k">set</span> <span class="nb">listchars</span><span class="p">=</span><span class="k">tab</span>:<span class="p">&gt;</span>.<span class="p">,</span>trail:_<span class="p">,</span><span class="nb">eol</span>:↲<span class="p">,</span>extends:<span class="p">&gt;,</span>precedes:<span class="p">&lt;,</span>nbsp:%
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>実験用に上記のように <code>.vimrc</code> を設定しておく。</p>
+
+<figure class='code'><figcaption><span>sample1</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="p">&gt;</span>...↲
+</span><span class='line'><span class="k">a</span><span class="p">&gt;</span>..↲
+</span><span class='line'>bb<span class="p">&gt;</span>.↲
+</span><span class='line'>ccc<span class="p">&gt;</span>↲
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これは以下のように打ち込んだ結果で、 <code>&lt;TAB&gt;</code> により、それぞれの行が <code>tabstop</code> で設定した半角4つ分で終わるように（タブ文字により）スペースが補完されているのがわかる。</p>
+
+<ul>
+<li><code>&lt;TAB&gt;</code></li>
+<li>a <code>&lt;TAB&gt;</code></li>
+<li>bb <code>&lt;TAB&gt;</code></li>
+<li>ccc <code>&lt;TAB&gt;</code></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>sample2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="p">&gt;</span>...<span class="p">&gt;</span>...↲
+</span><span class='line'>test<span class="p">&gt;</span>...↲
+</span><span class='line'>sample<span class="p">&gt;</span>.↲
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一行に半角4つ分以上の文字が打ち込まれている場合も同じく、 <code>&lt;TAB&gt;</code> はそれぞれの行が <code>tabstop</code> で指定した半角4つの倍数の文字数になるようにタブ文字を補完する。（この場合は一行につき半角8文字）</p>
+
+<h2>smarttabとshiftwidthとsmartindent</h2>
+
+<p> <code>smarttab</code> をONにすることで <code>shiftwidth</code> を設定することが可能になる。</p>
+
+<p> <code>shiftwidth</code> は行頭のインデントの幅を規定するもので、 <code>smarttab</code> が効いているときには行頭の <code>&lt;TAB&gt;</code> は <code>shiftwidth</code> の幅のスペース（タブ文字）を挿入する役目を果たす。</p>
+
+<p> <code>smartindent</code> をONにすると改行時に前の行の行末を見て自動でインデントが挿入される。例えば行末が <code>{</code> の場合は次の行に自動的にインデントが入る。このインデントの幅は <code>shiftwidth</code> で指定された幅となる。</p>
+
+<h2>autoindent</h2>
+
+<p> <code>autoindent</code> は改行時に前の行のインデントと同じ幅でインデントを挿入する。</p>
+
+<h2>expandtab</h2>
+
+<p> <code>expandtab</code> は <code>&lt;TAB&gt;</code> により挿入されるタブ文字を純粋なスペースに変換する。</p>
+
+<p>上記のsample1、2を以下の設定で記述してみる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">expandtab</span>
+</span><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
+</span><span class='line'><span class="k">set</span> <span class="nb">list</span>
+</span><span class='line'><span class="k">set</span> <span class="nb">listchars</span><span class="p">=</span><span class="k">tab</span>:<span class="p">&gt;</span>.<span class="p">,</span>trail:_<span class="p">,</span><span class="nb">eol</span>:↲<span class="p">,</span>extends:<span class="p">&gt;,</span>precedes:<span class="p">&lt;,</span>nbsp:%
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>sample1&#8217;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'>____↲
+</span><span class='line'>a___↲
+</span><span class='line'>bb__↲
+</span><span class='line'>ccc_↲
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>sample2&#8217;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'>________↲
+</span><span class='line'>test____↲
+</span><span class='line'>sample__↲
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>expandtab</code> をONにした状態で一時的にタブ文字を記述したいときは、VimをINSERTモードにした状態で以下のように打つ。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'>Control<span class="p">-</span><span class="k">v</span> <span class="p">&lt;</span>TAB<span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://vimwiki.net/?FrontPage">VIM wiki</a></li>
+<li><a href="http://nanasi.jp/articles/howto/editing/et-inserttab.html">:set expandtab（:set et）設定の時に、タブ文字を挿入する </a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HUBOTを使ったSlack Bot作成メモ]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/15/slack-bot-by-hubot/"/>
+    <updated>2014-12-15T03:02:30+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/15/slack-bot-by-hubot</id>
+    <content type="html"><![CDATA[<p>SlackにBotを入れたいと思い、少し調べてみたところHUBOTがやはり簡単らしいのでやってみた</p>
+
+<h2>HUBOT用のAPI Tokenを取得する</h2>
+
+<p>まずはSlackのチームメニューからConfigure Integrationsを選択</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/team_menu.png"></p>
+
+<p>様々な外部サービスとの連携メニューからHUBOTを選択する</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/add_hubot.png"></p>
+
+<p>追加するbotの名前を入力</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/set_botname.png"></p>
+
+<p>ここまでのステップを踏むとAPI Tokenが記されたページが表示される</p>
+
+<p>そしてこの段階でbotがSlackにjoinする</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/join_bot.png"></p>
+
+<h2>HUBOTの設定をする</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>にも記したHUBOTのセットアップを進める。</p>
+
+<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>の「②HUBOTをインストールする」までを済ませておく。</p>
+
+<p>新たなbotの生成</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create slack_sojiro_test
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>slack用のpluginをインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>slack_sojiro_test/
+</span><span class='line'><span class="nv">$ </span>npm install hubot-slack --save
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>起動用スクリプトの作成。先ほど取得したAPI Tokenを使用する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim runhubot
+</span><span class='line'><span class="nv">$ </span>cat runhubot
+</span><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_TOKEN</span><span class="o">=</span>xxxx-123456789-ABCDEFGHIJKLMN
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_TEAM</span><span class="o">=</span>Sojiro-test
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_BOTNAME</span><span class="o">=</span><span class="nb">test</span>-bot
+</span><span class='line'>
+</span><span class='line'>bin/hubot --adapter slack
+</span><span class='line'><span class="nv">$ </span>chmod u+x runhubot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>botの起動</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./runhubot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでSlack上のbotがHUBOTのスクリプトに沿って反応するようになったはず</p>
+
+<h2>botを使ってみる</h2>
+
+<p>HUBOTではデフォルトでいくつかのスクリプトが用意されているので使って試してみる</p>
+
+<h3>ping</h3>
+
+<p>生存確認</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/ping.png"></p>
+
+<h3>image me</h3>
+
+<p>画像検索</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/image_me.png"></p>
+
+<h3>animate me</h3>
+
+<p>アニメーション検索</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/animate_me.png"></p>
+
+<h3>youtube me</h3>
+
+<p>動画検索</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/youtube_me.png"></p>
+
+<h3>translate me</h3>
+
+<p>翻訳（日本語から英語）</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/translate_me_1.png"></p>
+
+<p>翻訳（英語から日本語）</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/translate_me_2.png"></p>
+
+<h3>map me</h3>
+
+<p>地図検索</p>
+
+<p><img src="http://sojiro14.github.io/images/slack_hubot/map_me.png"></p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
+<li><a href="http://memo.sanographix.net/post/88371442780">Hubotで西木野真姫bot作ってSlackに呼ぶ</a></li>
+<li><a href="http://qiita.com/Katsumata_RYO/items/dc4543aa5827d4c3211c">slackにHubotを導入(Heroku経由)</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MacにNode.jsとMongoDBをインストールしたメモ]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/"/>
+    <updated>2014-12-07T18:30:01+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac</id>
+    <content type="html"><![CDATA[<p>某勉強会でNode.jsとMongoDBを使うということがあったので、インストールした際のメモを残しておく。</p>
+
+<h2>Homebrewのインストール</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>でも触れた通り、以下の方法でインストールを試みる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;</span>
+</span><span class='line'>Whoops, the Homebrew installer has moved! Please instead run:
+</span><span class='line'>
+</span><span class='line'>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
+</span><span class='line'>
+</span><span class='line'>Also, please ask wherever you got this link from to update it to the above.
+</span><span class='line'>Thanks!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>どうやらHomebrewのインストーラーの場所があれから変わったようで、以下のパスで再度実行。</p>
+
+<p>コマンドのレスポンスとして新しいパスをメッセージに残してくれるのはありがたい。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
+
+<h2>Node.jsのインストール</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install node
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで完了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
+</span><span class='line'>v0.10.33
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>npmもばっちり入っている</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm -v
+</span><span class='line'>2.1.10
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>MongoDBのインストール</h2>
+
+<p>これも以下を実行するだけ。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install mongodb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mongo --version
+</span><span class='line'>MongoDB shell version: 2.6.5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>おしまい。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
+<li><a href="http://qiita.com/hajimeni/items/3c93fd981e92f66a20ce">Macにhomebrewを使ってmongodbをインストール</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Screenを使ってみる]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/01/screen-introduction/"/>
+    <updated>2014-12-01T17:15:25+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/01/screen-introduction</id>
+    <content type="html"><![CDATA[<p>デタッチ/アタッチという強力な機能をもった仮想端末管理アプリケーションであるscreenを使ってみた。</p>
+
+<h2>screenの設定ファイルを編集する</h2>
+
+<p>screenの操作に使うほとんどのコマンドはプレフィックスを用いる。
+このプレフィクスがデフォルトでは <code>ctrl + a</code> のため、Shellの行頭移動と被ってしまうので設定を編集する。</p>
+
+<p>ついでに色々編集してみた。（ <code>ctrl +</code> を <code>^</code> で表す）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>escape ^j^j
+</span><span class='line'>startup_message off
+</span><span class='line'>defkanji utf-8
+</span><span class='line'>defencoding utf-8
+</span><span class='line'>encoding utf-8 utf-8
+</span><span class='line'>caption always <span class="s2">&quot;%{= wb} %-w%{=bu dr}%n %t%{-}%+w %= %{=b wk} [%l] %{=b wb}%y/%m/%d(%D) %{=b wm}%c&quot;</span>
+</span><span class='line'>autodetach on
+</span><span class='line'>bell_msg <span class="s2">&quot;^G&quot;</span>
+</span><span class='line'>defscrollback 10000
+</span><span class='line'>vbell off
+</span><span class='line'><span class="nb">bind </span>n screen
+</span><span class='line'><span class="nb">bind </span>h prev
+</span><span class='line'><span class="nb">bind </span>j next
+</span><span class='line'><span class="nb">bind </span>l windowlist
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>escape
+
+<ul>
+<li>escape keyの設定（ここでは <code>^j</code> をescape keyとして登録）</li>
+</ul>
+</li>
+<li>startup_message
+
+<ul>
+<li>起動時に表示されるメッセージをoff</li>
+</ul>
+</li>
+<li>encoding関連の設定</li>
+<li>caption
+
+<ul>
+<li>画面下部に表示されるcaptionの設定</li>
+</ul>
+</li>
+<li>autodetach
+
+<ul>
+<li>起動時に自動でデタッチ（後述）</li>
+</ul>
+</li>
+<li>bell_msg
+
+<ul>
+<li>バックグラウンドで出力されたベル文字をscreenに出力する（ <code>^G</code> はベル文字に置換される）</li>
+</ul>
+</li>
+<li>defscrollback
+
+<ul>
+<li>スクロールバックバッファの行数を設定</li>
+</ul>
+</li>
+<li>vbell
+
+<ul>
+<li>可視ベルの設定</li>
+</ul>
+</li>
+<li>windowlist
+
+<ul>
+<li>全ウィンドウをリスト表示し、使用するウィンドウを選択できるようにする</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>screenを立ち上げてみる</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>名前を付けて立ち上げる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -t <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ウィンドウが複数立ち上がると用途に合わせて移動が必要になる。上記 <code>.screenrc</code> の設定がなされた状態で以下のように移動できる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + <span class="o">[</span>number<span class="o">]</span>  <span class="c"># [number]に指定した番号のウィンドウに移動</span>
+</span><span class='line'><span class="nv">$ </span>^j + h         <span class="c"># 1つ前のウィンドウに移動</span>
+</span><span class='line'><span class="nv">$ </span>^j + j         <span class="c"># 1つ後のウィンドウに移動</span>
+</span><span class='line'><span class="nv">$ </span>^j + l         <span class="c"># 表示されるウィンドウリストから移動先のウィンドウを選択</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ウィンドウの分割</h2>
+
+<p>ウィンドウを上下に分割する（縦方向の分割はscreenのバージョンを変えないといけないようなので割愛）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + S
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>分割された領域間の移動</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + <span class="o">[</span>tab<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>領域の破棄</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + X  <span class="c"># 現在の領域を破棄</span>
+</span><span class='line'><span class="nv">$ </span>^j + Q  <span class="c"># 現在の領域以外の全ての領域を破棄</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>デタッチとアタッチ</h2>
+
+<ul>
+<li>デタッチ（detach）
+
+<ul>
+<li>screen上での作業をセッションという形で保存しておくこと</li>
+</ul>
+</li>
+<li>アタッチ（attach）
+
+<ul>
+<li>デタッチによって保存されたセッションから作業に復帰すること</li>
+</ul>
+</li>
+</ul>
+
+
+<p>デタッチする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + d
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>セッションを確認する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -ls
+</span><span class='line'>There is a screen on:
+</span><span class='line'>    72181.ttys010.your-pc   <span class="o">(</span>Detached<span class="o">)</span>
+</span><span class='line'><span class="m">1</span> Socket in /var/folders/56/dlftkv4d4191qwj6r_gxs_shmspdv_/T/.screen.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>アタッチ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -r <span class="o">[</span>session_number <span class="p">|</span> session_name<span class="o">]</span>
+</span><span class='line'><span class="c"># 上の例では 72181 もしくは ttys010 を指定する</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.limy.org/program/screen.html">screenコマンド一覧 3.9.13対応 </a></li>
+<li><a href="http://linuxjm.sourceforge.jp/html/GNU_screen/man1/screen.1.html">SCREEN</a></li>
+<li><a href="http://sixeight.hatenablog.com/entry/20090730/1248973178">screenのデタッチ/アタッチ</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #5 -controllerとviewの追加-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view/"/>
+    <updated>2014-11-29T23:58:09+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view</id>
+    <content type="html"><![CDATA[<p>生成したリソースに対応するcontrollerを作成し、このリソースに対するviewとそのためのアクションを追加していく。</p>
+
+<h2>rails generate controller</h2>
+
+<p>controllerを作成する。controllerの名前は1文字目が大文字で、複数形を指定するのがrailsの規約である。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails g controller Stocks
+</span><span class='line'><span class="c"># rails generateコマンドは rails g と省略できる</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドでcontrollerのファイルとviewのファイルが生成される。</p>
+
+<h2>routesの設定</h2>
+
+<p>railsでは <code>config/routes</code> ファイルにてdispatch管理をしている。このファイルの設定でRESTfulなURLを自動生成してくれる。</p>
+
+<p>今回追加したcontrollerの設定も追加する。
+ <code>config/routes</code> に以下の行を追加する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:stocks</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>この設定により、リソースの基本的な操作を行うURLが生成される。</p>
+
+<p>この他にもroutesの設定方法はいくつかあり、それにより自由にエンドポイントの追加ができるがここでは省略。</p>
+
+<h2>設定されているroutesの確認</h2>
+
+<p>routesの設定が完了したら、生成されたURLの確認をする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake routes
+</span><span class='line'>        Prefix Verb   URI Pattern                    Controller#Action
+</span><span class='line'>        stocks GET    /stocks<span class="o">(</span>.:format<span class="o">)</span>              stocks#index
+</span><span class='line'>               POST   /stocks<span class="o">(</span>.:format<span class="o">)</span>              stocks#create
+</span><span class='line'>     new_stock GET    /stocks/new<span class="o">(</span>.:format<span class="o">)</span>          stocks#new
+</span><span class='line'>    edit_stock GET    /stocks/:id/edit<span class="o">(</span>.:format<span class="o">)</span>     stocks#edit
+</span><span class='line'>         stock GET    /stocks/:id<span class="o">(</span>.:format<span class="o">)</span>          stocks#show
+</span><span class='line'>               PATCH  /stocks/:id<span class="o">(</span>.:format<span class="o">)</span>          stocks#update
+</span><span class='line'>               PUT    /stocks/:id<span class="o">(</span>.:format<span class="o">)</span>          stocks#update
+</span><span class='line'>               DELETE /stocks/:id<span class="o">(</span>.:format<span class="o">)</span>          stocks#destroy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>アクションの追加</h2>
+
+<p> <code>$ rake routes</code> で示されたController#Actionに沿って、controllerにアクションを追加していく。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">app</span><span class="o">/</span><span class="n">controllers</span><span class="o">/</span><span class="n">stocks_controller</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">StocksController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:set_stock</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="p">,</span> <span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:destroy</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># GET /stocks</span>
+</span><span class='line'>  <span class="c1"># GET /stocks.json</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>    <span class="vi">@stocks</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">all</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># GET /stocks/1</span>
+</span><span class='line'>  <span class="c1"># GET /stocks/1.json</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># GET /stocks/new</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">new</span>
+</span><span class='line'>    <span class="vi">@stock</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># GET /stocks/1/edit</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">edit</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># POST /stocks</span>
+</span><span class='line'>  <span class="c1"># POST /stocks.json</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>    <span class="vi">@stock</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">stock_params</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">if</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="vi">@stock</span><span class="p">,</span> <span class="ss">notice</span><span class="p">:</span> <span class="s1">&#39;Stock was successfully created.&#39;</span> <span class="p">}</span>
+</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">action</span><span class="p">:</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:created</span><span class="p">,</span> <span class="ss">location</span><span class="p">:</span> <span class="vi">@stock</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">action</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span> <span class="p">}</span>
+</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:unprocessable_entity</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># PATCH/PUT /stocks/1</span>
+</span><span class='line'>  <span class="c1"># PATCH/PUT /stocks/1.json</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">update</span>
+</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">if</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">stock_params</span><span class="p">)</span>
+</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="vi">@stock</span><span class="p">,</span> <span class="ss">notice</span><span class="p">:</span> <span class="s1">&#39;Stock was successfully updated.&#39;</span> <span class="p">}</span>
+</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:no_content</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">action</span><span class="p">:</span> <span class="s1">&#39;edit&#39;</span> <span class="p">}</span>
+</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:unprocessable_entity</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># DELETE /stocks/1</span>
+</span><span class='line'>  <span class="c1"># DELETE /stocks/1.json</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">destroy</span>
+</span><span class='line'>    <span class="vi">@stock</span><span class="o">.</span><span class="n">destroy</span>
+</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="n">stocks_url</span> <span class="p">}</span>
+</span><span class='line'>      <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:no_content</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>    <span class="c1"># Use callbacks to share common setup or constraints between actions.</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">set_stock</span>
+</span><span class='line'>      <span class="vi">@stock</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Never trust parameters from the scary internet, only allow the white list through.</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">stock_params</span>
+</span><span class='line'>      <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:stock</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<p><a href="http://dotinstall.com/lessons/basic_rails_v2">ドットインストール</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #4 -リソースの生成-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources/"/>
+    <updated>2014-11-27T16:32:38+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources</id>
+    <content type="html"><![CDATA[<p><a href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/">Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-</a> で <code>scaffold</code> コマンドを使ったリソースの生成を行ったが、このコマンドでは決められた形式でのリソースの生成にしか対応できないため、手動で自由にリソースを作成してみる。</p>
+
+<h2>rails generate model</h2>
+
+<p>まずはモデルを作成する。railsの規約に従って、モデルは単数系、最初の文字を大文字で始める。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate model Stock title:string
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドで <code>generate</code> は <code>g</code> と省略できる。また、要素の属性はデフォルトが <code>string</code> なので、 <code>string</code> も省略することができる。</p>
+
+<p>省略したコマンドが以下。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails g model Stock title
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドでmodelに加えてmigrateファイルが生成されるのでDBをmigrateする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>rails db</h2>
+
+<p>作成したmodelを確認するため、現在使用しているDBのクライアントを立ち上げてみる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails db
+</span><span class='line'>sqlite&gt; .schema
+</span><span class='line'>CREATE TABLE <span class="s2">&quot;schema_migrations&quot;</span> <span class="o">(</span><span class="s2">&quot;version&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span> NOT NULL<span class="o">)</span><span class="p">;</span>
+</span><span class='line'>CREATE UNIQUE INDEX <span class="s2">&quot;unique_schema_migrations&quot;</span> ON <span class="s2">&quot;schema_migrations&quot;</span> <span class="o">(</span><span class="s2">&quot;version&quot;</span><span class="o">)</span><span class="p">;</span>
+</span><span class='line'>CREATE TABLE <span class="s2">&quot;users&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, <span class="s2">&quot;name&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span>, <span class="s2">&quot;email&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span>, <span class="s2">&quot;created_at&quot;</span> datetime, <span class="s2">&quot;updated_at&quot;</span> datetime<span class="o">)</span><span class="p">;</span>
+</span><span class='line'>CREATE TABLE <span class="s2">&quot;microposts&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, <span class="s2">&quot;content&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span>, <span class="s2">&quot;user_id&quot;</span> integer, <span class="s2">&quot;created_at&quot;</span> datetime, <span class="s2">&quot;updated_at&quot;</span> datetime<span class="o">)</span><span class="p">;</span>
+</span><span class='line'>CREATE TABLE <span class="s2">&quot;stocks&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, <span class="s2">&quot;title&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span>, <span class="s2">&quot;created_at&quot;</span> datetime, <span class="s2">&quot;updated_at&quot;</span> datetime<span class="o">)</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>sqliteのクライアントが立ち上がったら <code>.schema</code> コマンドでこれまで作成されてきたテーブルが確認できる。
+ <code>id</code> や <code>created_at</code> 、 <code>updated_at</code> はrailsが自動で生成する</p>
+
+<p>ちなみにsqliteクライアントから抜けるには <code>.exit</code> とする。 <code>.</code> が付くことに注意。</p>
+
+<h2>rails console</h2>
+
+<p>railsが用意しているconsoleを立ち上げてリソースを追加したり、確認したりすることもできる。</p>
+
+<p>Stockオブジェクトを生成して保存する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails console
+</span><span class='line'>2.0.0-p594 :001 &gt; <span class="nv">s</span> <span class="o">=</span> Stock.new<span class="o">(</span>title: <span class="s2">&quot;stock1&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="o">=</span>&gt; <span class="c">#&lt;Stock id: nil, title: &quot;stock1&quot;, created_at: nil, updated_at: nil&gt; </span>
+</span><span class='line'>2.0.0-p594 :002 &gt; s.save
+</span><span class='line'>  <span class="o">(</span>0.1ms<span class="o">)</span>  begin transaction
+</span><span class='line'> SQL <span class="o">(</span>2.1ms<span class="o">)</span>  INSERT INTO <span class="s2">&quot;stocks&quot;</span> <span class="o">(</span><span class="s2">&quot;created_at&quot;</span>, <span class="s2">&quot;title&quot;</span>, <span class="s2">&quot;updated_at&quot;</span><span class="o">)</span> VALUES <span class="o">(</span>?, ?, ?<span class="o">)</span>  <span class="o">[[</span><span class="s2">&quot;created_at&quot;</span>, Sat, <span class="m">15</span> Nov <span class="m">2014</span> 15:02:39 UTC +00:00<span class="o">]</span>, <span class="o">[</span><span class="s2">&quot;title&quot;</span>, <span class="s2">&quot;stock1&quot;</span><span class="o">]</span>, <span class="o">[</span><span class="s2">&quot;updated_at&quot;</span>, Sat, <span class="m">15</span> Nov <span class="m">2014</span> 15:02:39 UTC +00:00<span class="o">]]</span>
+</span><span class='line'>  <span class="o">(</span>4.9ms<span class="o">)</span>  commit <span class="nv">transaction</span>
+</span><span class='line'><span class="o">=</span>&gt; <span class="nb">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>作られたオブジェクトを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>2.0.0-p594 :003 &gt; <span class="nv">s</span>
+</span><span class='line'><span class="o">=</span>&gt; <span class="c">#&lt;Stock id: 1, title: &quot;stock1&quot;, created_at: &quot;2014-11-15 15:02:39&quot;, updated_at: &quot;2014-11-15 15:02:39&quot;&gt; </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>new</code> と <code>save</code> を一括で行ってくれるコマンドが <code>create</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>2.0.0-p594 :004 &gt; Stock.create<span class="o">(</span>title: <span class="s2">&quot;stock2&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">(</span>0.1ms<span class="o">)</span>  begin transaction
+</span><span class='line'> SQL <span class="o">(</span>0.3ms<span class="o">)</span>  INSERT INTO <span class="s2">&quot;stocks&quot;</span> <span class="o">(</span><span class="s2">&quot;created_at&quot;</span>, <span class="s2">&quot;title&quot;</span>, <span class="s2">&quot;updated_at&quot;</span><span class="o">)</span> VALUES <span class="o">(</span>?, ?, ?<span class="o">)</span>  <span class="o">[[</span><span class="s2">&quot;created_at&quot;</span>, Sat, <span class="m">15</span> Nov <span class="m">2014</span> 15:03:44 UTC +00:00<span class="o">]</span>, <span class="o">[</span><span class="s2">&quot;title&quot;</span>, <span class="s2">&quot;stock2&quot;</span><span class="o">]</span>, <span class="o">[</span><span class="s2">&quot;updated_at&quot;</span>, Sat, <span class="m">15</span> Nov <span class="m">2014</span> 15:03:44 UTC +00:00<span class="o">]]</span>
+</span><span class='line'>  <span class="o">(</span>5.8ms<span class="o">)</span>  commit <span class="nv">transaction</span>
+</span><span class='line'><span class="o">=</span>&gt; <span class="c">#&lt;Stock id: 2, title: &quot;stock2&quot;, created_at: &quot;2014-11-15 15:03:44&quot;, updated_at: &quot;2014-11-15 15:03:44&quot;&gt; </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>作られたオブジェクト全てを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>2.0.0-p594 :005 &gt; Stock.all
+</span><span class='line'> Stock Load <span class="o">(</span>0.2ms<span class="o">)</span>  SELECT <span class="s2">&quot;stocks&quot;</span>.* FROM <span class="s2">&quot;stocks&quot;</span>
+</span><span class='line'><span class="o">=</span>&gt; <span class="c">#&lt;ActiveRecord::Relation [#&lt;Stock id: 1, title: &quot;stock1&quot;, created_at: &quot;2014-11-15 15:02:39&quot;, updated_at: &quot;2014-11-15 15:02:39&quot;&gt;, #&lt;Stock id: 2, title: &quot;stock2&quot;, created_at: &quot;2014-11-15 15:03:44&quot;, updated_at: &quot;2014-11-15 15:03:44&quot;&gt;]&gt; </span>
+</span><span class='line'>2.0.0-p594 :006 &gt; quit
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>最後にもう一度 <code>rails db</code> で直接確認する</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@ip-172-31-2-112 demo_app<span class="o">]</span><span class="nv">$ </span>rails db
+</span><span class='line'>SQLite version 3.7.17 2013-05-20 00:56:22
+</span><span class='line'>Enter <span class="s2">&quot;.help&quot;</span> <span class="k">for</span> instructions
+</span><span class='line'>Enter SQL statements terminated with a <span class="s2">&quot;;&quot;</span>
+</span><span class='line'>sqlite&gt; <span class="k">select</span> * from stocks<span class="p">;</span>
+</span><span class='line'>1<span class="p">|</span>stock1<span class="p">|</span>2014-11-15 15:02:39.781183<span class="p">|</span>2014-11-15 15:02:39.781183
+</span><span class='line'>2<span class="p">|</span>stock2<span class="p">|</span>2014-11-15 15:03:44.294543<span class="p">|</span>2014-11-15 15:03:44.294543
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<p><a href="http://dotinstall.com/lessons/basic_rails_v2">ドットインストール</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/"/>
+    <updated>2014-11-16T23:59:05+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator</id>
+    <content type="html"><![CDATA[<p>railsには <code>scaffold</code> という単純なリソースを一気に生成するコマンドが存在する。
+今回はこのコマンドを使ってみる。</p>
+
+<h2>Usersリソースの生成</h2>
+
+<p>今回は <code>scaffold</code> コマンドを使ってリソースを生成する。
+ここでは以下の要素をもつUsersリソースを生成する。</p>
+
+<ul>
+<li>id int</li>
+<li>name string</li>
+<li>email string</li>
+</ul>
+
+
+<p> <code>rails generate</code> スクリプトに <code>scaffold</code> コマンドを指定し、リソースの単数系と要素の情報を渡す</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate scaffold User name:string email:string
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>id要素はRailsが主キーとしてデフォルトで設定する</p>
+
+<h2>DBにusersのセットアップを行う</h2>
+
+<p> <code>rake</code> コマンドを使ってDBをmigrate（更新）する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
+</span><span class='line'><span class="o">==</span> <span class="m">20141111170736</span> CreateUsers: <span class="nv">migrating</span> <span class="o">======================================</span>
+</span><span class='line'>-- create_table<span class="o">(</span>:users<span class="o">)</span>
+</span><span class='line'>   -&gt; 0.0012s
+</span><span class='line'><span class="o">==</span> <span class="m">20141111170736</span> CreateUsers: migrated <span class="o">(</span>0.0014s<span class="o">)</span> <span class="o">=============================</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>出力から <code>users</code> テーブルが作られたことがわかる</p>
+
+<h2>ブラウザで確認</h2>
+
+<p> <code>rails server</code> コマンドの短縮版である <code>rails s</code> を使って3000番portにアプリを立ち上げる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
+
+<p>にブラウザでアクセスすると <code>#1 railsのセットアップ</code> で見たデフォルトのRailsページが表示される</p>
+
+<p>次に以下のエンドポイントにアクセスしてみる</p>
+
+<p><a href="http://xx.xxx.xxx.xxx:3000/users">http://xx.xxx.xxx.xxx:3000/users</a></p>
+
+<p>すると既にUser一覧ページができあがっているのがわかる。この他に</p>
+
+<ul>
+<li>新規ユーザーを作成するページ</li>
+<li>特定のidのユーザー情報を表示するページ</li>
+<li>特定のidのユーザー情報を編集するページ</li>
+</ul>
+
+
+<p>が作られている。</p>
+
+<h2>Micropostsリソースの生成</h2>
+
+<p>Usersリソースと同様に <code>scaffold</code> コマンドと <code>rake</code> の <code>migrate</code> タスクで生成する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate scaffold Micropost content:string user_id:integer
+</span><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
+</span><span class='line'><span class="o">==</span> <span class="m">20141112174234</span> CreateMicroposts: <span class="nv">migrating</span> <span class="o">=================================</span>
+</span><span class='line'>-- create_table<span class="o">(</span>:microposts<span class="o">)</span>
+</span><span class='line'>   -&gt; 0.0029s
+</span><span class='line'><span class="o">==</span> <span class="m">20141112174234</span> CreateMicroposts: migrated <span class="o">(</span>0.0031s<span class="o">)</span> <span class="o">========================</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>config/routes.rb</code> にmicropostsリソースの設定が追加された</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/"/>
+    <updated>2014-11-12T12:06:23+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
+
+<h2>Herokuに必要なgemのインストール</h2>
+
+<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span><span class="p">,</span> <span class="s1">&#39;0.15.1&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rails_12factor&#39;</span><span class="p">,</span> <span class="s1">&#39;0.0.2&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
+これによりGemfile.lockが更新され、production環境に備えることができる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install --without production
+</span><span class='line'>Your bundle is <span class="nb">complete</span>!
+</span><span class='line'>Gems in the group production were not installed.
+</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここまでできたらgitにcommitしておく。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git commit -a -m <span class="s2">&quot;Update Gemfile.lock for Heroku&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
+
+<h2>herokuコマンドが使えるようにする</h2>
+
+<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
+
+<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
+
+<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
+今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
+
+<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>wget -qO- https://toolbelt.heroku.com/install.sh <span class="p">|</span> sh
+</span><span class='line'>This script requires superuser access to install software.
+</span><span class='line'>You will be prompted <span class="k">for</span> your password by sudo.
+</span><span class='line'><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> sojiro:
+</span><span class='line'>Add the Heroku CLI to your PATH using:
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.profile
+</span><span class='line'>Installation <span class="nb">complete</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.bashrc
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bashrc
+</span><span class='line'><span class="nv">$ </span>heroku version
+</span><span class='line'>heroku-toolbelt/3.15.2 <span class="o">(</span>x86_64-linux<span class="o">)</span> ruby/2.0.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Herokuのセットアップ</h2>
+
+<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku login
+</span><span class='line'>Enter your Heroku credentials.
+</span><span class='line'>Email: your.account@email.com
+</span><span class='line'>Password <span class="o">(</span>typing will be hidden<span class="o">)</span>:
+</span><span class='line'>Your Heroku account does not have a public ssh key uploaded.
+</span><span class='line'>Could not find an existing public key at ~/.ssh/id_rsa.pub
+</span><span class='line'>Would you like to generate one? <span class="o">[</span>Yn<span class="o">]</span> Y
+</span><span class='line'>Generating new SSH public key.
+</span><span class='line'>Uploading SSH public key /home/user/.ssh/id_rsa.pub... <span class="k">done</span>
+</span><span class='line'>Authentication successful.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>認証が完了したらHerokuのセットアップをする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku create
+</span><span class='line'>Creating infinite-peak-4923... <span class="k">done</span>, stack is cedar-14
+</span><span class='line'>https://infinite-peak-4923.herokuapp.com/ <span class="p">|</span> git@heroku.com:infinite-peak-4923.git
+</span><span class='line'>Git remote heroku added
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでgitのremoteにherokuが追加される</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote -v
+</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>fetch<span class="o">)</span>
+</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>push<span class="o">)</span>
+</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>fetch<span class="o">)</span>
+</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>push<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Herokuへデプロイ</h2>
+
+<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push heroku master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
+
+<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/"/>
+    <updated>2014-11-10T03:27:49+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsで初めてアプリを作ってみます。
+今回はRailsの立ち上がりを確認するところまで。</p>
+
+<h2>アプリのセットアップ（rails new）</h2>
+
+<p>railsのアプリ作成は <code>rails new</code> コマンドで始まる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir rails_projects
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>rails_projects
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回のアプリ作成の為にディレクトリを作成し、早速コマンドを実行。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails new first_app
+</span><span class='line'>...
+</span><span class='line'>An error occurred <span class="k">while</span> installing sqlite3 <span class="o">(</span>1.3.10<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>いくつかのディレクトリやファイルが作成されるが、最後にこのようなエラーが出てbundle失敗。
+そこでGemfileを編集してbundleをやり直す。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>first_app/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Gemfileを編集。内容は<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-bundler">Ruby on Rails #Bundler</a>を参照。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
+</span><span class='line'>...
+</span><span class='line'>Building native extensions.  This could take a <span class="k">while</span>...
+</span><span class='line'>ERROR:  Error installing sqlite3:
+</span><span class='line'>    ERROR: Failed to build gem native extension.
+</span><span class='line'>
+</span><span class='line'>    /home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
+</span><span class='line'>checking <span class="k">for</span> sqlite3.h... no
+</span><span class='line'>sqlite3.h is missing. Try <span class="s1">&#39;port install sqlite3 +universal&#39;</span>
+</span><span class='line'>or <span class="s1">&#39;yum install sqlite-devel&#39;</span> and check your shared library search path <span class="o">(</span>the
+</span><span class='line'>location where your sqlite3 shared library is located<span class="o">)</span>.
+</span><span class='line'>*** extconf.rb failed ***
+</span><span class='line'>Could not create Makefile due to some reason, probably lack of necessary
+</span><span class='line'>libraries and/or headers.  Check the mkmf.log file <span class="k">for</span> more details.  You may
+</span><span class='line'>need configuration options.
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>またも失敗。よく見るとsqlite-develが足りていないらしい</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install sqlite-devel
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>sqlite-develをインストール後再度bundleによるgemのインストールを試みる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
+</span><span class='line'>Installing sqlite3 1.3.8
+</span><span class='line'>Installing turbolinks 1.1.1
+</span><span class='line'>Installing uglifier 2.1.1
+</span><span class='line'>Your bundle is updated!
+</span><span class='line'><span class="nv">$ </span>bundle install
+</span><span class='line'>Your bundle is <span class="nb">complete</span>!
+</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストール成功。</p>
+
+<h2>サーバーの立ち上げ（rails server）</h2>
+
+<p>ローカルでrailsを立ち上げるコマンド <code>rails server</code> を実行。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails server
+</span><span class='line'>...
+</span><span class='line'>Could not find a JavaScript runtime. See https://github.com/sstephenson/execjs <span class="k">for</span> a list of available runtimes. <span class="o">(</span>ExecJS::RuntimeUnavailable<span class="o">)</span>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Node.jsのインストール</h3>
+
+<p> <code>rails server</code> コマンド実行でエラーが出てしまう。JavaScript runtimeがインストールされていないことが原因のよう。メッセージ通り <a href="https://github.com/sstephenson/execjs">https://github.com/sstephenson/execjs</a> に行ってみるとJavaScript runtimeとしてNode.jsが有効と書いてあるのでNode.jsをインストールする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+</span><span class='line'><span class="nv">$ </span>sudo yum install nodejs npm --enablerepo<span class="o">=</span>epel
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回はyumでインストールした。そして再度 <code>rails server</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails <span class="nv">server</span>
+</span><span class='line'><span class="o">=</span>&gt; Booting <span class="nv">WEBrick</span>
+</span><span class='line'><span class="o">=</span>&gt; Rails 4.0.5 application starting in development on http://0.0.0.0:3000
+</span><span class='line'><span class="o">=</span>&gt; Run <span class="sb">`</span>rails server -h<span class="sb">`</span> <span class="k">for</span> more startup <span class="nv">options</span>
+</span><span class='line'><span class="o">=</span>&gt; Ctrl-C to shutdown server
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ローカルでサーバーが立ち上がる。
+今回はAWS上で作業しているので、AWS該当インスタンスのSecurity Groupで3000番portを空ける。</p>
+
+<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
+
+<p>にブラウザでアクセスして以下の画面が見えればOK</p>
+
+<p><img src="http://sojiro14.github.io/images/rails/rails_starting.png"></p>
+
+<h2>GitHubに上げておく</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git init
+</span><span class='line'><span class="nv">$ </span>git remote add origin https://github.com/sojiro14/first_app.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GitHubでリポジトリ作成</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git add .
+</span><span class='line'><span class="nv">$ </span>git commit -m <span class="s1">&#39;Initialize repository&#39;</span>
+</span><span class='line'><span class="nv">$ </span>git push -u origin master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/you21979@github/items/4efd9fc4363573191b5c">node.jsをyumでインストールする(centos6.5)</a></li>
+<li><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[LinuxにRuby on Railsをインストールする]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/05/installing-ruby-on-rails-on-linux/"/>
+    <updated>2014-11-05T03:58:11+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/05/installing-ruby-on-rails-on-linux</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsを使ってみたいと思い、AWSにインストールした手順。</p>
+
+<h2>Ruby version 2.0.0 を RVMを使ってインストール</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a>を参照</p>
+
+<h2>gemsetの作成</h2>
+
+<blockquote><p>Rubyをインストールしたら、Railsのアプリケーションを実行するために必要な他のソフトウェア向けにシステムを構成する必要があります。通常、これはgemのインストールに関連します。gemとは自己完結型のRubyコードのパッケージです。バージョン番号の異なるgem同士がコンフリクトすることがあるため、一連のgemを自己完結的にまとめたgemsetというものを作成してバージョンを使い分けるのが便利です。
+（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
+
+<p>以下のコマンドでgemsetを作成する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm use 2.0.0@railstutorial_rails_4_0 --create --default
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>上のコマンドを実行すると、Ruby 2.0.0に関連付けられたrailstutorial_rails_4_0というgemsetを作成し (&ndash;create)、その場でgemsetを有効にし (use)、gemsetをデフォルトに設定 (&ndash;default) します。これにより、ターミナルウィンドウを開いたときに2.0.0@railstutorial_rails_4_0というRubyとgemsetの組み合わせが常に選択されるようになります。
+（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
+
+<h2>RubyGemsのインストール</h2>
+
+<p>AWSには始めからgemがインストールされていて、PATHは以下。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
+</span><span class='line'>/usr/bin/gem
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>RVMでRubyをインストールするとPATHが上書きされる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
+</span><span class='line'>~/.rvm/rubies/ruby-2.0.0-p594/bin/gem
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回はチュートリアルに合わせてgemのバージョンを更新する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem update --system 2.0.3
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>gemの設定ファイルである <code>.gemrc</code> に自動生成されるドキュメントである <code>ri</code> と <code>rdoc</code> の自動生成を抑制する設定をする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim .gemrc
+</span><span class='line'><span class="nv">$ </span>cat .gemrc
+</span><span class='line'>install: --no-rdoc --no-ri
+</span><span class='line'>update:  --no-rdoc --no-ri
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Railsをインストールする</h2>
+
+<p>いよいよRailsをインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install rails --version 4.0.5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストール完了。
+以下のコマンドで確認する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails -v
+</span><span class='line'>Rails 4.0.5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Railsがインストールされたことを確認できた</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linuxに最新のRubyをインストールする]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/"/>
+    <updated>2014-10-31T05:29:00+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsを使ってみたいと思い、調べてみるとRails4ではRubyのバージョンは1.9以降が必須のようである。</p>
+
+<p>自分がさくらで借りているサーバーではRubyのバージョンが1.8.7だったのでこれを新しくしてみた。</p>
+
+<h2>RVMのインストール</h2>
+
+<p>新しいRubyをインストールする前にRVM(Ruby Version Manager)をインストールする。これはRubyをバージョンごとに管理するツール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -L https://get.rvm.io <span class="p">|</span> bash -s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドで自分のホームディレクトリ以下に <code>.rvm/</code> が作られ、ここにRVMがインストールされる。</p>
+
+<p>そして <code>.profile</code> <code>.bashrc</code> <code>.zshrc</code> にPATHを通す記述が追加される。</p>
+
+<p>また、 <code>.bash_profile</code> <code>.zlogin</code> にRVMをロードする記述が追加される。</p>
+
+<p>RVMのインストールが完了したらロードする。ここではbashを使っているので以下のようにする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Rubyのインストール</h2>
+
+<h3>さくらのレンタルサーバーでの失敗</h3>
+
+<p>まずはRubyのインストールに必要なパーツを調べ、無ければインストールする。
+以下のコマンドで必要なものをピックアップしインストールまで行ってくれる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
+</span><span class='line'>/your/home/directry/.rvm/scripts/functions/support: line 314: rvm_debug: <span class="nb">command </span>not found
+</span><span class='line'>Checking requirements <span class="k">for</span> freebsd.
+</span><span class='line'>Installing requirements <span class="k">for</span> freebsd.
+</span><span class='line'>Updating system.
+</span><span class='line'>Installing required packages: automake, bison, readline, libyaml...
+</span><span class='line'>Error running <span class="s1">&#39;requirements_freebsd_libs_install automake bison readline libyaml&#39;</span>,
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここでErrorが発生。内容は必要なパッケージがインストールできなかったということ。
+そこでFreeBSDのパッケージ管理コマンドである <code>pkg</code> コマンドを使ってインストールを試みる。</p>
+
+<p>が、サーバーの設定的に自分でパッケージを追加することができなかったのでさくらのサーバーを断念してAWSに移行した。</p>
+
+<h3>AWSに移行</h3>
+
+<p>AWSに移行して <code>$ rvm requirements</code> までを実行する。（AWSは始めからRubyのバージョンが2.0.0だったが構わず実行）
+ここでも <code>$ rvm requirements</code> が転ける。</p>
+
+<p>そこで今度はCentOSだったので <code>yum</code> を使ってインストールを試みる。以下のコマンドは <code>$ rvm requirements</code> が教えてくれる。Errorの原因が <code>sudo</code> で実行していなかったことなので <code>sudo</code> 付きで実行する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo yum install -y patch libyaml-devel libffi-devel glibc-headers autoconf gcc-c++ glibc-devel patch readline-devel zlib-devel openssl-devel automake libtool bison
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで成功。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
+</span><span class='line'>Checking requirements <span class="k">for</span> amazon.
+</span><span class='line'>Requirements installation successful.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>$ rvm requirements</code>も成功。</p>
+
+<p>このサーバーではすでにバージョン2.0.0のRubyがインストールされていたが、RVMの配下に新たにバージョン2.0.0のRubyをインストールする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm install 2.0.0 --with-openssl-dir<span class="o">=</span><span class="nv">$HOME</span>/.rvm/usr
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストール完了。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MySQLにおけるNOT NULLカラムへのインサート時の挙動]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/"/>
+    <updated>2014-10-20T13:44:28+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql</id>
+    <content type="html"><![CDATA[<p>MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。</p>
+
+<h2>単列インサートと複数列インサートで挙動が変わる</h2>
+
+<p> <code>NOT NULL</code>を指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、一度に複数行を挿入する複数列インサート（バルクインサート）で挙動が変わる。</p>
+
+<p><a href="http://dev.mysql.com/doc/refman/5.6/en/insert.html">MySQLマニュアル</a>からの抜粋</p>
+
+<blockquote><p>Inserting NULL into a column that has been declared NOT NULL. For multiple-row INSERT statements or INSERT INTO &hellip; SELECT statements, the column is set to the implicit default value for the column data type. This is 0 for numeric types, the empty string (&lsquo;&rsquo;) for string types, and the “zero” value for date and time types. INSERT INTO &hellip; SELECT statements are handled the same way as multiple-row inserts because the server does not examine the result set from the SELECT to see whether it returns a single row. (For a single-row INSERT, no warning occurs when NULL is inserted into a NOT NULL column. Instead, the statement fails with an error.)</p></blockquote>
+
+<p>単列インサートの場合は<code>NOT NULL</code>が指定されたカラムに<code>NULL</code>値が挿入されるとそのクエリはエラーとなって失敗するが、複数列インサートの場合は警告(warning)を発するものの、クエリは正常に受け付けられる。</p>
+
+<p>その際、<code>NULL</code>値が指定された各カラムにはそれぞれのカラムのデータ型の暗黙的なデフォルト値が挿入される。（数値型なら<code>0</code>、文字列型なら空文字<code>''</code>、etc&hellip;）</p>
+
+<h2>検証</h2>
+
+<ul>
+<li>MySQLのバージョンは5.1.69
+
+<ul>
+<li>ただしマニュアルの該当箇所はバージョン5.7まで変更がないため、どのバージョンでも同じ挙動と思われる</li>
+</ul>
+</li>
+<li>テーブル定義は以下</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="ss">`not_null_test`</span> <span class="p">(</span>
+</span><span class='line'>  <span class="ss">`id`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">`test_score`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">`created_at`</span> <span class="kt">timestamp</span> <span class="k">NOT</span> <span class="no">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;0000-00-00 00:00:00&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="ss">`id`</span><span class="p">)</span>
+</span><span class='line'><span class="p">)</span> <span class="kp">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="kp">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>単列インサート</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
+</span><span class='line'><span class="nf">not_null_test</span>
+</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
+</span><span class='line'><span class="k">values</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ERROR</span> <span class="mi">1048</span> <span class="p">(</span><span class="mi">23000</span><span class="p">):</span> <span class="k">Column</span> <span class="s1">&#39;test_score&#39;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="no">null</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>複数列インサート</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
+</span><span class='line'><span class="nf">not_null_test</span>
+</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
+</span><span class='line'><span class="k">values</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">),</span>
+</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">2</span> <span class="n">rows</span> <span class="n">affected</span><span class="p">,</span> <span class="mi">2</span> <span class="nf">warnings</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</span><span class='line'><span class="n">Records</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">Duplicates</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Warnings</span><span class="p">:</span> <span class="mi">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">not_null_test</span><span class="p">;</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">test_score</span> <span class="o">|</span> <span class="n">created_at</span>          <span class="o">|</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
+</span><span class='line'><span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="mi">2</span> <span class="n">rows</span> <span class="k">in</span> <span class="kt">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>※ timestampにテーブル定義で設定したデフォルト値<code>'0000-00-00 00:00:00'</code>ではなく、型のデフォルト値である現在時刻が入っている点に注意</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[RESTとはなにか]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/09/14/what-is-rest/"/>
+    <updated>2014-09-14T13:57:07+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/09/14/what-is-rest</id>
+    <content type="html"><![CDATA[<p>APIを実装することになり、今更ながらWebのアーキテクチャスタイルであるRESTとはなにか理解するためにまとめてみた。</p>
+
+<h2>Webのアーキテクチャスタイル</h2>
+
+<p>Webのアーキテクチャスタイルはクライアント/サーバーというスタイルを中心に、いくつかの制限（アーキテクチャ）を複合的に組み合わせたREST(Representational State Transfer)を理想としている</p>
+
+<h2>RESTはどのようなスタイルなのか</h2>
+
+<p>RESTは以下のスタイルを複合的に組み合わせたアーキテクチャである</p>
+
+<ul>
+<li>クライアント/サーバー</li>
+<li>ステートレスサーバー</li>
+<li>キャッシュ</li>
+<li>統一インターフェース</li>
+<li>階層化システム</li>
+<li>コードオンデマンド</li>
+</ul>
+
+
+<h3>クライアント/サーバー</h3>
+
+<p>WebではHTTPでクライアントとサーバーが通信する、クライアント/サーバーアーキテクチャを採用している。クライアントはサーバーにリクエストを送り、サーバーはそれに対してレスポンスを返す。</p>
+
+<p>ユーザーインターフェースはクライアントに任せればよく、サーバーは処理に専念できるので様々なデバイス（PC・携帯電話・ゲーム機）に対応でき、サーバーの冗長化も容易である。</p>
+
+<h3>ステートレスサーバー</h3>
+
+<p>ステートフル/ステートレスという考え方があるが、サーバーがステートレスなやり取りを前提としていること。</p>
+
+<p>ステートフル/ステートレスに関しては以下のエントリを参照</p>
+
+<ul>
+<li><a href="http://sojiro14.github.io/blog/2014/09/13/stateful-and-stateless/">ステートフル/ステートレスとはどういうことか</a></li>
+</ul>
+
+
+<h3>キャッシュ</h3>
+
+<p>一度取得したリソースをクライアント側である程度の期間保持して使い回すこと。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>同じリソースを取得するためにその都度クライアント/サーバー間で通信する必要がなくなる</li>
+<li>これによりネットワークの帯域節約や処理の高速化を実現できる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>適切に制御しないと意図せず古いリソースを参照してしまうことがある</li>
+<li>特に大規模なシステムではどこで何がキャッシュされているか正確に把握するのは容易ではない</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>統一インターフェース</h3>
+
+<p>リソースに対する操作を統一したインターフェースで行う。</p>
+
+<p>HTTP/1.1ではリソースに対するメソッドが8つのみ定義されている。このようにインターフェースを限定することで様々なコンポーネントが生まれても統一された仕様としてリソースへの操作が行われ、それぞれの独立性が保たれることで多様性を受け入れることができる。</p>
+
+<h3>階層化システム</h3>
+
+<p>統一インターフェースを採用することにより、クライアント/サーバー間にプロキシなどのコンポーネントを設置してもクライアントはそのままリクエストを送ることができる。</p>
+
+<p>これにより大規模システムではロードバランサーを導入したり、HTTPインターフェースを持たないコンポーネントに対してHTTPインターフェースをもつサーバーを返して処理をするなどの階層化が可能となる。</p>
+
+<p>このようなアーキテクチャを階層化システムと呼ぶ。</p>
+
+<h3>コードオンデマンド</h3>
+
+<p>プログラムをサーバーからクライアントが受け取り、それをクライアント上で実行するアーキテクチャスタイル。JavaScriptやFlashがこれに該当する。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>サーバーと都度通信することなくクライアント側のみで処理できることが増える</li>
+<li>これによりユーザーのアクションに対する処理の速度が向上する</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>クライアント/サーバー間でやり取りされるリソースが不明確になる</li>
+<li>クライアント側の裁量が増える分、サーバーとやり取りされるリソースの内容が明確ではなくなる</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>RESTful</h2>
+
+<p>RESTの思想に忠実に設計されていることをRESTfulである、と言う。</p>
+
+<p>RESTは上記の通り分散ネットワークを効率的に、可用性・冗長性高く利用するための理論であり、Webが理想とするアーキテクチャスタイルである。</p>
+
+<p>この思想に則った設計がされることで多様なシステムの中にも仕様の統一感が生まれ、Webの世界が広がったと言える。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ステートフル ステートレスとはどういうことか]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/09/13/stateful-and-stateless/"/>
+    <updated>2014-09-13T18:00:03+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/09/13/stateful-and-stateless</id>
+    <content type="html"><![CDATA[<p>コンポーネント間のやり取りにはステートフル/ステートレスという考え方がある。FTPではステートフルなやり取りが、HTTPではステートレスなやり取りが採用されいるが、それぞれの特徴についてまとめてみる。</p>
+
+<h2>セッション状態（アプリケーション状態）</h2>
+
+<p>システムにログインしてからログアウトするまでの一連の操作をセッションと呼ぶ。その一連の操作の中のそれぞれの状態をセッション状態と呼ぶ。</p>
+
+<h2>ステートフル</h2>
+
+<p>ステートフルなやり取りではサーバーはクライアントのセッション状態を保持している。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>やり取りが完結に済む</li>
+<li>それによりネットワークの帯域を節約できる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>クライアントの状態を都度把握しておかなければいけないのでクライアントが増えると負荷も増える</li>
+<li>サーバーを複数台設置する場合にはそれぞれのサーバー間でクライアントの状態を同期しなければいけない</li>
+<li>これらの理由によりスケールアウトには向かない</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>ステートレス</h2>
+
+<p>ステートレスなやり取りではサーバーはクライアントのセッション情報を保持しない。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>クライアントのリクエストは状態に依存せず、常にリソースに対する操作に必要十分な情報となる</li>
+<li>よってサーバーが増えてもそのままのリクエストでいつも同じリソースに対する操作ができる</li>
+<li>このためスケールアウトに向いている</li>
+<li>また処理がクライアントの状態に依らないので処理がシンプルになる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>やり取りが冗長になりがちである</li>
+<li>またリソースへの操作が必要になる度にそのやり取りを繰り返す必要がある</li>
+<li>これによりネットワークの帯域を消費し、処理も遅くなる</li>
+<li>サーバーが状態を保持していないのでエラーが起きたときのハンドリングが複雑になりがちである</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[reveal.jsを使ったプレゼンテーションの作成]]></title>
@@ -567,1695 +2553,6 @@
 
 
 <p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Redisに用意されたデータ型とその扱い]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage/"/>
-    <updated>2014-07-27T00:47:21+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/07/27/rediss-data-type-and-usage</id>
-    <content type="html"><![CDATA[<h2>Redisで扱えるデータ型</h2>
-
-<ul>
-<li>String</li>
-<li>List</li>
-<li>Set</li>
-<li>Sorted Set</li>
-<li>Hash</li>
-</ul>
-
-
-<h2>String</h2>
-
-<p>文字列型</p>
-
-<p>文字列や数値など、Keyに対して1つに定まる値。</p>
-
-<h3>値のset</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>set key value                     # 1つのkey-valueをsetする
-</span><span class='line'>mset key_1 value_1 key_2 value_2  # key-valueの組を複数setする</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値のget</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>get key                 # 1つのkeyに対するvalueをgetする
-</span><span class='line'>mget key_1 key_2 key_3  # 複数のkeyに対するvalueをgetする</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; set name Steven
-</span><span class='line'>OK
-</span><span class='line'>redis&gt; get name
-</span><span class='line'>"Steven"
-</span><span class='line'>redis&gt; mset number 8 color red
-</span><span class='line'>OK
-</span><span class='line'>redis&gt; mget name number color
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "8"
-</span><span class='line'>3) "red"</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>List</h2>
-
-<p>リスト型</p>
-
-<p>順番をもった値の集合。</p>
-
-<h3>値の追加</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rpush key member  # リストの末尾に値を追加
-</span><span class='line'>lpush key member  # リストの先頭に値を追加</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の削除</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rpop key  # リストの末尾の値を削除
-</span><span class='line'>lpop key  # リストの先頭の値を削除</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>範囲を指定して値を取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>lrange key 0 3   # 1番目から4番目まで値を取得
-</span><span class='line'>lrange key 0 -1  # 1番目から最後（最後から1番目）までの値を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>位置を指定して値を取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>lindex key 2   # 3番目の値を取得
-</span><span class='line'>lindex key -1  # 最後の値を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>要素の数を取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>llen key</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; rpush player Steven
-</span><span class='line'>redis&gt; rpush player Michael James
-</span><span class='line'>redis&gt; lrange player 0 -1
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>3) "James"
-</span><span class='line'>redis&gt; lrange player 0 1
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>redis&gt; lindex player 1
-</span><span class='line'>"Michael"
-</span><span class='line'>redis&gt; lindex player -1
-</span><span class='line'>"James"
-</span><span class='line'>redis&gt; rpop player
-</span><span class='line'>"James"
-</span><span class='line'>redis&gt; lrange player 0 -1
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>redis&gt; llen player
-</span><span class='line'>(integer) 2</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Set</h2>
-
-<p>セット型</p>
-
-<p>順不同の値の集合。値の重複を許さない。</p>
-
-<h3>値の追加</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sadd key member  # keyに対応するセットに指定した値を追加</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の削除</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>srem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の参照</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>smembers key  # keyに対応するセットの値を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>和集合の取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sunion key1 key2  # key1に対応するセットとkey2に対応するセットの値の集合を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>差集合の取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sdiff key1 key2  # key1に対応するセットとkey2に対応するセットの値の差分の集合を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>積集合の取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sinter key1 key2  # key1に対応するセットとkey2に対応するセットの値の重複部分の集合を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; sadd reds Steven
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; smembers reds
-</span><span class='line'>1) "Steven"
-</span><span class='line'>redis&gt; sadd reds Steve
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; sadd reds Michael
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; smembers reds
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>3) "Steve"
-</span><span class='line'>redis&gt; srem reds Michael
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; smembers reds
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Steve"
-</span><span class='line'>redis&gt; sadd three_lions Steven Michael
-</span><span class='line'>(integer) 2
-</span><span class='line'>redis&gt; smembers three_lions
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>redis&gt; sunion reds three_lions
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>3) "Steve"
-</span><span class='line'>redis&gt; sdiff reds three_lions
-</span><span class='line'>1) "Steve"
-</span><span class='line'>redis&gt; sdiff three_lions reds  # sdiffの後のkeyの順番により結果が違うことに注意
-</span><span class='line'>1) "Michael"
-</span><span class='line'>redis&gt; sinter reds three_lions
-</span><span class='line'>1) "Steven"</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Sorted Set</h2>
-
-<p>ソート済みセット型</p>
-
-<p>セット型と同様の特徴に加えて個々の値がスコアを持つ。</p>
-
-<h3>値の追加</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zadd key score member  # keyに対応するセットにスコア付きで値を追加</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の削除</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zrem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zrange key 0 3     # keyに対応するセットからスコアの低い順に1番目から4番目の値を取得
-</span><span class='line'>zrevrange key 0 3  # keyに対応するセットからスコアの高い順に1番目から4番目の値を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の順位を取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zrank key member     # 指定した値の、keyに対応するセット中のランクを取得（スコアの低い順）
-</span><span class='line'>zrevrank key member  # 指定した値の、keyに対応するセット中のランクを取得（スコアの高い順）</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; zadd fifa 1 germany
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; zrange fifa 0 0
-</span><span class='line'>1) "germany"
-</span><span class='line'>redis&gt; zadd fifa 2 argentina
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; zadd fifa 3 holland 4 colombia 45 japan
-</span><span class='line'>(integer) 3
-</span><span class='line'>redis&gt; zrange fifa 0 -1
-</span><span class='line'>1) "germany"
-</span><span class='line'>2) "argentina"
-</span><span class='line'>3) "holland"
-</span><span class='line'>4) "colombia"
-</span><span class='line'>5) "japan"
-</span><span class='line'>redis&gt; zrevrange fifa 0 -1
-</span><span class='line'>1) "japan"
-</span><span class='line'>2) "colombia"
-</span><span class='line'>3) "holland"
-</span><span class='line'>4) "argentina"
-</span><span class='line'>5) "germany"
-</span><span class='line'>redis&gt; zrank fifa japan
-</span><span class='line'>(integer) 4                      # 0番目から数えた値が返るので注意
-</span><span class='line'>redis&gt; zrevrank fifa argentina
-</span><span class='line'>(integer) 3                      # 0番目から数えた値が返るので注意
-</span><span class='line'>redis&gt; zrem fifa japan
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; zrange fifa 0 -1
-</span><span class='line'>1) "germany"
-</span><span class='line'>2) "argentina"
-</span><span class='line'>3) "holland"
-</span><span class='line'>4) "colombia"</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Hash</h2>
-
-<p>ハッシュ型</p>
-
-<p>field（valueについた名前）とvalueを1セットとする値の集合（ハッシュ）。</p>
-
-<h3>値のset</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>hset key field value                       # keyにfieldとvalueのハッシュをset
-</span><span class='line'>hmset key field_1 value_1 field_2 value_2  # keyにハッシュのfieldとvalueを複数セット</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値のget</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>hget key field             # keyに対応するハッシュから指定したfieldのvalueを取得
-</span><span class='line'>hmget key field_1 field_2  # keyに対応するハッシュから指定した複数のfieldのvalueを取得
-</span><span class='line'>hkeys key                  # keyに対応するハッシュのすべてのfieldを取得
-</span><span class='line'>hvals key                  # keyに対応するハッシュのすべてのvalueを取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; hset steven position mf
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; hget steven position
-</span><span class='line'>"mf"
-</span><span class='line'>redis&gt; hmset steven nationality england club reds
-</span><span class='line'>OK
-</span><span class='line'>redis&gt; hmget steven club position
-</span><span class='line'>1) "reds"
-</span><span class='line'>2) "mf"
-</span><span class='line'>redis&gt; hkeys steven
-</span><span class='line'>1) "position"
-</span><span class='line'>2) "nationality"
-</span><span class='line'>3) "club"
-</span><span class='line'>redis&gt; hvals steven
-</span><span class='line'>1) "mf"
-</span><span class='line'>2) "england"
-</span><span class='line'>3) "reds"</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[HTML5 Canvas #1 -Canvasを初めて使う-]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/07/17/html5-canvas-number-1/"/>
-    <updated>2014-07-17T02:13:46+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/07/17/html5-canvas-number-1</id>
-    <content type="html"><![CDATA[<h1>Canvasとは</h1>
-
-<ul>
-<li>ブラウザ上に図形を描画するためのHTML5の仕様の一つ</li>
-<li>プラグインを使わずにJavaScriptベースで図形を描画することができる。</li>
-<li>アニメーションメソッドはないので動きをつけるためには1コマずつ描画し直す必要がある</li>
-</ul>
-
-
-<p>今回はCanvasを使った図形の描画とそれを動的に消す操作をしてみる。</p>
-
-<h1>今回使う要素</h1>
-
-<ul>
-<li>メソッド
-
-<ul>
-<li>getContext()</li>
-<li>fillRect()</li>
-<li>clearRect()</li>
-</ul>
-</li>
-<li>プロパティ
-
-<ul>
-<li>fillStyle</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>getContext()</h2>
-
-<p>Canvasはこのメソッドから始まる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">targetElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">ctx</span> <span class="o">=</span> <span class="nx">targetElement</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>getElementById</code> などでCanvasの対象となるDOM要素を取得し、その要素に対して <code>getContext()</code> メソッドを呼ぶ</p>
-
-<p>引数は <code>'2d'</code> のみが認められている。（今後&#8217;3d&#8217;とかつかえるようになるかも）</p>
-
-<p> <code>getContext('2d')</code> で取得した <code>ctx</code> オブジェクトに対してメソッドやプロパティを適用していく</p>
-
-<h2>fillRect()</h2>
-
-<p>canvas上の指定した位置に指定した大きさの長方形を描画する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>fillRect()</code> メソッドは4つの引数を取る。</p>
-
-<ul>
-<li>1つめ: 描画する長方形の左上頂点の<strong>x座標</strong></li>
-<li>2つめ: 描画する長方形の左上頂点の<strong>y座標</strong></li>
-<li>3つめ: 描画する長方形の<strong>幅</strong></li>
-<li>4つめ: 描画する長方形の<strong>高さ</strong></li>
-</ul>
-
-
-<p>上記例ではcanvasの左上頂点（原点）から</p>
-
-<ul>
-<li>右方向（x軸方向）に80px</li>
-<li>下方向（y軸方向）に100px</li>
-</ul>
-
-
-<p>の点に左上の頂点を持つ、</p>
-
-<ul>
-<li>幅40px</li>
-<li>高さ40px</li>
-</ul>
-
-
-<p>の長方形（正方形）を描画することになる</p>
-
-<h2>clearRect()</h2>
-
-<p>指定された長方形を消す</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>clearRect()</code> は <code>fillRect()</code> 同様に4つの引数を取る</p>
-
-<ul>
-<li>1つめ: 消す長方形の左上頂点の<strong>x座標</strong></li>
-<li>2つめ: 消す長方形の左上頂点の<strong>y座標</strong></li>
-<li>3つめ: 消す長方形の<strong>幅</strong></li>
-<li>4つめ: 消す長方形の<strong>高さ</strong></li>
-</ul>
-
-
-<p>よって上記例ではcanvasの原点から幅200px、高さ400pxの長方形（範囲）に渡ってクリアする</p>
-
-<h2>fillStyle</h2>
-
-<p>オブジェクトのStyleを変更する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;rgb(255, 0, 0)&#39;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>主にオブジェクトの色を指定するのに使う（Canvasではデフォルトの色は黒）</p>
-
-<p>指定の仕方はCSSに準拠している</p>
-
-<p>上記例ではオブジェクトを赤で描画できるようになる</p>
-
-<h1>サンプル</h1>
-
-<p>赤い正方形を描いたり消したりする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
-</span><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;head&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">utf-8</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;title&gt;</span>Canvas Sample1<span class="nt">&lt;/title&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>            <span class="kd">var</span> <span class="nx">ctx</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="kd">function</span> <span class="nx">load</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>                <span class="kd">var</span> <span class="nx">targetElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">);</span>
-</span><span class='line'>                <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">targetElement</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
-</span><span class='line'>                <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;rgb(255, 0, 0)&#39;</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="kd">function</span> <span class="nx">paint</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="kd">function</span> <span class="nx">erase</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nx">ctx</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">&lt;/script&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/head&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;body</span> <span class="na">onload=</span><span class="s">&quot;load()&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;target&quot;</span> <span class="na">style=</span><span class="s">&quot;border: 5px solid gray&quot;</span> <span class="na">width=</span><span class="s">&quot;200&quot;</span> <span class="na">height=</span><span class="s">&quot;400&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">value=</span><span class="s">&quot;Paint&quot;</span> <span class="na">onclick=</span><span class="s">&quot;paint()&quot;</span> <span class="nt">/&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">value=</span><span class="s">&quot;Erase&quot;</span> <span class="na">onclick=</span><span class="s">&quot;erase()&quot;</span> <span class="nt">/&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>幅200px、高さ400pxのcanvasを用意し、そこに正方形を描くpaint関数とクリアするerase関数を定義した</p>
-
-<h2>参考資料</h2>
-
-<ul>
-<li><a href="http://www.html5.jp/canvas/index.html">HTML5.jp Canvas</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[シェルの変更について]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/07/06/changing-login-shell/"/>
-    <updated>2014-07-06T20:43:22+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/07/06/changing-login-shell</id>
-    <content type="html"><![CDATA[<p>さくらでレンタルサーバーを借りたが、デフォルトのシェルが使い慣れたbashではなかったので変更した際のメモ。</p>
-
-<h2>現在のシェルを確認</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% <span class="nb">echo</span> <span class="nv">$SHELL</span>
-</span><span class='line'>/bin/csh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>環境変数 <code>$SHELL</code> に現在のシェルのパスが入っている。</p>
-
-<h2>変更できるシェルの確認</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% cat /etc/shells
-</span><span class='line'><span class="c"># $FreeBSD: release/9.1.0/etc/shells 59717 2000-04-27 21:58:46Z ache $</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># List of acceptable shells for chpass(1).</span>
-</span><span class='line'><span class="c"># Ftpd will not allow users to connect who are not using</span>
-</span><span class='line'><span class="c"># one of these shells.</span>
-</span><span class='line'>
-</span><span class='line'>/bin/sh
-</span><span class='line'>/bin/csh
-</span><span class='line'>/bin/tcsh
-</span><span class='line'>/usr/local/bin/bash
-</span><span class='line'>/usr/local/bin/rbash
-</span><span class='line'>/usr/local/bin/zsh
-</span><span class='line'>/usr/local/bin/rzsh
-</span><span class='line'>/usr/bin/passwd
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>bashが使えることが確認できる。</p>
-
-<h2>シェルを変更する</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% chsh -s /usr/local/bin/bash
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>chsh</code> はログインシェルを変更するコマンド。 <code>-s</code> オプションを付けないとインタラクティブに動作する。</p>
-
-<p>ログインシェルはユーザー毎に設定できるログイン時に起動されるシェルのことで、 <code>/etc/passwd</code> ファイルで設定されている。</p>
-
-<p> <code>chsh</code> はこのファイルを書き換える。</p>
-
-<h2>bashの設定ファイルを書く</h2>
-
-<p>ログインシェルをbashに変更したら</p>
-
-<ul>
-<li>.bash_profile</li>
-<li>.bashrc</li>
-</ul>
-
-
-<p>など、いつもの設定ファイルを記述する</p>
-
-<h2>再度サーバーにログイン</h2>
-
-<p>設定を終えて再度サーバーにログインするとbashが立ち上がる。</p>
-
-<h2>メモ</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% <span class="nb">exec</span> /usr/local/bin/bash -l
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>でbashをログインシェルとして立ち上げることもできるが設定ファイルは変わらないのでログインの度にデフォルトのシェルに戻る。</p>
-
-<p><code>exec</code> コマンドは引数で渡された処理にプロセスを置き換える。</p>
-
-<p>よって上記コマンドが実行されるとbashがログインシェルとして置き換わる。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Vimで連番を振る方法]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/06/14/writing-serial-numbers-with-vim/"/>
-    <updated>2014-06-14T02:01:05+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/06/14/writing-serial-numbers-with-vim</id>
-    <content type="html"><![CDATA[<p>大量のvalueに連番を振りたくなったのでvimの機能を調べて使ってみた。
-目標は以下のようにurlのリストをPerlのハッシュ化すること。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>example_1.com
-</span><span class='line'>example_2.com
-</span><span class='line'>example_3.com
-</span><span class='line'>~
-</span><span class='line'>example_254.com
-</span><span class='line'>example_255.com
-</span><span class='line'>example_256.com</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">my</span> <span class="nv">%urls</span> <span class="o">=</span> <span class="p">(</span>
-</span><span class='line'>    <span class="mi">1</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_1.com&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="mi">2</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_2.com&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="mi">3</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_3.com&#39;</span><span class="p">,</span>
-</span><span class='line'><span class="o">~</span>
-</span><span class='line'>    <span class="mi">254</span> <span class="o">=&gt;</span> <span class="s">&#39;example_254.com&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="mi">255</span> <span class="o">=&gt;</span> <span class="s">&#39;example_255.com&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="mi">256</span> <span class="o">=&gt;</span> <span class="s">&#39;example_256.com&#39;</span><span class="p">,</span>
-</span><span class='line'><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>使うvimの機能</h2>
-
-<ul>
-<li>数字のインクリメント/デクリメント</li>
-<li>操作の記録（complex repeat）</li>
-</ul>
-
-
-<h2>①数字のインクリメント/デクリメント</h2>
-
-<h3>数字のインクリメント</h3>
-
-<p>数字にカーソルを合わせて</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">a</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>数字のデクリメント</h3>
-
-<p>数字にカーソルを合わせて</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">x</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>②操作の記録（complex repeat）</h2>
-
-<p>操作の記録は以下の順序で行う</p>
-
-<ol>
-<li>準備</li>
-<li>一連の操作に名前をつけて記録を開始</li>
-<li>一連の操作を行う</li>
-<li>記録を終了</li>
-<li>記録した操作を繰り返し実行</li>
-</ol>
-
-
-<h3>1. 準備</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">1</span> <span class="o">=&gt;</span> <span class="n">example_1</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="n">example_2</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="n">example_3</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="o">~</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>最初のキーである1だけ用意しておく。</p>
-
-<h3>2. 一連の操作に名前をつけて記録を開始</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">q</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">a</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>操作を開始する位置（キー1の上）にカーソルを合わせ、q, aの順でキーを押すと、&#8217;a&#8217;という名前で操作が記録される。</p>
-
-<p>操作の名前は&#8217;a&#8217;の大文字、小文字のアルファベット、もしくは数字から1字を選んで付けることができる。</p>
-
-<h3>3. 一連の操作を行う</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">v</span> <span class="p">(</span><span class="n">visual</span> <span class="n">mode</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">llllll</span> <span class="p">(</span><span class="o">=&gt;</span> <span class="err">までを選択</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">y</span> <span class="p">(</span><span class="n">yank</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">j</span> <span class="n">P</span> <span class="p">(</span><span class="mi">1</span><span class="err">行下がって</span><span class="n">paste</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">0</span> <span class="p">(</span><span class="err">行頭へカーソルを移動</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">a</span> <span class="p">(</span><span class="err">インクリメント</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">0</span> <span class="p">(</span><span class="err">行頭へカーソルを移動</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>4. 記録を終了</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">q</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>qを押して記録を終了</p>
-
-<h3>5. 記録した操作を繰り返し実行</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">254</span> <span class="p">(</span><span class="err">繰り返す回数</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nv">@a</span> <span class="p">(</span><span class="s">&#39;a&#39;</span><span class="err">と名付けた操作を指定</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここまで完了時点で以下のようになる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">1</span>   <span class="o">=&gt;</span> <span class="n">example_1</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="mi">2</span>   <span class="o">=&gt;</span> <span class="n">example_2</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="mi">3</span>   <span class="o">=&gt;</span> <span class="n">example_3</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="o">~</span>
-</span><span class='line'><span class="mi">254</span> <span class="o">=&gt;</span> <span class="n">example_254</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="mi">255</span> <span class="o">=&gt;</span> <span class="n">example_255</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="mi">256</span> <span class="o">=&gt;</span> <span class="n">example_256</span><span class="o">.</span><span class="n">com</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Perlの記法に合わせて整形</h2>
-
-<p>vimの矩形選択( <code>Ctrl + v</code> )などをつかって正しいハッシュの文法に整形する</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopressのテーマを変える]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/05/03/changing-octopress-theme/"/>
-    <updated>2014-05-03T17:37:29+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/05/03/changing-octopress-theme</id>
-    <content type="html"><![CDATA[<p>Octopressのテーマを変更する</p>
-
-<ul>
-<li><a href="http://octopress.org/docs/theme/">Octopressの公式ドキュメント</a></li>
-</ul>
-
-
-<p>今回は既に作られ、公開されているテーマを拝借する</p>
-
-<h2>好みのテーマを探す</h2>
-
-<p><a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">3rd Party Octopress Themes</a>にテーマリストが公開されている。ここから使いたいテーマを探す。</p>
-
-<p><a href="http://opthemes.com/">Octopress Themes</a>にPreviewが見やすくまとめられている</p>
-
-<p>今回使用するテーマ</p>
-
-<ul>
-<li><a href="https://github.com/lucaslew/whitespace">Whitespace</a></li>
-</ul>
-
-
-<h2>テーマのインストール</h2>
-
-<h3>テーマをダウンロード</h3>
-
-<p>テーマ毎にclone元とclone先のpathを指定する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/octopress
-</span><span class='line'><span class="nv">$ </span>git clone GIT_URL .themes/THEME_NAME
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマ: Whitespaceの場合</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone git://github.com/lucaslew/whitespace.git .themes/whitespace
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>テーマをインストール</h3>
-
-<p>テーマを指定して <code>rake install</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;THEME_NAME&#39;</span><span class="o">]</span>
-</span><span class='line'><span class="nv">$ </span>rake generate
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマ: Whitespaceの場合</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;whitespace&#39;</span><span class="o">]</span>
-</span><span class='line'>A theme is already installed, proceeding will overwrite existing files. Are you sure? <span class="o">[</span>y/n<span class="o">]</span> y
-</span><span class='line'><span class="c">## Copying whitespace theme into ./source and ./sass</span>
-</span><span class='line'>mkdir -p <span class="nb">source</span>
-</span><span class='line'>cp -r .themes/whitespace/source/. <span class="nb">source</span>
-</span><span class='line'>mkdir -p sass
-</span><span class='line'>cp -r .themes/whitespace/sass/. sass
-</span><span class='line'>mkdir -p <span class="nb">source</span>/_posts
-</span><span class='line'>mkdir -p public
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマを上書きするか？と聞かれたので <code>y</code> で答える</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate
-</span><span class='line'><span class="c">## Generating Site with Jekyll</span>
-</span><span class='line'>overwrite <span class="nb">source</span>/stylesheets/screen.css
-</span><span class='line'>Configuration from /Users/user.name/git/octopress/_config.yml
-</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
-</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>デプロイ</h2>
-
-<p>テーマをインストールしたらデプロイ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ページにアクセスしてテーマが変更されていることを確認できればok</p>
-
-<h2>テーマがアップデートされたら</h2>
-
-<p>テーマが開発者によってアップデートされたら手元のファイルもアップデートする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/.themes/THEME_NAME
-</span><span class='line'><span class="nv">$ </span>git pull
-</span><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;THEME_NAME&#39;</span><span class="o">]</span>
-</span><span class='line'><span class="nv">$ </span>rake generate
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマ: Whitespaceの場合</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/.themes/whitespace
-</span><span class='line'><span class="nv">$ </span>git pull
-</span><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;whitespace&#39;</span><span class="o">]</span>
-</span><span class='line'><span class="nv">$ </span>rake generate
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>デプロイしてアップデート完了</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Github PagesとOctopressを使ったブログの作成]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress/"/>
-    <updated>2014-04-26T17:05:36+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress</id>
-    <content type="html"><![CDATA[<h2>①Octopress のインストール</h2>
-
-<h3>octopressリポジトリをクローン</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/
-</span><span class='line'><span class="nv">$ </span>git clone git://github.com/imathis/octopress.git octopress
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Bundlerを使って必要なパッケージをインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/
-</span><span class='line'><span class="nv">$ </span>sudo gem install bundler
-</span><span class='line'><span class="nv">$ </span>sudo bundle install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>bundle installがエラーになる</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo bundle install
-</span><span class='line'>Fetching gem metadata from https://rubygems.org/.......
-</span><span class='line'>Fetching additional metadata from https://rubygems.org/..
-</span><span class='line'>Using rake 0.9.2.2
-</span><span class='line'>
-</span><span class='line'>Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension.
-</span><span class='line'>
-</span><span class='line'>    /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby extconf.rb
-</span><span class='line'>checking <span class="k">for</span> main<span class="o">()</span> in -lc... yes
-</span><span class='line'>creating Makefile
-</span><span class='line'>
-</span><span class='line'>make <span class="s2">&quot;DESTDIR=&quot;</span>
-</span><span class='line'>compiling redcloth_attributes.c
-</span><span class='line'>compiling redcloth_inline.c
-</span><span class='line'>compiling redcloth_scan.c
-</span><span class='line'>linking shared-object redcloth_scan.bundle
-</span><span class='line'>clang: error: unknown argument: <span class="s1">&#39;-multiply_definedsuppress&#39;</span> <span class="o">[</span>-Wunused-command-line-argument-hard-error-in-future<span class="o">]</span>
-</span><span class='line'>clang: note: this will be a hard error <span class="o">(</span>cannot be downgraded to a warning<span class="o">)</span> in the future
-</span><span class='line'>make: *** <span class="o">[</span>redcloth_scan.bundle<span class="o">]</span> Error 1
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>Gem files will remain installed in /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9 <span class="k">for</span> inspection.
-</span><span class='line'>Results logged to /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9/ext/redcloth_scan/gem_make.out
-</span><span class='line'>An error occurred <span class="k">while</span> installing RedCloth <span class="o">(</span>4.2.9<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
-</span><span class='line'>Make sure that <span class="sb">`</span>gem install RedCloth -v <span class="s1">&#39;4.2.9&#39;</span><span class="sb">`</span> succeeds before bundling.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Xcodeのアップデートでコンパイラが更新されたことが原因のよう</p>
-
-<h3>オプションをつけてやり直し</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo <span class="nv">ARCHFLAGS</span><span class="o">=</span>-Wno-error<span class="o">=</span>unused-command-line-argument-hard-error-in-future bundle install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>ビルドツール、rakeをインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>②GitHubにリポジトリを作成</h2>
-
-<ul>
-<li>[username].github.io</li>
-</ul>
-
-
-<p>という名前でリポジトリを作る。今回は</p>
-
-<ul>
-<li>sojiro14.github.io</li>
-</ul>
-
-
-<h2>③Octopressでのデプロイ</h2>
-
-<h3>デプロイ設定する</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake setup_github_pages
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>途中でリポジトリのurlを聞かれるので入力。今回は</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git@github.com:sojiro14/sojiro14.github.io.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>を入力した</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake setup_github_pages
-</span><span class='line'>Enter the <span class="nb">read</span>/write url <span class="k">for</span> your repository
-</span><span class='line'><span class="o">(</span>For example, <span class="s1">&#39;git@github.com:your_username/your_username.github.io.git)</span>
-</span><span class='line'><span class="s1">           or &#39;</span>https://github.com/your_username/your_username.github.io<span class="s1">&#39;)</span>
-</span><span class='line'><span class="s1">Repository url: git@github.com:sojiro14/sojiro14.github.io.git</span>
-</span><span class='line'><span class="s1">Added remote git@github.com:sojiro14/sojiro14.github.io.git as origin</span>
-</span><span class='line'><span class="s1">Set origin as default remote</span>
-</span><span class='line'><span class="s1">Master branch renamed to &#39;</span><span class="nb">source</span><span class="err">&#39;</span> <span class="k">for</span> committing your blog <span class="nb">source </span>files
-</span><span class='line'>
-</span><span class='line'>・・・・（略）
-</span><span class='line'>
-</span><span class='line'> <span class="m">1</span> file changed, <span class="m">1</span> insertion<span class="o">(</span>+<span class="o">)</span>
-</span><span class='line'> create mode <span class="m">100644</span> index.html
-</span><span class='line'><span class="nb">cd</span> -
-</span><span class='line'>
-</span><span class='line'>---
-</span><span class='line'><span class="c">## Now you can deploy to git@github.com:sojiro14/sojiro14.github.io.git with `rake deploy` ##</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>ページの作成</h3>
-
-<p>必要ファイルを作成</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate
-</span><span class='line'><span class="c">## Generating Site with Jekyll</span>
-</span><span class='line'>directory <span class="nb">source</span>/stylesheets/
-</span><span class='line'>   create <span class="nb">source</span>/stylesheets/screen.css
-</span><span class='line'>Configuration from /Your/Octopress/Directory/git/octopress/_config.yml
-</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
-</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>deploy</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
-</span><span class='line'><span class="c">## Deploying branch to Github Pages </span>
-</span><span class='line'><span class="c">## Pulling any updates from Github Pages </span>
-</span><span class='line'><span class="nb">cd </span>_deploy
-</span><span class='line'>
-</span><span class='line'>・・・・（略）
-</span><span class='line'>
-</span><span class='line'><span class="c">## Github Pages deploy complete</span>
-</span><span class='line'><span class="nb">cd</span> -
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>deployの確認</h3>
-
-<p>実際にページにアクセスして確認する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>http://sojiro14.github.io
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>確認できればok。反映には少々(5分ほど)時間がかかる。</p>
-
-<h2>④Octopressの初期設定を変更</h2>
-
-<h3>_config.ymlの編集</h3>
-
-<p>_config.ymlファイルにてブログのタイトル、サブタイトル、筆者などを設定できる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim _config.yml
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>例えばタイトル、サブタイトルは以下のように設定</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Sojiro&#39;s Blog</span>
-</span><span class='line'><span class="l-Scalar-Plain">subtitle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This is nothing much.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>設定したらdeploy。Task: gen_deployを使う</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake gen_deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>もう一度ページにアクセスしてタイトルなどが変更されているのを確認できればok</p>
-
-<h2>⑤記事の投稿</h2>
-
-<h2>記事を書く</h2>
-
-<p>new_postの後には記事のタイトルを指定。英数字のみ使用可</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake new_post<span class="o">[</span><span class="s2">&quot;IRC-bot by HUBOT&quot;</span><span class="o">]</span>
-</span><span class='line'>mkdir -p <span class="nb">source</span>/_posts
-</span><span class='line'>Creating new post: <span class="nb">source</span>/_posts/2014-04-19-irc-bot-by-hubot.markdown
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>source/_posts/2014-04-19-irc-bot-by-hubot.markdownというファイルが生成されるのでそこに内容をマークダウンで記述</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim <span class="nb">source</span>/_posts/2014-04-19-irc-bot-by-hubot.markdown
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>---
-</span><span class='line'>layout: post
-</span><span class='line'>title: <span class="s2">&quot;IRC-bot by HUBOT&quot;</span>
-</span><span class='line'>date: 2014-04-19 21:05:49 +0900
-</span><span class='line'>comments: <span class="nb">true</span>
-</span><span class='line'>categories:
-</span><span class='line'>---
-</span><span class='line'>ここ以下に内容をマークダウンで書いていく
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>記事をデプロイ</h3>
-
-<p>記事を書いたらデプロイする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake gen_deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>記事が投稿されていることを確認できればok</p>
-
-<h2>⑥Google Analyticsを導入する</h2>
-
-<h3>Google AnalyticsのトラッキングIDを取得する</h3>
-
-<p><a href="http://www.google.com/intl/ja_jp/analytics/">Google Analyticsのサイト</a>からアカウントを作成し、</p>
-
-<ul>
-<li>username.github.io</li>
-</ul>
-
-
-<p>のトラッキングIDを取得する</p>
-
-<h3>取得したトラッキングIDを設定</h3>
-
-<p>_config.ymlにトラッキングIDを設定する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim _config.yml
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>場所はこちら</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Google Analytics</span>
-</span><span class='line'><span class="l-Scalar-Plain">google_analytics_tracking_id</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">XX-12345678-9</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>設定が終わったらデプロイ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake gen_deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Google Analyticsのサイト上でトラッキングできていることを確認できればok</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://www.rubylife.jp/rails/ini/index2.html">Bundlerを使ったGemパッケージの管理</a></li>
-<li><a href="http://qiita.com/yonesuke/items/26ed04f3f15e269c3ed9">Octopress インストールがうまくいかなかったのでメモ</a></li>
-<li><a href="http://d.hatena.ne.jp/unageanu/20100829/1283069269">Rakeの基本的な使い方まとめ</a></li>
-<li><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a></li>
-<li><a href="http://morizyun.github.io/blog/octopress-gitpage-minimum-install-guide/">OctopressでGitHub無料ブログ構築。sourceをBitbucket管理。簡単ガイド！</a></li>
-<li><a href="http://qiita.com/syui/items/07365ed24eef63602233">GitHub Pages + Octopress カスタマイズ</a></li>
-<li><a href="http://qiita.com/fakestarbaby/items/14785a63e064bb1306b9">OctopressでGoogleアナリティクスを使おう！</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[HUBOTを使ったirc-bot作成メモ]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/"/>
-    <updated>2014-04-19T21:05:49+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot</id>
-    <content type="html"><![CDATA[<h2>①HUBOTを動かすために必要な諸々のインストール</h2>
-
-<h3>準備として以下をインストールする</h3>
-
-<ul>
-<li>node.js（サーバー）</li>
-<li>npm（パッケージ管理コマンド）</li>
-<li>Redis（KVS）</li>
-</ul>
-
-
-<h3>上記をインストールするためにHomebrewのインストールから始める</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでHomebrewが入るはず</p>
-
-<h3>次にHomebrewを使ってそれぞれインストールする</h3>
-
-<p>まずnode.jsとnpm</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install node
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンド一発でnode.jsとnpmが入るはず</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
-</span><span class='line'>v0.10.26
-</span><span class='line'><span class="nv">$ </span>npm -v
-</span><span class='line'>1.4.6
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Redisもインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install redis
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Redisを起動しておく</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>redis-server <span class="p">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>②HUBOTをインストールする</h2>
-
-<h3>GitHubからリポジトリをクローンしてインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/
-</span><span class='line'><span class="nv">$ </span>git clone git://github.com/github/hubot.git
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>hubot/
-</span><span class='line'><span class="nv">$ </span>npm install -g hubot coffee-script
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>動くか確認</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot
-</span><span class='line'>Hubot&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>OK</p>
-
-<h2>③HUBOTをircと連携させる</h2>
-
-<h3>自分用のHUBOTを作る</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create myhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>myhubotの部分は自由に変更可。この名前のディレクトリが作られる</p>
-
-<h3>自分用HUBOTにhubot-ircをインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>myhubot/
-</span><span class='line'><span class="nv">$ </span>npm install hubot-irc --save <span class="o">&amp;&amp;</span> npm install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>irc連携のためのスクリプトを書く</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>中身はこんな感じ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat runhubot
-</span><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
-</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
-</span><span class='line'>
-</span><span class='line'>bin/hubot -a irc --name myhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>スクリプトの実行権限追加</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>chmod u+x runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>起動スクリプト実行！</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./runhubot <span class="p">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>irc上でbotがいるか確認する</h3>
-
-<p>bot_kunがいたのでOK</p>
-
-<h2>④botにさせたいことを設定する</h2>
-
-<h3>HUBOTにさせたいことはscriptsディレクトリ以下にCoffeeScriptもしくはJavaScriptで記述する</h3>
-
-<p>最初からいくつかのスクリプトが存在するので、それを参考に書けばOK</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim scripts/tell_fuga.coffee
-</span><span class='line'><span class="nv">$ </span>cat scripts/tell_fuga.coffee
-</span><span class='line'>module.exports <span class="o">=</span> <span class="o">(</span>robot<span class="o">)</span> -&gt;
-</span><span class='line'>
-</span><span class='line'>  robot.hear /hoge/, <span class="o">(</span>msg<span class="o">)</span> -&gt;
-</span><span class='line'>      msg.send <span class="s2">&quot;fuga&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>スクリプトを書いたら、再起動すると読み込んでくれる</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./runhubot <span class="p">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>⑤cronが使えるようにする</h2>
-
-<h3>node-cronをインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install cron
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>cronを使ったスクリプトを書く</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim scripts/mention_hoge.coffee
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>今回は2時間おきに発言するスクリプトを書いてみた</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat scripts/mention_hoge.coffee
-</span><span class='line'><span class="nv">cron</span> <span class="o">=</span> require<span class="o">(</span><span class="s1">&#39;cron&#39;</span><span class="o">)</span>.CronJob
-</span><span class='line'>module.exports <span class="o">=</span> <span class="o">(</span>robot<span class="o">)</span> -&gt;
-</span><span class='line'>  robot.enter -&gt;
-</span><span class='line'>  new cron
-</span><span class='line'>    cronTime: <span class="s2">&quot;0 0 */2 * * *&quot;</span>
-</span><span class='line'>    start: <span class="nb">true</span>
-</span><span class='line'><span class="nb">    </span>timeZone: <span class="s2">&quot;Asia/Tokyo&quot;</span>
-</span><span class='line'>    onTick: -&gt;
-</span><span class='line'>      robot.send <span class="o">{</span>room: <span class="s2">&quot;#target_channel&quot;</span><span class="o">}</span>, <span class="s2">&quot;hoge&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参考資料</h2>
-
-<ul>
-<li><a href="http://www.tettori.net/post/293/">5分で終了。node.jsの環境構築が拍子抜けするほど簡単だったのでサンプルプログラム付きでまとめてみました【Mac編】</a></li>
-<li><a href="http://bulblub.com/2013/04/20/install_nodejs_with_homebrew/">Homebrewでnode.jsとnpmをインストール</a></li>
-<li><a href="http://tech-sketch.jp/2013/12/hubot-install-heroku.html">GitHubがOpsツールの中心として活用しているHubotを使ってみる</a></li>
-<li><a href="http://d.hatena.ne.jp/anatoo/20120204/1328368042">github社製ボットフレームワーク、hubotをIRCボットとして導入した話</a></li>
-<li><a href="http://mayo.hatenablog.com/entry/2013/10/15/074237">Redis 入門</a></li>
-<li>GitHub
-
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc">https://github.com/nandub/hubot-irc</a></li>
-<li><a href="https://github.com/ncb000gt/node-cron">https://github.com/ncb000gt/node-cron</a></li>
-</ul>
-</li>
-<li><a href="http://com4tis.net/2013/05/30/node-js-background-pid-stop/">Node.jsをバックグラウンドでプロセスとして動かしたものを停止させる</a>
-
-<ul>
-<li>→もっといい方法あるはず。。。</li>
-</ul>
-</li>
-</ul>
-
 ]]></content>
   </entry>
   

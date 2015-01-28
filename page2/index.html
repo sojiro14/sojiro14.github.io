@@ -9,13 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="①Octopress のインストール octopressリポジトリをクローン 1
-2
-$ cd git/
-$ git clone git://github.com/imathis/octopress.git octopress Bundlerを使って必要なパッケージをインストール 1
-2
-3
-$ &hellip;">
+  <meta name="description" content="Ruby on Railsを使ってみたいと思い、AWSにインストールした手順。 Ruby version 2.0.0 を RVMを使ってインストール Linuxに最新のRubyをインストールするを参照 gemsetの作成 Rubyをインストールしたら、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -100,7 +94,7 @@ $ &hellip;">
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress/">Github PagesとOctopressを使ったブログの作成</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/11/05/installing-ruby-on-rails-on-linux/">LinuxにRuby on Railsをインストールする</a></h1>
     
     
       <p class="meta">
@@ -109,7 +103,7 @@ $ &hellip;">
 
 
 
-<time class='entry-date' datetime='2014-04-26T17:05:36+09:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:05 pm</span></time>
+<time class='entry-date' datetime='2014-11-05T03:58:11+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:58 am</span></time>
         
         
       </p>
@@ -117,29 +111,303 @@ $ &hellip;">
   </header>
 
 
-  <div class="entry-content"><h2>①Octopress のインストール</h2>
+  <div class="entry-content"><p>Ruby on Railsを使ってみたいと思い、AWSにインストールした手順。</p>
 
-<h3>octopressリポジトリをクローン</h3>
+<h2>Ruby version 2.0.0 を RVMを使ってインストール</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a>を参照</p>
+
+<h2>gemsetの作成</h2>
+
+<blockquote><p>Rubyをインストールしたら、Railsのアプリケーションを実行するために必要な他のソフトウェア向けにシステムを構成する必要があります。通常、これはgemのインストールに関連します。gemとは自己完結型のRubyコードのパッケージです。バージョン番号の異なるgem同士がコンフリクトすることがあるため、一連のgemを自己完結的にまとめたgemsetというものを作成してバージョンを使い分けるのが便利です。
+（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
+
+<p>以下のコマンドでgemsetを作成する。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/
-</span><span class='line'><span class="nv">$ </span>git clone git://github.com/imathis/octopress.git octopress
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm use 2.0.0@railstutorial_rails_4_0 --create --default
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>Bundlerを使って必要なパッケージをインストール</h3>
+<blockquote><p>上のコマンドを実行すると、Ruby 2.0.0に関連付けられたrailstutorial_rails_4_0というgemsetを作成し (&ndash;create)、その場でgemsetを有効にし (use)、gemsetをデフォルトに設定 (&ndash;default) します。これにより、ターミナルウィンドウを開いたときに2.0.0@railstutorial_rails_4_0というRubyとgemsetの組み合わせが常に選択されるようになります。
+（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
+
+<h2>RubyGemsのインストール</h2>
+
+<p>AWSには始めからgemがインストールされていて、PATHは以下。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
+</span><span class='line'>/usr/bin/gem
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>RVMでRubyをインストールするとPATHが上書きされる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
+</span><span class='line'>~/.rvm/rubies/ruby-2.0.0-p594/bin/gem
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回はチュートリアルに合わせてgemのバージョンを更新する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem update --system 2.0.3
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>gemの設定ファイルである <code>.gemrc</code> に自動生成されるドキュメントである <code>ri</code> と <code>rdoc</code> の自動生成を抑制する設定をする</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/
-</span><span class='line'><span class="nv">$ </span>sudo gem install bundler
-</span><span class='line'><span class="nv">$ </span>sudo bundle install
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim .gemrc
+</span><span class='line'><span class="nv">$ </span>cat .gemrc
+</span><span class='line'>install: --no-rdoc --no-ri
+</span><span class='line'>update:  --no-rdoc --no-ri
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>bundle installがエラーになる</h3>
+<h2>Railsをインストールする</h2>
+
+<p>いよいよRailsをインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install rails --version 4.0.5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストール完了。
+以下のコマンドで確認する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails -v
+</span><span class='line'>Rails 4.0.5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Railsがインストールされたことを確認できた</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-10-31T05:29:00+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>5:29 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ruby on Railsを使ってみたいと思い、調べてみるとRails4ではRubyのバージョンは1.9以降が必須のようである。</p>
+
+<p>自分がさくらで借りているサーバーではRubyのバージョンが1.8.7だったのでこれを新しくしてみた。</p>
+
+<h2>RVMのインストール</h2>
+
+<p>新しいRubyをインストールする前にRVM(Ruby Version Manager)をインストールする。これはRubyをバージョンごとに管理するツール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -L https://get.rvm.io <span class="p">|</span> bash -s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドで自分のホームディレクトリ以下に <code>.rvm/</code> が作られ、ここにRVMがインストールされる。</p>
+
+<p>そして <code>.profile</code> <code>.bashrc</code> <code>.zshrc</code> にPATHを通す記述が追加される。</p>
+
+<p>また、 <code>.bash_profile</code> <code>.zlogin</code> にRVMをロードする記述が追加される。</p>
+
+<p>RVMのインストールが完了したらロードする。ここではbashを使っているので以下のようにする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Rubyのインストール</h2>
+
+<h3>さくらのレンタルサーバーでの失敗</h3>
+
+<p>まずはRubyのインストールに必要なパーツを調べ、無ければインストールする。
+以下のコマンドで必要なものをピックアップしインストールまで行ってくれる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
+</span><span class='line'>/your/home/directry/.rvm/scripts/functions/support: line 314: rvm_debug: <span class="nb">command </span>not found
+</span><span class='line'>Checking requirements <span class="k">for</span> freebsd.
+</span><span class='line'>Installing requirements <span class="k">for</span> freebsd.
+</span><span class='line'>Updating system.
+</span><span class='line'>Installing required packages: automake, bison, readline, libyaml...
+</span><span class='line'>Error running <span class="s1">&#39;requirements_freebsd_libs_install automake bison readline libyaml&#39;</span>,
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここでErrorが発生。内容は必要なパッケージがインストールできなかったということ。
+そこでFreeBSDのパッケージ管理コマンドである <code>pkg</code> コマンドを使ってインストールを試みる。</p>
+
+<p>が、サーバーの設定的に自分でパッケージを追加することができなかったのでさくらのサーバーを断念してAWSに移行した。</p>
+
+<h3>AWSに移行</h3>
+
+<p>AWSに移行して <code>$ rvm requirements</code> までを実行する。（AWSは始めからRubyのバージョンが2.0.0だったが構わず実行）
+ここでも <code>$ rvm requirements</code> が転ける。</p>
+
+<p>そこで今度はCentOSだったので <code>yum</code> を使ってインストールを試みる。以下のコマンドは <code>$ rvm requirements</code> が教えてくれる。Errorの原因が <code>sudo</code> で実行していなかったことなので <code>sudo</code> 付きで実行する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo yum install -y patch libyaml-devel libffi-devel glibc-headers autoconf gcc-c++ glibc-devel patch readline-devel zlib-devel openssl-devel automake libtool bison
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで成功。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
+</span><span class='line'>Checking requirements <span class="k">for</span> amazon.
+</span><span class='line'>Requirements installation successful.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>$ rvm requirements</code>も成功。</p>
+
+<p>このサーバーではすでにバージョン2.0.0のRubyがインストールされていたが、RVMの配下に新たにバージョン2.0.0のRubyをインストールする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm install 2.0.0 --with-openssl-dir<span class="o">=</span><span class="nv">$HOME</span>/.rvm/usr
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストール完了。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/">MySQLにおけるNOT NULLカラムへのインサート時の挙動</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-10-20T13:44:28+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:44 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。</p>
+
+<h2>単列インサートと複数列インサートで挙動が変わる</h2>
+
+<p> <code>NOT NULL</code>を指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、一度に複数行を挿入する複数列インサート（バルクインサート）で挙動が変わる。</p>
+
+<p><a href="http://dev.mysql.com/doc/refman/5.6/en/insert.html">MySQLマニュアル</a>からの抜粋</p>
+
+<blockquote><p>Inserting NULL into a column that has been declared NOT NULL. For multiple-row INSERT statements or INSERT INTO &hellip; SELECT statements, the column is set to the implicit default value for the column data type. This is 0 for numeric types, the empty string (&lsquo;&rsquo;) for string types, and the “zero” value for date and time types. INSERT INTO &hellip; SELECT statements are handled the same way as multiple-row inserts because the server does not examine the result set from the SELECT to see whether it returns a single row. (For a single-row INSERT, no warning occurs when NULL is inserted into a NOT NULL column. Instead, the statement fails with an error.)</p></blockquote>
+
+<p>単列インサートの場合は<code>NOT NULL</code>が指定されたカラムに<code>NULL</code>値が挿入されるとそのクエリはエラーとなって失敗するが、複数列インサートの場合は警告(warning)を発するものの、クエリは正常に受け付けられる。</p>
+
+<p>その際、<code>NULL</code>値が指定された各カラムにはそれぞれのカラムのデータ型の暗黙的なデフォルト値が挿入される。（数値型なら<code>0</code>、文字列型なら空文字<code>''</code>、etc&hellip;）</p>
+
+<h2>検証</h2>
+
+<ul>
+<li>MySQLのバージョンは5.1.69
+
+<ul>
+<li>ただしマニュアルの該当箇所はバージョン5.7まで変更がないため、どのバージョンでも同じ挙動と思われる</li>
+</ul>
+</li>
+<li>テーブル定義は以下</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="ss">`not_null_test`</span> <span class="p">(</span>
+</span><span class='line'>  <span class="ss">`id`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">`test_score`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">`created_at`</span> <span class="kt">timestamp</span> <span class="k">NOT</span> <span class="no">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;0000-00-00 00:00:00&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="ss">`id`</span><span class="p">)</span>
+</span><span class='line'><span class="p">)</span> <span class="kp">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="kp">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>単列インサート</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
+</span><span class='line'><span class="nf">not_null_test</span>
+</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
+</span><span class='line'><span class="k">values</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ERROR</span> <span class="mi">1048</span> <span class="p">(</span><span class="mi">23000</span><span class="p">):</span> <span class="k">Column</span> <span class="s1">&#39;test_score&#39;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="no">null</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>複数列インサート</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -159,88 +427,368 @@ $ &hellip;">
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo bundle install
-</span><span class='line'>Fetching gem metadata from https://rubygems.org/.......
-</span><span class='line'>Fetching additional metadata from https://rubygems.org/..
-</span><span class='line'>Using rake 0.9.2.2
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
+</span><span class='line'><span class="nf">not_null_test</span>
+</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
+</span><span class='line'><span class="k">values</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">),</span>
+</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'>Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension.
+</span><span class='line'><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">2</span> <span class="n">rows</span> <span class="n">affected</span><span class="p">,</span> <span class="mi">2</span> <span class="nf">warnings</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</span><span class='line'><span class="n">Records</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">Duplicates</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Warnings</span><span class="p">:</span> <span class="mi">2</span>
 </span><span class='line'>
-</span><span class='line'>    /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby extconf.rb
-</span><span class='line'>checking <span class="k">for</span> main<span class="o">()</span> in -lc... yes
-</span><span class='line'>creating Makefile
-</span><span class='line'>
-</span><span class='line'>make <span class="s2">&quot;DESTDIR=&quot;</span>
-</span><span class='line'>compiling redcloth_attributes.c
-</span><span class='line'>compiling redcloth_inline.c
-</span><span class='line'>compiling redcloth_scan.c
-</span><span class='line'>linking shared-object redcloth_scan.bundle
-</span><span class='line'>clang: error: unknown argument: <span class="s1">&#39;-multiply_definedsuppress&#39;</span> <span class="o">[</span>-Wunused-command-line-argument-hard-error-in-future<span class="o">]</span>
-</span><span class='line'>clang: note: this will be a hard error <span class="o">(</span>cannot be downgraded to a warning<span class="o">)</span> in the future
-</span><span class='line'>make: *** <span class="o">[</span>redcloth_scan.bundle<span class="o">]</span> Error 1
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>Gem files will remain installed in /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9 <span class="k">for</span> inspection.
-</span><span class='line'>Results logged to /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9/ext/redcloth_scan/gem_make.out
-</span><span class='line'>An error occurred <span class="k">while</span> installing RedCloth <span class="o">(</span>4.2.9<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
-</span><span class='line'>Make sure that <span class="sb">`</span>gem install RedCloth -v <span class="s1">&#39;4.2.9&#39;</span><span class="sb">`</span> succeeds before bundling.
+</span><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">not_null_test</span><span class="p">;</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">test_score</span> <span class="o">|</span> <span class="n">created_at</span>          <span class="o">|</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
+</span><span class='line'><span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="mi">2</span> <span class="n">rows</span> <span class="k">in</span> <span class="kt">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Xcodeのアップデートでコンパイラが更新されたことが原因のよう</p>
-
-<h3>オプションをつけてやり直し</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo <span class="nv">ARCHFLAGS</span><span class="o">=</span>-Wno-error<span class="o">=</span>unused-command-line-argument-hard-error-in-future bundle install
-</span></code></pre></td></tr></table></div></figure>
+<p>※ timestampにテーブル定義で設定したデフォルト値<code>'0000-00-00 00:00:00'</code>ではなく、型のデフォルト値である現在時刻が入っている点に注意</p>
+</div>
+  
+  
 
 
-<h3>ビルドツール、rakeをインストール</h3>
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/14/what-is-rest/">RESTとはなにか</a></h1>
+    
+    
+      <p class="meta">
+        
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install
-</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>②GitHubにリポジトリを作成</h2>
+
+<time class='entry-date' datetime='2014-09-14T13:57:07+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:57 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>APIを実装することになり、今更ながらWebのアーキテクチャスタイルであるRESTとはなにか理解するためにまとめてみた。</p>
+
+<h2>Webのアーキテクチャスタイル</h2>
+
+<p>Webのアーキテクチャスタイルはクライアント/サーバーというスタイルを中心に、いくつかの制限（アーキテクチャ）を複合的に組み合わせたREST(Representational State Transfer)を理想としている</p>
+
+<h2>RESTはどのようなスタイルなのか</h2>
+
+<p>RESTは以下のスタイルを複合的に組み合わせたアーキテクチャである</p>
 
 <ul>
-<li>[username].github.io</li>
+<li>クライアント/サーバー</li>
+<li>ステートレスサーバー</li>
+<li>キャッシュ</li>
+<li>統一インターフェース</li>
+<li>階層化システム</li>
+<li>コードオンデマンド</li>
 </ul>
 
 
-<p>という名前でリポジトリを作る。今回は</p>
+<h3>クライアント/サーバー</h3>
+
+<p>WebではHTTPでクライアントとサーバーが通信する、クライアント/サーバーアーキテクチャを採用している。クライアントはサーバーにリクエストを送り、サーバーはそれに対してレスポンスを返す。</p>
+
+<p>ユーザーインターフェースはクライアントに任せればよく、サーバーは処理に専念できるので様々なデバイス（PC・携帯電話・ゲーム機）に対応でき、サーバーの冗長化も容易である。</p>
+
+<h3>ステートレスサーバー</h3>
+
+<p>ステートフル/ステートレスという考え方があるが、サーバーがステートレスなやり取りを前提としていること。</p>
+
+<p>ステートフル/ステートレスに関しては以下のエントリを参照</p>
 
 <ul>
-<li>sojiro14.github.io</li>
+<li><a href="http://sojiro14.github.io/blog/2014/09/13/stateful-and-stateless/">ステートフル/ステートレスとはどういうことか</a></li>
 </ul>
 
 
-<h2>③Octopressでのデプロイ</h2>
+<h3>キャッシュ</h3>
 
-<h3>デプロイ設定する</h3>
+<p>一度取得したリソースをクライアント側である程度の期間保持して使い回すこと。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>同じリソースを取得するためにその都度クライアント/サーバー間で通信する必要がなくなる</li>
+<li>これによりネットワークの帯域節約や処理の高速化を実現できる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>適切に制御しないと意図せず古いリソースを参照してしまうことがある</li>
+<li>特に大規模なシステムではどこで何がキャッシュされているか正確に把握するのは容易ではない</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>統一インターフェース</h3>
+
+<p>リソースに対する操作を統一したインターフェースで行う。</p>
+
+<p>HTTP/1.1ではリソースに対するメソッドが8つのみ定義されている。このようにインターフェースを限定することで様々なコンポーネントが生まれても統一された仕様としてリソースへの操作が行われ、それぞれの独立性が保たれることで多様性を受け入れることができる。</p>
+
+<h3>階層化システム</h3>
+
+<p>統一インターフェースを採用することにより、クライアント/サーバー間にプロキシなどのコンポーネントを設置してもクライアントはそのままリクエストを送ることができる。</p>
+
+<p>これにより大規模システムではロードバランサーを導入したり、HTTPインターフェースを持たないコンポーネントに対してHTTPインターフェースをもつサーバーを返して処理をするなどの階層化が可能となる。</p>
+
+<p>このようなアーキテクチャを階層化システムと呼ぶ。</p>
+
+<h3>コードオンデマンド</h3>
+
+<p>プログラムをサーバーからクライアントが受け取り、それをクライアント上で実行するアーキテクチャスタイル。JavaScriptやFlashがこれに該当する。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>サーバーと都度通信することなくクライアント側のみで処理できることが増える</li>
+<li>これによりユーザーのアクションに対する処理の速度が向上する</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>クライアント/サーバー間でやり取りされるリソースが不明確になる</li>
+<li>クライアント側の裁量が増える分、サーバーとやり取りされるリソースの内容が明確ではなくなる</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>RESTful</h2>
+
+<p>RESTの思想に忠実に設計されていることをRESTfulである、と言う。</p>
+
+<p>RESTは上記の通り分散ネットワークを効率的に、可用性・冗長性高く利用するための理論であり、Webが理想とするアーキテクチャスタイルである。</p>
+
+<p>この思想に則った設計がされることで多様なシステムの中にも仕様の統一感が生まれ、Webの世界が広がったと言える。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/13/stateful-and-stateless/">ステートフル ステートレスとはどういうことか</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-09-13T18:00:03+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:00 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>コンポーネント間のやり取りにはステートフル/ステートレスという考え方がある。FTPではステートフルなやり取りが、HTTPではステートレスなやり取りが採用されいるが、それぞれの特徴についてまとめてみる。</p>
+
+<h2>セッション状態（アプリケーション状態）</h2>
+
+<p>システムにログインしてからログアウトするまでの一連の操作をセッションと呼ぶ。その一連の操作の中のそれぞれの状態をセッション状態と呼ぶ。</p>
+
+<h2>ステートフル</h2>
+
+<p>ステートフルなやり取りではサーバーはクライアントのセッション状態を保持している。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>やり取りが完結に済む</li>
+<li>それによりネットワークの帯域を節約できる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>クライアントの状態を都度把握しておかなければいけないのでクライアントが増えると負荷も増える</li>
+<li>サーバーを複数台設置する場合にはそれぞれのサーバー間でクライアントの状態を同期しなければいけない</li>
+<li>これらの理由によりスケールアウトには向かない</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>ステートレス</h2>
+
+<p>ステートレスなやり取りではサーバーはクライアントのセッション情報を保持しない。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>クライアントのリクエストは状態に依存せず、常にリソースに対する操作に必要十分な情報となる</li>
+<li>よってサーバーが増えてもそのままのリクエストでいつも同じリソースに対する操作ができる</li>
+<li>このためスケールアウトに向いている</li>
+<li>また処理がクライアントの状態に依らないので処理がシンプルになる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>やり取りが冗長になりがちである</li>
+<li>またリソースへの操作が必要になる度にそのやり取りを繰り返す必要がある</li>
+<li>これによりネットワークの帯域を消費し、処理も遅くなる</li>
+<li>サーバーが状態を保持していないのでエラーが起きたときのハンドリングが複雑になりがちである</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/31/presentation-by-reveal-dot-js/">reveal.jsを使ったプレゼンテーションの作成</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-31T19:17:21+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>7:17 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://yapcasia.org/2014/">YAPC::Asia 2014</a>のLTに登壇させていただいた。その際、サクッとオシャレなプレゼンテーションを作ることができるということでreveal.jsを使って作ったのでメモ。</p>
+
+<ul>
+<li><a href="http://sojiro14.github.io/presentation/2014/08/30/YAPC-Asia-LT/">実際のプレゼンテーション</a>（一部の画像を削除したもの）</li>
+</ul>
+
+
+<h2>reveal.jsとは</h2>
+
+<p>htmlやmarkdown形式で簡単にリッチなプレゼンテーションを書くことができるjsやcssを中心としたライブラリ</p>
+
+<ul>
+<li><a href="https://github.com/hakimel/reveal.js/">reveal.jsの実体</a></li>
+<li><a href="http://lab.hakim.se/reveal-js/#/">本家Demo</a></li>
+</ul>
+
+
+<h2>reveal.jsの入手</h2>
+
+<p><a href="https://github.com/hakimel/reveal.js">GitHubのreveal.jsリポジトリ</a>からzipをダウンロードする。右下の<code>Download ZIP</code>ボタンを押すだけで完了。</p>
+
+<h2>プレゼンテーションの作成</h2>
+
+<p>基本的に<code>index.html</code>を編集していく。特に以下の部分を編集していけば良い。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake setup_github_pages
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;slides&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="c">&lt;!---...</span>
+</span><span class='line'><span class="c">ここを編集</span>
+</span><span class='line'><span class="c">...--&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>途中でリポジトリのurlを聞かれるので入力。今回は</p>
+<p>デフォルトでは<a href="http://lab.hakim.se/reveal-js/#/">本家Demo</a>の仕様となっている。</p>
+
+<h2>ページの追加</h2>
+
+<p> <code>&lt;section&gt;&lt;/section&gt;</code>タグを追加することで新しいページを追加することができる。新しいページは右側に追加されていく。</p>
+
+<p>さらに<code>&lt;section&gt;&lt;/section&gt;</code>タグの中に<code>&lt;section&gt;&lt;/section&gt;</code>タグをネストすることで、縦方向にスライドを追加することができる。</p>
+
+<h2>スライドの動きの設定</h2>
+
+<p> <code>&lt;section&gt;</code>タグに<code>data-transition</code>や<code>data-background-transition</code>を指定することでスライドの動きを設定できる。</p>
+
+<p>デフォルトではスライドが回転するように動いていくが、例えば以下のように設定することで横方向にスライドが流れるようになる。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git@github.com:sojiro14/sojiro14.github.io.git
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section</span> <span class="na">data-transition=</span><span class="s">&quot;linear&quot;</span> <span class="na">data-background-transition=</span><span class="s">&quot;slide&quot;</span><span class="nt">&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>を入力した</p>
+<ul>
+<li>data-transition
+
+<ul>
+<li>スライドに載っているコンテンツの動きを指定</li>
+</ul>
+</li>
+<li>data-background-transition
+
+<ul>
+<li>スライド自体の動きを指定</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>背景の設定</h2>
+
+<p> <code>&lt;section&gt;</code>タグに<code>data-background</code>を指定することでスライドの背景を設定できる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section</span> <span class="na">data-background=</span><span class="s">&quot;#000000&quot;</span><span class="nt">&gt;</span>  <span class="c">&lt;!--背景色を指定--&gt;</span>
+</span><span class='line'><span class="nt">&lt;section</span> <span class="na">data-background=</span><span class="s">&quot;img.jpg&quot;</span><span class="nt">&gt;</span>  <span class="c">&lt;!--背景画像をパスで指定--&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>コードブロックを設定</h2>
+
+<p>コードブロックを挿入するには<code>&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</code>タグを挿入する。</p>
+
+<p> <code>&lt;code&gt;</code>タグのclassに言語を指定することで適切なハイライトが適用される。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -251,222 +799,99 @@ $ &hellip;">
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake setup_github_pages
-</span><span class='line'>Enter the <span class="nb">read</span>/write url <span class="k">for</span> your repository
-</span><span class='line'><span class="o">(</span>For example, <span class="s1">&#39;git@github.com:your_username/your_username.github.io.git)</span>
-</span><span class='line'><span class="s1">           or &#39;</span>https://github.com/your_username/your_username.github.io<span class="s1">&#39;)</span>
-</span><span class='line'><span class="s1">Repository url: git@github.com:sojiro14/sojiro14.github.io.git</span>
-</span><span class='line'><span class="s1">Added remote git@github.com:sojiro14/sojiro14.github.io.git as origin</span>
-</span><span class='line'><span class="s1">Set origin as default remote</span>
-</span><span class='line'><span class="s1">Master branch renamed to &#39;</span><span class="nb">source</span><span class="err">&#39;</span> <span class="k">for</span> committing your blog <span class="nb">source </span>files
-</span><span class='line'>
-</span><span class='line'>・・・・（略）
-</span><span class='line'>
-</span><span class='line'> <span class="m">1</span> file changed, <span class="m">1</span> insertion<span class="o">(</span>+<span class="o">)</span>
-</span><span class='line'> create mode <span class="m">100644</span> index.html
-</span><span class='line'><span class="nb">cd</span> -
-</span><span class='line'>
-</span><span class='line'>---
-</span><span class='line'><span class="c">## Now you can deploy to git@github.com:sojiro14/sojiro14.github.io.git with `rake deploy` ##</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;pre&gt;&lt;code</span> <span class="na">class=</span><span class="s">&quot;html&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;example&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>                test
+</span><span class='line'>            <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'><span class="nt">&lt;/section&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>ページの作成</h3>
+<h2>スライド内コンテンツの動きの設定</h2>
 
-<p>必要ファイルを作成</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate
-</span><span class='line'><span class="c">## Generating Site with Jekyll</span>
-</span><span class='line'>directory <span class="nb">source</span>/stylesheets/
-</span><span class='line'>   create <span class="nb">source</span>/stylesheets/screen.css
-</span><span class='line'>Configuration from /Your/Octopress/Directory/git/octopress/_config.yml
-</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
-</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>deploy</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
-</span><span class='line'><span class="c">## Deploying branch to Github Pages </span>
-</span><span class='line'><span class="c">## Pulling any updates from Github Pages </span>
-</span><span class='line'><span class="nb">cd </span>_deploy
-</span><span class='line'>
-</span><span class='line'>・・・・（略）
-</span><span class='line'>
-</span><span class='line'><span class="c">## Github Pages deploy complete</span>
-</span><span class='line'><span class="nb">cd</span> -
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>deployの確認</h3>
-
-<p>実際にページにアクセスして確認する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>http://sojiro14.github.io
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>確認できればok。反映には少々(5分ほど)時間がかかる。</p>
-
-<h2>④Octopressの初期設定を変更</h2>
-
-<h3>_config.ymlの編集</h3>
-
-<p>_config.ymlファイルにてブログのタイトル、サブタイトル、筆者などを設定できる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim _config.yml
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>例えばタイトル、サブタイトルは以下のように設定</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Sojiro&#39;s Blog</span>
-</span><span class='line'><span class="l-Scalar-Plain">subtitle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This is nothing much.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>設定したらdeploy。Task: gen_deployを使う</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake gen_deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>もう一度ページにアクセスしてタイトルなどが変更されているのを確認できればok</p>
-
-<h2>⑤記事の投稿</h2>
-
-<h2>記事を書く</h2>
-
-<p>new_postの後には記事のタイトルを指定。英数字のみ使用可</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake new_post<span class="o">[</span><span class="s2">&quot;IRC-bot by HUBOT&quot;</span><span class="o">]</span>
-</span><span class='line'>mkdir -p <span class="nb">source</span>/_posts
-</span><span class='line'>Creating new post: <span class="nb">source</span>/_posts/2014-04-19-irc-bot-by-hubot.markdown
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>source/_posts/2014-04-19-irc-bot-by-hubot.markdownというファイルが生成されるのでそこに内容をマークダウンで記述</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim <span class="nb">source</span>/_posts/2014-04-19-irc-bot-by-hubot.markdown
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>---
-</span><span class='line'>layout: post
-</span><span class='line'>title: <span class="s2">&quot;IRC-bot by HUBOT&quot;</span>
-</span><span class='line'>date: 2014-04-19 21:05:49 +0900
-</span><span class='line'>comments: <span class="nb">true</span>
-</span><span class='line'>categories:
-</span><span class='line'>---
-</span><span class='line'>ここ以下に内容をマークダウンで書いていく
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>記事をデプロイ</h3>
-
-<p>記事を書いたらデプロイする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake gen_deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>記事が投稿されていることを確認できればok</p>
-
-<h2>⑥Google Analyticsを導入する</h2>
-
-<h3>Google AnalyticsのトラッキングIDを取得する</h3>
-
-<p><a href="http://www.google.com/intl/ja_jp/analytics/">Google Analyticsのサイト</a>からアカウントを作成し、</p>
+<p>スライドのページ内でいくつかの動きを設定したいときは</p>
 
 <ul>
-<li>username.github.io</li>
+<li><code>section</code>タグのidに<code>fragments</code>を指定する。</li>
+<li>ページ内のコンテンツのclassに<code>fragment</code>を指定する。</li>
 </ul>
 
 
-<p>のトラッキングIDを取得する</p>
-
-<h3>取得したトラッキングIDを設定</h3>
-
-<p>_config.ymlにトラッキングIDを設定する</p>
-
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim _config.yml
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section</span> <span class="na">id=</span><span class="s">&quot;fragments&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;h2&gt;</span>example<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ol&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;fragment&quot;</span><span class="nt">&gt;</span>test1<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;fragment&quot;</span><span class="nt">&gt;</span>test2<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;fragment&quot;</span><span class="nt">&gt;</span>test3<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/ol&gt;</span>
+</span><span class='line'><span class="nt">&lt;/section&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>場所はこちら</p>
+<p>上記のように設定するとリストの要素が一つずつ出現する。</p>
+
+<p> <code>fragment</code>classにはオプションを設定することができ、オプションによって動作をが変わる。</p>
+
+<ul>
+<li><code>class="fragment current-visible"</code>: 要素が出現する（デフォルト）</li>
+<li><code>class="fragment grow"</code>: 要素が大きくなる</li>
+<li><code>class="fragment shrink"</code>: 要素が小さくなる</li>
+<li><code>class="fragment roll-in"</code>: 要素が回転しながら出現</li>
+<li><code>class="fragment fade-out"</code>: 要素が消える</li>
+<li><code>class="fragment highlight-green"</code>: 要素が指定した色になる(red, blueなども指定可能)</li>
+<li><code>class="fragment highlight-current-blue"</code>: 要素が指定した色で出現する(red, greenなども指定可能)</li>
+</ul>
+
+
+<h2>マークダウンでの記述</h2>
+
+<p>reveal.jsではプレゼンテーションをマークダウンで記述することもできる</p>
+
+<ul>
+<li><code>section</code>タグに<code>data-markdown</code>を指定</li>
+<li><code>&lt;script type="text/template"&gt;&lt;/script&gt;</code>ブロック内に記述</li>
+</ul>
+
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Google Analytics</span>
-</span><span class='line'><span class="l-Scalar-Plain">google_analytics_tracking_id</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">XX-12345678-9</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;section</span> <span class="na">data-markdown</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/template&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="err">#</span> <span class="err">ここに</span><span class="nx">markdown</span><span class="err">形式で記述</span>
+</span><span class='line'>    <span class="err">```</span>
+</span><span class='line'>    <span class="nx">echo</span> <span class="s2">&quot;you can also write code.&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="err">````</span>
+</span><span class='line'><span class="nt">&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/section&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>設定が終わったらデプロイ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake gen_deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Google Analyticsのサイト上でトラッキングできていることを確認できればok</p>
+<p>コードブロック内でも<code>&lt;/script&gt;</code>タグが出現するとマークダウンの終了と誤解されるので注意</p>
 
 <h2>参考</h2>
 
 <ul>
-<li><a href="http://www.rubylife.jp/rails/ini/index2.html">Bundlerを使ったGemパッケージの管理</a></li>
-<li><a href="http://qiita.com/yonesuke/items/26ed04f3f15e269c3ed9">Octopress インストールがうまくいかなかったのでメモ</a></li>
-<li><a href="http://d.hatena.ne.jp/unageanu/20100829/1283069269">Rakeの基本的な使い方まとめ</a></li>
-<li><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a></li>
-<li><a href="http://morizyun.github.io/blog/octopress-gitpage-minimum-install-guide/">OctopressでGitHub無料ブログ構築。sourceをBitbucket管理。簡単ガイド！</a></li>
-<li><a href="http://qiita.com/syui/items/07365ed24eef63602233">GitHub Pages + Octopress カスタマイズ</a></li>
-<li><a href="http://qiita.com/fakestarbaby/items/14785a63e064bb1306b9">OctopressでGoogleアナリティクスを使おう！</a></li>
+<li><a href="https://github.com/hakimel/reveal.js">GitHub</a></li>
+<li><a href="http://qiita.com/budougumi0617/items/19b19019bbe01f86e251">Reveal.js、Markdown、Githubでスライドを作成する。</a></li>
+<li><a href="http://qiita.com/ryurock/items/9c6de36b9d6a716e7992">なんかかっこいいプレゼンテーションテンプレートを探しているならreveal.js使ってみろって</a></li>
 </ul>
 
 </div>
@@ -481,7 +906,7 @@ $ &hellip;">
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami/">Amazon Linux AMIにagをインストールした手順</a></h1>
     
     
       <p class="meta">
@@ -490,7 +915,7 @@ $ &hellip;">
 
 
 
-<time class='entry-date' datetime='2014-04-19T21:05:49+09:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:05 pm</span></time>
+<time class='entry-date' datetime='2014-08-25T23:38:16+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:38 pm</span></time>
         
         
       </p>
@@ -498,116 +923,64 @@ $ &hellip;">
   </header>
 
 
-  <div class="entry-content"><h2>①HUBOTを動かすために必要な諸々のインストール</h2>
+  <div class="entry-content"><p>AWSでWebサーバーを借りた。このサーバーに<code>ag</code>をインストールした際の手順。</p>
 
-<h3>準備として以下をインストールする</h3>
+<h2>agとは</h2>
 
-<ul>
-<li>node.js（サーバー）</li>
-<li>npm（パッケージ管理コマンド）</li>
-<li>Redis（KVS）</li>
-</ul>
+<p>ソースコードから特定のwordを検索する際に使うコマンド<code>grep</code>がより賢く改良されたのが<code>ack</code>コマンド。</p>
 
+<p>この<code>ack</code>をさらに改良し、検索を高速化させたのが<code>ag</code>コマンド（正式名称:The Silver Searcher）である。</p>
 
-<h3>上記をインストールするためにHomebrewのインストールから始める</h3>
+<h2>Amazon Linux AMIへのインストール</h2>
+
+<p>MacにはHomebrewを使って<code>brew install the_silver_searcher</code>とするだけで簡単に入れることができた。</p>
+
+<p>AWSで借りたサーバーはAmazon Linux AMIという独自のイメージだったが、<code>yum</code>が使えるのでCentOSと同じ以下の手順で入れることができた。</p>
+
+<h3>ディレクトリの作成とソースのダウンロード</h3>
+
+<p>ソースをダウンロード、インストールするディレクトリを作成し、gitから<code>ag</code>のソースを持ってくる</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir -p <span class="nv">$HOME</span>/local/source
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source
+</span><span class='line'><span class="nv">$ </span>git clone https://github.com/ggreer/the_silver_searcher
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>これでHomebrewが入るはず</p>
+<h3>ソースをmakeするための準備</h3>
 
-<h3>次にHomebrewを使ってそれぞれインストールする</h3>
+<p>対象のサーバーはまっさらな状態でコンパイラなどもなかったため、それぞれインストールする。</p>
 
-<p>まずnode.jsとnpm</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install node
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンド一発でnode.jsとnpmが入るはず</p>
+<p>前述の通りAmazon Linux AMIではyumを使うことができる</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
-</span><span class='line'>v0.10.26
-</span><span class='line'><span class="nv">$ </span>npm -v
-</span><span class='line'>1.4.6
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo su -
+</span><span class='line'>yum -y groupinstall <span class="s2">&quot;Development Tools&quot;</span>
+</span><span class='line'>yum -y install pcre-devel xz-devel
+</span><span class='line'><span class="nb">exit</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>Redisもインストール</h3>
+<h3>インストール</h3>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install redis
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Redisを起動しておく</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>redis-server <span class="p">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>②HUBOTをインストールする</h2>
-
-<h3>GitHubからリポジトリをクローンしてインストール</h3>
+<p>コンパイルしてインストールする</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/
-</span><span class='line'><span class="nv">$ </span>git clone git://github.com/github/hubot.git
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>hubot/
-</span><span class='line'><span class="nv">$ </span>npm install -g hubot coffee-script
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source/the_silver_searcher
+</span><span class='line'><span class="nv">$ </span>./build.sh
+</span><span class='line'><span class="nv">$ </span>sudo make install
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>動くか確認</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot
-</span><span class='line'>Hubot&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>OK</p>
-
-<h2>③HUBOTをircと連携させる</h2>
-
-<h3>自分用のHUBOTを作る</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create myhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>myhubotの部分は自由に変更可。この名前のディレクトリが作られる</p>
-
-<h3>自分用HUBOTにhubot-ircをインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>myhubot/
-</span><span class='line'><span class="nv">$ </span>npm install hubot-irc --save <span class="o">&amp;&amp;</span> npm install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>irc連携のためのスクリプトを書く</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>中身はこんな感じ</p>
+<h3>パスを通す</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -616,128 +989,23 @@ $ &hellip;">
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat runhubot
-</span><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
-</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
-</span><span class='line'>
-</span><span class='line'>bin/hubot -a irc --name myhubot
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span>
+</span><span class='line'><span class="nv">$ </span>vim .bashrc
+</span><span class='line'><span class="nv">$ </span>cat .bashrc
+</span><span class='line'>...
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/local/bin:<span class="nv">$PATH</span>
+</span><span class='line'>...
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bashrc
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>スクリプトの実行権限追加</h3>
+<p>これで<code>ag</code>が使えるようになった</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>chmod u+x runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>起動スクリプト実行！</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./runhubot <span class="p">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>irc上でbotがいるか確認する</h3>
-
-<p>bot_kunがいたのでOK</p>
-
-<h2>④botにさせたいことを設定する</h2>
-
-<h3>HUBOTにさせたいことはscriptsディレクトリ以下にCoffeeScriptもしくはJavaScriptで記述する</h3>
-
-<p>最初からいくつかのスクリプトが存在するので、それを参考に書けばOK</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim scripts/tell_fuga.coffee
-</span><span class='line'><span class="nv">$ </span>cat scripts/tell_fuga.coffee
-</span><span class='line'>module.exports <span class="o">=</span> <span class="o">(</span>robot<span class="o">)</span> -&gt;
-</span><span class='line'>
-</span><span class='line'>  robot.hear /hoge/, <span class="o">(</span>msg<span class="o">)</span> -&gt;
-</span><span class='line'>      msg.send <span class="s2">&quot;fuga&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>スクリプトを書いたら、再起動すると読み込んでくれる</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./runhubot <span class="p">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>⑤cronが使えるようにする</h2>
-
-<h3>node-cronをインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install cron
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>cronを使ったスクリプトを書く</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim scripts/mention_hoge.coffee
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>今回は2時間おきに発言するスクリプトを書いてみた</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat scripts/mention_hoge.coffee
-</span><span class='line'><span class="nv">cron</span> <span class="o">=</span> require<span class="o">(</span><span class="s1">&#39;cron&#39;</span><span class="o">)</span>.CronJob
-</span><span class='line'>module.exports <span class="o">=</span> <span class="o">(</span>robot<span class="o">)</span> -&gt;
-</span><span class='line'>  robot.enter -&gt;
-</span><span class='line'>  new cron
-</span><span class='line'>    cronTime: <span class="s2">&quot;0 0 */2 * * *&quot;</span>
-</span><span class='line'>    start: <span class="nb">true</span>
-</span><span class='line'><span class="nb">    </span>timeZone: <span class="s2">&quot;Asia/Tokyo&quot;</span>
-</span><span class='line'>    onTick: -&gt;
-</span><span class='line'>      robot.send <span class="o">{</span>room: <span class="s2">&quot;#target_channel&quot;</span><span class="o">}</span>, <span class="s2">&quot;hoge&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参考資料</h2>
+<h2>参考</h2>
 
 <ul>
-<li><a href="http://www.tettori.net/post/293/">5分で終了。node.jsの環境構築が拍子抜けするほど簡単だったのでサンプルプログラム付きでまとめてみました【Mac編】</a></li>
-<li><a href="http://bulblub.com/2013/04/20/install_nodejs_with_homebrew/">Homebrewでnode.jsとnpmをインストール</a></li>
-<li><a href="http://tech-sketch.jp/2013/12/hubot-install-heroku.html">GitHubがOpsツールの中心として活用しているHubotを使ってみる</a></li>
-<li><a href="http://d.hatena.ne.jp/anatoo/20120204/1328368042">github社製ボットフレームワーク、hubotをIRCボットとして導入した話</a></li>
-<li><a href="http://mayo.hatenablog.com/entry/2013/10/15/074237">Redis 入門</a></li>
-<li>GitHub
-
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc">https://github.com/nandub/hubot-irc</a></li>
-<li><a href="https://github.com/ncb000gt/node-cron">https://github.com/ncb000gt/node-cron</a></li>
-</ul>
-</li>
-<li><a href="http://com4tis.net/2013/05/30/node-js-background-pid-stop/">Node.jsをバックグラウンドでプロセスとして動かしたものを停止させる</a>
-
-<ul>
-<li>→もっといい方法あるはず。。。</li>
-</ul>
-</li>
+<li><a href="https://github.com/ggreer/the_silver_searcher">the_silver_searcher</a></li>
+<li><a href="http://qiita.com/sifue/items/55d0c5c11a0571af3b8e">grepやackよりも速いコード検索ツールのagをローカルビルドインストールする</a></li>
 </ul>
 
 </div>
@@ -747,7 +1015,334 @@ $ &hellip;">
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/22/add-users-on-aws-instance/">AWSに複数のユーザーを設定した手順</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-22T00:58:55+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:58 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>AWSでサーバーを借りて複数人で共同開発することになった。
+それに伴い、借りたサーバーに各々がアクセスできるようユーザーの設定をした際の手順メモ。</p>
+
+<h2>AWSでWEBサーバーを借りる</h2>
+
+<p>AWSのWebサーバーレンタルサービスはEC2と呼ばれる。
+サーバーをレンタルするには様々あるサービス群からEC2を選択し、<code>Launch Instance</code> ボタンを押してInstanceの立ち上げを開始する。</p>
+
+<ul>
+<li>AMI(Amazon Machine Image)の選択
+
+<ul>
+<li>借りるマシンの種類を選ぶ。用途によって様々な種類がある（WordPressが既に設定されているものなど）</li>
+</ul>
+</li>
+<li>Instance Typeの選択
+
+<ul>
+<li>マシンのスペックを選ぶ。メモリやストレージのサイズなど</li>
+</ul>
+</li>
+<li>Instanceの詳細設定</li>
+<li>Storageの設定</li>
+<li>Instanceへのtag付け</li>
+<li>Security Groupの選択
+
+<ul>
+<li>アクセスを許可するプロトコルやIPなどを指定してその設定をグループとして扱う</li>
+</ul>
+</li>
+</ul>
+
+
+<p>上記のほとんどの設定は後から変更できる。AMIの選択がしっかりできれば問題なさそう。</p>
+
+<p>最後まで完了すると秘密鍵(hogehoge.pem)が発行される。これは絶対になくしてはいけない。</p>
+
+<h2>立ち上げたInstanceに複数ユーザーを設定する</h2>
+
+<p>立ち上げたInstanceにアクセスする。
+今回はWebサーバーとして立ち上げるのでSecurity GroupにはHTTPとSSHでのアクセスを許可するよう設定しておく。</p>
+
+<h3>秘密鍵でアクセスする</h3>
+
+<p>まずはInstance立ち上げ時に発行された秘密鍵でアクセスする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">600</span> hogehoge.pem  <span class="c"># 秘密鍵の権限を設定（厳しすぎても甘過ぎても使えない）</span>
+</span><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>ssh -i hogehoge.pem ec2-user@xx.xx.xx.xxx  <span class="c"># ec2-userでログイン</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>ダウンロード直後の秘密鍵は権限が適切ではない可能性がある。その場合は600に設定する。</li>
+<li><code>ssh</code>の<code>-i</code>オプションを使って秘密鍵を指定してログイン（秘密鍵を指定しないと~/.ssh/id_rsaが使われる）
+
+<ul>
+<li>最初は初期設定されているec2-userというユーザーでログインする</li>
+<li>コマンドはEC2のメニューバーからInstancesページに行き、Instanceを選択してページ上部の<code>Connect</code>ボタンを押すと表示される</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>ユーザーの作成</h3>
+
+<p>Instanceにログインできたら早速ユーザーを作成していく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>ec2-user@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>sudo su -  <span class="c"># rootユーザーになる</span>
+</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> adduser sojiro  <span class="c"># ユーザー(sojiro)を作成</span>
+</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> passwd sojiro   <span class="c"># sojiroにパスワードを設定</span>
+</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> vim /etc/sudoers  <span class="c"># sojiroに権限を設定</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ユーザーを作り、ユーザーに権限を付与する。今回は大雑把にrootと同じことができる権限を付与。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> cat /etc/sudors
+</span><span class='line'>...
+</span><span class='line'>root    <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL
+</span><span class='line'>sojiro  <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>公開鍵の登録</h3>
+
+<p>作成したユーザーにlocalからアクセスするための公開鍵を設定する。
+（鍵のペアはlocalで予め<code>ssh-keygen -t rsa</code>で作成しておく）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> su sojiro
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge root<span class="o">]</span><span class="nv">$ </span><span class="nb">cd</span>  <span class="c"># sojiroのホームディレクトリに移動</span>
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>mkdir .ssh
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>vim .ssh/authorized_keys  <span class="c"># 公開鍵を置く（今回はlocalのid_rsa.pubをコピペした）</span>
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">700</span> .ssh
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">600</span> .ssh/authorized_keys
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>公開鍵を置くファイルの名前は<code>.ssh</code>ディレクトリ配下の<code>authorized_keys</code>と決まっている</li>
+<li><code>.ssh</code>ディレクトリと<code>authorized_keys</code>の権限にも気をつける</li>
+</ul>
+
+
+<h3>作成したユーザーでInstanceにログインできることを確認</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>ssh sojiro@xx.xx.xx.xxx  <span class="c"># ログインできればOK</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>localのrsa鍵でログインできることを確認できれば完了。</p>
+
+<p>この操作で必要なユーザーを適宜作成する。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://d.hatena.ne.jp/torazuka/20110420/ssh">新規に作成した鍵でEC2インスタンスにSSH接続する</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/">OctopressにDISQUSのコメント欄を導入する</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-09T16:02:24+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:02 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>ブログにコメント欄を追加したい</h2>
+
+<p>本ブログにコメント欄を追加しようと思い立った。</p>
+
+<p><a href="https://disqus.com/">DISQUS</a>というコミュニケーションサービスが好評のようなので導入してみる。</p>
+
+<ul>
+<li>DISQUSを使うための準備</li>
+<li>OctopressでのDISQUS導入方法</li>
+</ul>
+
+
+<h2>DISQUSを使うための準備</h2>
+
+<h3>DISQUSのアカウントを作成する</h3>
+
+<p><a href="https://disqus.com/">DISQUS</a>のWebサイトからアカウントを作成。登録に必要なのはメールアドレスのみ。</p>
+
+<h3>自分のWebサイトをDISQUSに登録する</h3>
+
+<p>DISQUSの<a href="https://disqus.com/admin/create/">サイト登録ページ</a>から自分のサイトを登録する</p>
+
+<p>登録が完了すると設定ページが表示されるので、ここで設定をしつつ、ページ中段に表示されている<code>Shortname</code>の文字列を確認する</p>
+
+<h2>OctopressでのDISQUS導入方法</h2>
+
+<h3>configファイルへの記載</h3>
+
+<p>OctopressでのDISQUS導入はconfigファイルに先ほどDISQUSで取得したShortnameを記載するのみで完了する。</p>
+
+<p> <code>_config.yml</code> の<code>disqus_short_name</code>に自分のサイトのShortnameを指定する。</p>
+
+<figure class='code'><figcaption><span>_config.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Disqus Comments</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_short_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yoursitesshortname</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_show_comment_count</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでブログの各ページの下部にDISQUSのコメント欄が表示されるようになる。</p>
+
+<h3>disqus_show_comment_count</h3>
+
+<p><code>disqus_show_comment_count</code> はDISQUSコメント欄を導入するページのヘッダにコメント欄へのリンクを表示させるかどうかを指定する項目。</p>
+
+<h4>trueのとき</h4>
+
+<p><img src="/images/disqus/header_with_comment_link.png"></p>
+
+<h4>falseのとき</h4>
+
+<p><img src="/images/disqus/header_without_comment_link.png"></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/">HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-31T04:45:04+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>4:45 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">こちらの記事</a>でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため）</p>
+
+<h2>HUBOT_IRC_SEND_NOTICE_MODE</h2>
+
+<p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
+
+<p>実行ファイル(runhubot)に追記</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SEND_NOTICE_MODE</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
+</span><span class='line'>
+</span><span class='line'>bin/hubot -a irc --name myhubot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>この実行ファイルからirc-botを起動すると当該irc-botの発言はすべてnoticeとなる。</p>
+
+<h2>処理の実体</h2>
+
+<p>HUBOT_IRC_SEND_NOTICE_MODEフラグが立っている場合は <code>bot</code> オブジェクトから <code>notice</code> メソッドが呼ばれる。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L18">フラグの確認</a></li>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L56-76">noticeメソッド呼び出し</a></li>
+</ul>
+
+
+<p><code>notice</code> メソッドが呼ばれている <code>bot</code> オブジェクトの実体は <code>new Irc.Client</code> である。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L192">botオブジェクトの生成</a></li>
+</ul>
+
+
+<p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
+    
+      <a class="prev" href="/page3">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -766,23 +1361,23 @@ $ &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/08/31/presentation-by-reveal-dot-js/">reveal.jsを使ったプレゼンテーションの作成</a>
+        <a href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">AWSのLinuxにMongoDBをインストール</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami/">Amazon Linux AMIにagをインストールした手順</a>
+        <a href="/blog/2014/12/26/tab-and-space-on-vim/">VimにおけるTABとスペースの扱いについて</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/08/22/add-users-on-aws-instance/">AWSに複数のユーザーを設定した手順</a>
+        <a href="/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/">OctopressにDISQUSのコメント欄を導入する</a>
+        <a href="/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/">MacにNode.jsとMongoDBをインストールしたメモ</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/">HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-</a>
+        <a href="/blog/2014/12/01/screen-introduction/">screenを使ってみる</a>
       </li>
     
   </ul>
