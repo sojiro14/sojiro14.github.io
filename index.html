@@ -9,8 +9,12 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順 YUMの設定 パッケージ管理システムであるYUMにmongoDB用の設定を追加する 1
-$ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
+  <meta name="description" content="Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。 今回使うNode.jsのバージョン 1
+2
+$ node -v
+v0.10.32 Web Serverオブジェクトの準備 Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている 1
+2
+var &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +93,648 @@ $ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/07/making-a-web-server-with-node-dot-js/">Node.jsを使ってWeb Serverを作ってみました</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-07T00:55:25+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:55 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。</p>
+
+<p>今回使うNode.jsのバージョン</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
+</span><span class='line'>v0.10.32
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Web Serverオブジェクトの準備</h2>
+
+<p>Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nodeの <code>http</code> モジュールを読み込んだ後、 <code>createServer()</code> メソッドでWeb Serverオブジェクトを取得できる</p>
+
+<h2>requestイベントの追加</h2>
+
+<p>取得したServerオブジェクトのリスナーとして、requestを受けたときに発火するrequestイベントを追加する</p>
+
+<p>リスナーの追加には <code>emitter.on(event, listener)</code> という形式のメソッドを使う。今回はeventに <code>'request'</code> を指定する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">});</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;Hello World.&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここでリスナーとして指定するコールバック関数は以下の2つの引数を受ける</p>
+
+<ul>
+<li>requestの内容をもつ <code>http.IncomingMessage</code> クラスのインスタンス</li>
+<li>responseの内容となる <code>http.ServerResponse</code> クラスのインスタンス</li>
+</ul>
+
+
+<h3>response.writeHead(statusCode, [reasonPhrase], [headers])</h3>
+
+<p>responseのHeadを規定するメソッド</p>
+
+<h3>response.write(chunk, [encoding])</h3>
+
+<p>responseのbodyを規定するメソッド。 <code>chunk</code> に文字列を指定した場合は第二引数にencodingを指定することができる。デフォルトはUTF-8。</p>
+
+<h3>response.end([data], [encoding])</h3>
+
+<p>serverにresponseの完了を通知するメソッド。responseの終了時に必ず呼ばなければならない。</p>
+
+<h2>接続を受け入れる</h2>
+
+<p>ポートとホスト名を指定してWeb Serverへの接続を受け付ける</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">1337</span><span class="p">,</span> <span class="s1">&#39;xx.xxx.xxx.xxx&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>コードの全体像</h2>
+
+<figure class='code'><figcaption><span>web.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">});</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;Hello World.&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">1337</span><span class="p">,</span> <span class="s1">&#39;xx.xxx.xxx.xxx&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;server listening...&#39;</span><span class="p">);</span>  <span class="c1">//起動時のメッセージ</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Web Serverの起動と確認</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node web.js
+</span><span class='line'>server listening...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Web Serverを起動したらブラウザで確認する</p>
+
+<p><img src="/images/nodejs/web_server/hello_world.png"></p>
+
+<p>簡単なWeb Serverの完成</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://nodejs.org/api/http.html#http_http">Node.js v0.10.35 Manual &amp; Documentation#HTTP</a></li>
+<li><a href="http://nodejs.org/api/events.html#events_events">Node.js v0.10.35 Manual &amp; Documentation#Events</a></li>
+<li><a href="http://dotinstall.com/lessons/basic_nodejs/26205">ドットインストール</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/02/the-first-step-for-mongodb/">初めてのMongoDB</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-02T02:20:55+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>2:20 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>NoSQLの流れを汲むMongoDBを初めて使ってみるにあたり、基本的な操作をまとめてみる。</p>
+
+<h1>基本的な用語</h1>
+
+<ul>
+<li>データベース(database)</li>
+<li>コレクション(collection)</li>
+<li>ドキュメント(document)</li>
+</ul>
+
+
+<h2>データベース</h2>
+
+<p>MySQLなどのRDBMSにおけるデータベース、という言葉とほぼ同じ意味として使われる。
+データ管理の大元となる単位。</p>
+
+<h2>コレクション</h2>
+
+<p>RDBMSにおけるテーブル(table)に相当するもの。
+MongoDBはスキーマレスなので、テーブルのように厳格なスキーマが決まっている訳ではなく、特定の対象に対するデータの集まり(正にコレクション)と言える。</p>
+
+<h2>ドキュメント</h2>
+
+<p>RDBMSにおけるレコード(record)に相当するもの。
+各コレクションを構成する要素であり、BSONと呼ばれるJSONライクな形式で記述される。</p>
+
+<h2>MongoDBの起動</h2>
+
+<p>MongoDBの起動、停止には <code>service mongod</code> コマンドを使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo service mongod status
+</span><span class='line'>mongod is stopped
+</span><span class='line'><span class="nv">$ </span>sudo service mongod start
+</span><span class='line'>Starting mongod:                                           <span class="o">[</span>  OK  <span class="o">]</span>
+</span><span class='line'><span class="nv">$ </span>sudo service mongod status
+</span><span class='line'>mongod <span class="o">(</span>pid xxxx<span class="o">)</span> is running...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>停止させる時には以下のようにする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo service mongod stop
+</span><span class='line'>Stopping mongod:                                           <span class="o">[</span>  OK  <span class="o">]</span>
+</span><span class='line'><span class="nv">$ </span>sudo service mongod status
+</span><span class='line'>mongod is stopped
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>DBの作成と選択</h2>
+
+<p>MongoDBを起動したら、早速コンソールを立ち上げて操作してみる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mongo testdb
+</span><span class='line'>MongoDB shell version: 2.6.6
+</span><span class='line'>connecting to: testdb
+</span><span class='line'>&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>mongo</code> の後にDB名を指定してコンソールに入る。
+このとき、存在しないDB名を指定すると新規でDBが作られる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; show dbs<span class="p">;</span>
+</span><span class='line'>admin   <span class="o">(</span>empty<span class="o">)</span>
+</span><span class='line'><span class="nb">local   </span>0.078GB
+</span><span class='line'>mydb    0.078GB
+</span><span class='line'>testdb  <span class="o">(</span>empty<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上記コマンドで既存のDBを確認することができる。 <code>testdb</code> は新規で作成された。</p>
+
+<p>使用するDBを変更するときは以下のようにする。今回は既に作ってある <code>mydb</code> を使うことにする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; use mydb
+</span><span class='line'>switched to db mydb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで <code>mydb</code> に操作対象が移った</p>
+
+<h1>コレクションの操作</h1>
+
+<h2>コレクションの確認</h2>
+
+<p>まず対象DBに存在するコレクションを確認してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; show collections<span class="p">;</span>
+</span><span class='line'>system.indexes
+</span><span class='line'>users
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>いま <code>system.indexes</code> と <code>users</code> というコレクションが存在することがわかる。</p>
+
+<p> <code>system.indexes</code> は各DBのインデックス情報を管理するコレクションで、各DBにそれぞれ1つ作成されるもの</p>
+
+<h2>コレクションの作成</h2>
+
+<p>次に新たにコレクションを作成してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.createCollection<span class="o">(</span><span class="s1">&#39;items&#39;</span><span class="o">)</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;ok&quot;</span> : <span class="m">1</span> <span class="o">}</span>
+</span><span class='line'>&gt; show collections<span class="p">;</span>
+</span><span class='line'>items
+</span><span class='line'>system.indexes
+</span><span class='line'>users
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>items</code> という新たなコレクションが作成された</p>
+
+<h2>コレクションの名前の変更</h2>
+
+<p> <code>items</code> コレクションの名前を <code>weapons</code> に変更する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.items.renameCollection<span class="o">(</span><span class="s1">&#39;weapons&#39;</span><span class="o">)</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;ok&quot;</span> : <span class="m">1</span> <span class="o">}</span>
+</span><span class='line'>&gt; show collections<span class="p">;</span>
+</span><span class='line'>system.indexes
+</span><span class='line'>users
+</span><span class='line'>weapons
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>コレクションの名前が変わったことが確認できる</p>
+
+<h2>コレクションの削除</h2>
+
+<p> <code>weapons</code> コレクションを削除する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.weapons.drop<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="nb">true</span>
+</span><span class='line'>&gt; show collections<span class="p">;</span>
+</span><span class='line'>system.indexes
+</span><span class='line'>users
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>weapons</code> コレクションが削除された</p>
+
+<h1>ドキュメントの操作</h1>
+
+<h2>ドキュメントの検索(find)</h2>
+
+<p>コレクションの操作の次はドキュメントの操作について見ていく。
+ドキュメントの検索には <code>find</code> メソッドを使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>対象のコレクションを指定して <code>find</code> を引数無しで実行すると全件検索となる</p>
+
+<h2>条件を指定して検索</h2>
+
+<p> <code>{key:value}</code> を指定して検索も可能</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>{key:value}</code> の指定には正規表現を用いることもできる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>name:/sojiro_<span class="o">[</span>12<span class="o">]</span>/<span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ANDとOR</h2>
+
+<p>検索で複数の条件を組み合わせるには <code>$and</code> や <code>$or</code> を使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>
+</span><span class='line'>    <span class="nv">$and</span>: <span class="o">[</span>
+</span><span class='line'>        <span class="o">{</span>name:/sojiro_<span class="o">[</span>12<span class="o">]</span>/<span class="o">}</span>,
+</span><span class='line'>        <span class="o">{</span>score: <span class="o">{</span><span class="nv">$lt</span>: 60<span class="o">}}</span>,
+</span><span class='line'>    <span class="o">]</span>
+</span><span class='line'><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここで <code>$lt</code> は「〜より小さい」を表す演算子</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>
+</span><span class='line'>    <span class="nv">$or</span>: <span class="o">[</span>
+</span><span class='line'>        <span class="o">{</span>name:/sojiro_<span class="o">[</span>12<span class="o">]</span>/<span class="o">}</span>,
+</span><span class='line'>        <span class="o">{</span>score: <span class="o">{</span><span class="nv">$gt</span>: 50<span class="o">}}</span>,
+</span><span class='line'>    <span class="o">]</span>
+</span><span class='line'><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここで <code>$gt</code> は「〜より大きい」を表す演算子</p>
+
+<h2>検索結果の限定</h2>
+
+<p>検索結果に特定のkeyだけを指定したい場合や、 <code>_id</code> を非表示にしたい場合がある</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:1<span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span> <span class="o">}</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:0<span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>find()</code> の第二引数にkeyの表示、非表示を設定することができる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:1, score:1<span class="o">})</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>のように複数のkeyに対して表示非表示の設定ができるが、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:1, score:0<span class="o">})</span><span class="p">;</span>
+</span><span class='line'>error: <span class="o">{</span>
+</span><span class='line'>  <span class="s2">&quot;$err&quot;</span> : <span class="s2">&quot;Can&#39;t canonicalize query: BadValue Projection cannot have a mix of inclusion and exclusion.&quot;</span>,
+</span><span class='line'>  <span class="s2">&quot;code&quot;</span> : 17287
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>key毎に表示非表示を別々に設定しようとすると怒られる</p>
+
+<p>ただし、 <code>_id</code> だけは例外である</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:1, _id:0<span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ドキュメントの挿入(insert)</h2>
+
+<p>これまで見てきた <code>users</code> コレクションに新たなドキュメントを追加してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.insert<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span>, score:40<span class="o">})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nInserted&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_4&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">40</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>JavaScriptの使用も可能</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.insert<span class="o">({</span>name:<span class="s2">&quot;sojiro_5&quot;</span>, score: Math.floor<span class="o">(</span>Math.random<span class="o">()</span> * 100<span class="o">)})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nInserted&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_5&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a77886a49abc8e743c71ad&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_5&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">38</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ドキュメントの更新(update)</h2>
+
+<p>MongoDBのupdateには少し癖がある。</p>
+
+<p>更新するドキュメントが属するコレクションと、対象ドキュメントの条件を指定するところは直感的だが、特定のkeyのみupdateする場合は <code>$set</code> を使う必要がある。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_4&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">40</span> <span class="o">}</span>
+</span><span class='line'>&gt; db.users.update<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">}</span>, <span class="o">{</span><span class="nv">$set</span>: <span class="o">{</span>score:44<span class="o">}})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nMatched&quot;</span> : 1, <span class="s2">&quot;nUpserted&quot;</span> : 0, <span class="s2">&quot;nModified&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_4&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">44</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>$set</code> を使わずにupdateを実行すると、対象ドキュメントの内容全てが書き変わる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_4&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">44</span> <span class="o">}</span>
+</span><span class='line'>&gt; db.users.update<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">}</span>, <span class="o">{</span>score:100<span class="o">})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nMatched&quot;</span> : 1, <span class="s2">&quot;nUpserted&quot;</span> : 0, <span class="s2">&quot;nModified&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>{name: "sojiro_4"}</code> に該当するドキュメントが <code>{score:100}</code> に書き換えられたため、 <code>{name:"sojiro_4"}</code> では検索結果に出てこない</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">100</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a77886a49abc8e743c71ad&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_5&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">38</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ドキュメントの削除(remove)</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">100</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a77886a49abc8e743c71ad&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_5&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">38</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ドキュメントの削除には <code>remove</code> メソッドを使い、このメソッドには <code>find</code> メソッドと同じように条件を指定することができる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.remove<span class="o">({</span>name:<span class="s2">&quot;sojiro_5&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nRemoved&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">100</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上MongoDBの基本的な操作</p>
+
+<h2>参照</h2>
+
+<p><a href="http://dotinstall.com/lessons/basic_mongodb_v2">ドットインストール</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1413,395 +2059,6 @@ $ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/">Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-12T12:06:23+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:06 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
-
-<h2>Herokuに必要なgemのインストール</h2>
-
-<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span><span class="p">,</span> <span class="s1">&#39;0.15.1&#39;</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rails_12factor&#39;</span><span class="p">,</span> <span class="s1">&#39;0.0.2&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
-これによりGemfile.lockが更新され、production環境に備えることができる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install --without production
-</span><span class='line'>Your bundle is <span class="nb">complete</span>!
-</span><span class='line'>Gems in the group production were not installed.
-</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここまでできたらgitにcommitしておく。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git commit -a -m <span class="s2">&quot;Update Gemfile.lock for Heroku&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
-
-<h2>herokuコマンドが使えるようにする</h2>
-
-<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
-
-<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
-
-<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
-今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
-
-<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>wget -qO- https://toolbelt.heroku.com/install.sh <span class="p">|</span> sh
-</span><span class='line'>This script requires superuser access to install software.
-</span><span class='line'>You will be prompted <span class="k">for</span> your password by sudo.
-</span><span class='line'><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> sojiro:
-</span><span class='line'>Add the Heroku CLI to your PATH using:
-</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.profile
-</span><span class='line'>Installation <span class="nb">complete</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.bashrc
-</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bashrc
-</span><span class='line'><span class="nv">$ </span>heroku version
-</span><span class='line'>heroku-toolbelt/3.15.2 <span class="o">(</span>x86_64-linux<span class="o">)</span> ruby/2.0.0
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuのセットアップ</h2>
-
-<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku login
-</span><span class='line'>Enter your Heroku credentials.
-</span><span class='line'>Email: your.account@email.com
-</span><span class='line'>Password <span class="o">(</span>typing will be hidden<span class="o">)</span>:
-</span><span class='line'>Your Heroku account does not have a public ssh key uploaded.
-</span><span class='line'>Could not find an existing public key at ~/.ssh/id_rsa.pub
-</span><span class='line'>Would you like to generate one? <span class="o">[</span>Yn<span class="o">]</span> Y
-</span><span class='line'>Generating new SSH public key.
-</span><span class='line'>Uploading SSH public key /home/user/.ssh/id_rsa.pub... <span class="k">done</span>
-</span><span class='line'>Authentication successful.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>認証が完了したらHerokuのセットアップをする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku create
-</span><span class='line'>Creating infinite-peak-4923... <span class="k">done</span>, stack is cedar-14
-</span><span class='line'>https://infinite-peak-4923.herokuapp.com/ <span class="p">|</span> git@heroku.com:infinite-peak-4923.git
-</span><span class='line'>Git remote heroku added
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでgitのremoteにherokuが追加される</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote -v
-</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>fetch<span class="o">)</span>
-</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>push<span class="o">)</span>
-</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>fetch<span class="o">)</span>
-</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>push<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuへデプロイ</h2>
-
-<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push heroku master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
-
-<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/">Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-10T03:27:49+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:27 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby on Railsで初めてアプリを作ってみます。
-今回はRailsの立ち上がりを確認するところまで。</p>
-
-<h2>アプリのセットアップ（rails new）</h2>
-
-<p>railsのアプリ作成は <code>rails new</code> コマンドで始まる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir rails_projects
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>rails_projects
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回のアプリ作成の為にディレクトリを作成し、早速コマンドを実行。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails new first_app
-</span><span class='line'>...
-</span><span class='line'>An error occurred <span class="k">while</span> installing sqlite3 <span class="o">(</span>1.3.10<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>いくつかのディレクトリやファイルが作成されるが、最後にこのようなエラーが出てbundle失敗。
-そこでGemfileを編集してbundleをやり直す。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>first_app/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Gemfileを編集。内容は<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-bundler">Ruby on Rails #Bundler</a>を参照。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
-</span><span class='line'>...
-</span><span class='line'>Building native extensions.  This could take a <span class="k">while</span>...
-</span><span class='line'>ERROR:  Error installing sqlite3:
-</span><span class='line'>    ERROR: Failed to build gem native extension.
-</span><span class='line'>
-</span><span class='line'>    /home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
-</span><span class='line'>checking <span class="k">for</span> sqlite3.h... no
-</span><span class='line'>sqlite3.h is missing. Try <span class="s1">&#39;port install sqlite3 +universal&#39;</span>
-</span><span class='line'>or <span class="s1">&#39;yum install sqlite-devel&#39;</span> and check your shared library search path <span class="o">(</span>the
-</span><span class='line'>location where your sqlite3 shared library is located<span class="o">)</span>.
-</span><span class='line'>*** extconf.rb failed ***
-</span><span class='line'>Could not create Makefile due to some reason, probably lack of necessary
-</span><span class='line'>libraries and/or headers.  Check the mkmf.log file <span class="k">for</span> more details.  You may
-</span><span class='line'>need configuration options.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>またも失敗。よく見るとsqlite-develが足りていないらしい</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install sqlite-devel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>sqlite-develをインストール後再度bundleによるgemのインストールを試みる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
-</span><span class='line'>Installing sqlite3 1.3.8
-</span><span class='line'>Installing turbolinks 1.1.1
-</span><span class='line'>Installing uglifier 2.1.1
-</span><span class='line'>Your bundle is updated!
-</span><span class='line'><span class="nv">$ </span>bundle install
-</span><span class='line'>Your bundle is <span class="nb">complete</span>!
-</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール成功。</p>
-
-<h2>サーバーの立ち上げ（rails server）</h2>
-
-<p>ローカルでrailsを立ち上げるコマンド <code>rails server</code> を実行。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails server
-</span><span class='line'>...
-</span><span class='line'>Could not find a JavaScript runtime. See https://github.com/sstephenson/execjs <span class="k">for</span> a list of available runtimes. <span class="o">(</span>ExecJS::RuntimeUnavailable<span class="o">)</span>
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Node.jsのインストール</h3>
-
-<p> <code>rails server</code> コマンド実行でエラーが出てしまう。JavaScript runtimeがインストールされていないことが原因のよう。メッセージ通り <a href="https://github.com/sstephenson/execjs">https://github.com/sstephenson/execjs</a> に行ってみるとJavaScript runtimeとしてNode.jsが有効と書いてあるのでNode.jsをインストールする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
-</span><span class='line'><span class="nv">$ </span>sudo yum install nodejs npm --enablerepo<span class="o">=</span>epel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回はyumでインストールした。そして再度 <code>rails server</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails <span class="nv">server</span>
-</span><span class='line'><span class="o">=</span>&gt; Booting <span class="nv">WEBrick</span>
-</span><span class='line'><span class="o">=</span>&gt; Rails 4.0.5 application starting in development on http://0.0.0.0:3000
-</span><span class='line'><span class="o">=</span>&gt; Run <span class="sb">`</span>rails server -h<span class="sb">`</span> <span class="k">for</span> more startup <span class="nv">options</span>
-</span><span class='line'><span class="o">=</span>&gt; Ctrl-C to shutdown server
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ローカルでサーバーが立ち上がる。
-今回はAWS上で作業しているので、AWS該当インスタンスのSecurity Groupで3000番portを空ける。</p>
-
-<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
-
-<p>にブラウザでアクセスして以下の画面が見えればOK</p>
-
-<p><img src="/images/rails/rails_starting.png"></p>
-
-<h2>GitHubに上げておく</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git init
-</span><span class='line'><span class="nv">$ </span>git remote add origin https://github.com/sojiro14/first_app.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>GitHubでリポジトリ作成</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git add .
-</span><span class='line'><span class="nv">$ </span>git commit -m <span class="s1">&#39;Initialize repository&#39;</span>
-</span><span class='line'><span class="nv">$ </span>git push -u origin master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://qiita.com/you21979@github/items/4efd9fc4363573191b5c">node.jsをyumでインストールする(centos6.5)</a></li>
-<li><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -1821,6 +2078,14 @@ $ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/01/07/making-a-web-server-with-node-dot-js/">Node.jsを使ってWeb Serverを作ってみました</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/02/the-first-step-for-mongodb/">初めてのMongoDB</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">AWSのLinuxにMongoDBをインストール</a>
       </li>
     
@@ -1830,14 +2095,6 @@ $ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
     
       <li class="post">
         <a href="/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/">MacにNode.jsとMongoDBをインストールしたメモ</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/01/screen-introduction/">screenを使ってみる</a>
       </li>
     
   </ul>

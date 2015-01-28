@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T16:55:20+09:00</updated>
+  <updated>2015-01-28T16:58:55+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,606 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Node.jsを使ってWeb Serverを作ってみました]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/01/07/making-a-web-server-with-node-dot-js/"/>
+    <updated>2015-01-07T00:55:25+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/01/07/making-a-web-server-with-node-dot-js</id>
+    <content type="html"><![CDATA[<p>Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。</p>
+
+<p>今回使うNode.jsのバージョン</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
+</span><span class='line'>v0.10.32
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Web Serverオブジェクトの準備</h2>
+
+<p>Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nodeの <code>http</code> モジュールを読み込んだ後、 <code>createServer()</code> メソッドでWeb Serverオブジェクトを取得できる</p>
+
+<h2>requestイベントの追加</h2>
+
+<p>取得したServerオブジェクトのリスナーとして、requestを受けたときに発火するrequestイベントを追加する</p>
+
+<p>リスナーの追加には <code>emitter.on(event, listener)</code> という形式のメソッドを使う。今回はeventに <code>'request'</code> を指定する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">});</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;Hello World.&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここでリスナーとして指定するコールバック関数は以下の2つの引数を受ける</p>
+
+<ul>
+<li>requestの内容をもつ <code>http.IncomingMessage</code> クラスのインスタンス</li>
+<li>responseの内容となる <code>http.ServerResponse</code> クラスのインスタンス</li>
+</ul>
+
+
+<h3>response.writeHead(statusCode, [reasonPhrase], [headers])</h3>
+
+<p>responseのHeadを規定するメソッド</p>
+
+<h3>response.write(chunk, [encoding])</h3>
+
+<p>responseのbodyを規定するメソッド。 <code>chunk</code> に文字列を指定した場合は第二引数にencodingを指定することができる。デフォルトはUTF-8。</p>
+
+<h3>response.end([data], [encoding])</h3>
+
+<p>serverにresponseの完了を通知するメソッド。responseの終了時に必ず呼ばなければならない。</p>
+
+<h2>接続を受け入れる</h2>
+
+<p>ポートとホスト名を指定してWeb Serverへの接続を受け付ける</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">1337</span><span class="p">,</span> <span class="s1">&#39;xx.xxx.xxx.xxx&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>コードの全体像</h2>
+
+<figure class='code'><figcaption><span>web.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">});</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;Hello World.&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">1337</span><span class="p">,</span> <span class="s1">&#39;xx.xxx.xxx.xxx&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;server listening...&#39;</span><span class="p">);</span>  <span class="c1">//起動時のメッセージ</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Web Serverの起動と確認</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node web.js
+</span><span class='line'>server listening...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Web Serverを起動したらブラウザで確認する</p>
+
+<p><img src="http://sojiro14.github.io/images/nodejs/web_server/hello_world.png"></p>
+
+<p>簡単なWeb Serverの完成</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://nodejs.org/api/http.html#http_http">Node.js v0.10.35 Manual &amp; Documentation#HTTP</a></li>
+<li><a href="http://nodejs.org/api/events.html#events_events">Node.js v0.10.35 Manual &amp; Documentation#Events</a></li>
+<li><a href="http://dotinstall.com/lessons/basic_nodejs/26205">ドットインストール</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのMongoDB]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/01/02/the-first-step-for-mongodb/"/>
+    <updated>2015-01-02T02:20:55+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/01/02/the-first-step-for-mongodb</id>
+    <content type="html"><![CDATA[<p>NoSQLの流れを汲むMongoDBを初めて使ってみるにあたり、基本的な操作をまとめてみる。</p>
+
+<h1>基本的な用語</h1>
+
+<ul>
+<li>データベース(database)</li>
+<li>コレクション(collection)</li>
+<li>ドキュメント(document)</li>
+</ul>
+
+
+<h2>データベース</h2>
+
+<p>MySQLなどのRDBMSにおけるデータベース、という言葉とほぼ同じ意味として使われる。
+データ管理の大元となる単位。</p>
+
+<h2>コレクション</h2>
+
+<p>RDBMSにおけるテーブル(table)に相当するもの。
+MongoDBはスキーマレスなので、テーブルのように厳格なスキーマが決まっている訳ではなく、特定の対象に対するデータの集まり(正にコレクション)と言える。</p>
+
+<h2>ドキュメント</h2>
+
+<p>RDBMSにおけるレコード(record)に相当するもの。
+各コレクションを構成する要素であり、BSONと呼ばれるJSONライクな形式で記述される。</p>
+
+<h2>MongoDBの起動</h2>
+
+<p>MongoDBの起動、停止には <code>service mongod</code> コマンドを使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo service mongod status
+</span><span class='line'>mongod is stopped
+</span><span class='line'><span class="nv">$ </span>sudo service mongod start
+</span><span class='line'>Starting mongod:                                           <span class="o">[</span>  OK  <span class="o">]</span>
+</span><span class='line'><span class="nv">$ </span>sudo service mongod status
+</span><span class='line'>mongod <span class="o">(</span>pid xxxx<span class="o">)</span> is running...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>停止させる時には以下のようにする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo service mongod stop
+</span><span class='line'>Stopping mongod:                                           <span class="o">[</span>  OK  <span class="o">]</span>
+</span><span class='line'><span class="nv">$ </span>sudo service mongod status
+</span><span class='line'>mongod is stopped
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>DBの作成と選択</h2>
+
+<p>MongoDBを起動したら、早速コンソールを立ち上げて操作してみる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mongo testdb
+</span><span class='line'>MongoDB shell version: 2.6.6
+</span><span class='line'>connecting to: testdb
+</span><span class='line'>&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>mongo</code> の後にDB名を指定してコンソールに入る。
+このとき、存在しないDB名を指定すると新規でDBが作られる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; show dbs<span class="p">;</span>
+</span><span class='line'>admin   <span class="o">(</span>empty<span class="o">)</span>
+</span><span class='line'><span class="nb">local   </span>0.078GB
+</span><span class='line'>mydb    0.078GB
+</span><span class='line'>testdb  <span class="o">(</span>empty<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上記コマンドで既存のDBを確認することができる。 <code>testdb</code> は新規で作成された。</p>
+
+<p>使用するDBを変更するときは以下のようにする。今回は既に作ってある <code>mydb</code> を使うことにする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; use mydb
+</span><span class='line'>switched to db mydb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで <code>mydb</code> に操作対象が移った</p>
+
+<h1>コレクションの操作</h1>
+
+<h2>コレクションの確認</h2>
+
+<p>まず対象DBに存在するコレクションを確認してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; show collections<span class="p">;</span>
+</span><span class='line'>system.indexes
+</span><span class='line'>users
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>いま <code>system.indexes</code> と <code>users</code> というコレクションが存在することがわかる。</p>
+
+<p> <code>system.indexes</code> は各DBのインデックス情報を管理するコレクションで、各DBにそれぞれ1つ作成されるもの</p>
+
+<h2>コレクションの作成</h2>
+
+<p>次に新たにコレクションを作成してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.createCollection<span class="o">(</span><span class="s1">&#39;items&#39;</span><span class="o">)</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;ok&quot;</span> : <span class="m">1</span> <span class="o">}</span>
+</span><span class='line'>&gt; show collections<span class="p">;</span>
+</span><span class='line'>items
+</span><span class='line'>system.indexes
+</span><span class='line'>users
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>items</code> という新たなコレクションが作成された</p>
+
+<h2>コレクションの名前の変更</h2>
+
+<p> <code>items</code> コレクションの名前を <code>weapons</code> に変更する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.items.renameCollection<span class="o">(</span><span class="s1">&#39;weapons&#39;</span><span class="o">)</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;ok&quot;</span> : <span class="m">1</span> <span class="o">}</span>
+</span><span class='line'>&gt; show collections<span class="p">;</span>
+</span><span class='line'>system.indexes
+</span><span class='line'>users
+</span><span class='line'>weapons
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>コレクションの名前が変わったことが確認できる</p>
+
+<h2>コレクションの削除</h2>
+
+<p> <code>weapons</code> コレクションを削除する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.weapons.drop<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="nb">true</span>
+</span><span class='line'>&gt; show collections<span class="p">;</span>
+</span><span class='line'>system.indexes
+</span><span class='line'>users
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>weapons</code> コレクションが削除された</p>
+
+<h1>ドキュメントの操作</h1>
+
+<h2>ドキュメントの検索(find)</h2>
+
+<p>コレクションの操作の次はドキュメントの操作について見ていく。
+ドキュメントの検索には <code>find</code> メソッドを使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>対象のコレクションを指定して <code>find</code> を引数無しで実行すると全件検索となる</p>
+
+<h2>条件を指定して検索</h2>
+
+<p> <code>{key:value}</code> を指定して検索も可能</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>{key:value}</code> の指定には正規表現を用いることもできる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>name:/sojiro_<span class="o">[</span>12<span class="o">]</span>/<span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ANDとOR</h2>
+
+<p>検索で複数の条件を組み合わせるには <code>$and</code> や <code>$or</code> を使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>
+</span><span class='line'>    <span class="nv">$and</span>: <span class="o">[</span>
+</span><span class='line'>        <span class="o">{</span>name:/sojiro_<span class="o">[</span>12<span class="o">]</span>/<span class="o">}</span>,
+</span><span class='line'>        <span class="o">{</span>score: <span class="o">{</span><span class="nv">$lt</span>: 60<span class="o">}}</span>,
+</span><span class='line'>    <span class="o">]</span>
+</span><span class='line'><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここで <code>$lt</code> は「〜より小さい」を表す演算子</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>
+</span><span class='line'>    <span class="nv">$or</span>: <span class="o">[</span>
+</span><span class='line'>        <span class="o">{</span>name:/sojiro_<span class="o">[</span>12<span class="o">]</span>/<span class="o">}</span>,
+</span><span class='line'>        <span class="o">{</span>score: <span class="o">{</span><span class="nv">$gt</span>: 50<span class="o">}}</span>,
+</span><span class='line'>    <span class="o">]</span>
+</span><span class='line'><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここで <code>$gt</code> は「〜より大きい」を表す演算子</p>
+
+<h2>検索結果の限定</h2>
+
+<p>検索結果に特定のkeyだけを指定したい場合や、 <code>_id</code> を非表示にしたい場合がある</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:1<span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span> <span class="o">}</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:0<span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>find()</code> の第二引数にkeyの表示、非表示を設定することができる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:1, score:1<span class="o">})</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>のように複数のkeyに対して表示非表示の設定ができるが、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:1, score:0<span class="o">})</span><span class="p">;</span>
+</span><span class='line'>error: <span class="o">{</span>
+</span><span class='line'>  <span class="s2">&quot;$err&quot;</span> : <span class="s2">&quot;Can&#39;t canonicalize query: BadValue Projection cannot have a mix of inclusion and exclusion.&quot;</span>,
+</span><span class='line'>  <span class="s2">&quot;code&quot;</span> : 17287
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>key毎に表示非表示を別々に設定しようとすると怒られる</p>
+
+<p>ただし、 <code>_id</code> だけは例外である</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({}</span>, <span class="o">{</span>name:1, _id:0<span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ドキュメントの挿入(insert)</h2>
+
+<p>これまで見てきた <code>users</code> コレクションに新たなドキュメントを追加してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.insert<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span>, score:40<span class="o">})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nInserted&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_4&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">40</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>JavaScriptの使用も可能</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.insert<span class="o">({</span>name:<span class="s2">&quot;sojiro_5&quot;</span>, score: Math.floor<span class="o">(</span>Math.random<span class="o">()</span> * 100<span class="o">)})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nInserted&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_5&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a77886a49abc8e743c71ad&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_5&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">38</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ドキュメントの更新(update)</h2>
+
+<p>MongoDBのupdateには少し癖がある。</p>
+
+<p>更新するドキュメントが属するコレクションと、対象ドキュメントの条件を指定するところは直感的だが、特定のkeyのみupdateする場合は <code>$set</code> を使う必要がある。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_4&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">40</span> <span class="o">}</span>
+</span><span class='line'>&gt; db.users.update<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">}</span>, <span class="o">{</span><span class="nv">$set</span>: <span class="o">{</span>score:44<span class="o">}})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nMatched&quot;</span> : 1, <span class="s2">&quot;nUpserted&quot;</span> : 0, <span class="s2">&quot;nModified&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_4&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">44</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>$set</code> を使わずにupdateを実行すると、対象ドキュメントの内容全てが書き変わる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_4&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">44</span> <span class="o">}</span>
+</span><span class='line'>&gt; db.users.update<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">}</span>, <span class="o">{</span>score:100<span class="o">})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nMatched&quot;</span> : 1, <span class="s2">&quot;nUpserted&quot;</span> : 0, <span class="s2">&quot;nModified&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">({</span>name:<span class="s2">&quot;sojiro_4&quot;</span><span class="o">})</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>{name: "sojiro_4"}</code> に該当するドキュメントが <code>{score:100}</code> に書き換えられたため、 <code>{name:"sojiro_4"}</code> では検索結果に出てこない</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">100</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a77886a49abc8e743c71ad&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_5&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">38</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ドキュメントの削除(remove)</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.find<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">100</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a77886a49abc8e743c71ad&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_5&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">38</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ドキュメントの削除には <code>remove</code> メソッドを使い、このメソッドには <code>find</code> メソッドと同じように条件を指定することができる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; db.users.remove<span class="o">({</span>name:<span class="s2">&quot;sojiro_5&quot;</span><span class="o">})</span><span class="p">;</span>
+</span><span class='line'>WriteResult<span class="o">({</span> <span class="s2">&quot;nRemoved&quot;</span> : <span class="m">1</span> <span class="o">})</span>
+</span><span class='line'>&gt; db.users.find<span class="o">()</span><span class="p">;</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fd93ce8a5464641af4eb&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">10</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a3fee1ce8a5464641af4ec&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_1&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">20</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ed&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_2&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">67</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a40181ce8a5464641af4ee&quot;</span><span class="o">)</span>, <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;sojiro_3&quot;</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">51</span> <span class="o">}</span>
+</span><span class='line'><span class="o">{</span> <span class="s2">&quot;_id&quot;</span> : ObjectId<span class="o">(</span><span class="s2">&quot;54a777d7a49abc8e743c71ac&quot;</span><span class="o">)</span>, <span class="s2">&quot;score&quot;</span> : <span class="m">100</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上MongoDBの基本的な操作</p>
+
+<h2>参照</h2>
+
+<p><a href="http://dotinstall.com/lessons/basic_mongodb_v2">ドットインストール</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[AWSのLinuxにMongoDBをインストール]]></title>
@@ -2434,125 +3034,6 @@
 <h2>参考</h2>
 
 <p><a href="http://d.hatena.ne.jp/torazuka/20110420/ssh">新規に作成した鍵でEC2インスタンスにSSH接続する</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OctopressにDISQUSのコメント欄を導入する]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/"/>
-    <updated>2014-08-09T16:02:24+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress</id>
-    <content type="html"><![CDATA[<h2>ブログにコメント欄を追加したい</h2>
-
-<p>本ブログにコメント欄を追加しようと思い立った。</p>
-
-<p><a href="https://disqus.com/">DISQUS</a>というコミュニケーションサービスが好評のようなので導入してみる。</p>
-
-<ul>
-<li>DISQUSを使うための準備</li>
-<li>OctopressでのDISQUS導入方法</li>
-</ul>
-
-
-<h2>DISQUSを使うための準備</h2>
-
-<h3>DISQUSのアカウントを作成する</h3>
-
-<p><a href="https://disqus.com/">DISQUS</a>のWebサイトからアカウントを作成。登録に必要なのはメールアドレスのみ。</p>
-
-<h3>自分のWebサイトをDISQUSに登録する</h3>
-
-<p>DISQUSの<a href="https://disqus.com/admin/create/">サイト登録ページ</a>から自分のサイトを登録する</p>
-
-<p>登録が完了すると設定ページが表示されるので、ここで設定をしつつ、ページ中段に表示されている<code>Shortname</code>の文字列を確認する</p>
-
-<h2>OctopressでのDISQUS導入方法</h2>
-
-<h3>configファイルへの記載</h3>
-
-<p>OctopressでのDISQUS導入はconfigファイルに先ほどDISQUSで取得したShortnameを記載するのみで完了する。</p>
-
-<p> <code>_config.yml</code> の<code>disqus_short_name</code>に自分のサイトのShortnameを指定する。</p>
-
-<figure class='code'><figcaption><span>_config.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Disqus Comments</span>
-</span><span class='line'><span class="l-Scalar-Plain">disqus_short_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yoursitesshortname</span>
-</span><span class='line'><span class="l-Scalar-Plain">disqus_show_comment_count</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでブログの各ページの下部にDISQUSのコメント欄が表示されるようになる。</p>
-
-<h3>disqus_show_comment_count</h3>
-
-<p><code>disqus_show_comment_count</code> はDISQUSコメント欄を導入するページのヘッダにコメント欄へのリンクを表示させるかどうかを指定する項目。</p>
-
-<h4>trueのとき</h4>
-
-<p><img src="http://sojiro14.github.io/images/disqus/header_with_comment_link.png"></p>
-
-<h4>falseのとき</h4>
-
-<p><img src="http://sojiro14.github.io/images/disqus/header_without_comment_link.png"></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/"/>
-    <updated>2014-07-31T04:45:04+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/07/31/irc-bot-by-hubot-repair-number-1</id>
-    <content type="html"><![CDATA[<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">こちらの記事</a>でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため）</p>
-
-<h2>HUBOT_IRC_SEND_NOTICE_MODE</h2>
-
-<p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
-
-<p>実行ファイル(runhubot)に追記</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SEND_NOTICE_MODE</span><span class="o">=</span><span class="nb">true</span>
-</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
-</span><span class='line'>
-</span><span class='line'>bin/hubot -a irc --name myhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>この実行ファイルからirc-botを起動すると当該irc-botの発言はすべてnoticeとなる。</p>
-
-<h2>処理の実体</h2>
-
-<p>HUBOT_IRC_SEND_NOTICE_MODEフラグが立っている場合は <code>bot</code> オブジェクトから <code>notice</code> メソッドが呼ばれる。</p>
-
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L18">フラグの確認</a></li>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L56-76">noticeメソッド呼び出し</a></li>
-</ul>
-
-
-<p><code>notice</code> メソッドが呼ばれている <code>bot</code> オブジェクトの実体は <code>new Irc.Client</code> である。</p>
-
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L192">botオブジェクトの生成</a></li>
-</ul>
-
-
-<p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
 ]]></content>
   </entry>
   

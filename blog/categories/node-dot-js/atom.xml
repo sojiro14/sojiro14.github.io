@@ -4,7 +4,7 @@
   <title><![CDATA[Category: node.js | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/node-dot-js/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T16:55:20+09:00</updated>
+  <updated>2015-01-28T16:58:55+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,103 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Node.jsを使ってWeb Serverを作ってみました]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/01/07/making-a-web-server-with-node-dot-js/"/>
+    <updated>2015-01-07T00:55:25+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/01/07/making-a-web-server-with-node-dot-js</id>
+    <content type="html"><![CDATA[<p>Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。</p>
+
+<p>今回使うNode.jsのバージョン
+<code>bash
+$ node -v
+v0.10.32
+</code></p>
+
+<h2>Web Serverオブジェクトの準備</h2>
+
+<p>Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている
+<code>javascript
+var http = require('http');
+var server = http.createServer();
+</code>
+Nodeの <code>http</code> モジュールを読み込んだ後、 <code>createServer()</code> メソッドでWeb Serverオブジェクトを取得できる</p>
+
+<h2>requestイベントの追加</h2>
+
+<p>取得したServerオブジェクトのリスナーとして、requestを受けたときに発火するrequestイベントを追加する</p>
+
+<p>リスナーの追加には <code>emitter.on(event, listener)</code> という形式のメソッドを使う。今回はeventに <code>'request'</code> を指定する。
+<code>javascript
+server.on('request', function(request, response) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.write('Hello World.');
+    response.end();
+});
+</code>
+ここでリスナーとして指定するコールバック関数は以下の2つの引数を受ける</p>
+
+<ul>
+<li>requestの内容をもつ <code>http.IncomingMessage</code> クラスのインスタンス</li>
+<li>responseの内容となる <code>http.ServerResponse</code> クラスのインスタンス</li>
+</ul>
+
+
+<h3>response.writeHead(statusCode, [reasonPhrase], [headers])</h3>
+
+<p>responseのHeadを規定するメソッド</p>
+
+<h3>response.write(chunk, [encoding])</h3>
+
+<p>responseのbodyを規定するメソッド。 <code>chunk</code> に文字列を指定した場合は第二引数にencodingを指定することができる。デフォルトはUTF-8。</p>
+
+<h3>response.end([data], [encoding])</h3>
+
+<p>serverにresponseの完了を通知するメソッド。responseの終了時に必ず呼ばなければならない。</p>
+
+<h2>接続を受け入れる</h2>
+
+<p>ポートとホスト名を指定してWeb Serverへの接続を受け付ける
+<code>javascript
+server.listen(1337, 'xx.xxx.xxx.xxx');
+</code></p>
+
+<h2>コードの全体像</h2>
+
+<pre><code class="javascript web.js">var http = require('http');
+var server = http.createServer();
+server.on('request', function(request, response) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.write('Hello World.');
+    response.end();
+});
+server.listen(1337, 'xx.xxx.xxx.xxx');
+console.log('server listening...');  //起動時のメッセージ
+</code></pre>
+
+<h2>Web Serverの起動と確認</h2>
+
+<pre><code class="bash">$ node web.js 
+server listening...
+</code></pre>
+
+<p>Web Serverを起動したらブラウザで確認する</p>
+
+<p><img src="/images/nodejs/web_server/hello_world.png"></p>
+
+<p>簡単なWeb Serverの完成</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://nodejs.org/api/http.html#http_http">Node.js v0.10.35 Manual &amp; Documentation#HTTP</a></li>
+<li><a href="http://nodejs.org/api/events.html#events_events">Node.js v0.10.35 Manual &amp; Documentation#Events</a></li>
+<li><a href="http://dotinstall.com/lessons/basic_nodejs/26205">ドットインストール</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[MacにNode.jsとMongoDBをインストールしたメモ]]></title>
