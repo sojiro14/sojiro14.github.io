@@ -4,7 +4,7 @@
   <title><![CDATA[Category: reveal.js | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/reveal-dot-js/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T12:50:32+09:00</updated>
+  <updated>2015-01-28T13:00:46+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -54,12 +54,12 @@
 <pre><code>デフォルトでは[本家Demo](http://lab.hakim.se/reveal-js/#/)の仕様となっている。
 
 ## ページの追加
- ``` &lt;section&gt;&lt;/section&gt; ```タグを追加することで新しいページを追加することができる。新しいページは右側に追加されていく。
+ ```&lt;section&gt;&lt;/section&gt;```タグを追加することで新しいページを追加することができる。新しいページは右側に追加されていく。
 
-さらに``` &lt;section&gt;&lt;/section&gt; ```タグの中に``` &lt;section&gt;&lt;/section&gt; ```タグをネストすることで、縦方向にスライドを追加することができる。
+さらに```&lt;section&gt;&lt;/section&gt;```タグの中に```&lt;section&gt;&lt;/section&gt;```タグをネストすることで、縦方向にスライドを追加することができる。
 
 ## スライドの動きの設定
- ``` &lt;section&gt; ```タグに``` data-transition ```や``` data-background-transition ```を指定することでスライドの動きを設定できる。
+ ```&lt;section&gt;```タグに```data-transition```や```data-background-transition```を指定することでスライドの動きを設定できる。
 
 デフォルトではスライドが回転するように動いていくが、例えば以下のように設定することで横方向にスライドが流れるようになる。
 </code></pre>
@@ -152,7 +152,7 @@
 
 <p></section>
 <code>
-コードブロック内でも</code> </script> &#8220;`タグが出現するとマークダウンの終了と誤解されるので注意</p>
+コードブロック内でも</code></script>&#8220;`タグが出現するとマークダウンの終了と誤解されるので注意</p>
 
 <h2>参考</h2>
 
