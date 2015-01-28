@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-28T13:20:21+09:00</updated>
+  <updated>2015-01-28T13:21:15+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -238,7 +238,7 @@ $ vim _config.yml
 </code></p>
 
 <p>場所はこちら
-&#8220;`yml</p>
+&#8220;`yaml</p>
 
 <h1>Google Analytics</h1>
 
