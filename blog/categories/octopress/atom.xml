@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Octopress | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-01-28T13:18:24+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Github PagesとOctopressを使ったブログの作成]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress/"/>
+    <updated>2014-04-26T17:05:36+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress</id>
+    <content type="html"><![CDATA[<h2>①Octopress のインストール</h2>
+
+<h3>octopressリポジトリをクローン</h3>
+
+<pre><code class="bash">$ cd git/
+$ git clone git://github.com/imathis/octopress.git octopress
+</code></pre>
+
+<h3>Bundlerを使って必要なパッケージをインストール</h3>
+
+<pre><code class="bash">$ cd octopress/
+$ sudo gem install bundler
+$ sudo bundle install
+</code></pre>
+
+<h3>bundle installがエラーになる</h3>
+
+<pre><code class="bash">$ sudo bundle install
+Fetching gem metadata from https://rubygems.org/.......
+Fetching additional metadata from https://rubygems.org/..
+Using rake 0.9.2.2
+
+Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension.
+
+    /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby extconf.rb 
+checking for main() in -lc... yes
+creating Makefile
+
+make "DESTDIR="
+compiling redcloth_attributes.c
+compiling redcloth_inline.c
+compiling redcloth_scan.c
+linking shared-object redcloth_scan.bundle
+clang: error: unknown argument: '-multiply_definedsuppress' [-Wunused-command-line-argument-hard-error-in-future]
+clang: note: this will be a hard error (cannot be downgraded to a warning) in the future
+make: *** [redcloth_scan.bundle] Error 1
+
+
+Gem files will remain installed in /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9 for inspection.
+Results logged to /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9/ext/redcloth_scan/gem_make.out
+An error occurred while installing RedCloth (4.2.9), and Bundler cannot continue.
+Make sure that `gem install RedCloth -v '4.2.9'` succeeds before bundling.
+</code></pre>
+
+<p>Xcodeのアップデートでコンパイラが更新されたことが原因のよう</p>
+
+<h3>オプションをつけてやり直し</h3>
+
+<pre><code class="bash">$ sudo ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future bundle install
+</code></pre>
+
+<h3>ビルドツール、rakeをインストール</h3>
+
+<pre><code class="bash">$ rake install
+</code></pre>
+
+<h2>②GitHubにリポジトリを作成</h2>
+
+<ul>
+<li>[username].github.io</li>
+</ul>
+
+
+<p>という名前でリポジトリを作る。今回は</p>
+
+<ul>
+<li>sojiro14.github.io</li>
+</ul>
+
+
+<h2>③Octopressでのデプロイ</h2>
+
+<h3>デプロイ設定する</h3>
+
+<pre><code>rake setup_github_pages
+</code></pre>
+
+<p>途中でリポジトリのurlを聞かれるので入力。今回は</p>
+
+<pre><code>git@github.com:sojiro14/sojiro14.github.io.git
+</code></pre>
+
+<p>を入力した</p>
+
+<pre><code class="bash">$ rake setup_github_pages
+Enter the read/write url for your repository
+(For example, 'git@github.com:your_username/your_username.github.io.git)
+           or 'https://github.com/your_username/your_username.github.io')
+Repository url: git@github.com:sojiro14/sojiro14.github.io.git
+Added remote git@github.com:sojiro14/sojiro14.github.io.git as origin
+Set origin as default remote
+Master branch renamed to 'source' for committing your blog source files
+
+・・・・（略）
+
+ 1 file changed, 1 insertion(+)
+ create mode 100644 index.html
+cd -
+
+---
+## Now you can deploy to git@github.com:sojiro14/sojiro14.github.io.git with `rake deploy` ##
+</code></pre>
+
+<h3>ページの作成</h3>
+
+<p>必要ファイルを作成
+&#8220;`bash
+$ rake generate</p>
+
+<h2>Generating Site with Jekyll</h2>
+
+<p>directory source/stylesheets/
+   create source/stylesheets/screen.css
+Configuration from /Your/Octopress/Directory/git/octopress/_config.yml
+Building site: source -> public
+Successfully generated site: source -> public
+&#8220;`</p>
+
+<p>deploy
+&#8220;`bash
+$ rake deploy</p>
+
+<h2>Deploying branch to Github Pages</h2>
+
+<h2>Pulling any updates from Github Pages</h2>
+
+<p>cd _deploy</p>
+
+<p>・・・・（略）</p>
+
+<h2>Github Pages deploy complete</h2>
+
+<p>cd -
+&#8220;`</p>
+
+<h3>deployの確認</h3>
+
+<p>実際にページにアクセスして確認する
+<code>
+http://sojiro14.github.io
+</code>
+確認できればok。反映には少々(5分ほど)時間がかかる。</p>
+
+<h2>④Octopressの初期設定を変更</h2>
+
+<h3>_config.ymlの編集</h3>
+
+<p>_config.ymlファイルにてブログのタイトル、サブタイトル、筆者などを設定できる</p>
+
+<pre><code class="bash">$ vim _config.yml
+</code></pre>
+
+<p>例えばタイトル、サブタイトルは以下のように設定
+<code>yml
+title: Sojiro's Blog
+subtitle: This is nothing much.
+</code></p>
+
+<p>設定したらdeploy。Task: gen_deployを使う
+<code>bash
+$ rake gen_deploy
+</code>
+もう一度ページにアクセスしてタイトルなどが変更されているのを確認できればok</p>
+
+<h2>⑤記事の投稿</h2>
+
+<h2>記事を書く</h2>
+
+<p>new_postの後には記事のタイトルを指定。英数字のみ使用可
+<code>bash
+$ rake new_post["IRC-bot by HUBOT"]
+mkdir -p source/_posts
+Creating new post: source/_posts/2014-04-19-irc-bot-by-hubot.markdown
+</code></p>
+
+<p>source/_posts/2014-04-19-irc-bot-by-hubot.markdownというファイルが生成されるのでそこに内容をマークダウンで記述
+<code>bash
+$ vim source/_posts/2014-04-19-irc-bot-by-hubot.markdown
+</code></p>
+
+<pre><code>---
+layout: post
+title: "IRC-bot by HUBOT"
+date: 2014-04-19 21:05:49 +0900
+comments: true
+categories:
+---
+ここ以下に内容をマークダウンで書いていく
+</code></pre>
+
+<h3>記事をデプロイ</h3>
+
+<p>記事を書いたらデプロイする
+<code>bash
+$ rake gen_deploy
+</code></p>
+
+<p>記事が投稿されていることを確認できればok</p>
+
+<h2>⑥Google Analyticsを導入する</h2>
+
+<h3>Google AnalyticsのトラッキングIDを取得する</h3>
+
+<p><a href="http://www.google.com/intl/ja_jp/analytics/">Google Analyticsのサイト</a>からアカウントを作成し、</p>
+
+<ul>
+<li>username.github.io</li>
+</ul>
+
+
+<p>のトラッキングIDを取得する</p>
+
+<h3>取得したトラッキングIDを設定</h3>
+
+<p>_config.ymlにトラッキングIDを設定する
+<code>bash
+$ vim _config.yml
+</code></p>
+
+<p>場所はこちら
+&#8220;`yml</p>
+
+<h1>Google Analytics</h1>
+
+<p>google_analytics_tracking_id: XX-12345678-9
+&#8220;`</p>
+
+<p>設定が終わったらデプロイ
+<code>bash
+$ rake gen_deploy
+</code>
+Google Analyticsのサイト上でトラッキングできていることを確認できればok</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://www.rubylife.jp/rails/ini/index2.html">Bundlerを使ったGemパッケージの管理</a></li>
+<li><a href="http://qiita.com/yonesuke/items/26ed04f3f15e269c3ed9">Octopress インストールがうまくいかなかったのでメモ</a></li>
+<li><a href="http://d.hatena.ne.jp/unageanu/20100829/1283069269">Rakeの基本的な使い方まとめ</a></li>
+<li><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a></li>
+<li><a href="http://morizyun.github.io/blog/octopress-gitpage-minimum-install-guide/">OctopressでGitHub無料ブログ構築。sourceをBitbucket管理。簡単ガイド！</a></li>
+<li><a href="http://qiita.com/syui/items/07365ed24eef63602233">GitHub Pages + Octopress カスタマイズ</a></li>
+<li><a href="http://qiita.com/fakestarbaby/items/14785a63e064bb1306b9">OctopressでGoogleアナリティクスを使おう！</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
