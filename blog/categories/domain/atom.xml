@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Domain | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/domain/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-30T01:26:15+09:00</updated>
+  <updated>2015-01-30T01:33:25+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -32,6 +32,9 @@
 </ul>
 
 
+<!-- more -->
+
+
 <h2>CNAMEレコードとはなにか</h2>
 
 <p>CNAMEレコードとはDNSに用意されたレコード(ドメイン設定)の種類の一つで、
@@ -45,14 +48,13 @@
 
 <p> <code>blog.sojiro.me</code></p>
 
-<p>というドメインを設定することで、ブラウザから <code>blog.sojiro.me</code> にアクセスした場合も内部的に名前解決して <code>sojiro14.github.io</code> の内容を表示できるようにする。</p>
+<p>というドメインを設定することで、ブラウザから<code>blog.sojiro.me</code>にアクセスした場合も内部的に名前解決して <code>sojiro14.github.io</code> の内容を表示できるようにする。</p>
 
 <h2>CNAMEファイル</h2>
 
 <p>Github Pagesでは <code>CNAME</code> というファイルをルートディレクトリに設置することでリダイレクト処理を設定することができる</p>
 
-<p>このリダイレクト処理として、 <code>sojiro14.github.io</code> にアクセスがあった場合に <code>blog.sojiro.me</code> にリダイレクトする、という設定をしておけば、
-さらに前述のDNS上のCNAMEレコードにより内部的にGithub Pagesの内容を見に行くことになり、常に <code>blog.sojiro.me</code> ドメインでブログにアクセスすることになる。</p>
+<p>このリダイレクト処理として、 <code>sojiro14.github.io</code> にアクセスがあった場合に <code>blog.sojiro.me</code> にリダイレクトする、という設定をしておけば、さらに前述のDNS上のCNAMEレコードにより内部的にGithub Pagesの内容を見に行くことになり、常に <code>blog.sojiro.me</code> ドメインでブログにアクセスすることになる。</p>
 
 <h2>実施手順</h2>
 
@@ -102,8 +104,11 @@ $ rake gen_deploy
 
 <h2>参照</h2>
 
-<p><a href="http://octopress.org/docs/deploying/github/">Deploying to Github Pages</a>
-<a href="http://blog.livedoor.jp/techblog/archives/65340720.html">CNAMEの間違った使い方</a></p>
+<ul>
+<li><a href="http://octopress.org/docs/deploying/github/">Deploying to Github Pages</a></li>
+<li><a href="http://blog.livedoor.jp/techblog/archives/65340720.html">CNAMEの間違った使い方</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
