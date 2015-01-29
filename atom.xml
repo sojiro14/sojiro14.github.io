@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-30T00:09:13+09:00</updated>
+  <updated>2015-01-30T01:26:15+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,103 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Github PagesとOctopressで作ったブログに独自ドメインを設定する]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/"/>
+    <updated>2015-01-30T00:14:23+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages</id>
+    <content type="html"><![CDATA[<p>本ブログをリニューアルしたついでに新しくドメインを取ってこのブログに適用してみた。</p>
+
+<p>Github PagesとOctopressを使ったブログへの独自ドメイン設定のメモとして残しておく。</p>
+
+<h2>やるべきこと</h2>
+
+<p>今回は <code>blog.sojiro.me</code> というサブドメインを使うことにしたので、やるべき手順は以下の2つのみ。</p>
+
+<ul>
+<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
+<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
+</ul>
+
+
+<h2>CNAMEレコードとはなにか</h2>
+
+<p>CNAMEレコードとはDNSに用意されたレコード(ドメイン設定)の種類の一つで、
+特定のドメインに対して別名を設定することができる。</p>
+
+<p>今回は元々のGithub Pagesのドメインである</p>
+
+<p> <code>sojiro14.github.io</code></p>
+
+<p>というドメインの別名として</p>
+
+<p> <code>blog.sojiro.me</code></p>
+
+<p>というドメインを設定することで、ブラウザから <code>blog.sojiro.me</code> にアクセスした場合も内部的に名前解決して <code>sojiro14.github.io</code> の内容を表示できるようにする。</p>
+
+<h2>CNAMEファイル</h2>
+
+<p>Github Pagesでは <code>CNAME</code> というファイルをルートディレクトリに設置することでリダイレクト処理を設定することができる</p>
+
+<p>このリダイレクト処理として、 <code>sojiro14.github.io</code> にアクセスがあった場合に <code>blog.sojiro.me</code> にリダイレクトする、という設定をしておけば、
+さらに前述のDNS上のCNAMEレコードにより内部的にGithub Pagesの内容を見に行くことになり、常に <code>blog.sojiro.me</code> ドメインでブログにアクセスすることになる。</p>
+
+<h2>実施手順</h2>
+
+<p>DNSへのCNAMEレコードの登録よりも <code>CNAME</code> ファイルの設置を先に行ってしまうと、
+Github Pagesの元々のドメインへのアクセスが独自ドメインにリダイレクトされた際に名前解決が上手く行かず、適切なページが表示されない、
+という状態になってしまうので、</p>
+
+<ol>
+<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
+<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
+</ol>
+
+
+<p>という順序で行う</p>
+
+<h2>実践</h2>
+
+<h3>CNAMEレコードの登録</h3>
+
+<p>今回はお名前.comでドメインを取得したのでお名前.comでのCNAMEレコード追加の手順となる</p>
+
+<p>お名前Navi > ドメイン設定 > DNS関連機能の設定</p>
+
+<p>から対象のドメインを選択して次へ進むと、</p>
+
+<p>DNSレコード設定を利用する</p>
+
+<p>という選択肢があるので、そこから以下のようにCNAMEレコードを設定する。</p>
+
+<p><img src="http://sojiro14.github.io/images/onamae/add_cname_record.png"></p>
+
+<p>通常CNAMEレコードのvalueに設定するドメインは最後に <code>.</code> を付ける必要があるが、お名前.comでは自動で設定してくれるので、最後の <code>.</code> を付ける必要はない。</p>
+
+<p>また、レコードを追加後、ページ下部の確認ボタンから確認、完了の手続きを踏まないと登録されないので注意。</p>
+
+<p>登録完了から反映まで10分ほどかかる。</p>
+
+<h3>CNAMEファイルの設置</h3>
+
+<p>Octopressの管理ディレクトリにて以下の手順で設置する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;blog.sojiro.me&#39;</span> &gt;&gt; <span class="nb">source</span>/CNAME
+</span><span class='line'><span class="nv">$ </span>rake gen_deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで <code>sojiro14.github.io</code> にアクセスすると <code>blog.sojiro.me</code> にリダイレクトされ、 <code>blog.sojiro.me</code> ではGithub Pagesの内容を表示することができるようになった。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://octopress.org/docs/deploying/github/">Deploying to Github Pages</a>
+<a href="http://blog.livedoor.jp/techblog/archives/65340720.html">CNAMEの間違った使い方</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Node.jsを使ってWeb Serverを作ってみました]]></title>
@@ -2891,149 +2988,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <li><a href="http://qiita.com/sifue/items/55d0c5c11a0571af3b8e">grepやackよりも速いコード検索ツールのagをローカルビルドインストールする</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[AWSに複数のユーザーを設定した手順]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/08/22/add-users-on-aws-instance/"/>
-    <updated>2014-08-22T00:58:55+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/08/22/add-users-on-aws-instance</id>
-    <content type="html"><![CDATA[<p>AWSでサーバーを借りて複数人で共同開発することになった。
-それに伴い、借りたサーバーに各々がアクセスできるようユーザーの設定をした際の手順メモ。</p>
-
-<h2>AWSでWEBサーバーを借りる</h2>
-
-<p>AWSのWebサーバーレンタルサービスはEC2と呼ばれる。
-サーバーをレンタルするには様々あるサービス群からEC2を選択し、<code>Launch Instance</code> ボタンを押してInstanceの立ち上げを開始する。</p>
-
-<ul>
-<li>AMI(Amazon Machine Image)の選択
-
-<ul>
-<li>借りるマシンの種類を選ぶ。用途によって様々な種類がある（WordPressが既に設定されているものなど）</li>
-</ul>
-</li>
-<li>Instance Typeの選択
-
-<ul>
-<li>マシンのスペックを選ぶ。メモリやストレージのサイズなど</li>
-</ul>
-</li>
-<li>Instanceの詳細設定</li>
-<li>Storageの設定</li>
-<li>Instanceへのtag付け</li>
-<li>Security Groupの選択
-
-<ul>
-<li>アクセスを許可するプロトコルやIPなどを指定してその設定をグループとして扱う</li>
-</ul>
-</li>
-</ul>
-
-
-<p>上記のほとんどの設定は後から変更できる。AMIの選択がしっかりできれば問題なさそう。</p>
-
-<p>最後まで完了すると秘密鍵(hogehoge.pem)が発行される。これは絶対になくしてはいけない。</p>
-
-<h2>立ち上げたInstanceに複数ユーザーを設定する</h2>
-
-<p>立ち上げたInstanceにアクセスする。
-今回はWebサーバーとして立ち上げるのでSecurity GroupにはHTTPとSSHでのアクセスを許可するよう設定しておく。</p>
-
-<h3>秘密鍵でアクセスする</h3>
-
-<p>まずはInstance立ち上げ時に発行された秘密鍵でアクセスする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">600</span> hogehoge.pem  <span class="c"># 秘密鍵の権限を設定（厳しすぎても甘過ぎても使えない）</span>
-</span><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>ssh -i hogehoge.pem ec2-user@xx.xx.xx.xxx  <span class="c"># ec2-userでログイン</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>ダウンロード直後の秘密鍵は権限が適切ではない可能性がある。その場合は600に設定する。</li>
-<li><code>ssh</code>の<code>-i</code>オプションを使って秘密鍵を指定してログイン（秘密鍵を指定しないと~/.ssh/id_rsaが使われる）
-
-<ul>
-<li>最初は初期設定されているec2-userというユーザーでログインする</li>
-<li>コマンドはEC2のメニューバーからInstancesページに行き、Instanceを選択してページ上部の<code>Connect</code>ボタンを押すと表示される</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>ユーザーの作成</h3>
-
-<p>Instanceにログインできたら早速ユーザーを作成していく</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>ec2-user@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>sudo su -  <span class="c"># rootユーザーになる</span>
-</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> adduser sojiro  <span class="c"># ユーザー(sojiro)を作成</span>
-</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> passwd sojiro   <span class="c"># sojiroにパスワードを設定</span>
-</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> vim /etc/sudoers  <span class="c"># sojiroに権限を設定</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ユーザーを作り、ユーザーに権限を付与する。今回は大雑把にrootと同じことができる権限を付与。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> cat /etc/sudors
-</span><span class='line'>...
-</span><span class='line'>root    <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL
-</span><span class='line'>sojiro  <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>公開鍵の登録</h3>
-
-<p>作成したユーザーにlocalからアクセスするための公開鍵を設定する。
-（鍵のペアはlocalで予め<code>ssh-keygen -t rsa</code>で作成しておく）</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> su sojiro
-</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge root<span class="o">]</span><span class="nv">$ </span><span class="nb">cd</span>  <span class="c"># sojiroのホームディレクトリに移動</span>
-</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>mkdir .ssh
-</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>vim .ssh/authorized_keys  <span class="c"># 公開鍵を置く（今回はlocalのid_rsa.pubをコピペした）</span>
-</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">700</span> .ssh
-</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">600</span> .ssh/authorized_keys
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>公開鍵を置くファイルの名前は<code>.ssh</code>ディレクトリ配下の<code>authorized_keys</code>と決まっている</li>
-<li><code>.ssh</code>ディレクトリと<code>authorized_keys</code>の権限にも気をつける</li>
-</ul>
-
-
-<h3>作成したユーザーでInstanceにログインできることを確認</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>ssh sojiro@xx.xx.xx.xxx  <span class="c"># ログインできればOK</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>localのrsa鍵でログインできることを確認できれば完了。</p>
-
-<p>この操作で必要なユーザーを適宜作成する。</p>
-
-<h2>参考</h2>
-
-<p><a href="http://d.hatena.ne.jp/torazuka/20110420/ssh">新規に作成した鍵でEC2インスタンスにSSH接続する</a></p>
 ]]></content>
   </entry>
   

@@ -9,12 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。 今回使うNode.jsのバージョン 1
-2
-$ node -v
-v0.10.32 Web Serverオブジェクトの準備 Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている 1
-2
-var &hellip;">
+  <meta name="description" content="本ブログをリニューアルしたついでに新しくドメインを取ってこのブログに適用してみた。 Github PagesとOctopressを使ったブログへの独自ドメイン設定のメモとして残しておく。 やるべきこと 今回は blog.sojiro.me というサブドメインを使うことにしたので、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,6 +94,124 @@ var &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/">Github PagesとOctopressで作ったブログに独自ドメインを設定する</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-30T00:14:23+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:14 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>本ブログをリニューアルしたついでに新しくドメインを取ってこのブログに適用してみた。</p>
+
+<p>Github PagesとOctopressを使ったブログへの独自ドメイン設定のメモとして残しておく。</p>
+
+<h2>やるべきこと</h2>
+
+<p>今回は <code>blog.sojiro.me</code> というサブドメインを使うことにしたので、やるべき手順は以下の2つのみ。</p>
+
+<ul>
+<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
+<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
+</ul>
+
+
+<h2>CNAMEレコードとはなにか</h2>
+
+<p>CNAMEレコードとはDNSに用意されたレコード(ドメイン設定)の種類の一つで、
+特定のドメインに対して別名を設定することができる。</p>
+
+<p>今回は元々のGithub Pagesのドメインである</p>
+
+<p> <code>sojiro14.github.io</code></p>
+
+<p>というドメインの別名として</p>
+
+<p> <code>blog.sojiro.me</code></p>
+
+<p>というドメインを設定することで、ブラウザから <code>blog.sojiro.me</code> にアクセスした場合も内部的に名前解決して <code>sojiro14.github.io</code> の内容を表示できるようにする。</p>
+
+<h2>CNAMEファイル</h2>
+
+<p>Github Pagesでは <code>CNAME</code> というファイルをルートディレクトリに設置することでリダイレクト処理を設定することができる</p>
+
+<p>このリダイレクト処理として、 <code>sojiro14.github.io</code> にアクセスがあった場合に <code>blog.sojiro.me</code> にリダイレクトする、という設定をしておけば、
+さらに前述のDNS上のCNAMEレコードにより内部的にGithub Pagesの内容を見に行くことになり、常に <code>blog.sojiro.me</code> ドメインでブログにアクセスすることになる。</p>
+
+<h2>実施手順</h2>
+
+<p>DNSへのCNAMEレコードの登録よりも <code>CNAME</code> ファイルの設置を先に行ってしまうと、
+Github Pagesの元々のドメインへのアクセスが独自ドメインにリダイレクトされた際に名前解決が上手く行かず、適切なページが表示されない、
+という状態になってしまうので、</p>
+
+<ol>
+<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
+<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
+</ol>
+
+
+<p>という順序で行う</p>
+
+<h2>実践</h2>
+
+<h3>CNAMEレコードの登録</h3>
+
+<p>今回はお名前.comでドメインを取得したのでお名前.comでのCNAMEレコード追加の手順となる</p>
+
+<p>お名前Navi > ドメイン設定 > DNS関連機能の設定</p>
+
+<p>から対象のドメインを選択して次へ進むと、</p>
+
+<p>DNSレコード設定を利用する</p>
+
+<p>という選択肢があるので、そこから以下のようにCNAMEレコードを設定する。</p>
+
+<p><img src="/images/onamae/add_cname_record.png"></p>
+
+<p>通常CNAMEレコードのvalueに設定するドメインは最後に <code>.</code> を付ける必要があるが、お名前.comでは自動で設定してくれるので、最後の <code>.</code> を付ける必要はない。</p>
+
+<p>また、レコードを追加後、ページ下部の確認ボタンから確認、完了の手続きを踏まないと登録されないので注意。</p>
+
+<p>登録完了から反映まで10分ほどかかる。</p>
+
+<h3>CNAMEファイルの設置</h3>
+
+<p>Octopressの管理ディレクトリにて以下の手順で設置する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;blog.sojiro.me&#39;</span> &gt;&gt; <span class="nb">source</span>/CNAME
+</span><span class='line'><span class="nv">$ </span>rake gen_deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで <code>sojiro14.github.io</code> にアクセスすると <code>blog.sojiro.me</code> にリダイレクトされ、 <code>blog.sojiro.me</code> ではGithub Pagesの内容を表示することができるようになった。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://octopress.org/docs/deploying/github/">Deploying to Github Pages</a>
+<a href="http://blog.livedoor.jp/techblog/archives/65340720.html">CNAMEの間違った使い方</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1941,130 +2054,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/">Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-16T23:59:05+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:59 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>railsには <code>scaffold</code> という単純なリソースを一気に生成するコマンドが存在する。
-今回はこのコマンドを使ってみる。</p>
-
-<h2>Usersリソースの生成</h2>
-
-<p>今回は <code>scaffold</code> コマンドを使ってリソースを生成する。
-ここでは以下の要素をもつUsersリソースを生成する。</p>
-
-<ul>
-<li>id int</li>
-<li>name string</li>
-<li>email string</li>
-</ul>
-
-
-<p> <code>rails generate</code> スクリプトに <code>scaffold</code> コマンドを指定し、リソースの単数系と要素の情報を渡す</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate scaffold User name:string email:string
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>id要素はRailsが主キーとしてデフォルトで設定する</p>
-
-<h2>DBにusersのセットアップを行う</h2>
-
-<p> <code>rake</code> コマンドを使ってDBをmigrate（更新）する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
-</span><span class='line'><span class="o">==</span> <span class="m">20141111170736</span> CreateUsers: <span class="nv">migrating</span> <span class="o">======================================</span>
-</span><span class='line'>-- create_table<span class="o">(</span>:users<span class="o">)</span>
-</span><span class='line'>   -&gt; 0.0012s
-</span><span class='line'><span class="o">==</span> <span class="m">20141111170736</span> CreateUsers: migrated <span class="o">(</span>0.0014s<span class="o">)</span> <span class="o">=============================</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>出力から <code>users</code> テーブルが作られたことがわかる</p>
-
-<h2>ブラウザで確認</h2>
-
-<p> <code>rails server</code> コマンドの短縮版である <code>rails s</code> を使って3000番portにアプリを立ち上げる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails s
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
-
-<p>にブラウザでアクセスすると <code>#1 railsのセットアップ</code> で見たデフォルトのRailsページが表示される</p>
-
-<p>次に以下のエンドポイントにアクセスしてみる</p>
-
-<p><a href="http://xx.xxx.xxx.xxx:3000/users">http://xx.xxx.xxx.xxx:3000/users</a></p>
-
-<p>すると既にUser一覧ページができあがっているのがわかる。この他に</p>
-
-<ul>
-<li>新規ユーザーを作成するページ</li>
-<li>特定のidのユーザー情報を表示するページ</li>
-<li>特定のidのユーザー情報を編集するページ</li>
-</ul>
-
-
-<p>が作られている。</p>
-
-<h2>Micropostsリソースの生成</h2>
-
-<p>Usersリソースと同様に <code>scaffold</code> コマンドと <code>rake</code> の <code>migrate</code> タスクで生成する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate scaffold Micropost content:string user_id:integer
-</span><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
-</span><span class='line'><span class="o">==</span> <span class="m">20141112174234</span> CreateMicroposts: <span class="nv">migrating</span> <span class="o">=================================</span>
-</span><span class='line'>-- create_table<span class="o">(</span>:microposts<span class="o">)</span>
-</span><span class='line'>   -&gt; 0.0029s
-</span><span class='line'><span class="o">==</span> <span class="m">20141112174234</span> CreateMicroposts: migrated <span class="o">(</span>0.0031s<span class="o">)</span> <span class="o">========================</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>config/routes.rb</code> にmicropostsリソースの設定が追加された</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -2084,6 +2073,10 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/">Github PagesとOctopressで作ったブログに独自ドメインを設定する</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/01/07/making-a-web-server-with-node-dot-js/">Node.jsを使ってWeb Serverを作ってみました</a>
       </li>
     
@@ -2097,10 +2090,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
     
       <li class="post">
         <a href="/blog/2014/12/26/tab-and-space-on-vim/">VimにおけるTABとスペースの扱いについて</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a>
       </li>
     
   </ul>
