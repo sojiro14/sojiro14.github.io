@@ -306,82 +306,12 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 <p>これでYUMにmongoDBのリポジトリが追加される</p>
 
-<h2>mongoDBのインストール</h2>
-
-<p>今回は何も考えず最新のバージョンをインストールするので以下のコマンドで実行する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install mongodb-org
-</span><span class='line'>読み込んだプラグイン:priorities, update-motd, upgrade-helper
-</span><span class='line'>...
-</span><span class='line'><span class="o">============================================================================================================================================================================================================</span>
-</span><span class='line'> Package                                                  アーキテクチャー                             バージョン                                       リポジトリー                                   容量
-</span><span class='line'><span class="o">============================================================================================================================================================================================================</span>
-</span><span class='line'>インストール中:
-</span><span class='line'> mongodb-org                                              x86_64                                       2.6.6-1                                          mongodb                                       4.9 k
-</span><span class='line'>依存性関連でのインストールをします:
-</span><span class='line'> mongodb-org-mongos                                       x86_64                                       2.6.6-1                                          mongodb                                       6.8 M
-</span><span class='line'> mongodb-org-server                                       x86_64                                       2.6.6-1                                          mongodb                                       9.0 M
-</span><span class='line'> mongodb-org-shell                                        x86_64                                       2.6.6-1                                          mongodb                                       4.3 M
-</span><span class='line'> mongodb-org-tools                                        x86_64                                       2.6.6-1                                          mongodb                                        <span class="m">90</span> M
-</span><span class='line'>
-</span><span class='line'>トランザクションの要約
-</span><span class='line'><span class="o">============================================================================================================================================================================================================</span>
-</span><span class='line'>インストール  <span class="m">1</span> パッケージ <span class="o">(</span>+4 個の依存関係のパッケージ<span class="o">)</span>
-</span><span class='line'>
-</span><span class='line'>総ダウンロード容量: <span class="m">110</span> M
-</span><span class='line'>インストール容量: <span class="m">277</span> M
-</span><span class='line'>Is this ok <span class="o">[</span>y/d/N<span class="o">]</span>: y
-</span><span class='line'>Downloading packages:
-</span><span class='line'>...
-</span><span class='line'>完了しました!
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>確認</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mongo --version
-</span><span class='line'>MongoDB shell version: 2.6.6
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール完了</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat-centos-or-fedora-linux/">Install MongoDB on Red Hat Enterprise, CentOS, Fedora, or Amazon Linux</a></li>
-<li><a href="http://qiita.com/nownabe/items/123a8fd04ff5252b3036">CentOS6.5にMongoDBをインストールする</a></li>
-<li><a href="http://qiita.com/ykyk1218/items/1c1824e77fb8af78bcf5">MongoDBをLinuxにインストール</a></li>
-</ul>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -422,122 +352,12 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 <p>これで <code>&lt;TAB&gt;</code> に半角4つ分が設定される。</p>
 
-<h2><code>&lt;TAB&gt;</code> の挙動</h2>
-
-<p>そもそも <code>&lt;TAB&gt;</code> はどのような挙動をするのか。</p>
-
-<p>何となく、指定した数の分だけ半角スペースを入れてくれるもの、と思っていたが、</p>
-
-<p>正確には行頭からの文字数が<code>&lt;TAB&gt;</code> に指定された半角数の倍数になるようにスペースを補完するもの、というのが正しいかもしれない。何を言っているかわからないと思うので以下で実験する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">list</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">listchars</span><span class="p">=</span><span class="k">tab</span>:<span class="p">&gt;</span>.<span class="p">,</span>trail:_<span class="p">,</span><span class="nb">eol</span>:↲<span class="p">,</span>extends:<span class="p">&gt;,</span>precedes:<span class="p">&lt;,</span>nbsp:%
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>実験用に上記のように <code>.vimrc</code> を設定しておく。</p>
-
-<figure class='code'><figcaption><span>sample1</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="p">&gt;</span>...↲
-</span><span class='line'><span class="k">a</span><span class="p">&gt;</span>..↲
-</span><span class='line'>bb<span class="p">&gt;</span>.↲
-</span><span class='line'>ccc<span class="p">&gt;</span>↲
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これは以下のように打ち込んだ結果で、 <code>&lt;TAB&gt;</code> により、それぞれの行が <code>tabstop</code> で設定した半角4つ分で終わるように（タブ文字により）スペースが補完されているのがわかる。</p>
-
-<ul>
-<li><code>&lt;TAB&gt;</code></li>
-<li>a <code>&lt;TAB&gt;</code></li>
-<li>bb <code>&lt;TAB&gt;</code></li>
-<li>ccc <code>&lt;TAB&gt;</code></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>sample2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="p">&gt;</span>...<span class="p">&gt;</span>...↲
-</span><span class='line'>test<span class="p">&gt;</span>...↲
-</span><span class='line'>sample<span class="p">&gt;</span>.↲
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>一行に半角4つ分以上の文字が打ち込まれている場合も同じく、 <code>&lt;TAB&gt;</code> はそれぞれの行が <code>tabstop</code> で指定した半角4つの倍数の文字数になるようにタブ文字を補完する。（この場合は一行につき半角8文字）</p>
-
-<h2>smarttabとshiftwidthとsmartindent</h2>
-
-<p> <code>smarttab</code> をONにすることで <code>shiftwidth</code> を設定することが可能になる。</p>
-
-<p> <code>shiftwidth</code> は行頭のインデントの幅を規定するもので、 <code>smarttab</code> が効いているときには行頭の <code>&lt;TAB&gt;</code> は <code>shiftwidth</code> の幅のスペース（タブ文字）を挿入する役目を果たす。</p>
-
-<p> <code>smartindent</code> をONにすると改行時に前の行の行末を見て自動でインデントが挿入される。例えば行末が <code>{</code> の場合は次の行に自動的にインデントが入る。このインデントの幅は <code>shiftwidth</code> で指定された幅となる。</p>
-
-<h2>autoindent</h2>
-
-<p> <code>autoindent</code> は改行時に前の行のインデントと同じ幅でインデントを挿入する。</p>
-
-<h2>expandtab</h2>
-
-<p> <code>expandtab</code> は <code>&lt;TAB&gt;</code> により挿入されるタブ文字を純粋なスペースに変換する。</p>
-
-<p>上記のsample1、2を以下の設定で記述してみる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">expandtab</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">list</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">listchars</span><span class="p">=</span><span class="k">tab</span>:<span class="p">&gt;</span>.<span class="p">,</span>trail:_<span class="p">,</span><span class="nb">eol</span>:↲<span class="p">,</span>extends:<span class="p">&gt;,</span>precedes:<span class="p">&lt;,</span>nbsp:%
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>sample1&#8217;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'>____↲
-</span><span class='line'>a___↲
-</span><span class='line'>bb__↲
-</span><span class='line'>ccc_↲
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>sample2&#8217;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'>________↲
-</span><span class='line'>test____↲
-</span><span class='line'>sample__↲
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>expandtab</code> をONにした状態で一時的にタブ文字を記述したいときは、VimをINSERTモードにした状態で以下のように打つ。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'>Control<span class="p">-</span><span class="k">v</span> <span class="p">&lt;</span>TAB<span class="p">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://vimwiki.net/?FrontPage">VIM wiki</a></li>
-<li><a href="http://nanasi.jp/articles/howto/editing/et-inserttab.html">:set expandtab（:set et）設定の時に、タブ文字を挿入する </a></li>
-</ul>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/26/tab-and-space-on-vim/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -587,116 +407,12 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 <p><img src="/images/slack_hubot/join_bot.png"></p>
 
-<h2>HUBOTの設定をする</h2>
-
-<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>にも記したHUBOTのセットアップを進める。</p>
-
-<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>の「②HUBOTをインストールする」までを済ませておく。</p>
-
-<p>新たなbotの生成</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create slack_sojiro_test
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>slack用のpluginをインストール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>slack_sojiro_test/
-</span><span class='line'><span class="nv">$ </span>npm install hubot-slack --save
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>起動用スクリプトの作成。先ほど取得したAPI Tokenを使用する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim runhubot
-</span><span class='line'><span class="nv">$ </span>cat runhubot
-</span><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_TOKEN</span><span class="o">=</span>xxxx-123456789-ABCDEFGHIJKLMN
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_TEAM</span><span class="o">=</span>Sojiro-test
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_BOTNAME</span><span class="o">=</span><span class="nb">test</span>-bot
-</span><span class='line'>
-</span><span class='line'>bin/hubot --adapter slack
-</span><span class='line'><span class="nv">$ </span>chmod u+x runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>botの起動</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでSlack上のbotがHUBOTのスクリプトに沿って反応するようになったはず</p>
-
-<h2>botを使ってみる</h2>
-
-<p>HUBOTではデフォルトでいくつかのスクリプトが用意されているので使って試してみる</p>
-
-<h3>ping</h3>
-
-<p>生存確認</p>
-
-<p><img src="/images/slack_hubot/ping.png"></p>
-
-<h3>image me</h3>
-
-<p>画像検索</p>
-
-<p><img src="/images/slack_hubot/image_me.png"></p>
-
-<h3>animate me</h3>
-
-<p>アニメーション検索</p>
-
-<p><img src="/images/slack_hubot/animate_me.png"></p>
-
-<h3>youtube me</h3>
-
-<p>動画検索</p>
-
-<p><img src="/images/slack_hubot/youtube_me.png"></p>
-
-<h3>translate me</h3>
-
-<p>翻訳（日本語から英語）</p>
-
-<p><img src="/images/slack_hubot/translate_me_1.png"></p>
-
-<p>翻訳（英語から日本語）</p>
-
-<p><img src="/images/slack_hubot/translate_me_2.png"></p>
-
-<h3>map me</h3>
-
-<p>地図検索</p>
-
-<p><img src="/images/slack_hubot/map_me.png"></p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
-<li><a href="http://memo.sanographix.net/post/88371442780">Hubotで西木野真姫bot作ってSlackに呼ぶ</a></li>
-<li><a href="http://qiita.com/Katsumata_RYO/items/dc4543aa5827d4c3211c">slackにHubotを導入(Heroku経由)</a></li>
-</ul>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/15/slack-bot-by-hubot/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -758,58 +474,12 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 <p>これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
 
-<h2>Node.jsのインストール</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install node
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで完了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
-</span><span class='line'>v0.10.33
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>npmもばっちり入っている</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm -v
-</span><span class='line'>2.1.10
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>MongoDBのインストール</h2>
-
-<p>これも以下を実行するだけ。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install mongodb
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mongo --version
-</span><span class='line'>MongoDB shell version: 2.6.5
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>おしまい。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
-<li><a href="http://qiita.com/hajimeni/items/3c93fd981e92f66a20ce">Macにhomebrewを使ってmongodbをインストール</a></li>
-</ul>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -877,168 +547,14 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 </span></code></pre></td></tr></table></div></figure>
 
 
-<ul>
-<li>escape
 
-<ul>
-<li>escape keyの設定（ここでは <code>^j</code> をescape keyとして登録）</li>
-</ul>
-</li>
-<li>startup_message
-
-<ul>
-<li>起動時に表示されるメッセージをoff</li>
-</ul>
-</li>
-<li>encoding関連の設定</li>
-<li>caption
-
-<ul>
-<li>画面下部に表示されるcaptionの設定</li>
-</ul>
-</li>
-<li>autodetach
-
-<ul>
-<li>起動時に自動でデタッチ（後述）</li>
-</ul>
-</li>
-<li>bell_msg
-
-<ul>
-<li>バックグラウンドで出力されたベル文字をscreenに出力する（ <code>^G</code> はベル文字に置換される）</li>
-</ul>
-</li>
-<li>defscrollback
-
-<ul>
-<li>スクロールバックバッファの行数を設定</li>
-</ul>
-</li>
-<li>vbell
-
-<ul>
-<li>可視ベルの設定</li>
-</ul>
-</li>
-<li>windowlist
-
-<ul>
-<li>全ウィンドウをリスト表示し、使用するウィンドウを選択できるようにする</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>screenを立ち上げてみる</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>名前を付けて立ち上げる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -t <span class="nb">test</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ウィンドウが複数立ち上がると用途に合わせて移動が必要になる。上記 <code>.screenrc</code> の設定がなされた状態で以下のように移動できる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + <span class="o">[</span>number<span class="o">]</span>  <span class="c"># [number]に指定した番号のウィンドウに移動</span>
-</span><span class='line'><span class="nv">$ </span>^j + h         <span class="c"># 1つ前のウィンドウに移動</span>
-</span><span class='line'><span class="nv">$ </span>^j + j         <span class="c"># 1つ後のウィンドウに移動</span>
-</span><span class='line'><span class="nv">$ </span>^j + l         <span class="c"># 表示されるウィンドウリストから移動先のウィンドウを選択</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>ウィンドウの分割</h2>
-
-<p>ウィンドウを上下に分割する（縦方向の分割はscreenのバージョンを変えないといけないようなので割愛）</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + S
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>分割された領域間の移動</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + <span class="o">[</span>tab<span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>領域の破棄</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + X  <span class="c"># 現在の領域を破棄</span>
-</span><span class='line'><span class="nv">$ </span>^j + Q  <span class="c"># 現在の領域以外の全ての領域を破棄</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>デタッチとアタッチ</h2>
-
-<ul>
-<li>デタッチ（detach）
-
-<ul>
-<li>screen上での作業をセッションという形で保存しておくこと</li>
-</ul>
-</li>
-<li>アタッチ（attach）
-
-<ul>
-<li>デタッチによって保存されたセッションから作業に復帰すること</li>
-</ul>
-</li>
-</ul>
-
-
-<p>デタッチする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + d
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>セッションを確認する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -ls
-</span><span class='line'>There is a screen on:
-</span><span class='line'>    72181.ttys010.your-pc   <span class="o">(</span>Detached<span class="o">)</span>
-</span><span class='line'><span class="m">1</span> Socket in /var/folders/56/dlftkv4d4191qwj6r_gxs_shmspdv_/T/.screen.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>アタッチ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -r <span class="o">[</span>session_number <span class="p">|</span> session_name<span class="o">]</span>
-</span><span class='line'><span class="c"># 上の例では 72181 もしくは ttys010 を指定する</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://www.limy.org/program/screen.html">screenコマンド一覧 3.9.13対応 </a></li>
-<li><a href="http://linuxjm.sourceforge.jp/html/GNU_screen/man1/screen.1.html">SCREEN</a></li>
-<li><a href="http://sixeight.hatenablog.com/entry/20090730/1248973178">screenのデタッチ/アタッチ</a></li>
-</ul>
 
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/01/screen-introduction/">Read on &rarr;</a>
+    </footer>
   
 
 

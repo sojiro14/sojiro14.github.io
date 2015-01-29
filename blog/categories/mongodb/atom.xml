@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mongodb | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/mongodb/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-30T01:42:07+09:00</updated>
+  <updated>2015-01-30T01:48:54+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -358,6 +358,9 @@ enabled=1
 </code>
 これでYUMにmongoDBのリポジトリが追加される</p>
 
+<!-- more -->
+
+
 <h2>mongoDBのインストール</h2>
 
 <p>今回は何も考えず最新のバージョンをインストールするので以下のコマンドで実行する
@@ -464,6 +467,9 @@ MongoDB shell version: 2.6.6
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 </code>
 これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
+
+<!-- more -->
+
 
 <h2>Node.jsのインストール</h2>
 

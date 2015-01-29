@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-30T01:42:07+09:00</updated>
+  <updated>2015-01-30T01:48:54+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -752,6 +752,9 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 <p>これでYUMにmongoDBのリポジトリが追加される</p>
 
+<!-- more -->
+
+
 <h2>mongoDBのインストール</h2>
 
 <p>今回は何も考えず最新のバージョンをインストールするので以下のコマンドで実行する</p>
@@ -846,6 +849,9 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 
 <p>これで <code>&lt;TAB&gt;</code> に半角4つ分が設定される。</p>
+
+<!-- more -->
+
 
 <h2><code>&lt;TAB&gt;</code> の挙動</h2>
 
@@ -990,6 +996,9 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <p>そしてこの段階でbotがSlackにjoinする</p>
 
 <p><img src="http://sojiro14.github.io/images/slack_hubot/join_bot.png"></p>
+
+<!-- more -->
+
 
 <h2>HUBOTの設定をする</h2>
 
@@ -1141,6 +1150,9 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 <p>これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
 
+<!-- more -->
+
+
 <h2>Node.jsのインストール</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -1237,6 +1249,11 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 </span><span class='line'><span class="nb">bind </span>j next
 </span><span class='line'><span class="nb">bind </span>l windowlist
 </span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
 
 
 <ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Vim | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-30T01:42:07+09:00</updated>
+  <updated>2015-01-30T01:48:54+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -27,6 +27,9 @@
 set tabstop=4
 </code>
 これで <code>&lt;TAB&gt;</code> に半角4つ分が設定される。</p>
+
+<!-- more -->
+
 
 <h2><code>&lt;TAB&gt;</code> の挙動</h2>
 
