@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mongodb | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/mongodb/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-30T01:36:43+09:00</updated>
+  <updated>2015-01-30T01:42:07+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -43,6 +43,9 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 <p>RDBMSにおけるレコード(record)に相当するもの。
 各コレクションを構成する要素であり、BSONと呼ばれるJSONライクな形式で記述される。</p>
+
+<!-- more -->
+
 
 <h2>MongoDBの起動</h2>
 

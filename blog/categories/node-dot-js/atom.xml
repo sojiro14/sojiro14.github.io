@@ -4,7 +4,7 @@
   <title><![CDATA[Category: node.js | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/node-dot-js/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-30T01:36:43+09:00</updated>
+  <updated>2015-01-30T01:42:07+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -34,6 +34,9 @@ var http = require('http');
 var server = http.createServer();
 </code>
 Nodeの <code>http</code> モジュールを読み込んだ後、 <code>createServer()</code> メソッドでWeb Serverオブジェクトを取得できる</p>
+
+<!-- more -->
+
 
 <h2>requestイベントの追加</h2>
 
