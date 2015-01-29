@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-30T01:48:54+09:00</updated>
+  <updated>2015-01-30T01:53:56+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -1439,6 +1439,9 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 <p>このコマンドでcontrollerのファイルとviewのファイルが生成される。</p>
 
+<!-- more -->
+
+
 <h2>routesの設定</h2>
 
 <p>railsでは <code>config/routes</code> ファイルにてdispatch管理をしている。このファイルの設定でRESTfulなURLを自動生成してくれる。</p>
@@ -1675,6 +1678,11 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
 </span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
 
 
 <h2>rails db</h2>

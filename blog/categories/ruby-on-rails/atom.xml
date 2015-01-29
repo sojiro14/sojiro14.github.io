@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby on Rails | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/ruby-on-rails/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-01-30T01:48:54+09:00</updated>
+  <updated>2015-01-30T01:53:56+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -22,45 +22,36 @@
 
 <h2>rails generate controller</h2>
 
-<p>controllerを作成する。controllerの名前は1文字目が大文字で、複数形を指定するのがrailsの規約である。
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails g controller Stocks&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;rails generateコマンドは rails g と省略できる&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;このコマンドでcontrollerのファイルとviewのファイルが生成される。
-</span><span class='line'>
-</span><span class='line'><span class="c">## routesの設定</span>
-</span><span class='line'>railsでは <span class="sb">```</span>config/routes<span class="sb">```</span> ファイルにてdispatch管理をしている。このファイルの設定でRESTfulなURLを自動生成してくれる。
-</span><span class='line'>
-</span><span class='line'>今回追加したcontrollerの設定も追加する。
-</span><span class='line'> <span class="sb">```</span>config/routes<span class="sb">```</span> に以下の行を追加する
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;resources :stocks
-</span></code></pre></td></tr></table></div></figure>
-この設定により、リソースの基本的な操作を行うURLが生成される。</p>
+<p>controllerを作成する。controllerの名前は1文字目が大文字で、複数形を指定するのがrailsの規約である。</p>
+
+<pre><code class="bash">$ rails g controller Stocks
+# rails generateコマンドは rails g と省略できる
+</code></pre>
+
+<p>このコマンドでcontrollerのファイルとviewのファイルが生成される。</p>
+
+<!-- more -->
+
+
+<h2>routesの設定</h2>
+
+<p>railsでは <code>config/routes</code> ファイルにてdispatch管理をしている。このファイルの設定でRESTfulなURLを自動生成してくれる。</p>
+
+<p>今回追加したcontrollerの設定も追加する。
+ <code>config/routes</code> に以下の行を追加する</p>
+
+<pre><code class="ruby">resources :stocks
+</code></pre>
+
+<p>この設定により、リソースの基本的な操作を行うURLが生成される。</p>
 
 <p>この他にもroutesの設定方法はいくつかあり、それにより自由にエンドポイントの追加ができるがここでは省略。</p>
 
 <h2>設定されているroutesの確認</h2>
 
-<p>routesの設定が完了したら、生成されたURLの確認をする。
-<code>bash
-$ rake routes
+<p>routesの設定が完了したら、生成されたURLの確認をする。</p>
+
+<pre><code class="bash">$ rake routes
         Prefix Verb   URI Pattern                    Controller#Action
         stocks GET    /stocks(.:format)              stocks#index
                POST   /stocks(.:format)              stocks#create
@@ -70,170 +61,88 @@ $ rake routes
                PATCH  /stocks/:id(.:format)          stocks#update
                PUT    /stocks/:id(.:format)          stocks#update
                DELETE /stocks/:id(.:format)          stocks#destroy
-</code></p>
+</code></pre>
 
 <h2>アクションの追加</h2>
 
-<p> <code>$ rake routes</code> で示されたController#Actionに沿って、controllerにアクションを追加していく。
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">app</span><span class="o">/</span><span class="n">controllers</span><span class="o">/</span><span class="n">stocks_controller</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">StocksController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:set_stock</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="p">,</span> <span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:destroy</span><span class="o">]&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  # GET /s</span><span class="n">tocks</span>
-</span><span class='line'>  <span class="c1"># GET /stocks.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
-</span><span class='line'>    <span class="vi">@stocks</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">all</span>
-</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  # GET /s</span><span class="n">tocks</span><span class="o">/</span><span class="mi">1</span>
-</span><span class='line'>  <span class="c1"># GET /stocks/1.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  # GET /s</span><span class="n">tocks</span><span class="o">/</span><span class="kp">new</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">new</span>
-</span><span class='line'>    <span class="vi">@stock</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  # GET /s</span><span class="n">tocks</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">edit</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">edit</span>
-</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  # POST /s</span><span class="n">tocks</span>
-</span><span class='line'>  <span class="c1"># POST /stocks.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>    <span class="vi">@stock</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">stock_params</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;respond_to do |format|</span>
-</span><span class='line'><span class="sr">  if @stock.save</span>
-</span><span class='line'><span class="sr">    format.html { redirect_to @stock, notice: &#39;Stock was successfully created.&#39; }</span>
-</span><span class='line'><span class="sr">    format.json { render action: &#39;show&#39;, status: :created, location: @stock }</span>
-</span><span class='line'><span class="sr">  else</span>
-</span><span class='line'><span class="sr">    format.html { render action: &#39;new&#39; }</span>
-</span><span class='line'><span class="sr">    format.json { render json: @stock.errors, status: :unprocessable_entity }</span>
-</span><span class='line'><span class="sr">  end</span>
-</span><span class='line'><span class="sr">end</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="c1"># PATCH/PUT /stocks/1</span>
-</span><span class='line'>  <span class="c1"># PATCH/PUT /stocks/1.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">update</span>
-</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>      <span class="k">if</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">stock_params</span><span class="p">)</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="vi">@stock</span><span class="p">,</span> <span class="ss">notice</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Stock</span> <span class="n">was</span> <span class="n">successfully</span> <span class="n">updated</span><span class="o">.</span><span class="n">&amp;rsquo</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:no_content</span> <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">action</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">edit</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:unprocessable_entity</span> <span class="p">}</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  # DELETE /s</span><span class="n">tocks</span><span class="o">/</span><span class="mi">1</span>
-</span><span class='line'>  <span class="c1"># DELETE /stocks/1.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">destroy</span>
-</span><span class='line'>    <span class="vi">@stock</span><span class="o">.</span><span class="n">destroy</span>
-</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>      <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="n">stocks_url</span> <span class="p">}</span>
-</span><span class='line'>      <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:no_content</span> <span class="p">}</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  private</span>
-</span><span class='line'><span class="sr">    # Use callbacks to share common setup or constraints between actions.</span>
-</span><span class='line'><span class="sr">    def set_stock</span>
-</span><span class='line'><span class="sr">      @stock = Stock.find(params[:id])</span>
-</span><span class='line'><span class="sr">    end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1"># Never trust parameters from the scary internet, only allow the white list through.</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">stock_params</span>
-</span><span class='line'>  <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:stock</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p> <code>$ rake routes</code> で示されたController#Actionに沿って、controllerにアクションを追加していく。</p>
+
+<pre><code class="ruby ">app/controllers/stocks_controller.rb
+class StocksController &lt; ApplicationController
+  before_action :set_stock, only: [:show, :edit, :update, :destroy]
+
+  # GET /stocks
+  # GET /stocks.json
+  def index
+    @stocks = Stock.all
+  end
+
+  # GET /stocks/1
+  # GET /stocks/1.json
+  def show
+  end
+
+  # GET /stocks/new
+  def new
+    @stock = Stock.new
+  end
+
+  # GET /stocks/1/edit
+  def edit
+  end
+
+  # POST /stocks
+  # POST /stocks.json
+  def create
+    @stock = Stock.new(stock_params)
+
+    respond_to do |format|
+      if @stock.save
+        format.html { redirect_to @stock, notice: 'Stock was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @stock }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @stock.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /stocks/1
+  # PATCH/PUT /stocks/1.json
+  def update
+    respond_to do |format|
+      if @stock.update(stock_params)
+        format.html { redirect_to @stock, notice: 'Stock was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @stock.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /stocks/1
+  # DELETE /stocks/1.json
+  def destroy
+    @stock.destroy
+    respond_to do |format|
+      format.html { redirect_to stocks_url }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_stock
+      @stock = Stock.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def stock_params
+      params.require(:stock).permit(:title)
+    end
+end
+</code></pre>
 
 <h2>参照</h2>
 
@@ -250,34 +159,40 @@ $ rake routes
 
 <h2>rails generate model</h2>
 
-<p>まずはモデルを作成する。railsの規約に従って、モデルは単数系、最初の文字を大文字で始める。
-<code>bash
-$ rails generate model Stock title:string
-</code>
-このコマンドで <code>generate</code> は <code>g</code> と省略できる。また、要素の属性はデフォルトが <code>string</code> なので、 <code>string</code> も省略することができる。</p>
+<p>まずはモデルを作成する。railsの規約に従って、モデルは単数系、最初の文字を大文字で始める。</p>
 
-<p>省略したコマンドが以下。
-<code>bash
-$ rails g model Stock title
-</code>
-このコマンドでmodelに加えてmigrateファイルが生成されるのでDBをmigrateする。
-<code>bash
-$ bundle exec rake db:migrate
-</code></p>
+<pre><code class="bash">$ rails generate model Stock title:string
+</code></pre>
+
+<p>このコマンドで <code>generate</code> は <code>g</code> と省略できる。また、要素の属性はデフォルトが <code>string</code> なので、 <code>string</code> も省略することができる。</p>
+
+<p>省略したコマンドが以下。</p>
+
+<pre><code class="bash">$ rails g model Stock title
+</code></pre>
+
+<p>このコマンドでmodelに加えてmigrateファイルが生成されるのでDBをmigrateする。</p>
+
+<pre><code class="bash">$ bundle exec rake db:migrate
+</code></pre>
+
+<!-- more -->
+
 
 <h2>rails db</h2>
 
-<p>作成したmodelを確認するため、現在使用しているDBのクライアントを立ち上げてみる。
-<code>bash
-$ rails db
+<p>作成したmodelを確認するため、現在使用しているDBのクライアントを立ち上げてみる。</p>
+
+<pre><code class="bash">$ rails db
 sqlite&gt; .schema
 CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL);
 CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version");
 CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "email" varchar(255), "created_at" datetime, "updated_at" datetime);
 CREATE TABLE "microposts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "content" varchar(255), "user_id" integer, "created_at" datetime, "updated_at" datetime);
 CREATE TABLE "stocks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "created_at" datetime, "updated_at" datetime);
-</code>
-sqliteのクライアントが立ち上がったら <code>.schema</code> コマンドでこれまで作成されてきたテーブルが確認できる。
+</code></pre>
+
+<p>sqliteのクライアントが立ち上がったら <code>.schema</code> コマンドでこれまで作成されてきたテーブルが確認できる。
  <code>id</code> や <code>created_at</code> 、 <code>updated_at</code> はrailsが自動で生成する</p>
 
 <p>ちなみにsqliteクライアントから抜けるには <code>.exit</code> とする。 <code>.</code> が付くことに注意。</p>
@@ -286,18 +201,19 @@ sqliteのクライアントが立ち上がったら <code>.schema</code> コマ�
 
 <p>railsが用意しているconsoleを立ち上げてリソースを追加したり、確認したりすることもできる。</p>
 
-<p>Stockオブジェクトを生成して保存する
-<code>bash
-$ rails console
+<p>Stockオブジェクトを生成して保存する</p>
+
+<pre><code class="bash">$ rails console
 2.0.0-p594 :001 &gt; s = Stock.new(title: "stock1")
-=&gt; #&lt;Stock id: nil, title: "stock1", created_at: nil, updated_at: nil&gt;
+=&gt; #&lt;Stock id: nil, title: "stock1", created_at: nil, updated_at: nil&gt; 
 2.0.0-p594 :002 &gt; s.save
   (0.1ms)  begin transaction
  SQL (2.1ms)  INSERT INTO "stocks" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Sat, 15 Nov 2014 15:02:39 UTC +00:00], ["title", "stock1"], ["updated_at", Sat, 15 Nov 2014 15:02:39 UTC +00:00]]
   (4.9ms)  commit transaction
-=&gt; true
-</code>
-作られたオブジェクトを確認
+=&gt; true 
+</code></pre>
+
+<p>作られたオブジェクトを確認
 <code>bash
 2.0.0-p594 :003 &gt; s
 =&gt; #&lt;Stock id: 1, title: "stock1", created_at: "2014-11-15 15:02:39", updated_at: "2014-11-15 15:02:39"&gt;
