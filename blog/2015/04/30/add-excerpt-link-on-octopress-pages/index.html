@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Categories - Sojiro&#8217;s Blog</title>
+  <title>Octopressのページに「もっと見る」を設定する方法 - Sojiro&#8217;s Blog</title>
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Blog Categories aws4 posts in this category.canvas1 posts in this category.domain1 posts in this category.git2 posts in this category.github1 posts &hellip;">
+  <meta name="description" content="今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。 「もっと見る」の場所を指定する 記事の内容としてトップページで表示させる範囲が決まったら、その直後に「もっと見る」リンクを設置します。 設置方法は以下のコメントを記事内の「もっと見る」 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sojiro14.github.io/blog/categories">
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
@@ -93,61 +93,133 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Categories</h1>
+    
+      
+        <h1 class="entry-title">Octopressのページに「もっと見る」を設定する方法</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-30T20:12:17+09:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:12 pm</span></time>
+        
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
-<article>
-<article><h1><a style='font-size:24px;' href='/blog/categories/aws/'>aws</a></h1><span class='category'>4 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/canvas/'>canvas</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/domain/'>domain</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:20px;' href='/blog/categories/git/'>git</a></h1><span class='category'>2 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/github/'>github</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:20px;' href='/blog/categories/github-pages/'>github pages</a></h1><span class='category'>2 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/heroku/'>heroku</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:22px;' href='/blog/categories/hubot/'>hubot</a></h1><span class='category'>3 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/irc/'>irc</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:26px;' href='/blog/categories/linux/'>linux</a></h1><span class='category'>5 posts in this category.</span></article><article><h1><a style='font-size:22px;' href='/blog/categories/mongodb/'>mongodb</a></h1><span class='category'>3 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/mysql/'>mysql</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:20px;' href='/blog/categories/node-js/'>node.js</a></h1><span class='category'>2 posts in this category.</span></article><article><h1><a style='font-size:26px;' href='/blog/categories/octopress/'>octopress</a></h1><span class='category'>5 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/redis/'>redis</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/reveal-js/'>reveal.js</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:22px;' href='/blog/categories/ruby/'>ruby</a></h1><span class='category'>3 posts in this category.</span></article><article><h1><a style='font-size:30px;' href='/blog/categories/ruby-on-rails/'>ruby on rails</a></h1><span class='category'>7 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/screen/'>screen</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:20px;' href='/blog/categories/shell/'>shell</a></h1><span class='category'>2 posts in this category.</span></article><article><h1><a style='font-size:18px;' href='/blog/categories/slack/'>slack</a></h1><span class='category'>1 posts in this category.</span></article><article><h1><a style='font-size:20px;' href='/blog/categories/vim/'>vim</a></h1><span class='category'>2 posts in this category.</span></article><article><h1><a style='font-size:20px;' href='/blog/categories/web/'>web</a></h1><span class='category'>2 posts in this category.</span></article>
-</article>
+
+
+<div class="entry-content"><p>今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。</p>
+
+<h2>「もっと見る」の場所を指定する</h2>
+
+<p>記事の内容としてトップページで表示させる範囲が決まったら、その直後に「もっと見る」リンクを設置します。</p>
+
+<p>設置方法は以下のコメントを記事内の「もっと見る」リンクを設置する箇所に記述するだけです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'> <span class="c">&lt;!-- more --&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>「もっと見る」以降の記事内容はトップページ上では省略されます。</p>
+
+<p>「もっと見る」リンクは個別記事ページにリンクしています。</p>
+
+<h2>リンクの文言を変更する</h2>
+
+<p>上記で設定したリンクはデフォルトでは「Read on →」と表示されます。</p>
+
+<p>リンクの文言は <code>_config.yml</code> ファイルの項目 <code>excerpt_link</code> で管理されています。</p>
+
+<p>従って以下のように設定することでリンクの文言が「もっと見る」となります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>excerpt_link: &quot;もっと見る&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://morizyun.github.io/blog/octopress-hatena-disqus-new-tab/">5分でできる簡単 Octopress セッティング</a></li>
+</ul>
+
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-04-30T20:12:17+09:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:12 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/octopress/'>octopress</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages/" data-via="" data-counturl="http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/" title="Previous Post: Github PagesとOctopressで作ったブログに独自ドメインを設定する">&laquo; Github PagesとOctopressで作ったブログに独自ドメインを設定する</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 
 </div>
-
-<aside class="sidebar">
-  
-    <section>
-  <h1>sojiro</h1>
-  <p>contact: <a href="https://twitter.com/sojiro14">@sojiro14</a></p>
-</section>
-<section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/04/30/add-excerpt-link-on-octopress-pages/">Octopressのページに「もっと見る」を設定する方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/">Github PagesとOctopressで作ったブログに独自ドメインを設定する</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/01/07/making-a-web-server-with-node-dot-js/">Node.jsを使ってWeb Serverを作ってみました</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/01/02/the-first-step-for-mongodb/">初めてのMongoDB</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">AWSのLinuxにMongoDBをインストール</a>
-      </li>
-    
-  </ul>
-</section>
-
-  
-</aside>
-
 
     </div>
   </div>
@@ -163,7 +235,10 @@
       var disqus_shortname = 'sojirosblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Slack | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/slack/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-01T13:38:56+09:00</updated>
+  <updated>2015-05-01T13:56:27+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -24,21 +24,21 @@
 
 <p>まずはSlackのチームメニューからConfigure Integrationsを選択</p>
 
-<p>{% img /images/slack_hubot/team_menu.png %}</p>
+<p><img src="/images/slack_hubot/team_menu.png"></p>
 
 <p>様々な外部サービスとの連携メニューからHUBOTを選択する</p>
 
-<p>{% img /images/slack_hubot/add_hubot.png %}</p>
+<p><img src="/images/slack_hubot/add_hubot.png"></p>
 
 <p>追加するbotの名前を入力</p>
 
-<p>{% img /images/slack_hubot/set_botname.png %}</p>
+<p><img src="/images/slack_hubot/set_botname.png"></p>
 
 <p>ここまでのステップを踏むとAPI Tokenが記されたページが表示される</p>
 
 <p>そしてこの段階でbotがSlackにjoinする</p>
 
-<p>{% img /images/slack_hubot/join_bot.png %}</p>
+<p><img src="/images/slack_hubot/join_bot.png"></p>
 
 <!-- more -->
 
@@ -59,23 +59,37 @@ $ cd slack_sojiro_test/
 $ npm install hubot-slack --save
 </code>
 起動用スクリプトの作成。先ほど取得したAPI Tokenを使用する。
-&#8220;` bash
-$ vim runhubot
-$ cat runhubot</p>
-
-<h1>!/bin/bash</h1>
-
-<p>export HUBOT_SLACK_TOKEN=xxxx-123456789-ABCDEFGHIJKLMN
-export HUBOT_SLACK_TEAM=Sojiro-test
-export HUBOT_SLACK_BOTNAME=test-bot</p>
-
-<p>bin/hubot &ndash;adapter slack
-$ chmod u+x runhubot
-<code>
-botの起動
-</code> bash
-$ ./runhubot
-&#8220;`
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim runhubot
+</span><span class='line'><span class="nv">$ </span>cat runhubot&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">HUBOT_SLACK_TOKEN</span><span class="o">=</span>xxxx-123456789-ABCDEFGHIJKLMN
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_TEAM</span><span class="o">=</span>Sojiro-test
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_BOTNAME</span><span class="o">=</span><span class="nb">test</span>-bot&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;bin/hubot <span class="p">&amp;</span>ndash<span class="p">;</span>adapter slack
+</span><span class='line'><span class="nv">$ </span>chmod u+x runhubot
+</span><span class='line'>&lt;code&gt;
+</span><span class='line'>botの起動
+</span><span class='line'>&lt;/code&gt; bash
+</span><span class='line'><span class="nv">$ </span>./runhubot
+</span></code></pre></td></tr></table></div></figure>
 これでSlack上のbotがHUBOTのスクリプトに沿って反応するようになったはず</p>
 
 <h2>botを使ってみる</h2>
@@ -86,41 +100,41 @@ $ ./runhubot
 
 <p>生存確認</p>
 
-<p>{% img /images/slack_hubot/ping.png %}</p>
+<p><img src="/images/slack_hubot/ping.png"></p>
 
 <h3>image me</h3>
 
 <p>画像検索</p>
 
-<p>{% img /images/slack_hubot/image_me.png %}</p>
+<p><img src="/images/slack_hubot/image_me.png"></p>
 
 <h3>animate me</h3>
 
 <p>アニメーション検索</p>
 
-<p>{% img /images/slack_hubot/animate_me.png %}</p>
+<p><img src="/images/slack_hubot/animate_me.png"></p>
 
 <h3>youtube me</h3>
 
 <p>動画検索</p>
 
-<p>{% img /images/slack_hubot/youtube_me.png %}</p>
+<p><img src="/images/slack_hubot/youtube_me.png"></p>
 
 <h3>translate me</h3>
 
 <p>翻訳（日本語から英語）</p>
 
-<p>{% img /images/slack_hubot/translate_me_1.png %}</p>
+<p><img src="/images/slack_hubot/translate_me_1.png"></p>
 
 <p>翻訳（英語から日本語）</p>
 
-<p>{% img /images/slack_hubot/translate_me_2.png %}</p>
+<p><img src="/images/slack_hubot/translate_me_2.png"></p>
 
 <h3>map me</h3>
 
 <p>地図検索</p>
 
-<p>{% img /images/slack_hubot/map_me.png %}</p>
+<p><img src="/images/slack_hubot/map_me.png"></p>
 
 <h2>参照</h2>
 

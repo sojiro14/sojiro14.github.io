@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-01T13:18:06+09:00</updated>
+  <updated>2015-05-01T13:56:27+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopressのページに「もっと見る」を設定する方法]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages/"/>
+    <updated>2015-04-30T20:12:17+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages</id>
+    <content type="html"><![CDATA[<p>今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。</p>
+
+<h2>「もっと見る」の場所を指定する</h2>
+
+<p>記事の内容としてトップページで表示させる範囲が決まったら、その直後に「もっと見る」リンクを設置します。</p>
+
+<p>設置方法は以下のコメントを記事内の「もっと見る」リンクを設置する箇所に記述するだけです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'> <span class="c">&lt;!-- more --&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>「もっと見る」以降の記事内容はトップページ上では省略されます。</p>
+
+<p>「もっと見る」リンクは個別記事ページにリンクしています。</p>
+
+<h2>リンクの文言を変更する</h2>
+
+<p>上記で設定したリンクはデフォルトでは「Read on →」と表示されます。</p>
+
+<p>リンクの文言は <code>_config.yml</code> ファイルの項目 <code>excerpt_link</code> で管理されています。</p>
+
+<p>従って以下のように設定することでリンクの文言が「もっと見る」となります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>excerpt_link: &quot;もっと見る&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://morizyun.github.io/blog/octopress-hatena-disqus-new-tab/">5分でできる簡単 Octopress セッティング</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Github PagesとOctopressで作ったブログに独自ドメインを設定する]]></title>
@@ -2929,99 +2978,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <li><a href="https://github.com/hakimel/reveal.js">GitHub</a></li>
 <li><a href="http://qiita.com/budougumi0617/items/19b19019bbe01f86e251">Reveal.js、Markdown、Githubでスライドを作成する。</a></li>
 <li><a href="http://qiita.com/ryurock/items/9c6de36b9d6a716e7992">なんかかっこいいプレゼンテーションテンプレートを探しているならreveal.js使ってみろって</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Amazon Linux AMIにagをインストールした手順]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami/"/>
-    <updated>2014-08-25T23:38:16+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami</id>
-    <content type="html"><![CDATA[<p>AWSでWebサーバーを借りた。このサーバーに<code>ag</code>をインストールした際の手順。</p>
-
-<h2>agとは</h2>
-
-<p>ソースコードから特定のwordを検索する際に使うコマンド<code>grep</code>がより賢く改良されたのが<code>ack</code>コマンド。</p>
-
-<p>この<code>ack</code>をさらに改良し、検索を高速化させたのが<code>ag</code>コマンド（正式名称:The Silver Searcher）である。</p>
-
-<h2>Amazon Linux AMIへのインストール</h2>
-
-<p>MacにはHomebrewを使って<code>brew install the_silver_searcher</code>とするだけで簡単に入れることができた。</p>
-
-<p>AWSで借りたサーバーはAmazon Linux AMIという独自のイメージだったが、<code>yum</code>が使えるのでCentOSと同じ以下の手順で入れることができた。</p>
-
-<h3>ディレクトリの作成とソースのダウンロード</h3>
-
-<p>ソースをダウンロード、インストールするディレクトリを作成し、gitから<code>ag</code>のソースを持ってくる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir -p <span class="nv">$HOME</span>/local/source
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source
-</span><span class='line'><span class="nv">$ </span>git clone https://github.com/ggreer/the_silver_searcher
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>ソースをmakeするための準備</h3>
-
-<p>対象のサーバーはまっさらな状態でコンパイラなどもなかったため、それぞれインストールする。</p>
-
-<p>前述の通りAmazon Linux AMIではyumを使うことができる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo su -
-</span><span class='line'>yum -y groupinstall <span class="s2">&quot;Development Tools&quot;</span>
-</span><span class='line'>yum -y install pcre-devel xz-devel
-</span><span class='line'><span class="nb">exit</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>インストール</h3>
-
-<p>コンパイルしてインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source/the_silver_searcher
-</span><span class='line'><span class="nv">$ </span>./build.sh
-</span><span class='line'><span class="nv">$ </span>sudo make install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>パスを通す</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span>
-</span><span class='line'><span class="nv">$ </span>vim .bashrc
-</span><span class='line'><span class="nv">$ </span>cat .bashrc
-</span><span class='line'>...
-</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/local/bin:<span class="nv">$PATH</span>
-</span><span class='line'>...
-</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bashrc
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで<code>ag</code>が使えるようになった</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="https://github.com/ggreer/the_silver_searcher">the_silver_searcher</a></li>
-<li><a href="http://qiita.com/sifue/items/55d0c5c11a0571af3b8e">grepやackよりも速いコード検索ツールのagをローカルビルドインストールする</a></li>
 </ul>
 
 ]]></content>
