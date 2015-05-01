@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-01T13:35:19+09:00</updated>
+  <updated>2015-05-01T13:38:56+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -18,9 +18,7 @@
     <link href="http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages/"/>
     <updated>2015-04-30T20:12:17+09:00</updated>
     <id>http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages</id>
-    <content type="html"><![CDATA[<p>訳あって前回のエントリから間が空いてしまいました。</p>
-
-<p>今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。</p>
+    <content type="html"><![CDATA[<p>今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。</p>
 
 <h2>「もっと見る」の場所を指定する</h2>
 
@@ -28,7 +26,7 @@
 
 <p>設置方法は以下のコメントを記事内の「もっと見る」リンクを設置する箇所に記述するだけです。</p>
 
-<p>&#8220;`html</p>
+<p>&#8220;` html</p>
 
 <!-- more -->
 
