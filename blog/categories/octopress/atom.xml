@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-01T13:34:36+09:00</updated>
+  <updated>2015-05-01T13:35:19+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -39,6 +39,7 @@
 「もっと見る」リンクは個別記事ページにリンクしています。
 
 ## リンクの文言を変更する
+
 上記で設定したリンクはデフォルトでは「Read on →」と表示されます。
 
 リンクの文言は ``` _config.yml ``` ファイルの項目 ``` excerpt_link ``` で管理されています。
