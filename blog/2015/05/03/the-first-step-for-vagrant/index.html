@@ -1,0 +1,476 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>始めてのVagrant - Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="仮想環境構築ツールのVagrantが便利らしいという噂を聞いて使ってみたところ確かに便利でした。 以前VirtualBox上での環境構築に手間取った経験があったのでこれは今後も積極的に使って行きたいと思い、最初の手順をメモします。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2015/05/03/the-first-step-for-vagrant">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script language="javascript">
+  $(document).ready( function () {
+    $("a[href^='http']:not([href*='" + location.hostname + "'])").attr('target', '_blank');
+  })
+</script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-50182043-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">始めてのVagrant</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-03T22:18:11+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:18 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>仮想環境構築ツールのVagrantが便利らしいという噂を聞いて使ってみたところ確かに便利でした。</p>
+
+<p>以前VirtualBox上での環境構築に手間取った経験があったのでこれは今後も積極的に使って行きたいと思い、最初の手順をメモします。</p>
+
+<p>前提として今回仮想化ソフトとしてはVirtualBoxを使うのでインストールされているという前提で以下を書きます。</p>
+
+<h2>Vagrantのインストール</h2>
+
+<p>まずはVagrantをインストールする</p>
+
+<p><a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a></p>
+
+<p>こちらのダウンロードフォームから使っているOSに合ったものをダウンロードすればOK</p>
+
+<p>ダウンロードしたファイルをポチポチやってインストールが完了するので以下のコマンドで確かめる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant --version
+</span><span class='line'>Vagrant 1.7.2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>boxの追加</h2>
+
+<p>Vagrantでは仮想環境それぞれの設定をboxという単位で管理する</p>
+
+<p>現在管理しているboxの情報は <code>vagrant box list</code> で確認できる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box list
+</span><span class='line'>There are no installed boxes! Use <span class="sb">`</span>vagrant box add<span class="sb">`</span> to add some.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最初はboxが何もインストールされていないのでこのような結果</p>
+
+<p>boxは自分で作成することもできるが、既に誰かが作ってくれたものを取り込むこともできる</p>
+
+<p><a href="http://www.vagrantbox.es/">http://www.vagrantbox.es/</a></p>
+
+<p>こちらのサイトでは有志が様々なboxを提供してくれているので今回はこちらを使わせていただくことにする</p>
+
+<p>リストからインストールするboxを決めたら、以下のコマンドで追加する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box add 名前 boxファイル
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回はインストールするboxをcentos64という名前で管理するために以下のようにした</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box add centos64 http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20131103.box
+</span><span class='line'><span class="o">==</span>&gt; box: Adding box <span class="s1">&#39;centos64&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> provider:
+</span><span class='line'>   box: Downloading: http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20131103.box
+</span><span class='line'><span class="o">==</span>&gt; box: Successfully added box <span class="s1">&#39;centos64&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> <span class="s1">&#39;virtualbox&#39;</span>!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>vagrant box list</code> コマンドで確認するとcentos64という名前でboxがインストールされたことがわかる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box list
+</span><span class='line'>centos64 <span class="o">(</span>virtualbox, 0<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>仮想環境を立ち上げる</h2>
+
+<p>boxを追加したら早速そのboxを使って仮想環境を立ち上げる</p>
+
+<p>今回は <code>~/virtual_machines/centos64/</code> というディレクトリでこの仮想環境を管理することにする</p>
+
+<p>まずは <code>vagrant init</code> コマンドで環境立ち上げの準備をする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> ~/virtual_machines/centos64
+</span><span class='line'><span class="nv">$ </span>vagrant init centos64
+</span><span class='line'>A <span class="sb">`</span>Vagrantfile<span class="sb">`</span> has been placed in this directory. You are now
+</span><span class='line'>ready to <span class="sb">`</span>vagrant up<span class="sb">`</span> your first virtual environment! Please <span class="nb">read</span>
+</span><span class='line'>the comments in the Vagrantfile as well as documentation on
+</span><span class='line'><span class="sb">`</span>vagrantup.com<span class="sb">`</span> <span class="k">for</span> more information on using Vagrant.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このinitコマンドを打つことで <code>Vagrantfile</code> が作られ、VirtualBox上にも仮想環境が現れる</p>
+
+<p> <code>Vagrantfile</code> ではこの仮想環境の設定を規定している</p>
+
+<p>ここまで準備が完了したらいよいよ環境を立ち上げる <code>vagrant up</code> コマンドを使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant up
+</span><span class='line'>Bringing machine <span class="s1">&#39;default&#39;</span> up with <span class="s1">&#39;virtualbox&#39;</span> provider...
+</span><span class='line'><span class="o">==</span>&gt; default: Importing base box <span class="s1">&#39;centos64&#39;</span>...
+</span><span class='line'><span class="o">==</span>&gt; default: Matching MAC address <span class="k">for</span> NAT networking...
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>VirtualBox上で仮想環境が立ち上がっていることを確認できたら成功</p>
+
+<p>仮想環境の状態は <code>vagrant status</code> コマンドでも確認できる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant status
+</span><span class='line'>Current machine states:
+</span><span class='line'>
+</span><span class='line'>default                   running <span class="o">(</span>virtualbox<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>The VM is running. To stop this VM, you can run <span class="sb">`</span>vagrant halt<span class="sb">`</span> to
+</span><span class='line'>shut it down forcefully, or you can run <span class="sb">`</span>vagrant <span class="nb">suspend</span><span class="sb">`</span> to simply
+</span><span class='line'><span class="nb">suspend </span>the virtual machine. In either <span class="k">case</span>, to restart it again,
+</span><span class='line'>simply run <span class="sb">`</span>vagrant up<span class="sb">`</span>.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>立ち上げた仮想環境に入る</h2>
+
+<p>立ち上げた仮想環境に入るのは非常に簡単で、管理ディレクトリ上で <code>vagrant ssh</code> コマンドを打てばよい</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh
+</span><span class='line'>Welcome to your Vagrant-built virtual machine.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>後は通常通り好きなように仮想環境を使える</p>
+
+<h2>ネットワークの設定をする</h2>
+
+<p>今回立ち上げた環境では主にWebサービスの開発を行いたいのでローカルからこの環境にアクセスするための設定をする</p>
+
+<p>ネットワークの設定は <code>Vagrantfile</code> に規定されているのでこのファイルを変更する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim Vagrantfile
+</span><span class='line'><span class="nv">$ </span>cat Vagrantfile
+</span><span class='line'>...
+</span><span class='line'>config.vm.network <span class="s2">&quot;private_network&quot;</span>, ip: <span class="s2">&quot;192.168.33.10&quot;</span>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>private_networkの設定をしている行のコメントアウトを外すことでIP <code>192.168.33.10</code> でアクセス可能になる</p>
+
+<p> <code>Vagrantfile</code> の設定を変更したら <code>vagrant reload</code> コマンドで設定をリロードしてやる必要がある</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant <span class="nv">reload</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Attempting graceful shutdown of VM...
+</span><span class='line'><span class="o">==</span>&gt; default: Clearing any previously <span class="nb">set </span>forwarded ports...
+</span><span class='line'><span class="o">==</span>&gt; default: Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">==</span>&gt; default: Preparing network interfaces based on configuration...
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>決まった操作の設定</h2>
+
+<p>仮想環境を立ち上げた後、Webサーバーの設定など毎回やる操作がある場合はそれらを予め記述しておいてVagrant側で実行することができる(provisioning)</p>
+
+<p>まずは <code>Vagrantfile</code> に設定を追加する。設定する行は <code>config.vm.provision</code> の行。</p>
+
+<p>元々コメントアウトで記述があるようにインラインで <code>Vagrantfile</code> 内に直接書くこともできるが、以下のように設定することで外部ファイルに書き出すこともできる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>config.vm.provision :shell, :path <span class="o">=</span>&gt; <span class="s2">&quot;provision.sh&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>provision.sh</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo yum -y install httpd
+</span><span class='line'>sudo service httpd start
+</span><span class='line'>sudo chkconfig httpd on
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>Vagrantfile</code> を設定したら忘れず <code>vagrant reload</code></p>
+
+<p>その後provisionの実行は以下のコマンド</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant provision
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://dotinstall.com/lessons/basic_vagrant">Vagrant入門</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-05-03T22:18:11+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:18 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/vagrant/'>vagrant</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2015/05/03/the-first-step-for-vagrant/" data-via="" data-counturl="http://sojiro14.github.io/blog/2015/05/03/the-first-step-for-vagrant/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/04/30/add-excerpt-link-on-octopress-pages/" title="Previous Post: Octopressのページに「もっと見る」を設定する方法">&laquo; Octopressのページに「もっと見る」を設定する方法</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/05/04/transfer-the-slack-bot-to-heroku/" title="Next Post: transfer the slack bot to Heroku">transfer the slack bot to Heroku &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2015/05/03/the-first-step-for-vagrant/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2015/05/03/the-first-step-for-vagrant/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
