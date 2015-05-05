@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-05T17:25:45+09:00</updated>
+  <updated>2015-05-05T17:27:07+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Transfer the Slack Bot to Heroku]]></title>
+    <title type="html"><![CDATA[Slack BotをHeroku上で動かす]]></title>
     <link href="http://sojiro14.github.io/blog/2015/05/04/transfer-the-slack-bot-to-heroku/"/>
     <updated>2015-05-04T21:38:12+09:00</updated>
     <id>http://sojiro14.github.io/blog/2015/05/04/transfer-the-slack-bot-to-heroku</id>
@@ -190,7 +190,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[始めてのVagrant]]></title>
+    <title type="html"><![CDATA[初めてのVagrant]]></title>
     <link href="http://sojiro14.github.io/blog/2015/05/03/the-first-step-for-vagrant/"/>
     <updated>2015-05-03T22:18:11+09:00</updated>
     <id>http://sojiro14.github.io/blog/2015/05/03/the-first-step-for-vagrant</id>
