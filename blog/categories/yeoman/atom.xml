@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Yeoman | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/yeoman/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-05T19:47:20+09:00</updated>
+  <updated>2015-05-05T19:49:49+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -44,9 +44,13 @@ See https://github.com/github/hubot/blob/master/docs/README.md for more details 
 
 <p>そしてその雛形は &ldquo;generator-xxx&rdquo; という形でさまざま用意されており、そのHubot版が <code>generator-hubot</code> と言う訳である</p>
 
-<p>つまり上記エラーメッセージは
-* 雛形作成ツールである <code>yo</code> と、Hubotの雛形である <code>generator-hubot</code> をインストールし
-* 新規ディレクトリ上で <code>yo</code> を実行してHubotの雛形を作るべし</p>
+<p>つまり上記エラーメッセージは</p>
+
+<ul>
+<li>雛形作成ツールである <code>yo</code> と、Hubotの雛形である <code>generator-hubot</code> をインストールし</li>
+<li>新規ディレクトリ上で <code>yo</code> を実行してHubotの雛形を作るべし</li>
+</ul>
+
 
 <p>ということのようである</p>
 
