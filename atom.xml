@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-05T17:27:07+09:00</updated>
+  <updated>2015-05-05T19:47:20+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,196 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA['Hubot --create' は古い]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old/"/>
+    <updated>2015-05-05T17:50:15+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old</id>
+    <content type="html"><![CDATA[<p>このブログで過去に何度かHubotについて書いたときに、新しいbotを作るときのコマンドは <code>hubot --create bot_name</code> だったのですが、このコマンドが非推奨になったようなのでメモ。</p>
+
+<h2>hubot &ndash;create が使えない</h2>
+
+<p>新しいbotを作ろうとして <code>hubot --create</code> コマンドを打つと以下のように怒られた</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create test_bot
+</span><span class='line'><span class="s1">&#39;hubot --create&#39;</span> is deprecated. Use the yeoman generator instead:
+</span><span class='line'>    npm install -g yo generator-hubot
+</span><span class='line'>    mkdir -p test_bot
+</span><span class='line'>    yo hubot
+</span><span class='line'>See https://github.com/github/hubot/blob/master/docs/README.md <span class="k">for</span> more details on getting started.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ところがseeとなっているREADMEファイルは存在しない模様&hellip;</p>
+
+<h2>yo と generator-hubot とは何か</h2>
+
+<p>よくわからないが <code>yo</code> と <code>generator-hubot</code> をインストールしろと言われているのはわかるので調べてみる</p>
+
+<h3>yo と generator-xxx</h3>
+
+<p>yoはYeomanというGoole社が開発した統合開発ツール群に属するツールの一つで、「雛形作成ツール」であるらしい</p>
+
+<p>そしてその雛形は &ldquo;generator-xxx&rdquo; という形でさまざま用意されており、そのHubot版が <code>generator-hubot</code> と言う訳である</p>
+
+<p>つまり上記エラーメッセージは
+* 雛形作成ツールである <code>yo</code> と、Hubotの雛形である <code>generator-hubot</code> をインストールし
+* 新規ディレクトリ上で <code>yo</code> を実行してHubotの雛形を作るべし</p>
+
+<p>ということのようである</p>
+
+<h2>yo と generator-hubot のインストール</h2>
+
+<p>指定された通り以下のようにインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g yo generator-hubot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（余談：私の場合はNode.jsのインストールされたpathとnpmのrootが違っていたため少々上手くいかなかった。エラーメッセージは素直によく読むべきだ。。。）</p>
+
+<h2>yo の実行</h2>
+
+<p>インストールが成功したら、新しいbotのディレクトリを作ってそこで <code>yo</code> を実行する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir test_bot
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>test_bot
+</span><span class='line'><span class="nv">$ </span>yo hubot  <span class="c"># これは generator-hubot の雛形を作る、という意味</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>yo hubot</code> を実行するとHubotのAAが表示され、いくつかのやり取りが立ち上がる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yo hubot
+</span><span class='line'>                     _____________________________
+</span><span class='line'>                    /                             <span class="se">\ </span>
+</span><span class='line'>   //<span class="se">\ </span>             <span class="p">|</span>      Extracting input <span class="k">for</span>    <span class="p">|</span>
+</span><span class='line'>  ////<span class="se">\ </span>   _____    <span class="p">|</span>   self-replication process   <span class="p">|</span>
+</span><span class='line'> //////<span class="se">\ </span> /_____<span class="se">\ </span>  <span class="se">\ </span>                            /
+</span><span class='line'> <span class="o">=======</span> <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
+</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
+</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
+</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
+</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
+</span><span class='line'>         <span class="se">\ </span>     /   +---+
+</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
+</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
+</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
+</span><span class='line'>
+</span><span class='line'>? Owner: sojiro
+</span><span class='line'>? Bot name: slack-test-bot
+</span><span class='line'>? Description: Slack Bot <span class="nb">test</span>
+</span><span class='line'>? Bot adapter: <span class="o">(</span>campfire<span class="o">)</span> slack
+</span><span class='line'>? Bot adapter: slack
+</span><span class='line'>   create bin/hubot
+</span><span class='line'>   create bin/hubot.cmd
+</span><span class='line'>   create Procfile
+</span><span class='line'>   create README.md
+</span><span class='line'>   create external-scripts.json
+</span><span class='line'>   create hubot-scripts.json
+</span><span class='line'>   create .gitignore
+</span><span class='line'>   create package.json
+</span><span class='line'>   create scripts/example.coffee
+</span><span class='line'>   create .editorconfig
+</span><span class='line'>                     _____________________________
+</span><span class='line'> _____              /                             <span class="se">\ </span>
+</span><span class='line'> <span class="se">\ </span>   <span class="se">\ </span>            <span class="p">|</span>   Self-replication process   <span class="p">|</span>
+</span><span class='line'> <span class="p">|</span>    <span class="p">|</span>    _____    <span class="p">|</span>          complete...         <span class="p">|</span>
+</span><span class='line'> <span class="p">|</span>__<span class="se">\\</span><span class="p">|</span>   /_____<span class="se">\ </span>  <span class="se">\ </span>    Good luck with that.    /
+</span><span class='line'>   <span class="p">|</span>//+  <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
+</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
+</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
+</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
+</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
+</span><span class='line'>         <span class="se">\ </span>     /   +---+
+</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
+</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
+</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
+</span><span class='line'>...
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>各項目それぞれデフォルト値が設定されており、なにも入力せずEnterを押していくとその通りになる</p>
+
+<p>今回はSlack用のbotだったので Bot adapter: の欄で <code>slack</code> と入力した</p>
+
+<p>他にも用途に合わせてadapterが用意されているようである</p>
+
+<p>この <code>yo</code> 実行により、Hubotの雛形が作成され、 <code>hubot --create</code> と同様にセットアップが完了する</p>
+
+<p>なおかつadapterを予め設定できる分、セットアップが楽になっている</p>
+
+<h2>最後に</h2>
+
+<p>今回はHubotに絡んで偶発的に <code>yo</code> を知りましたが、かなり便利そうなのでYeoman含めて今後も使ってみたいところです</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://yosuke-furukawa.hatenablog.com/entry/2013/07/04/085814">Yeoman入門(第一部、yoを使う)</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Slack BotをHeroku上で動かす]]></title>
@@ -3014,120 +3204,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
 
 <p>※ timestampにテーブル定義で設定したデフォルト値<code>'0000-00-00 00:00:00'</code>ではなく、型のデフォルト値である現在時刻が入っている点に注意</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[RESTとはなにか]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/09/14/what-is-rest/"/>
-    <updated>2014-09-14T13:57:07+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/09/14/what-is-rest</id>
-    <content type="html"><![CDATA[<p>APIを実装することになり、今更ながらWebのアーキテクチャスタイルであるRESTとはなにか理解するためにまとめてみた。</p>
-
-<h2>Webのアーキテクチャスタイル</h2>
-
-<p>Webのアーキテクチャスタイルはクライアント/サーバーというスタイルを中心に、いくつかの制限（アーキテクチャ）を複合的に組み合わせたREST(Representational State Transfer)を理想としている</p>
-
-<h2>RESTはどのようなスタイルなのか</h2>
-
-<p>RESTは以下のスタイルを複合的に組み合わせたアーキテクチャである</p>
-
-<ul>
-<li>クライアント/サーバー</li>
-<li>ステートレスサーバー</li>
-<li>キャッシュ</li>
-<li>統一インターフェース</li>
-<li>階層化システム</li>
-<li>コードオンデマンド</li>
-</ul>
-
-
-<h3>クライアント/サーバー</h3>
-
-<p>WebではHTTPでクライアントとサーバーが通信する、クライアント/サーバーアーキテクチャを採用している。クライアントはサーバーにリクエストを送り、サーバーはそれに対してレスポンスを返す。</p>
-
-<p>ユーザーインターフェースはクライアントに任せればよく、サーバーは処理に専念できるので様々なデバイス（PC・携帯電話・ゲーム機）に対応でき、サーバーの冗長化も容易である。</p>
-
-<h3>ステートレスサーバー</h3>
-
-<p>ステートフル/ステートレスという考え方があるが、サーバーがステートレスなやり取りを前提としていること。</p>
-
-<p>ステートフル/ステートレスに関しては以下のエントリを参照</p>
-
-<ul>
-<li><a href="http://sojiro14.github.io/blog/2014/09/13/stateful-and-stateless/">ステートフル/ステートレスとはどういうことか</a></li>
-</ul>
-
-
-<h3>キャッシュ</h3>
-
-<p>一度取得したリソースをクライアント側である程度の期間保持して使い回すこと。</p>
-
-<ul>
-<li>メリット
-
-<ul>
-<li>同じリソースを取得するためにその都度クライアント/サーバー間で通信する必要がなくなる</li>
-<li>これによりネットワークの帯域節約や処理の高速化を実現できる</li>
-</ul>
-</li>
-<li>デメリット
-
-<ul>
-<li>適切に制御しないと意図せず古いリソースを参照してしまうことがある</li>
-<li>特に大規模なシステムではどこで何がキャッシュされているか正確に把握するのは容易ではない</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>統一インターフェース</h3>
-
-<p>リソースに対する操作を統一したインターフェースで行う。</p>
-
-<p>HTTP/1.1ではリソースに対するメソッドが8つのみ定義されている。このようにインターフェースを限定することで様々なコンポーネントが生まれても統一された仕様としてリソースへの操作が行われ、それぞれの独立性が保たれることで多様性を受け入れることができる。</p>
-
-<h3>階層化システム</h3>
-
-<p>統一インターフェースを採用することにより、クライアント/サーバー間にプロキシなどのコンポーネントを設置してもクライアントはそのままリクエストを送ることができる。</p>
-
-<p>これにより大規模システムではロードバランサーを導入したり、HTTPインターフェースを持たないコンポーネントに対してHTTPインターフェースをもつサーバーを返して処理をするなどの階層化が可能となる。</p>
-
-<p>このようなアーキテクチャを階層化システムと呼ぶ。</p>
-
-<h3>コードオンデマンド</h3>
-
-<p>プログラムをサーバーからクライアントが受け取り、それをクライアント上で実行するアーキテクチャスタイル。JavaScriptやFlashがこれに該当する。</p>
-
-<ul>
-<li>メリット
-
-<ul>
-<li>サーバーと都度通信することなくクライアント側のみで処理できることが増える</li>
-<li>これによりユーザーのアクションに対する処理の速度が向上する</li>
-</ul>
-</li>
-<li>デメリット
-
-<ul>
-<li>クライアント/サーバー間でやり取りされるリソースが不明確になる</li>
-<li>クライアント側の裁量が増える分、サーバーとやり取りされるリソースの内容が明確ではなくなる</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>RESTful</h2>
-
-<p>RESTの思想に忠実に設計されていることをRESTfulである、と言う。</p>
-
-<p>RESTは上記の通り分散ネットワークを効率的に、可用性・冗長性高く利用するための理論であり、Webが理想とするアーキテクチャスタイルである。</p>
-
-<p>この思想に則った設計がされることで多様なシステムの中にも仕様の統一感が生まれ、Webの世界が広がったと言える。</p>
-
-<h2>参考</h2>
-
-<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
 ]]></content>
   </entry>
   

@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>&#8216;Hubot &#8211;create&#8217; は古い - Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="このブログで過去に何度かHubotについて書いたときに、新しいbotを作るときのコマンドは hubot --create bot_name だったのですが、このコマンドが非推奨になったようなのでメモ。 hubot &ndash;create が使えない 新しいbotを作ろうとして hubot -- &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script language="javascript">
+  $(document).ready( function () {
+    $("a[href^='http']:not([href*='" + location.hostname + "'])").attr('target', '_blank');
+  })
+</script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-50182043-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">&#8216;Hubot &#8211;create&#8217; は古い</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-05T17:50:15+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:50 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>このブログで過去に何度かHubotについて書いたときに、新しいbotを作るときのコマンドは <code>hubot --create bot_name</code> だったのですが、このコマンドが非推奨になったようなのでメモ。</p>
+
+<h2>hubot &ndash;create が使えない</h2>
+
+<p>新しいbotを作ろうとして <code>hubot --create</code> コマンドを打つと以下のように怒られた</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create test_bot
+</span><span class='line'><span class="s1">&#39;hubot --create&#39;</span> is deprecated. Use the yeoman generator instead:
+</span><span class='line'>    npm install -g yo generator-hubot
+</span><span class='line'>    mkdir -p test_bot
+</span><span class='line'>    yo hubot
+</span><span class='line'>See https://github.com/github/hubot/blob/master/docs/README.md <span class="k">for</span> more details on getting started.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ところがseeとなっているREADMEファイルは存在しない模様&hellip;</p>
+
+<h2>yo と generator-hubot とは何か</h2>
+
+<p>よくわからないが <code>yo</code> と <code>generator-hubot</code> をインストールしろと言われているのはわかるので調べてみる</p>
+
+<h3>yo と generator-xxx</h3>
+
+<p>yoはYeomanというGoole社が開発した統合開発ツール群に属するツールの一つで、「雛形作成ツール」であるらしい</p>
+
+<p>そしてその雛形は &ldquo;generator-xxx&rdquo; という形でさまざま用意されており、そのHubot版が <code>generator-hubot</code> と言う訳である</p>
+
+<p>つまり上記エラーメッセージは
+* 雛形作成ツールである <code>yo</code> と、Hubotの雛形である <code>generator-hubot</code> をインストールし
+* 新規ディレクトリ上で <code>yo</code> を実行してHubotの雛形を作るべし</p>
+
+<p>ということのようである</p>
+
+<h2>yo と generator-hubot のインストール</h2>
+
+<p>指定された通り以下のようにインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g yo generator-hubot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（余談：私の場合はNode.jsのインストールされたpathとnpmのrootが違っていたため少々上手くいかなかった。エラーメッセージは素直によく読むべきだ。。。）</p>
+
+<h2>yo の実行</h2>
+
+<p>インストールが成功したら、新しいbotのディレクトリを作ってそこで <code>yo</code> を実行する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir test_bot
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>test_bot
+</span><span class='line'><span class="nv">$ </span>yo hubot  <span class="c"># これは generator-hubot の雛形を作る、という意味</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>yo hubot</code> を実行するとHubotのAAが表示され、いくつかのやり取りが立ち上がる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yo hubot
+</span><span class='line'>                     _____________________________
+</span><span class='line'>                    /                             <span class="se">\ </span>
+</span><span class='line'>   //<span class="se">\ </span>             <span class="p">|</span>      Extracting input <span class="k">for</span>    <span class="p">|</span>
+</span><span class='line'>  ////<span class="se">\ </span>   _____    <span class="p">|</span>   self-replication process   <span class="p">|</span>
+</span><span class='line'> //////<span class="se">\ </span> /_____<span class="se">\ </span>  <span class="se">\ </span>                            /
+</span><span class='line'> <span class="o">=======</span> <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
+</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
+</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
+</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
+</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
+</span><span class='line'>         <span class="se">\ </span>     /   +---+
+</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
+</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
+</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
+</span><span class='line'>
+</span><span class='line'>? Owner: sojiro
+</span><span class='line'>? Bot name: slack-test-bot
+</span><span class='line'>? Description: Slack Bot <span class="nb">test</span>
+</span><span class='line'>? Bot adapter: <span class="o">(</span>campfire<span class="o">)</span> slack
+</span><span class='line'>? Bot adapter: slack
+</span><span class='line'>   create bin/hubot
+</span><span class='line'>   create bin/hubot.cmd
+</span><span class='line'>   create Procfile
+</span><span class='line'>   create README.md
+</span><span class='line'>   create external-scripts.json
+</span><span class='line'>   create hubot-scripts.json
+</span><span class='line'>   create .gitignore
+</span><span class='line'>   create package.json
+</span><span class='line'>   create scripts/example.coffee
+</span><span class='line'>   create .editorconfig
+</span><span class='line'>                     _____________________________
+</span><span class='line'> _____              /                             <span class="se">\ </span>
+</span><span class='line'> <span class="se">\ </span>   <span class="se">\ </span>            <span class="p">|</span>   Self-replication process   <span class="p">|</span>
+</span><span class='line'> <span class="p">|</span>    <span class="p">|</span>    _____    <span class="p">|</span>          complete...         <span class="p">|</span>
+</span><span class='line'> <span class="p">|</span>__<span class="se">\\</span><span class="p">|</span>   /_____<span class="se">\ </span>  <span class="se">\ </span>    Good luck with that.    /
+</span><span class='line'>   <span class="p">|</span>//+  <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
+</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
+</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
+</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
+</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
+</span><span class='line'>         <span class="se">\ </span>     /   +---+
+</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
+</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
+</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
+</span><span class='line'>...
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>各項目それぞれデフォルト値が設定されており、なにも入力せずEnterを押していくとその通りになる</p>
+
+<p>今回はSlack用のbotだったので Bot adapter: の欄で <code>slack</code> と入力した</p>
+
+<p>他にも用途に合わせてadapterが用意されているようである</p>
+
+<p>この <code>yo</code> 実行により、Hubotの雛形が作成され、 <code>hubot --create</code> と同様にセットアップが完了する</p>
+
+<p>なおかつadapterを予め設定できる分、セットアップが楽になっている</p>
+
+<h2>最後に</h2>
+
+<p>今回はHubotに絡んで偶発的に <code>yo</code> を知りましたが、かなり便利そうなのでYeoman含めて今後も使ってみたいところです</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://yosuke-furukawa.hatenablog.com/entry/2013/07/04/085814">Yeoman入門(第一部、yoを使う)</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-05-05T17:50:15+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:50 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/hubot/'>hubot</a>, <a class='category' href='/blog/categories/yeoman/'>yeoman</a>, <a class='category' href='/blog/categories/yo/'>yo</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old/" data-via="" data-counturl="http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/05/04/transfer-the-slack-bot-to-heroku/" title="Previous Post: Slack BotをHeroku上で動かす">&laquo; Slack BotをHeroku上で動かす</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

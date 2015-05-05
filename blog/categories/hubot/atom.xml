@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Hubot | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/hubot/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-05T17:27:07+09:00</updated>
+  <updated>2015-05-05T19:47:20+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,135 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA['Hubot --create' は古い]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old/"/>
+    <updated>2015-05-05T17:50:15+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old</id>
+    <content type="html"><![CDATA[<p>このブログで過去に何度かHubotについて書いたときに、新しいbotを作るときのコマンドは <code>hubot --create bot_name</code> だったのですが、このコマンドが非推奨になったようなのでメモ。</p>
+
+<h2>hubot &ndash;create が使えない</h2>
+
+<p>新しいbotを作ろうとして <code>hubot --create</code> コマンドを打つと以下のように怒られた</p>
+
+<pre><code class="bash">$ hubot --create test_bot
+'hubot --create' is deprecated. Use the yeoman generator instead:
+    npm install -g yo generator-hubot
+    mkdir -p test_bot
+    yo hubot
+See https://github.com/github/hubot/blob/master/docs/README.md for more details on getting started.
+</code></pre>
+
+<p>ところがseeとなっているREADMEファイルは存在しない模様&hellip;</p>
+
+<h2>yo と generator-hubot とは何か</h2>
+
+<p>よくわからないが <code>yo</code> と <code>generator-hubot</code> をインストールしろと言われているのはわかるので調べてみる</p>
+
+<h3>yo と generator-xxx</h3>
+
+<p>yoはYeomanというGoole社が開発した統合開発ツール群に属するツールの一つで、「雛形作成ツール」であるらしい</p>
+
+<p>そしてその雛形は &ldquo;generator-xxx&rdquo; という形でさまざま用意されており、そのHubot版が <code>generator-hubot</code> と言う訳である</p>
+
+<p>つまり上記エラーメッセージは
+* 雛形作成ツールである <code>yo</code> と、Hubotの雛形である <code>generator-hubot</code> をインストールし
+* 新規ディレクトリ上で <code>yo</code> を実行してHubotの雛形を作るべし</p>
+
+<p>ということのようである</p>
+
+<h2>yo と generator-hubot のインストール</h2>
+
+<p>指定された通り以下のようにインストールする</p>
+
+<pre><code class="bash">$ npm install -g yo generator-hubot
+</code></pre>
+
+<p>（余談：私の場合はNode.jsのインストールされたpathとnpmのrootが違っていたため少々上手くいかなかった。エラーメッセージは素直によく読むべきだ。。。）</p>
+
+<h2>yo の実行</h2>
+
+<p>インストールが成功したら、新しいbotのディレクトリを作ってそこで <code>yo</code> を実行する</p>
+
+<pre><code class="bash">$ mkdir test_bot
+$ cd test_bot
+$ yo hubot  # これは generator-hubot の雛形を作る、という意味
+</code></pre>
+
+<p> <code>yo hubot</code> を実行するとHubotのAAが表示され、いくつかのやり取りが立ち上がる</p>
+
+<pre><code class="bash">$ yo hubot
+                     _____________________________  
+                    /                             \ 
+   //\              |      Extracting input for    |
+  ////\    _____    |   self-replication process   |
+ //////\  /_____\   \                             / 
+ ======= |[^_/\_]|   /----------------------------  
+  |   | _|___@@__|__                                
+  +===+/  ///     \_\                               
+   | |_\ /// HUBOT/\\                             
+   |___/\//      /  \\                            
+         \      /   +---+                            
+          \____/    |   |                            
+           | //|    +===+                            
+            \//      |xx|                            
+
+? Owner: sojiro
+? Bot name: slack-test-bot
+? Description: Slack Bot test
+? Bot adapter: (campfire) slack
+? Bot adapter: slack
+   create bin/hubot
+   create bin/hubot.cmd
+   create Procfile
+   create README.md
+   create external-scripts.json
+   create hubot-scripts.json
+   create .gitignore
+   create package.json
+   create scripts/example.coffee
+   create .editorconfig
+                     _____________________________  
+ _____              /                             \ 
+ \    \             |   Self-replication process   |
+ |    |    _____    |          complete...         |
+ |__\\|   /_____\   \     Good luck with that.    / 
+   |//+  |[^_/\_]|   /----------------------------  
+  |   | _|___@@__|__                                
+  +===+/  ///     \_\                               
+   | |_\ /// HUBOT/\\                             
+   |___/\//      /  \\                            
+         \      /   +---+                            
+          \____/    |   |                            
+           | //|    +===+                            
+            \//      |xx|      
+...
+...
+</code></pre>
+
+<p>各項目それぞれデフォルト値が設定されており、なにも入力せずEnterを押していくとその通りになる</p>
+
+<p>今回はSlack用のbotだったので Bot adapter: の欄で <code>slack</code> と入力した</p>
+
+<p>他にも用途に合わせてadapterが用意されているようである</p>
+
+<p>この <code>yo</code> 実行により、Hubotの雛形が作成され、 <code>hubot --create</code> と同様にセットアップが完了する</p>
+
+<p>なおかつadapterを予め設定できる分、セットアップが楽になっている</p>
+
+<h2>最後に</h2>
+
+<p>今回はHubotに絡んで偶発的に <code>yo</code> を知りましたが、かなり便利そうなのでYeoman含めて今後も使ってみたいところです</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://yosuke-furukawa.hatenablog.com/entry/2013/07/04/085814">Yeoman入門(第一部、yoを使う)</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[HUBOTを使ったSlack Bot作成メモ]]></title>
