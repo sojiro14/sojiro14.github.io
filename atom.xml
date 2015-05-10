@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-05T19:54:13+09:00</updated>
+  <updated>2015-05-10T18:28:07+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,210 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[「トークン」とは何か]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/07/what-is-token/"/>
+    <updated>2015-05-07T23:57:03+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/07/what-is-token</id>
+    <content type="html"><![CDATA[<p>半年以上前のある夜、大先輩エンジニアの方に隠れ家的なオシャレな大人のBarに連れて行っていただきました。</p>
+
+<p>その日はそれまでに既に結構飲んでいまして、本当に恥ずかしながらそこでお話した内容のほとんどは覚えていないのですが、一つだけ鮮明に覚えているのは、</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>「トークン」ってなに？</span></code></pre></td></tr></table></div></figure>
+
+
+<p>と私に説明を求められたことです。何かを答えはしたのですが、かなり曖昧な答えになっていたと思います。</p>
+
+<p>さらに最悪なのは、その後その大先輩が語られた内容を覚えていないことです。これは最悪です。次の日に「トークンって結局なんでしたっけ？」などとも聞けないのでそれ以来いろいろ考えてきたことを書きます。</p>
+
+<h2>トークンとは何か</h2>
+
+<p>Webの開発をしているとしばしばトークンというものが登場します</p>
+
+<ul>
+<li>Access Token</li>
+<li>ID Token</li>
+<li>JWT(JSON Web Token)</li>
+<li>etc&hellip;</li>
+</ul>
+
+
+<p>このトークンとは何か、という話です</p>
+
+<p>そもそもトークンなんて日本語はないのだから、トークンはトークン、という感じなのですが、あえて日本語にすると</p>
+
+<p><strong> 「証」（しょう） </strong></p>
+
+<p>という漢字一文字が合うのかな、と思います。</p>
+
+<ul>
+<li>通行証</li>
+<li>身分証</li>
+<li>免許証</li>
+<li>etc&hellip;</li>
+</ul>
+
+
+<h2>トークンの性質</h2>
+
+<p>これらに共通するのは</p>
+
+<ul>
+<li>誰かが発行し</li>
+<li>何かが書いてある</li>
+</ul>
+
+
+<p>ということではないでしょうか</p>
+
+<p>特に「何かが書いてある」、という部分は様々な内容を持ち得ます</p>
+
+<ul>
+<li>通行証には、ある場所を通ること、ある場所に到達することを許可する旨が書かれています</li>
+<li>身分証には、それを持っている人が誰なのか、それを示す内容が書かれています</li>
+<li>免許証には、誰に何をすることを許可するのかが書かれています</li>
+</ul>
+
+
+<p>このように考えると「トークン」という言葉がしっくりくるのでは、と現在思っております。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのYeoman (Yoを使った雛形作成)]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/06/the-first-step-of-yeoman/"/>
+    <updated>2015-05-06T18:55:02+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/06/the-first-step-of-yeoman</id>
+    <content type="html"><![CDATA[<p>前回 <a href="http://blog.sojiro.me/blog/2015/05/05/hubot-create-is-now-old/">‘Hubot –create’ は古い</a> というエントリでYeomanを試してみたいと宣言したので試してみます。</p>
+
+<p>Yeoman は以下の3要素で構成されているそうな</p>
+
+<ul>
+<li>yo: 雛形作成ツール</li>
+<li>Grunt: タスクランナー</li>
+<li>Bower: フロントエンドパッケージマネージャ</li>
+</ul>
+
+
+<p>今回は前回に引き続き <code>yo</code> を使ってみたいと思います。</p>
+
+<p>前提としては <code>yo</code> をインストール済みであること。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g yo
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>また、 <code>yo</code> は npm のバージョン2.1.0以上が推奨なので必要に応じて npm もアップデートします。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm update -g npm
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>generator-angular-fullstack を使ってみる</h2>
+
+<p>今回 <code>yo</code> で作成する雛形として generator-angular-fullstack を使ってみる</p>
+
+<p>generator-angular-fullstack は MEAN なアプリケーションの雛形で、使い勝手が良いという噂</p>
+
+<p>早速インストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>yeoman/angular_fullstack
+</span><span class='line'><span class="nv">$ </span>npm install generator-angular-fullstack
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールできたので実行してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yo angular-fullstack
+</span><span class='line'>     _-----_
+</span><span class='line'>    <span class="p">|</span>       <span class="p">|</span>
+</span><span class='line'>    <span class="p">|</span>--<span class="o">(</span>o<span class="o">)</span>--<span class="p">|</span>   .--------------------------.
+</span><span class='line'>   <span class="sb">`</span>---------´  <span class="p">|</span>    Welcome to Yeoman,    <span class="p">|</span>
+</span><span class='line'>    <span class="o">(</span> _´U<span class="sb">`</span>_ <span class="o">)</span>   <span class="p">|</span>   ladies and gentlemen!  <span class="p">|</span>
+</span><span class='line'>    /___A___<span class="se">\ </span>  <span class="s1">&#39;__________________________&#39;</span>
+</span><span class='line'>     <span class="p">|</span>  ~  <span class="p">|</span>
+</span><span class='line'>   __<span class="s1">&#39;.___.&#39;</span>__
+</span><span class='line'> ´   <span class="sb">`</span>  <span class="p">|</span>° ´ Y <span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'>Out of the box I create an AngularJS app with an Express server.
+</span><span class='line'>
+</span><span class='line'><span class="c"># Client</span>
+</span><span class='line'>
+</span><span class='line'>? What would you like to write scripts with? JavaScript
+</span><span class='line'>? What would you like to write markup with? HTML
+</span><span class='line'>? What would you like to write stylesheets with? Sass
+</span><span class='line'>? What Angular router would you like to use? uiRouter
+</span><span class='line'>? Would you like to include Bootstrap? Yes
+</span><span class='line'>? Would you like to include UI Bootstrap? Yes
+</span><span class='line'>
+</span><span class='line'><span class="c"># Server</span>
+</span><span class='line'>
+</span><span class='line'>? Would you like to use mongoDB with Mongoose <span class="k">for</span> data modeling? Yes
+</span><span class='line'>? Would you scaffold out an authentication boilerplate? Yes
+</span><span class='line'>? Would you like to include additional oAuth strategies? Google, Facebook, Twitter
+</span><span class='line'>? Would you like to use socket.io? Yes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>雛形作成を実行するといくつかインタラクティブに聞かれるので答える</p>
+
+<p>今回は基本的に Yes と答えてみた</p>
+
+<p>実行が終わると雛形ができていた</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ls
+</span><span class='line'>Gruntfile.js  bower.json  client  e2e  karma.conf.js  node_modules  package.json  protractor.conf.js  server
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>つづく</h2>
+
+<p>次回は <code>grunt</code> を使って実際にアプリケーションを動かしてみる</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.chat.ac/yeoman%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6meanmongodbexpressangularjsnode-js%E3%82%92%E4%BD%9C%E6%88%90%E3%81%97%E3%82%88%E3%81%86/">YEOMANを使ってMEAN(MongoDB+Express+AngularJS+Node.js)を作成しよう</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA['Hubot --create' は古い]]></title>
@@ -2997,217 +3201,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <h2>参照</h2>
 
 <p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Linuxに最新のRubyをインストールする]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/"/>
-    <updated>2014-10-31T05:29:00+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux</id>
-    <content type="html"><![CDATA[<p>Ruby on Railsを使ってみたいと思い、調べてみるとRails4ではRubyのバージョンは1.9以降が必須のようである。</p>
-
-<p>自分がさくらで借りているサーバーではRubyのバージョンが1.8.7だったのでこれを新しくしてみた。</p>
-
-<h2>RVMのインストール</h2>
-
-<p>新しいRubyをインストールする前にRVM(Ruby Version Manager)をインストールする。これはRubyをバージョンごとに管理するツール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -L https://get.rvm.io <span class="p">|</span> bash -s
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドで自分のホームディレクトリ以下に <code>.rvm/</code> が作られ、ここにRVMがインストールされる。</p>
-
-<p>そして <code>.profile</code> <code>.bashrc</code> <code>.zshrc</code> にPATHを通す記述が追加される。</p>
-
-<p>また、 <code>.bash_profile</code> <code>.zlogin</code> にRVMをロードする記述が追加される。</p>
-
-<p>RVMのインストールが完了したらロードする。ここではbashを使っているので以下のようにする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bash_profile
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Rubyのインストール</h2>
-
-<h3>さくらのレンタルサーバーでの失敗</h3>
-
-<p>まずはRubyのインストールに必要なパーツを調べ、無ければインストールする。
-以下のコマンドで必要なものをピックアップしインストールまで行ってくれる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
-</span><span class='line'>/your/home/directry/.rvm/scripts/functions/support: line 314: rvm_debug: <span class="nb">command </span>not found
-</span><span class='line'>Checking requirements <span class="k">for</span> freebsd.
-</span><span class='line'>Installing requirements <span class="k">for</span> freebsd.
-</span><span class='line'>Updating system.
-</span><span class='line'>Installing required packages: automake, bison, readline, libyaml...
-</span><span class='line'>Error running <span class="s1">&#39;requirements_freebsd_libs_install automake bison readline libyaml&#39;</span>,
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここでErrorが発生。内容は必要なパッケージがインストールできなかったということ。
-そこでFreeBSDのパッケージ管理コマンドである <code>pkg</code> コマンドを使ってインストールを試みる。</p>
-
-<p>が、サーバーの設定的に自分でパッケージを追加することができなかったのでさくらのサーバーを断念してAWSに移行した。</p>
-
-<h3>AWSに移行</h3>
-
-<p>AWSに移行して <code>$ rvm requirements</code> までを実行する。（AWSは始めからRubyのバージョンが2.0.0だったが構わず実行）
-ここでも <code>$ rvm requirements</code> が転ける。</p>
-
-<p>そこで今度はCentOSだったので <code>yum</code> を使ってインストールを試みる。以下のコマンドは <code>$ rvm requirements</code> が教えてくれる。Errorの原因が <code>sudo</code> で実行していなかったことなので <code>sudo</code> 付きで実行する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo yum install -y patch libyaml-devel libffi-devel glibc-headers autoconf gcc-c++ glibc-devel patch readline-devel zlib-devel openssl-devel automake libtool bison
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで成功。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
-</span><span class='line'>Checking requirements <span class="k">for</span> amazon.
-</span><span class='line'>Requirements installation successful.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>$ rvm requirements</code>も成功。</p>
-
-<p>このサーバーではすでにバージョン2.0.0のRubyがインストールされていたが、RVMの配下に新たにバージョン2.0.0のRubyをインストールする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm install 2.0.0 --with-openssl-dir<span class="o">=</span><span class="nv">$HOME</span>/.rvm/usr
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール完了。</p>
-
-<h2>参考</h2>
-
-<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MySQLにおけるNOT NULLカラムへのインサート時の挙動]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/"/>
-    <updated>2014-10-20T13:44:28+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql</id>
-    <content type="html"><![CDATA[<p>MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。</p>
-
-<h2>単列インサートと複数列インサートで挙動が変わる</h2>
-
-<p> <code>NOT NULL</code>を指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、一度に複数行を挿入する複数列インサート（バルクインサート）で挙動が変わる。</p>
-
-<p><a href="http://dev.mysql.com/doc/refman/5.6/en/insert.html">MySQLマニュアル</a>からの抜粋</p>
-
-<blockquote><p>Inserting NULL into a column that has been declared NOT NULL. For multiple-row INSERT statements or INSERT INTO &hellip; SELECT statements, the column is set to the implicit default value for the column data type. This is 0 for numeric types, the empty string (&lsquo;&rsquo;) for string types, and the “zero” value for date and time types. INSERT INTO &hellip; SELECT statements are handled the same way as multiple-row inserts because the server does not examine the result set from the SELECT to see whether it returns a single row. (For a single-row INSERT, no warning occurs when NULL is inserted into a NOT NULL column. Instead, the statement fails with an error.)</p></blockquote>
-
-<p>単列インサートの場合は<code>NOT NULL</code>が指定されたカラムに<code>NULL</code>値が挿入されるとそのクエリはエラーとなって失敗するが、複数列インサートの場合は警告(warning)を発するものの、クエリは正常に受け付けられる。</p>
-
-<p>その際、<code>NULL</code>値が指定された各カラムにはそれぞれのカラムのデータ型の暗黙的なデフォルト値が挿入される。（数値型なら<code>0</code>、文字列型なら空文字<code>''</code>、etc&hellip;）</p>
-
-<h2>検証</h2>
-
-<ul>
-<li>MySQLのバージョンは5.1.69
-
-<ul>
-<li>ただしマニュアルの該当箇所はバージョン5.7まで変更がないため、どのバージョンでも同じ挙動と思われる</li>
-</ul>
-</li>
-<li>テーブル定義は以下</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="ss">`not_null_test`</span> <span class="p">(</span>
-</span><span class='line'>  <span class="ss">`id`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
-</span><span class='line'>  <span class="ss">`test_score`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
-</span><span class='line'>  <span class="ss">`created_at`</span> <span class="kt">timestamp</span> <span class="k">NOT</span> <span class="no">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;0000-00-00 00:00:00&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="ss">`id`</span><span class="p">)</span>
-</span><span class='line'><span class="p">)</span> <span class="kp">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="kp">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>単列インサート</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
-</span><span class='line'><span class="nf">not_null_test</span>
-</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
-</span><span class='line'><span class="k">values</span>
-</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">ERROR</span> <span class="mi">1048</span> <span class="p">(</span><span class="mi">23000</span><span class="p">):</span> <span class="k">Column</span> <span class="s1">&#39;test_score&#39;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="no">null</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>複数列インサート</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
-</span><span class='line'><span class="nf">not_null_test</span>
-</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
-</span><span class='line'><span class="k">values</span>
-</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">),</span>
-</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">2</span> <span class="n">rows</span> <span class="n">affected</span><span class="p">,</span> <span class="mi">2</span> <span class="nf">warnings</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</span><span class='line'><span class="n">Records</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">Duplicates</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Warnings</span><span class="p">:</span> <span class="mi">2</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">not_null_test</span><span class="p">;</span>
-</span><span class='line'><span class="o">+----+------------+---------------------+</span>
-</span><span class='line'><span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">test_score</span> <span class="o">|</span> <span class="n">created_at</span>          <span class="o">|</span>
-</span><span class='line'><span class="o">+----+------------+---------------------+</span>
-</span><span class='line'><span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
-</span><span class='line'><span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
-</span><span class='line'><span class="o">+----+------------+---------------------+</span>
-</span><span class='line'><span class="mi">2</span> <span class="n">rows</span> <span class="k">in</span> <span class="kt">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>※ timestampにテーブル定義で設定したデフォルト値<code>'0000-00-00 00:00:00'</code>ではなく、型のデフォルト値である現在時刻が入っている点に注意</p>
 ]]></content>
   </entry>
   

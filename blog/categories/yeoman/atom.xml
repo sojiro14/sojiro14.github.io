@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Yeoman | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/yeoman/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-05T19:54:13+09:00</updated>
+  <updated>2015-05-10T18:28:07+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,101 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのYeoman (Yoを使った雛形作成)]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/06/the-first-step-of-yeoman/"/>
+    <updated>2015-05-06T18:55:02+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/06/the-first-step-of-yeoman</id>
+    <content type="html"><![CDATA[<p>前回 <a href="http://blog.sojiro.me/blog/2015/05/05/hubot-create-is-now-old/">‘Hubot –create’ は古い</a> というエントリでYeomanを試してみたいと宣言したので試してみます。</p>
+
+<p>Yeoman は以下の3要素で構成されているそうな</p>
+
+<ul>
+<li>yo: 雛形作成ツール</li>
+<li>Grunt: タスクランナー</li>
+<li>Bower: フロントエンドパッケージマネージャ</li>
+</ul>
+
+
+<p>今回は前回に引き続き <code>yo</code> を使ってみたいと思います。</p>
+
+<p>前提としては <code>yo</code> をインストール済みであること。</p>
+
+<pre><code class="bash">$ npm install -g yo
+</code></pre>
+
+<p>また、 <code>yo</code> は npm のバージョン2.1.0以上が推奨なので必要に応じて npm もアップデートします。</p>
+
+<pre><code class="bash">npm update -g npm
+</code></pre>
+
+<h2>generator-angular-fullstack を使ってみる</h2>
+
+<p>今回 <code>yo</code> で作成する雛形として generator-angular-fullstack を使ってみる</p>
+
+<p>generator-angular-fullstack は MEAN なアプリケーションの雛形で、使い勝手が良いという噂</p>
+
+<p>早速インストール</p>
+
+<pre><code class="bash">$ cd yeoman/angular_fullstack
+$ npm install generator-angular-fullstack
+</code></pre>
+
+<p>インストールできたので実行してみる</p>
+
+<pre><code class="bash">$ yo angular-fullstack
+     _-----_
+    |       |
+    |--(o)--|   .--------------------------.
+   `---------´  |    Welcome to Yeoman,    |
+    ( _´U`_ )   |   ladies and gentlemen!  |
+    /___A___\   '__________________________'
+     |  ~  |
+   __'.___.'__
+ ´   `  |° ´ Y `
+
+Out of the box I create an AngularJS app with an Express server.
+
+# Client
+
+? What would you like to write scripts with? JavaScript
+? What would you like to write markup with? HTML
+? What would you like to write stylesheets with? Sass
+? What Angular router would you like to use? uiRouter
+? Would you like to include Bootstrap? Yes
+? Would you like to include UI Bootstrap? Yes
+
+# Server
+
+? Would you like to use mongoDB with Mongoose for data modeling? Yes
+? Would you scaffold out an authentication boilerplate? Yes
+? Would you like to include additional oAuth strategies? Google, Facebook, Twitter
+? Would you like to use socket.io? Yes
+</code></pre>
+
+<p>雛形作成を実行するといくつかインタラクティブに聞かれるので答える</p>
+
+<p>今回は基本的に Yes と答えてみた</p>
+
+<p>実行が終わると雛形ができていた</p>
+
+<pre><code class="bash">$ ls
+Gruntfile.js  bower.json  client  e2e  karma.conf.js  node_modules  package.json  protractor.conf.js  server
+</code></pre>
+
+<h2>つづく</h2>
+
+<p>次回は <code>grunt</code> を使って実際にアプリケーションを動かしてみる</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.chat.ac/yeoman%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6meanmongodbexpressangularjsnode-js%E3%82%92%E4%BD%9C%E6%88%90%E3%81%97%E3%82%88%E3%81%86/">YEOMANを使ってMEAN(MongoDB+Express+AngularJS+Node.js)を作成しよう</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA['Hubot --create' は古い]]></title>

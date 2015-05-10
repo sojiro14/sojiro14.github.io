@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://sojiro14.github.io/blog/2015/05/07/what-is-token/</loc>
+    <lastmod>2015-05-07T23:57:03+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://sojiro14.github.io/blog/2015/05/06/the-first-step-of-yeoman/</loc>
+    <lastmod>2015-05-06T18:55:02+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old/</loc>
     <lastmod>2015-05-05T17:50:15+09:00</lastmod>
     <priority>0.8</priority>
@@ -172,19 +182,19 @@
   </url>
   <url>
     <loc>http://sojiro14.github.io/blog/archives/</loc>
-    <lastmod>2015-05-05T19:54:13+09:00</lastmod>
+    <lastmod>2015-05-10T18:28:07+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://sojiro14.github.io/blog/categories/</loc>
-    <lastmod>2015-05-05T19:54:13+09:00</lastmod>
+    <lastmod>2015-05-10T18:28:07+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://sojiro14.github.io/</loc>
-    <lastmod>2015-05-05T19:54:13+09:00</lastmod>
+    <lastmod>2015-05-10T18:28:07+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
