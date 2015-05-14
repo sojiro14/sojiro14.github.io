@@ -9,7 +9,12 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Vimでは &lt;TAB&gt; やインデントについてその挙動を設定することができる。いくつか設定方法があるが、これまでこれらに関する .vimrc の設定は何も考えずにただコピペしていたので記述を見直してみた。 tabstop tabstop で &lt;TAB&gt; &hellip;">
+  <meta name="description" content="Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。 今回使うNode.jsのバージョン 1
+2
+$ node -v
+v0.10.32 Web Serverオブジェクトの準備 Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている 1
+2
+var &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,6 +99,181 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/07/making-a-web-server-with-node-dot-js/">Node.jsを使ってWeb Serverを作ってみました</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-07T00:55:25+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:55 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。</p>
+
+<p>今回使うNode.jsのバージョン</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
+</span><span class='line'>v0.10.32
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Web Serverオブジェクトの準備</h2>
+
+<p>Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nodeの <code>http</code> モジュールを読み込んだ後、 <code>createServer()</code> メソッドでWeb Serverオブジェクトを取得できる</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/01/07/making-a-web-server-with-node-dot-js/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/02/the-first-step-for-mongodb/">初めてのMongoDB</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-02T02:20:55+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>2:20 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>NoSQLの流れを汲むMongoDBを初めて使ってみるにあたり、基本的な操作をまとめてみる。</p>
+
+<h1>基本的な用語</h1>
+
+<ul>
+<li>データベース(database)</li>
+<li>コレクション(collection)</li>
+<li>ドキュメント(document)</li>
+</ul>
+
+
+<h2>データベース</h2>
+
+<p>MySQLなどのRDBMSにおけるデータベース、という言葉とほぼ同じ意味として使われる。
+データ管理の大元となる単位。</p>
+
+<h2>コレクション</h2>
+
+<p>RDBMSにおけるテーブル(table)に相当するもの。
+MongoDBはスキーマレスなので、テーブルのように厳格なスキーマが決まっている訳ではなく、特定の対象に対するデータの集まり(正にコレクション)と言える。</p>
+
+<h2>ドキュメント</h2>
+
+<p>RDBMSにおけるレコード(record)に相当するもの。
+各コレクションを構成する要素であり、BSONと呼ばれるJSONライクな形式で記述される。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/01/02/the-first-step-for-mongodb/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">AWSのLinuxにMongoDBをインストール</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-30T13:32:15+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:32 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順</p>
+
+<h2>YUMの設定</h2>
+
+<p>パッケージ管理システムであるYUMにmongoDB用の設定を追加する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo vim /etc/yum.repos.d/mongodb.repo
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>/etc/yum.repos.d/mongodb.repo </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>mongodb<span class="o">]</span>
+</span><span class='line'><span class="nv">name</span><span class="o">=</span>MongoDB Repository
+</span><span class='line'><span class="nv">baseurl</span><span class="o">=</span>http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
+</span><span class='line'><span class="nv">gpgcheck</span><span class="o">=</span>0
+</span><span class='line'><span class="nv">enabled</span><span class="o">=</span>1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでYUMにmongoDBのリポジトリが追加される</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -572,509 +752,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/">Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-12T12:06:23+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:06 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
-
-<h2>Herokuに必要なgemのインストール</h2>
-
-<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span><span class="p">,</span> <span class="s1">&#39;0.15.1&#39;</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rails_12factor&#39;</span><span class="p">,</span> <span class="s1">&#39;0.0.2&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
-これによりGemfile.lockが更新され、production環境に備えることができる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install --without production
-</span><span class='line'>Your bundle is <span class="nb">complete</span>!
-</span><span class='line'>Gems in the group production were not installed.
-</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここまでできたらgitにcommitしておく。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git commit -a -m <span class="s2">&quot;Update Gemfile.lock for Heroku&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
-
-<h2>herokuコマンドが使えるようにする</h2>
-
-<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
-
-<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
-
-<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
-今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
-
-<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>wget -qO- https://toolbelt.heroku.com/install.sh <span class="p">|</span> sh
-</span><span class='line'>This script requires superuser access to install software.
-</span><span class='line'>You will be prompted <span class="k">for</span> your password by sudo.
-</span><span class='line'><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> sojiro:
-</span><span class='line'>Add the Heroku CLI to your PATH using:
-</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.profile
-</span><span class='line'>Installation <span class="nb">complete</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.bashrc
-</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bashrc
-</span><span class='line'><span class="nv">$ </span>heroku version
-</span><span class='line'>heroku-toolbelt/3.15.2 <span class="o">(</span>x86_64-linux<span class="o">)</span> ruby/2.0.0
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuのセットアップ</h2>
-
-<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku login
-</span><span class='line'>Enter your Heroku credentials.
-</span><span class='line'>Email: your.account@email.com
-</span><span class='line'>Password <span class="o">(</span>typing will be hidden<span class="o">)</span>:
-</span><span class='line'>Your Heroku account does not have a public ssh key uploaded.
-</span><span class='line'>Could not find an existing public key at ~/.ssh/id_rsa.pub
-</span><span class='line'>Would you like to generate one? <span class="o">[</span>Yn<span class="o">]</span> Y
-</span><span class='line'>Generating new SSH public key.
-</span><span class='line'>Uploading SSH public key /home/user/.ssh/id_rsa.pub... <span class="k">done</span>
-</span><span class='line'>Authentication successful.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>認証が完了したらHerokuのセットアップをする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku create
-</span><span class='line'>Creating infinite-peak-4923... <span class="k">done</span>, stack is cedar-14
-</span><span class='line'>https://infinite-peak-4923.herokuapp.com/ <span class="p">|</span> git@heroku.com:infinite-peak-4923.git
-</span><span class='line'>Git remote heroku added
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでgitのremoteにherokuが追加される</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote -v
-</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>fetch<span class="o">)</span>
-</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>push<span class="o">)</span>
-</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>fetch<span class="o">)</span>
-</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>push<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuへデプロイ</h2>
-
-<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push heroku master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
-
-<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/">Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-10T03:27:49+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:27 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby on Railsで初めてアプリを作ってみます。
-今回はRailsの立ち上がりを確認するところまで。</p>
-
-<h2>アプリのセットアップ（rails new）</h2>
-
-<p>railsのアプリ作成は <code>rails new</code> コマンドで始まる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir rails_projects
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>rails_projects
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回のアプリ作成の為にディレクトリを作成し、早速コマンドを実行。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails new first_app
-</span><span class='line'>...
-</span><span class='line'>An error occurred <span class="k">while</span> installing sqlite3 <span class="o">(</span>1.3.10<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>いくつかのディレクトリやファイルが作成されるが、最後にこのようなエラーが出てbundle失敗。
-そこでGemfileを編集してbundleをやり直す。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>first_app/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Gemfileを編集。内容は<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-bundler">Ruby on Rails #Bundler</a>を参照。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
-</span><span class='line'>...
-</span><span class='line'>Building native extensions.  This could take a <span class="k">while</span>...
-</span><span class='line'>ERROR:  Error installing sqlite3:
-</span><span class='line'>    ERROR: Failed to build gem native extension.
-</span><span class='line'>
-</span><span class='line'>    /home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
-</span><span class='line'>checking <span class="k">for</span> sqlite3.h... no
-</span><span class='line'>sqlite3.h is missing. Try <span class="s1">&#39;port install sqlite3 +universal&#39;</span>
-</span><span class='line'>or <span class="s1">&#39;yum install sqlite-devel&#39;</span> and check your shared library search path <span class="o">(</span>the
-</span><span class='line'>location where your sqlite3 shared library is located<span class="o">)</span>.
-</span><span class='line'>*** extconf.rb failed ***
-</span><span class='line'>Could not create Makefile due to some reason, probably lack of necessary
-</span><span class='line'>libraries and/or headers.  Check the mkmf.log file <span class="k">for</span> more details.  You may
-</span><span class='line'>need configuration options.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>またも失敗。よく見るとsqlite-develが足りていないらしい</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install sqlite-devel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>sqlite-develをインストール後再度bundleによるgemのインストールを試みる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
-</span><span class='line'>Installing sqlite3 1.3.8
-</span><span class='line'>Installing turbolinks 1.1.1
-</span><span class='line'>Installing uglifier 2.1.1
-</span><span class='line'>Your bundle is updated!
-</span><span class='line'><span class="nv">$ </span>bundle install
-</span><span class='line'>Your bundle is <span class="nb">complete</span>!
-</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール成功。</p>
-
-<h2>サーバーの立ち上げ（rails server）</h2>
-
-<p>ローカルでrailsを立ち上げるコマンド <code>rails server</code> を実行。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails server
-</span><span class='line'>...
-</span><span class='line'>Could not find a JavaScript runtime. See https://github.com/sstephenson/execjs <span class="k">for</span> a list of available runtimes. <span class="o">(</span>ExecJS::RuntimeUnavailable<span class="o">)</span>
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Node.jsのインストール</h3>
-
-<p> <code>rails server</code> コマンド実行でエラーが出てしまう。JavaScript runtimeがインストールされていないことが原因のよう。メッセージ通り <a href="https://github.com/sstephenson/execjs">https://github.com/sstephenson/execjs</a> に行ってみるとJavaScript runtimeとしてNode.jsが有効と書いてあるのでNode.jsをインストールする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
-</span><span class='line'><span class="nv">$ </span>sudo yum install nodejs npm --enablerepo<span class="o">=</span>epel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回はyumでインストールした。そして再度 <code>rails server</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails <span class="nv">server</span>
-</span><span class='line'><span class="o">=</span>&gt; Booting <span class="nv">WEBrick</span>
-</span><span class='line'><span class="o">=</span>&gt; Rails 4.0.5 application starting in development on http://0.0.0.0:3000
-</span><span class='line'><span class="o">=</span>&gt; Run <span class="sb">`</span>rails server -h<span class="sb">`</span> <span class="k">for</span> more startup <span class="nv">options</span>
-</span><span class='line'><span class="o">=</span>&gt; Ctrl-C to shutdown server
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ローカルでサーバーが立ち上がる。
-今回はAWS上で作業しているので、AWS該当インスタンスのSecurity Groupで3000番portを空ける。</p>
-
-<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
-
-<p>にブラウザでアクセスして以下の画面が見えればOK</p>
-
-<p><img src="/images/rails/rails_starting.png"></p>
-
-<h2>GitHubに上げておく</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git init
-</span><span class='line'><span class="nv">$ </span>git remote add origin https://github.com/sojiro14/first_app.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>GitHubでリポジトリ作成</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git add .
-</span><span class='line'><span class="nv">$ </span>git commit -m <span class="s1">&#39;Initialize repository&#39;</span>
-</span><span class='line'><span class="nv">$ </span>git push -u origin master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://qiita.com/you21979@github/items/4efd9fc4363573191b5c">node.jsをyumでインストールする(centos6.5)</a></li>
-<li><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/05/installing-ruby-on-rails-on-linux/">LinuxにRuby on Railsをインストールする</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-05T03:58:11+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:58 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby on Railsを使ってみたいと思い、AWSにインストールした手順。</p>
-
-<h2>Ruby version 2.0.0 を RVMを使ってインストール</h2>
-
-<p><a href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a>を参照</p>
-
-<h2>gemsetの作成</h2>
-
-<blockquote><p>Rubyをインストールしたら、Railsのアプリケーションを実行するために必要な他のソフトウェア向けにシステムを構成する必要があります。通常、これはgemのインストールに関連します。gemとは自己完結型のRubyコードのパッケージです。バージョン番号の異なるgem同士がコンフリクトすることがあるため、一連のgemを自己完結的にまとめたgemsetというものを作成してバージョンを使い分けるのが便利です。
-（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
-
-<p>以下のコマンドでgemsetを作成する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm use 2.0.0@railstutorial_rails_4_0 --create --default
-</span></code></pre></td></tr></table></div></figure>
-
-
-<blockquote><p>上のコマンドを実行すると、Ruby 2.0.0に関連付けられたrailstutorial_rails_4_0というgemsetを作成し (&ndash;create)、その場でgemsetを有効にし (use)、gemsetをデフォルトに設定 (&ndash;default) します。これにより、ターミナルウィンドウを開いたときに2.0.0@railstutorial_rails_4_0というRubyとgemsetの組み合わせが常に選択されるようになります。
-（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
-
-<h2>RubyGemsのインストール</h2>
-
-<p>AWSには始めからgemがインストールされていて、PATHは以下。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
-</span><span class='line'>/usr/bin/gem
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>RVMでRubyをインストールするとPATHが上書きされる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
-</span><span class='line'>~/.rvm/rubies/ruby-2.0.0-p594/bin/gem
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回はチュートリアルに合わせてgemのバージョンを更新する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem update --system 2.0.3
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>gemの設定ファイルである <code>.gemrc</code> に自動生成されるドキュメントである <code>ri</code> と <code>rdoc</code> の自動生成を抑制する設定をする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim .gemrc
-</span><span class='line'><span class="nv">$ </span>cat .gemrc
-</span><span class='line'>install: --no-rdoc --no-ri
-</span><span class='line'>update:  --no-rdoc --no-ri
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Railsをインストールする</h2>
-
-<p>いよいよRailsをインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install rails --version 4.0.5
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール完了。
-以下のコマンドで確認する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails -v
-</span><span class='line'>Rails 4.0.5
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Railsがインストールされたことを確認できた</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page3">&larr; Older</a>
@@ -1096,23 +773,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/05/07/what-is-token/">「トークン」とは何か</a>
+        <a href="/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/08/what-is-mean/">MEANとはなにか</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/07/what-is-token/">「トークン」とはなにか</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (yoを使った雛形作成)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/05/hubot-create-is-now-old/">&#8216;hubot &#8211;create&#8217; は古い</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/04/transfer-the-slack-bot-to-heroku/">Slack BotをHeroku上で動かす</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a>
       </li>
     
   </ul>

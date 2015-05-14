@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Reply | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/reply/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-05-15T05:12:47+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Replyを試してみる]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/09/try-reply/"/>
+    <updated>2015-05-09T23:34:36+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/09/try-reply</id>
+    <content type="html"><![CDATA[<p>Perl の REPL 環境である Reply というツールを教えてもらったので使ったみます。</p>
+
+<h2>REPL とは？</h2>
+
+<p>REPL とは <strong>R</strong>ead-<strong>E</strong>val-<strong>P</strong>rint <strong>L</strong>oop の頭文字を取った言葉であり、</p>
+
+<p>プログラムを読み(Read)、評価し(Evaluate)、結果を出力(Print)することを繰り返す(Loop)という意味である。</p>
+
+<p>この環境があればファイルにプログラムを書いて保存し、実行する、という手続きを踏まなくてもスクリプトを実行できる</p>
+
+<p>この REPL の Perl 版が Reply と言うことだそう</p>
+
+<h2>Reply のインストール</h2>
+
+<p>Reply は CPAN からインストールする</p>
+
+<pre><code class="bash">$ cpanm Reply
+--&gt; Working on Reply
+Fetching http://cpan.metacpan.org/authors/id/D/DO/DOY/Reply-0.37.tar.gz ... OK
+Configuring Reply-0.37 ... OK
+...
+</code></pre>
+
+<p>インストールできたら早速実行してみる</p>
+
+<pre><code class="bash">$ reply
+/Users/sojiro/.replyrc not found. Generating a default...
+0&gt; 
+</code></pre>
+
+<p>コンソールが立ち上がった</p>
+
+<p>早速なにかプログラムを入力してみよう</p>
+
+<pre><code class="bash">0&gt; print 'Hello Reply';
+Hello Reply$res[0] = 1
+</code></pre>
+
+<pre><code class="bash">1&gt; 12 * 12
+$res[1] = 144
+</code></pre>
+
+<p>なるほど単純なプログラムの動作が確認できた。今度は <code>use</code> してみる。</p>
+
+<pre><code class="bash">2&gt; use UUID::Tiny;
+3&gt; my $id = create_UUID_as_string(UUID_V4);
+$res[2] = '87b16a6b-c712-41b4-bf46-965eeb01d3f1'
+
+4&gt; print $id;
+87b16a6b-c712-41b4-bf46-965eeb01d3f1$res[3] = 1
+</code></pre>
+
+<p>このように実行結果は記憶された状態で進むので簡単にプログラムの実行結果を知りたいときに重宝しそうである。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://papix.hatenablog.com/entry/2014/12/15/233800">Replyでお手軽にPerlのコードを動かす話</a></li>
+<li><a href="http://www.amazon.co.jp/gp/product/4774156647/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774156647&amp;linkCode=as2&amp;tag=sojiro14-22">小飼弾のコードなエッセイ ~我々は本当に世界を理解してコードしているのだろうか? </a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

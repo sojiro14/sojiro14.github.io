@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-10T18:30:01+09:00</updated>
+  <updated>2015-05-15T05:12:47+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -14,7 +14,473 @@
 
   
   <entry>
-    <title type="html"><![CDATA[「トークン」とは何か]]></title>
+    <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerを使ってみる)]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/10/the-second-step-of-yeoman/"/>
+    <updated>2015-05-10T18:25:06+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/10/the-second-step-of-yeoman</id>
+    <content type="html"><![CDATA[<p>以前のエントリ <a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a> で <code>yo</code> を使い generator-angular-fullstack の雛形を作りました。</p>
+
+<p>今回はこのとき作った雛形を Grunt を使って実際に動かしてみたいと思います。</p>
+
+<p>Gruntがどんなものかはとりあえず使ってみてからと言うことで。</p>
+
+<h2>Grunt のインストール</h2>
+
+<p> <code>npm</code> でインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g grunt-cli
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールされたことを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt --version
+</span><span class='line'>grunt-cli v0.1.13
+</span><span class='line'>grunt v0.4.5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>OK.</p>
+
+<h2>Grunt / Bower の実行</h2>
+
+<p>インストールできたら早速 Grunt を実行してみる</p>
+
+<p>今回は雛形作成時に生成された Gruntfile.js で規定されている serve タスクを実行する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt serve
+</span><span class='line'>Running <span class="s2">&quot;serve&quot;</span> task
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;clean:server&quot;</span> <span class="o">(</span>clean<span class="o">)</span> task
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;env:all&quot;</span> <span class="o">(</span>env<span class="o">)</span> task
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;injector:sass&quot;</span> <span class="o">(</span>injector<span class="o">)</span> task
+</span><span class='line'>Missing option <span class="sb">`</span>template<span class="sb">`</span>, using <span class="sb">`</span>dest<span class="sb">`</span> as template instead
+</span><span class='line'>Injecting scss files <span class="o">(</span><span class="m">4</span> files<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;concurrent:server&quot;</span> <span class="o">(</span>concurrent<span class="o">)</span> task
+</span><span class='line'>    Warning: Running <span class="s2">&quot;sass:server&quot;</span> <span class="o">(</span>sass<span class="o">)</span> task
+</span><span class='line'>    Warning:
+</span><span class='line'>    You need to have Ruby and Sass installed and in your PATH <span class="k">for</span> this task to work.
+</span><span class='line'>    More info: https://github.com/gruntjs/grunt-contrib-sass
+</span><span class='line'>     Use --force to <span class="k">continue</span>.
+</span><span class='line'>
+</span><span class='line'>    Aborted due to warnings.
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>何やら怒られた</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>You need to have Ruby and Sass installed and in your PATH <span class="k">for</span> this task to work.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ということだそうなので Sass をインストールする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yum install rubygems
+</span><span class='line'><span class="nv">$ </span>gem install sass
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>もう一度トライ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt serve
+</span><span class='line'>Running <span class="s2">&quot;serve&quot;</span> task
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;clean:server&quot;</span> <span class="o">(</span>clean<span class="o">)</span> task
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;env:all&quot;</span> <span class="o">(</span>env<span class="o">)</span> task
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;injector:sass&quot;</span> <span class="o">(</span>injector<span class="o">)</span> task
+</span><span class='line'>Missing option <span class="sb">`</span>template<span class="sb">`</span>, using <span class="sb">`</span>dest<span class="sb">`</span> as template instead
+</span><span class='line'>Injecting scss files <span class="o">(</span><span class="m">4</span> files<span class="o">)</span>
+</span><span class='line'>&gt;&gt; Nothing changed
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;concurrent:server&quot;</span> <span class="o">(</span>concurrent<span class="o">)</span> task
+</span><span class='line'>    Warning: Error: File to import not found or unreadable: bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.
+</span><span class='line'>           Load paths:
+</span><span class='line'>             /home/sojiro/yeoman/angular_fullstack/client/bower_components
+</span><span class='line'>             /home/sojiro/yeoman/angular_fullstack/client/app
+</span><span class='line'>             /home/sojiro/yeoman/angular_fullstack/client/components
+</span><span class='line'>            on line <span class="m">4</span> of client/app/app.scss
+</span><span class='line'>      Use --trace <span class="k">for</span> backtrace. Use --force to <span class="k">continue</span>.
+</span><span class='line'>
+</span><span class='line'>        Aborted due to warnings.
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>また怒られた</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Warning: Error: File to import not found or unreadable: bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回のエラーはよくわからなかったので少し調べると、 Yeoman 三種の神器の三つ目、 Bower が必要らしいのでインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g bower
+</span><span class='line'><span class="nv">$ </span>bower -v
+</span><span class='line'>1.4.1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>雛形作成時に bower.json が生成されているのでここに記述されているパッケージをインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bower install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>そして再度実行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt serve
+</span><span class='line'>Running <span class="s2">&quot;serve&quot;</span> task
+</span><span class='line'>
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;open:server&quot;</span> <span class="o">(</span>open<span class="o">)</span> task
+</span><span class='line'>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
+</span><span class='line'>xdg-open: no method available <span class="k">for</span> opening <span class="s1">&#39;http://localhost:9000&#39;</span>
+</span><span class='line'> Use --force to <span class="k">continue</span>.
+</span><span class='line'>
+</span><span class='line'>Aborted due to warnings.
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>また怒られる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>xdg-mime: コマンドが見つかりません
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>xdg-mime は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
+
+<p>今回は <code>xdg-mime URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
+
+<p>そもそもここで使っているサーバーはブラウザが入っていないリモートのサーバーなので、該当タスクをコメントアウトする。また、サーバーのURLもIPアドレスで指定するように設定ファイル(Gruntfile.js)を変更する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim Gruntfile.js
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">task</span><span class="p">.</span><span class="nx">run</span><span class="p">([</span>
+</span><span class='line'>  <span class="s1">&#39;clean:server&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;env:all&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;injector:sass&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;concurrent:server&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;injector&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;wiredep&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;autoprefixer&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;express:dev&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;wait&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="c1">//      &#39;open&#39;,</span>
+</span><span class='line'>  <span class="s1">&#39;watch&#39;</span>
+</span><span class='line'><span class="p">]);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">open</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">server</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">//url: &#39;http://localhost:&lt;%= express.options.port %&gt;&#39;</span>
+</span><span class='line'>    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://xx.xxx.xxx.xxx:&lt;%= express.options.port %&gt;&#39;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">},</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>そしてまたまた実行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt serve
+</span><span class='line'>Running <span class="s2">&quot;serve&quot;</span> task
+</span><span class='line'>
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'>Running <span class="s2">&quot;watch&quot;</span> task
+</span><span class='line'>Waiting...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>動いた！！</p>
+
+<h2>雛形の動作確認</h2>
+
+<p>watch タスクまで問題なく進んだので早速ブラウザからアクセスしてみる</p>
+
+<p>上記で Gruntfile.js に設定したアドレスにアクセスする。ポートは 9000番。</p>
+
+<p>雛形アプリケーションのトップが表示された</p>
+
+<p><img src="http://sojiro14.github.io/images/angular_fullstack/top.png"></p>
+
+<p>Sign up 画面なども用意されている</p>
+
+<p><img src="http://sojiro14.github.io/images/angular_fullstack/sign_up.png"></p>
+
+<h2>つづく</h2>
+
+<p>今回は何も考えずに Grunt と（はからずも）Bower を使ってみた。</p>
+
+<p>それぞれがどのようなツールなのか次回はまとめてみたい。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/DaftMonk/generator-angular-fullstack/issues/710"> Error sass when build mode product #710 </a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Replyを試してみる]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/09/try-reply/"/>
+    <updated>2015-05-09T23:34:36+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/09/try-reply</id>
+    <content type="html"><![CDATA[<p>Perl の REPL 環境である Reply というツールを教えてもらったので使ったみます。</p>
+
+<h2>REPL とは？</h2>
+
+<p>REPL とは <strong>R</strong>ead-<strong>E</strong>val-<strong>P</strong>rint <strong>L</strong>oop の頭文字を取った言葉であり、</p>
+
+<p>プログラムを読み(Read)、評価し(Evaluate)、結果を出力(Print)することを繰り返す(Loop)という意味である。</p>
+
+<p>この環境があればファイルにプログラムを書いて保存し、実行する、という手続きを踏まなくてもスクリプトを実行できる</p>
+
+<p>この REPL の Perl 版が Reply と言うことだそう</p>
+
+<h2>Reply のインストール</h2>
+
+<p>Reply は CPAN からインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cpanm Reply
+</span><span class='line'>--&gt; Working on Reply
+</span><span class='line'>Fetching http://cpan.metacpan.org/authors/id/D/DO/DOY/Reply-0.37.tar.gz ... OK
+</span><span class='line'>Configuring Reply-0.37 ... OK
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールできたら早速実行してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>reply
+</span><span class='line'>/Users/sojiro/.replyrc not found. Generating a default...
+</span><span class='line'>0&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>コンソールが立ち上がった</p>
+
+<p>早速なにかプログラムを入力してみよう</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>0&gt; print <span class="s1">&#39;Hello Reply&#39;</span><span class="p">;</span>
+</span><span class='line'>Hello Reply<span class="nv">$res</span><span class="o">[</span>0<span class="o">]</span> <span class="o">=</span> 1
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>1&gt; <span class="m">12</span> * 12
+</span><span class='line'><span class="nv">$res</span><span class="o">[</span>1<span class="o">]</span> <span class="o">=</span> 144
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>なるほど単純なプログラムの動作が確認できた。今度は <code>use</code> してみる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>2&gt; use UUID::Tiny<span class="p">;</span>
+</span><span class='line'>3&gt; my <span class="nv">$id</span> <span class="o">=</span> create_UUID_as_string<span class="o">(</span>UUID_V4<span class="o">)</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$res</span><span class="o">[</span>2<span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;87b16a6b-c712-41b4-bf46-965eeb01d3f1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>4&gt; print <span class="nv">$id</span><span class="p">;</span>
+</span><span class='line'>87b16a6b-c712-41b4-bf46-965eeb01d3f1<span class="nv">$res</span><span class="o">[</span>3<span class="o">]</span> <span class="o">=</span> 1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このように実行結果は記憶された状態で進むので簡単にプログラムの実行結果を知りたいときに重宝しそうである。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://papix.hatenablog.com/entry/2014/12/15/233800">Replyでお手軽にPerlのコードを動かす話</a></li>
+<li><a href="http://www.amazon.co.jp/gp/product/4774156647/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774156647&amp;linkCode=as2&amp;tag=sojiro14-22">小飼弾のコードなエッセイ ~我々は本当に世界を理解してコードしているのだろうか? </a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MEANとはなにか]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/08/what-is-mean/"/>
+    <updated>2015-05-08T22:14:38+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/08/what-is-mean</id>
+    <content type="html"><![CDATA[<p>以前のエントリ、 <a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a> にて generator-angular-fullstack という雛形を使いましたが、この雛形は <strong>MEAN</strong> なアプリケーションの雛形、と呼ばれているそうです。</p>
+
+<p>MEANとはどういう意味でしょうか？</p>
+
+<h2>MEAN とはなにか</h2>
+
+<p>MEAN は</p>
+
+<ul>
+<li><strong>M</strong>ongoDB</li>
+<li><strong>E</strong>xpress.js</li>
+<li><strong>A</strong>ngular.js</li>
+<li><strong>N</strong>ode.js</li>
+</ul>
+
+
+<p>これらの頭文字をとったもので、これらの技術を使ったサービスのことを言う</p>
+
+<h2>特徴はなにか</h2>
+
+<p>まだ使ったこともないので想像だが、（恥ずかしいので早く使いたい）</p>
+
+<ul>
+<li>サーバーサイドからクライアントサイドまですべて JavaScript で制御できること
+
+<ul>
+<li>現状他の言語ではなかなかマネできないのではないか</li>
+</ul>
+</li>
+<li>DB含むすべてのデータを JSON 形式でやり取りできること
+
+<ul>
+<li>すべて JavaScript で、というのと被るところもあるが、やはりシンプルで良い感じがする</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>最後に</h2>
+
+<p>やっぱり使わないと上記のようなしょうもないことしか言えないので generator-angular-fullstack で作った雛形を少しずつ触りながら次回はもう少しまともなことを言えるようにします。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[「トークン」とはなにか]]></title>
     <link href="http://sojiro14.github.io/blog/2015/05/07/what-is-token/"/>
     <updated>2015-05-07T23:57:03+09:00</updated>
     <id>http://sojiro14.github.io/blog/2015/05/07/what-is-token</id>
@@ -24,11 +490,11 @@
 
 <p><strong> 「トークン」ってなに？ </strong></p>
 
-<p>と私に説明を求められたことです。何かを答えはしたのですが、かなり曖昧な答えになっていたと思います。</p>
+<p>と私に説明を求められたことです。なにかを答えはしたのですが、かなり曖昧な答えになっていたと思います。</p>
 
 <p>さらに最悪なのは、その後その大先輩が語られた内容を覚えていないことです。これは最悪です。次の日に「トークンって結局なんでしたっけ？」などとも聞けないのでそれ以来いろいろ考えてきたことを書きます。</p>
 
-<h2>トークンとは何か</h2>
+<h2>トークンとはなにか</h2>
 
 <p>Webの開発をしているとしばしばトークンというものが登場します</p>
 
@@ -40,7 +506,7 @@
 </ul>
 
 
-<p>このトークンとは何か、という話です</p>
+<p>このトークンとはなにか、という話です</p>
 
 <p>そもそもトークンなんて日本語はないのだから、トークンはトークン、という感じなのですが、あえて日本語にすると</p>
 
@@ -2759,446 +3225,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <h2>参照</h2>
 
 <p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/"/>
-    <updated>2014-11-12T12:06:23+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku</id>
-    <content type="html"><![CDATA[<p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
-
-<h2>Herokuに必要なgemのインストール</h2>
-
-<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span><span class="p">,</span> <span class="s1">&#39;0.15.1&#39;</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rails_12factor&#39;</span><span class="p">,</span> <span class="s1">&#39;0.0.2&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
-これによりGemfile.lockが更新され、production環境に備えることができる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install --without production
-</span><span class='line'>Your bundle is <span class="nb">complete</span>!
-</span><span class='line'>Gems in the group production were not installed.
-</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここまでできたらgitにcommitしておく。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git commit -a -m <span class="s2">&quot;Update Gemfile.lock for Heroku&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
-
-<h2>herokuコマンドが使えるようにする</h2>
-
-<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
-
-<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
-
-<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
-今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
-
-<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>wget -qO- https://toolbelt.heroku.com/install.sh <span class="p">|</span> sh
-</span><span class='line'>This script requires superuser access to install software.
-</span><span class='line'>You will be prompted <span class="k">for</span> your password by sudo.
-</span><span class='line'><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> sojiro:
-</span><span class='line'>Add the Heroku CLI to your PATH using:
-</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.profile
-</span><span class='line'>Installation <span class="nb">complete</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.bashrc
-</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bashrc
-</span><span class='line'><span class="nv">$ </span>heroku version
-</span><span class='line'>heroku-toolbelt/3.15.2 <span class="o">(</span>x86_64-linux<span class="o">)</span> ruby/2.0.0
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuのセットアップ</h2>
-
-<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku login
-</span><span class='line'>Enter your Heroku credentials.
-</span><span class='line'>Email: your.account@email.com
-</span><span class='line'>Password <span class="o">(</span>typing will be hidden<span class="o">)</span>:
-</span><span class='line'>Your Heroku account does not have a public ssh key uploaded.
-</span><span class='line'>Could not find an existing public key at ~/.ssh/id_rsa.pub
-</span><span class='line'>Would you like to generate one? <span class="o">[</span>Yn<span class="o">]</span> Y
-</span><span class='line'>Generating new SSH public key.
-</span><span class='line'>Uploading SSH public key /home/user/.ssh/id_rsa.pub... <span class="k">done</span>
-</span><span class='line'>Authentication successful.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>認証が完了したらHerokuのセットアップをする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku create
-</span><span class='line'>Creating infinite-peak-4923... <span class="k">done</span>, stack is cedar-14
-</span><span class='line'>https://infinite-peak-4923.herokuapp.com/ <span class="p">|</span> git@heroku.com:infinite-peak-4923.git
-</span><span class='line'>Git remote heroku added
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでgitのremoteにherokuが追加される</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote -v
-</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>fetch<span class="o">)</span>
-</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>push<span class="o">)</span>
-</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>fetch<span class="o">)</span>
-</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>push<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuへデプロイ</h2>
-
-<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push heroku master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
-
-<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/"/>
-    <updated>2014-11-10T03:27:49+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails</id>
-    <content type="html"><![CDATA[<p>Ruby on Railsで初めてアプリを作ってみます。
-今回はRailsの立ち上がりを確認するところまで。</p>
-
-<h2>アプリのセットアップ（rails new）</h2>
-
-<p>railsのアプリ作成は <code>rails new</code> コマンドで始まる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir rails_projects
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>rails_projects
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回のアプリ作成の為にディレクトリを作成し、早速コマンドを実行。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails new first_app
-</span><span class='line'>...
-</span><span class='line'>An error occurred <span class="k">while</span> installing sqlite3 <span class="o">(</span>1.3.10<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>いくつかのディレクトリやファイルが作成されるが、最後にこのようなエラーが出てbundle失敗。
-そこでGemfileを編集してbundleをやり直す。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>first_app/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Gemfileを編集。内容は<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-bundler">Ruby on Rails #Bundler</a>を参照。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
-</span><span class='line'>...
-</span><span class='line'>Building native extensions.  This could take a <span class="k">while</span>...
-</span><span class='line'>ERROR:  Error installing sqlite3:
-</span><span class='line'>    ERROR: Failed to build gem native extension.
-</span><span class='line'>
-</span><span class='line'>    /home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
-</span><span class='line'>checking <span class="k">for</span> sqlite3.h... no
-</span><span class='line'>sqlite3.h is missing. Try <span class="s1">&#39;port install sqlite3 +universal&#39;</span>
-</span><span class='line'>or <span class="s1">&#39;yum install sqlite-devel&#39;</span> and check your shared library search path <span class="o">(</span>the
-</span><span class='line'>location where your sqlite3 shared library is located<span class="o">)</span>.
-</span><span class='line'>*** extconf.rb failed ***
-</span><span class='line'>Could not create Makefile due to some reason, probably lack of necessary
-</span><span class='line'>libraries and/or headers.  Check the mkmf.log file <span class="k">for</span> more details.  You may
-</span><span class='line'>need configuration options.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>またも失敗。よく見るとsqlite-develが足りていないらしい</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install sqlite-devel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>sqlite-develをインストール後再度bundleによるgemのインストールを試みる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
-</span><span class='line'>Installing sqlite3 1.3.8
-</span><span class='line'>Installing turbolinks 1.1.1
-</span><span class='line'>Installing uglifier 2.1.1
-</span><span class='line'>Your bundle is updated!
-</span><span class='line'><span class="nv">$ </span>bundle install
-</span><span class='line'>Your bundle is <span class="nb">complete</span>!
-</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール成功。</p>
-
-<h2>サーバーの立ち上げ（rails server）</h2>
-
-<p>ローカルでrailsを立ち上げるコマンド <code>rails server</code> を実行。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails server
-</span><span class='line'>...
-</span><span class='line'>Could not find a JavaScript runtime. See https://github.com/sstephenson/execjs <span class="k">for</span> a list of available runtimes. <span class="o">(</span>ExecJS::RuntimeUnavailable<span class="o">)</span>
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Node.jsのインストール</h3>
-
-<p> <code>rails server</code> コマンド実行でエラーが出てしまう。JavaScript runtimeがインストールされていないことが原因のよう。メッセージ通り <a href="https://github.com/sstephenson/execjs">https://github.com/sstephenson/execjs</a> に行ってみるとJavaScript runtimeとしてNode.jsが有効と書いてあるのでNode.jsをインストールする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
-</span><span class='line'><span class="nv">$ </span>sudo yum install nodejs npm --enablerepo<span class="o">=</span>epel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回はyumでインストールした。そして再度 <code>rails server</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails <span class="nv">server</span>
-</span><span class='line'><span class="o">=</span>&gt; Booting <span class="nv">WEBrick</span>
-</span><span class='line'><span class="o">=</span>&gt; Rails 4.0.5 application starting in development on http://0.0.0.0:3000
-</span><span class='line'><span class="o">=</span>&gt; Run <span class="sb">`</span>rails server -h<span class="sb">`</span> <span class="k">for</span> more startup <span class="nv">options</span>
-</span><span class='line'><span class="o">=</span>&gt; Ctrl-C to shutdown server
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ローカルでサーバーが立ち上がる。
-今回はAWS上で作業しているので、AWS該当インスタンスのSecurity Groupで3000番portを空ける。</p>
-
-<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
-
-<p>にブラウザでアクセスして以下の画面が見えればOK</p>
-
-<p><img src="http://sojiro14.github.io/images/rails/rails_starting.png"></p>
-
-<h2>GitHubに上げておく</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git init
-</span><span class='line'><span class="nv">$ </span>git remote add origin https://github.com/sojiro14/first_app.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>GitHubでリポジトリ作成</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git add .
-</span><span class='line'><span class="nv">$ </span>git commit -m <span class="s1">&#39;Initialize repository&#39;</span>
-</span><span class='line'><span class="nv">$ </span>git push -u origin master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://qiita.com/you21979@github/items/4efd9fc4363573191b5c">node.jsをyumでインストールする(centos6.5)</a></li>
-<li><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[LinuxにRuby on Railsをインストールする]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/11/05/installing-ruby-on-rails-on-linux/"/>
-    <updated>2014-11-05T03:58:11+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/11/05/installing-ruby-on-rails-on-linux</id>
-    <content type="html"><![CDATA[<p>Ruby on Railsを使ってみたいと思い、AWSにインストールした手順。</p>
-
-<h2>Ruby version 2.0.0 を RVMを使ってインストール</h2>
-
-<p><a href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a>を参照</p>
-
-<h2>gemsetの作成</h2>
-
-<blockquote><p>Rubyをインストールしたら、Railsのアプリケーションを実行するために必要な他のソフトウェア向けにシステムを構成する必要があります。通常、これはgemのインストールに関連します。gemとは自己完結型のRubyコードのパッケージです。バージョン番号の異なるgem同士がコンフリクトすることがあるため、一連のgemを自己完結的にまとめたgemsetというものを作成してバージョンを使い分けるのが便利です。
-（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
-
-<p>以下のコマンドでgemsetを作成する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm use 2.0.0@railstutorial_rails_4_0 --create --default
-</span></code></pre></td></tr></table></div></figure>
-
-
-<blockquote><p>上のコマンドを実行すると、Ruby 2.0.0に関連付けられたrailstutorial_rails_4_0というgemsetを作成し (&ndash;create)、その場でgemsetを有効にし (use)、gemsetをデフォルトに設定 (&ndash;default) します。これにより、ターミナルウィンドウを開いたときに2.0.0@railstutorial_rails_4_0というRubyとgemsetの組み合わせが常に選択されるようになります。
-（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
-
-<h2>RubyGemsのインストール</h2>
-
-<p>AWSには始めからgemがインストールされていて、PATHは以下。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
-</span><span class='line'>/usr/bin/gem
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>RVMでRubyをインストールするとPATHが上書きされる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
-</span><span class='line'>~/.rvm/rubies/ruby-2.0.0-p594/bin/gem
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回はチュートリアルに合わせてgemのバージョンを更新する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem update --system 2.0.3
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>gemの設定ファイルである <code>.gemrc</code> に自動生成されるドキュメントである <code>ri</code> と <code>rdoc</code> の自動生成を抑制する設定をする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim .gemrc
-</span><span class='line'><span class="nv">$ </span>cat .gemrc
-</span><span class='line'>install: --no-rdoc --no-ri
-</span><span class='line'>update:  --no-rdoc --no-ri
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Railsをインストールする</h2>
-
-<p>いよいよRailsをインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install rails --version 4.0.5
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール完了。
-以下のコマンドで確認する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails -v
-</span><span class='line'>Rails 4.0.5
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Railsがインストールされたことを確認できた</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
 ]]></content>
   </entry>
   

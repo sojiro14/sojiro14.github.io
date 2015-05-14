@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Yeoman | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/yeoman/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-10T18:30:01+09:00</updated>
+  <updated>2015-05-15T05:12:47+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,213 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerを使ってみる)]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/10/the-second-step-of-yeoman/"/>
+    <updated>2015-05-10T18:25:06+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/10/the-second-step-of-yeoman</id>
+    <content type="html"><![CDATA[<p>以前のエントリ <a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a> で <code>yo</code> を使い generator-angular-fullstack の雛形を作りました。</p>
+
+<p>今回はこのとき作った雛形を Grunt を使って実際に動かしてみたいと思います。</p>
+
+<p>Gruntがどんなものかはとりあえず使ってみてからと言うことで。</p>
+
+<h2>Grunt のインストール</h2>
+
+<p> <code>npm</code> でインストールする</p>
+
+<pre><code class="bash">$ npm install -g grunt-cli
+</code></pre>
+
+<p>インストールされたことを確認</p>
+
+<pre><code class="bash">$ grunt --version
+grunt-cli v0.1.13
+grunt v0.4.5
+</code></pre>
+
+<p>OK.</p>
+
+<h2>Grunt / Bower の実行</h2>
+
+<p>インストールできたら早速 Grunt を実行してみる</p>
+
+<p>今回は雛形作成時に生成された Gruntfile.js で規定されている serve タスクを実行する</p>
+
+<pre><code class="bash">$ grunt serve
+Running "serve" task
+
+Running "clean:server" (clean) task
+
+Running "env:all" (env) task
+
+Running "injector:sass" (injector) task
+Missing option `template`, using `dest` as template instead
+Injecting scss files (4 files)
+
+Running "concurrent:server" (concurrent) task
+    Warning: Running "sass:server" (sass) task
+    Warning: 
+    You need to have Ruby and Sass installed and in your PATH for this task to work.
+    More info: https://github.com/gruntjs/grunt-contrib-sass
+     Use --force to continue.
+
+    Aborted due to warnings.
+...
+</code></pre>
+
+<p>何やら怒られた</p>
+
+<pre><code>You need to have Ruby and Sass installed and in your PATH for this task to work.
+</code></pre>
+
+<p>ということだそうなので Sass をインストールする。</p>
+
+<pre><code class="bash">$ yum install rubygems
+$ gem install sass
+</code></pre>
+
+<p>もう一度トライ</p>
+
+<pre><code class="bash">$ grunt serve
+Running "serve" task
+
+Running "clean:server" (clean) task
+
+Running "env:all" (env) task
+
+Running "injector:sass" (injector) task
+Missing option `template`, using `dest` as template instead
+Injecting scss files (4 files)
+&gt;&gt; Nothing changed
+
+Running "concurrent:server" (concurrent) task
+    Warning: Error: File to import not found or unreadable: bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.
+           Load paths:
+             /home/sojiro/yeoman/angular_fullstack/client/bower_components
+             /home/sojiro/yeoman/angular_fullstack/client/app
+             /home/sojiro/yeoman/angular_fullstack/client/components
+            on line 4 of client/app/app.scss
+      Use --trace for backtrace. Use --force to continue.
+
+        Aborted due to warnings.
+...
+</code></pre>
+
+<p>また怒られた</p>
+
+<pre><code>Warning: Error: File to import not found or unreadable: bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.
+</code></pre>
+
+<p>今回のエラーはよくわからなかったので少し調べると、 Yeoman 三種の神器の三つ目、 Bower が必要らしいのでインストールする</p>
+
+<pre><code class="bash">$ npm install -g bower
+$ bower -v
+1.4.1
+</code></pre>
+
+<p>雛形作成時に bower.json が生成されているのでここに記述されているパッケージをインストール</p>
+
+<pre><code class="bash">$ bower install
+</code></pre>
+
+<p>そして再度実行</p>
+
+<pre><code class="bash">$ grunt serve
+Running "serve" task
+
+...
+
+Running "open:server" (open) task
+Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
+xdg-open: no method available for opening 'http://localhost:9000'
+ Use --force to continue.
+
+Aborted due to warnings.
+
+...
+</code></pre>
+
+<p>また怒られる</p>
+
+<pre><code>xdg-mime: コマンドが見つかりません
+</code></pre>
+
+<p>xdg-mime は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
+
+<p>今回は <code>xdg-mime URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
+
+<p>そもそもここで使っているサーバーはブラウザが入っていないリモートのサーバーなので、該当タスクをコメントアウトする。また、サーバーのURLもIPアドレスで指定するように設定ファイル(Gruntfile.js)を変更する。</p>
+
+<pre><code class="bash">$ vim Gruntfile.js
+</code></pre>
+
+<pre><code class="javascript">    grunt.task.run([
+      'clean:server',
+      'env:all',
+      'injector:sass', 
+      'concurrent:server',
+      'injector',
+      'wiredep',
+      'autoprefixer',
+      'express:dev',
+      'wait',
+//      'open',
+      'watch'
+    ]);
+  });
+</code></pre>
+
+<pre><code class="javascript">    open: {
+      server: {
+        //url: 'http://localhost:&lt;%= express.options.port %&gt;'
+        url: 'http://xx.xxx.xxx.xxx:&lt;%= express.options.port %&gt;'
+      }
+    },
+</code></pre>
+
+<p>そしてまたまた実行</p>
+
+<pre><code class="bash">$ grunt serve
+Running "serve" task
+
+...
+
+Running "watch" task
+Waiting...
+</code></pre>
+
+<p>動いた！！</p>
+
+<h2>雛形の動作確認</h2>
+
+<p>watch タスクまで問題なく進んだので早速ブラウザからアクセスしてみる</p>
+
+<p>上記で Gruntfile.js に設定したアドレスにアクセスする。ポートは 9000番。</p>
+
+<p>雛形アプリケーションのトップが表示された</p>
+
+<p><img src="/images/angular_fullstack/top.png"></p>
+
+<p>Sign up 画面なども用意されている</p>
+
+<p><img src="/images/angular_fullstack/sign_up.png"></p>
+
+<h2>つづく</h2>
+
+<p>今回は何も考えずに Grunt と（はからずも）Bower を使ってみた。</p>
+
+<p>それぞれがどのようなツールなのか次回はまとめてみたい。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/DaftMonk/generator-angular-fullstack/issues/710"> Error sass when build mode product #710 </a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[初めてのYeoman (Yoを使った雛形作成)]]></title>

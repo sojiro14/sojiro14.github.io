@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Web | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/web/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-10T18:30:01+09:00</updated>
+  <updated>2015-05-15T05:12:47+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[「トークン」とは何か]]></title>
+    <title type="html"><![CDATA[「トークン」とはなにか]]></title>
     <link href="http://sojiro14.github.io/blog/2015/05/07/what-is-token/"/>
     <updated>2015-05-07T23:57:03+09:00</updated>
     <id>http://sojiro14.github.io/blog/2015/05/07/what-is-token</id>
@@ -24,11 +24,11 @@
 
 <p><strong> 「トークン」ってなに？ </strong></p>
 
-<p>と私に説明を求められたことです。何かを答えはしたのですが、かなり曖昧な答えになっていたと思います。</p>
+<p>と私に説明を求められたことです。なにかを答えはしたのですが、かなり曖昧な答えになっていたと思います。</p>
 
 <p>さらに最悪なのは、その後その大先輩が語られた内容を覚えていないことです。これは最悪です。次の日に「トークンって結局なんでしたっけ？」などとも聞けないのでそれ以来いろいろ考えてきたことを書きます。</p>
 
-<h2>トークンとは何か</h2>
+<h2>トークンとはなにか</h2>
 
 <p>Webの開発をしているとしばしばトークンというものが登場します</p>
 
@@ -40,7 +40,7 @@
 </ul>
 
 
-<p>このトークンとは何か、という話です</p>
+<p>このトークンとはなにか、という話です</p>
 
 <p>そもそもトークンなんて日本語はないのだから、トークンはトークン、という感じなのですが、あえて日本語にすると</p>
 

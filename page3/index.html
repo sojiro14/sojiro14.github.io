@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Ruby on Railsを使ってみたいと思い、調べてみるとRails4ではRubyのバージョンは1.9以降が必須のようである。 自分がさくらで借りているサーバーではRubyのバージョンが1.8.7だったのでこれを新しくしてみた。 RVMのインストール 新しいRubyをインストールする前にRVM( &hellip;">
+  <meta name="description" content="Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。 Herokuに必要なgemのインストール Herokuで使用するDBであるPostgreSQLと通信するための pg とHerokuで画像やスタイルシートなどの静的アセットを提供するための &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,6 +94,509 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/">Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-12T12:06:23+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:06 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
+
+<h2>Herokuに必要なgemのインストール</h2>
+
+<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span><span class="p">,</span> <span class="s1">&#39;0.15.1&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rails_12factor&#39;</span><span class="p">,</span> <span class="s1">&#39;0.0.2&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
+これによりGemfile.lockが更新され、production環境に備えることができる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install --without production
+</span><span class='line'>Your bundle is <span class="nb">complete</span>!
+</span><span class='line'>Gems in the group production were not installed.
+</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここまでできたらgitにcommitしておく。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git commit -a -m <span class="s2">&quot;Update Gemfile.lock for Heroku&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
+
+<h2>herokuコマンドが使えるようにする</h2>
+
+<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
+
+<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
+
+<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
+今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
+
+<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>wget -qO- https://toolbelt.heroku.com/install.sh <span class="p">|</span> sh
+</span><span class='line'>This script requires superuser access to install software.
+</span><span class='line'>You will be prompted <span class="k">for</span> your password by sudo.
+</span><span class='line'><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> sojiro:
+</span><span class='line'>Add the Heroku CLI to your PATH using:
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.profile
+</span><span class='line'>Installation <span class="nb">complete</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.bashrc
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bashrc
+</span><span class='line'><span class="nv">$ </span>heroku version
+</span><span class='line'>heroku-toolbelt/3.15.2 <span class="o">(</span>x86_64-linux<span class="o">)</span> ruby/2.0.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Herokuのセットアップ</h2>
+
+<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku login
+</span><span class='line'>Enter your Heroku credentials.
+</span><span class='line'>Email: your.account@email.com
+</span><span class='line'>Password <span class="o">(</span>typing will be hidden<span class="o">)</span>:
+</span><span class='line'>Your Heroku account does not have a public ssh key uploaded.
+</span><span class='line'>Could not find an existing public key at ~/.ssh/id_rsa.pub
+</span><span class='line'>Would you like to generate one? <span class="o">[</span>Yn<span class="o">]</span> Y
+</span><span class='line'>Generating new SSH public key.
+</span><span class='line'>Uploading SSH public key /home/user/.ssh/id_rsa.pub... <span class="k">done</span>
+</span><span class='line'>Authentication successful.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>認証が完了したらHerokuのセットアップをする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku create
+</span><span class='line'>Creating infinite-peak-4923... <span class="k">done</span>, stack is cedar-14
+</span><span class='line'>https://infinite-peak-4923.herokuapp.com/ <span class="p">|</span> git@heroku.com:infinite-peak-4923.git
+</span><span class='line'>Git remote heroku added
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでgitのremoteにherokuが追加される</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote -v
+</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>fetch<span class="o">)</span>
+</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>push<span class="o">)</span>
+</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>fetch<span class="o">)</span>
+</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>push<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Herokuへデプロイ</h2>
+
+<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push heroku master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
+
+<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/">Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-10T03:27:49+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:27 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ruby on Railsで初めてアプリを作ってみます。
+今回はRailsの立ち上がりを確認するところまで。</p>
+
+<h2>アプリのセットアップ（rails new）</h2>
+
+<p>railsのアプリ作成は <code>rails new</code> コマンドで始まる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir rails_projects
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>rails_projects
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回のアプリ作成の為にディレクトリを作成し、早速コマンドを実行。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails new first_app
+</span><span class='line'>...
+</span><span class='line'>An error occurred <span class="k">while</span> installing sqlite3 <span class="o">(</span>1.3.10<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>いくつかのディレクトリやファイルが作成されるが、最後にこのようなエラーが出てbundle失敗。
+そこでGemfileを編集してbundleをやり直す。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>first_app/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Gemfileを編集。内容は<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-bundler">Ruby on Rails #Bundler</a>を参照。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
+</span><span class='line'>...
+</span><span class='line'>Building native extensions.  This could take a <span class="k">while</span>...
+</span><span class='line'>ERROR:  Error installing sqlite3:
+</span><span class='line'>    ERROR: Failed to build gem native extension.
+</span><span class='line'>
+</span><span class='line'>    /home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
+</span><span class='line'>checking <span class="k">for</span> sqlite3.h... no
+</span><span class='line'>sqlite3.h is missing. Try <span class="s1">&#39;port install sqlite3 +universal&#39;</span>
+</span><span class='line'>or <span class="s1">&#39;yum install sqlite-devel&#39;</span> and check your shared library search path <span class="o">(</span>the
+</span><span class='line'>location where your sqlite3 shared library is located<span class="o">)</span>.
+</span><span class='line'>*** extconf.rb failed ***
+</span><span class='line'>Could not create Makefile due to some reason, probably lack of necessary
+</span><span class='line'>libraries and/or headers.  Check the mkmf.log file <span class="k">for</span> more details.  You may
+</span><span class='line'>need configuration options.
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>またも失敗。よく見るとsqlite-develが足りていないらしい</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install sqlite-devel
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>sqlite-develをインストール後再度bundleによるgemのインストールを試みる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
+</span><span class='line'>Installing sqlite3 1.3.8
+</span><span class='line'>Installing turbolinks 1.1.1
+</span><span class='line'>Installing uglifier 2.1.1
+</span><span class='line'>Your bundle is updated!
+</span><span class='line'><span class="nv">$ </span>bundle install
+</span><span class='line'>Your bundle is <span class="nb">complete</span>!
+</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストール成功。</p>
+
+<h2>サーバーの立ち上げ（rails server）</h2>
+
+<p>ローカルでrailsを立ち上げるコマンド <code>rails server</code> を実行。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails server
+</span><span class='line'>...
+</span><span class='line'>Could not find a JavaScript runtime. See https://github.com/sstephenson/execjs <span class="k">for</span> a list of available runtimes. <span class="o">(</span>ExecJS::RuntimeUnavailable<span class="o">)</span>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Node.jsのインストール</h3>
+
+<p> <code>rails server</code> コマンド実行でエラーが出てしまう。JavaScript runtimeがインストールされていないことが原因のよう。メッセージ通り <a href="https://github.com/sstephenson/execjs">https://github.com/sstephenson/execjs</a> に行ってみるとJavaScript runtimeとしてNode.jsが有効と書いてあるのでNode.jsをインストールする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+</span><span class='line'><span class="nv">$ </span>sudo yum install nodejs npm --enablerepo<span class="o">=</span>epel
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回はyumでインストールした。そして再度 <code>rails server</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails <span class="nv">server</span>
+</span><span class='line'><span class="o">=</span>&gt; Booting <span class="nv">WEBrick</span>
+</span><span class='line'><span class="o">=</span>&gt; Rails 4.0.5 application starting in development on http://0.0.0.0:3000
+</span><span class='line'><span class="o">=</span>&gt; Run <span class="sb">`</span>rails server -h<span class="sb">`</span> <span class="k">for</span> more startup <span class="nv">options</span>
+</span><span class='line'><span class="o">=</span>&gt; Ctrl-C to shutdown server
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ローカルでサーバーが立ち上がる。
+今回はAWS上で作業しているので、AWS該当インスタンスのSecurity Groupで3000番portを空ける。</p>
+
+<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
+
+<p>にブラウザでアクセスして以下の画面が見えればOK</p>
+
+<p><img src="/images/rails/rails_starting.png"></p>
+
+<h2>GitHubに上げておく</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git init
+</span><span class='line'><span class="nv">$ </span>git remote add origin https://github.com/sojiro14/first_app.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GitHubでリポジトリ作成</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git add .
+</span><span class='line'><span class="nv">$ </span>git commit -m <span class="s1">&#39;Initialize repository&#39;</span>
+</span><span class='line'><span class="nv">$ </span>git push -u origin master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/you21979@github/items/4efd9fc4363573191b5c">node.jsをyumでインストールする(centos6.5)</a></li>
+<li><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/05/installing-ruby-on-rails-on-linux/">LinuxにRuby on Railsをインストールする</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-05T03:58:11+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:58 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ruby on Railsを使ってみたいと思い、AWSにインストールした手順。</p>
+
+<h2>Ruby version 2.0.0 を RVMを使ってインストール</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a>を参照</p>
+
+<h2>gemsetの作成</h2>
+
+<blockquote><p>Rubyをインストールしたら、Railsのアプリケーションを実行するために必要な他のソフトウェア向けにシステムを構成する必要があります。通常、これはgemのインストールに関連します。gemとは自己完結型のRubyコードのパッケージです。バージョン番号の異なるgem同士がコンフリクトすることがあるため、一連のgemを自己完結的にまとめたgemsetというものを作成してバージョンを使い分けるのが便利です。
+（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
+
+<p>以下のコマンドでgemsetを作成する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm use 2.0.0@railstutorial_rails_4_0 --create --default
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>上のコマンドを実行すると、Ruby 2.0.0に関連付けられたrailstutorial_rails_4_0というgemsetを作成し (&ndash;create)、その場でgemsetを有効にし (use)、gemsetをデフォルトに設定 (&ndash;default) します。これにより、ターミナルウィンドウを開いたときに2.0.0@railstutorial_rails_4_0というRubyとgemsetの組み合わせが常に選択されるようになります。
+（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
+
+<h2>RubyGemsのインストール</h2>
+
+<p>AWSには始めからgemがインストールされていて、PATHは以下。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
+</span><span class='line'>/usr/bin/gem
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>RVMでRubyをインストールするとPATHが上書きされる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
+</span><span class='line'>~/.rvm/rubies/ruby-2.0.0-p594/bin/gem
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回はチュートリアルに合わせてgemのバージョンを更新する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem update --system 2.0.3
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>gemの設定ファイルである <code>.gemrc</code> に自動生成されるドキュメントである <code>ri</code> と <code>rdoc</code> の自動生成を抑制する設定をする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim .gemrc
+</span><span class='line'><span class="nv">$ </span>cat .gemrc
+</span><span class='line'>install: --no-rdoc --no-ri
+</span><span class='line'>update:  --no-rdoc --no-ri
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Railsをインストールする</h2>
+
+<p>いよいよRailsをインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install rails --version 4.0.5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストール完了。
+以下のコマンドで確認する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails -v
+</span><span class='line'>Rails 4.0.5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Railsがインストールされたことを確認できた</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1071,614 +1574,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/">OctopressにDISQUSのコメント欄を導入する</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-09T16:02:24+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:02 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>ブログにコメント欄を追加したい</h2>
-
-<p>本ブログにコメント欄を追加しようと思い立った。</p>
-
-<p><a href="https://disqus.com/">DISQUS</a>というコミュニケーションサービスが好評のようなので導入してみる。</p>
-
-<ul>
-<li>DISQUSを使うための準備</li>
-<li>OctopressでのDISQUS導入方法</li>
-</ul>
-
-
-<h2>DISQUSを使うための準備</h2>
-
-<h3>DISQUSのアカウントを作成する</h3>
-
-<p><a href="https://disqus.com/">DISQUS</a>のWebサイトからアカウントを作成。登録に必要なのはメールアドレスのみ。</p>
-
-<h3>自分のWebサイトをDISQUSに登録する</h3>
-
-<p>DISQUSの<a href="https://disqus.com/admin/create/">サイト登録ページ</a>から自分のサイトを登録する</p>
-
-<p>登録が完了すると設定ページが表示されるので、ここで設定をしつつ、ページ中段に表示されている<code>Shortname</code>の文字列を確認する</p>
-
-<h2>OctopressでのDISQUS導入方法</h2>
-
-<h3>configファイルへの記載</h3>
-
-<p>OctopressでのDISQUS導入はconfigファイルに先ほどDISQUSで取得したShortnameを記載するのみで完了する。</p>
-
-<p> <code>_config.yml</code> の<code>disqus_short_name</code>に自分のサイトのShortnameを指定する。</p>
-
-<figure class='code'><figcaption><span>_config.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Disqus Comments</span>
-</span><span class='line'><span class="l-Scalar-Plain">disqus_short_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yoursitesshortname</span>
-</span><span class='line'><span class="l-Scalar-Plain">disqus_show_comment_count</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでブログの各ページの下部にDISQUSのコメント欄が表示されるようになる。</p>
-
-<h3>disqus_show_comment_count</h3>
-
-<p><code>disqus_show_comment_count</code> はDISQUSコメント欄を導入するページのヘッダにコメント欄へのリンクを表示させるかどうかを指定する項目。</p>
-
-<h4>trueのとき</h4>
-
-<p><img src="/images/disqus/header_with_comment_link.png"></p>
-
-<h4>falseのとき</h4>
-
-<p><img src="/images/disqus/header_without_comment_link.png"></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/">HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-07-31T04:45:04+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>4:45 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">こちらの記事</a>でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため）</p>
-
-<h2>HUBOT_IRC_SEND_NOTICE_MODE</h2>
-
-<p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
-
-<p>実行ファイル(runhubot)に追記</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SEND_NOTICE_MODE</span><span class="o">=</span><span class="nb">true</span>
-</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
-</span><span class='line'>
-</span><span class='line'>bin/hubot -a irc --name myhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>この実行ファイルからirc-botを起動すると当該irc-botの発言はすべてnoticeとなる。</p>
-
-<h2>処理の実体</h2>
-
-<p>HUBOT_IRC_SEND_NOTICE_MODEフラグが立っている場合は <code>bot</code> オブジェクトから <code>notice</code> メソッドが呼ばれる。</p>
-
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L18">フラグの確認</a></li>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L56-76">noticeメソッド呼び出し</a></li>
-</ul>
-
-
-<p><code>notice</code> メソッドが呼ばれている <code>bot</code> オブジェクトの実体は <code>new Irc.Client</code> である。</p>
-
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L192">botオブジェクトの生成</a></li>
-</ul>
-
-
-<p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/27/rediss-data-type-and-usage/">Redisに用意されたデータ型とその扱い</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-07-27T00:47:21+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:47 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Redisで扱えるデータ型</h2>
-
-<ul>
-<li>String</li>
-<li>List</li>
-<li>Set</li>
-<li>Sorted Set</li>
-<li>Hash</li>
-</ul>
-
-
-<h2>String</h2>
-
-<p>文字列型</p>
-
-<p>文字列や数値など、Keyに対して1つに定まる値。</p>
-
-<h3>値のset</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>set key value                     # 1つのkey-valueをsetする
-</span><span class='line'>mset key_1 value_1 key_2 value_2  # key-valueの組を複数setする</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値のget</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>get key                 # 1つのkeyに対するvalueをgetする
-</span><span class='line'>mget key_1 key_2 key_3  # 複数のkeyに対するvalueをgetする</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; set name Steven
-</span><span class='line'>OK
-</span><span class='line'>redis&gt; get name
-</span><span class='line'>"Steven"
-</span><span class='line'>redis&gt; mset number 8 color red
-</span><span class='line'>OK
-</span><span class='line'>redis&gt; mget name number color
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "8"
-</span><span class='line'>3) "red"</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>List</h2>
-
-<p>リスト型</p>
-
-<p>順番をもった値の集合。</p>
-
-<h3>値の追加</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rpush key member  # リストの末尾に値を追加
-</span><span class='line'>lpush key member  # リストの先頭に値を追加</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の削除</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rpop key  # リストの末尾の値を削除
-</span><span class='line'>lpop key  # リストの先頭の値を削除</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>範囲を指定して値を取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>lrange key 0 3   # 1番目から4番目まで値を取得
-</span><span class='line'>lrange key 0 -1  # 1番目から最後（最後から1番目）までの値を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>位置を指定して値を取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>lindex key 2   # 3番目の値を取得
-</span><span class='line'>lindex key -1  # 最後の値を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>要素の数を取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>llen key</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; rpush player Steven
-</span><span class='line'>redis&gt; rpush player Michael James
-</span><span class='line'>redis&gt; lrange player 0 -1
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>3) "James"
-</span><span class='line'>redis&gt; lrange player 0 1
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>redis&gt; lindex player 1
-</span><span class='line'>"Michael"
-</span><span class='line'>redis&gt; lindex player -1
-</span><span class='line'>"James"
-</span><span class='line'>redis&gt; rpop player
-</span><span class='line'>"James"
-</span><span class='line'>redis&gt; lrange player 0 -1
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>redis&gt; llen player
-</span><span class='line'>(integer) 2</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Set</h2>
-
-<p>セット型</p>
-
-<p>順不同の値の集合。値の重複を許さない。</p>
-
-<h3>値の追加</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sadd key member  # keyに対応するセットに指定した値を追加</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の削除</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>srem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の参照</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>smembers key  # keyに対応するセットの値を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>和集合の取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sunion key1 key2  # key1に対応するセットとkey2に対応するセットの値の集合を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>差集合の取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sdiff key1 key2  # key1に対応するセットとkey2に対応するセットの値の差分の集合を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>積集合の取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sinter key1 key2  # key1に対応するセットとkey2に対応するセットの値の重複部分の集合を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; sadd reds Steven
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; smembers reds
-</span><span class='line'>1) "Steven"
-</span><span class='line'>redis&gt; sadd reds Steve
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; sadd reds Michael
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; smembers reds
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>3) "Steve"
-</span><span class='line'>redis&gt; srem reds Michael
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; smembers reds
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Steve"
-</span><span class='line'>redis&gt; sadd three_lions Steven Michael
-</span><span class='line'>(integer) 2
-</span><span class='line'>redis&gt; smembers three_lions
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>redis&gt; sunion reds three_lions
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>3) "Steve"
-</span><span class='line'>redis&gt; sdiff reds three_lions
-</span><span class='line'>1) "Steve"
-</span><span class='line'>redis&gt; sdiff three_lions reds  # sdiffの後のkeyの順番により結果が違うことに注意
-</span><span class='line'>1) "Michael"
-</span><span class='line'>redis&gt; sinter reds three_lions
-</span><span class='line'>1) "Steven"</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Sorted Set</h2>
-
-<p>ソート済みセット型</p>
-
-<p>セット型と同様の特徴に加えて個々の値がスコアを持つ。</p>
-
-<h3>値の追加</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zadd key score member  # keyに対応するセットにスコア付きで値を追加</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の削除</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zrem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zrange key 0 3     # keyに対応するセットからスコアの低い順に1番目から4番目の値を取得
-</span><span class='line'>zrevrange key 0 3  # keyに対応するセットからスコアの高い順に1番目から4番目の値を取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値の順位を取得</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zrank key member     # 指定した値の、keyに対応するセット中のランクを取得（スコアの低い順）
-</span><span class='line'>zrevrank key member  # 指定した値の、keyに対応するセット中のランクを取得（スコアの高い順）</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; zadd fifa 1 germany
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; zrange fifa 0 0
-</span><span class='line'>1) "germany"
-</span><span class='line'>redis&gt; zadd fifa 2 argentina
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; zadd fifa 3 holland 4 colombia 45 japan
-</span><span class='line'>(integer) 3
-</span><span class='line'>redis&gt; zrange fifa 0 -1
-</span><span class='line'>1) "germany"
-</span><span class='line'>2) "argentina"
-</span><span class='line'>3) "holland"
-</span><span class='line'>4) "colombia"
-</span><span class='line'>5) "japan"
-</span><span class='line'>redis&gt; zrevrange fifa 0 -1
-</span><span class='line'>1) "japan"
-</span><span class='line'>2) "colombia"
-</span><span class='line'>3) "holland"
-</span><span class='line'>4) "argentina"
-</span><span class='line'>5) "germany"
-</span><span class='line'>redis&gt; zrank fifa japan
-</span><span class='line'>(integer) 4                      # 0番目から数えた値が返るので注意
-</span><span class='line'>redis&gt; zrevrank fifa argentina
-</span><span class='line'>(integer) 3                      # 0番目から数えた値が返るので注意
-</span><span class='line'>redis&gt; zrem fifa japan
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; zrange fifa 0 -1
-</span><span class='line'>1) "germany"
-</span><span class='line'>2) "argentina"
-</span><span class='line'>3) "holland"
-</span><span class='line'>4) "colombia"</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Hash</h2>
-
-<p>ハッシュ型</p>
-
-<p>field（valueについた名前）とvalueを1セットとする値の集合（ハッシュ）。</p>
-
-<h3>値のset</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>hset key field value                       # keyにfieldとvalueのハッシュをset
-</span><span class='line'>hmset key field_1 value_1 field_2 value_2  # keyにハッシュのfieldとvalueを複数セット</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>値のget</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>hget key field             # keyに対応するハッシュから指定したfieldのvalueを取得
-</span><span class='line'>hmget key field_1 field_2  # keyに対応するハッシュから指定した複数のfieldのvalueを取得
-</span><span class='line'>hkeys key                  # keyに対応するハッシュのすべてのfieldを取得
-</span><span class='line'>hvals key                  # keyに対応するハッシュのすべてのvalueを取得</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>使用例</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; hset steven position mf
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; hget steven position
-</span><span class='line'>"mf"
-</span><span class='line'>redis&gt; hmset steven nationality england club reds
-</span><span class='line'>OK
-</span><span class='line'>redis&gt; hmget steven club position
-</span><span class='line'>1) "reds"
-</span><span class='line'>2) "mf"
-</span><span class='line'>redis&gt; hkeys steven
-</span><span class='line'>1) "position"
-</span><span class='line'>2) "nationality"
-</span><span class='line'>3) "club"
-</span><span class='line'>redis&gt; hvals steven
-</span><span class='line'>1) "mf"
-</span><span class='line'>2) "england"
-</span><span class='line'>3) "reds"</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page4">&larr; Older</a>
@@ -1700,23 +1595,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/05/07/what-is-token/">「トークン」とは何か</a>
+        <a href="/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/08/what-is-mean/">MEANとはなにか</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/07/what-is-token/">「トークン」とはなにか</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (yoを使った雛形作成)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/05/hubot-create-is-now-old/">&#8216;hubot &#8211;create&#8217; は古い</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/04/transfer-the-slack-bot-to-heroku/">Slack BotをHeroku上で動かす</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a>
       </li>
     
   </ul>

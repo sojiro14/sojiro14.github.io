@@ -9,9 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Canvasとは ブラウザ上に図形を描画するためのHTML5の仕様の一つ
-プラグインを使わずにJavaScriptベースで図形を描画することができる。
-アニメーションメソッドはないので動きをつけるためには1コマずつ描画し直す必要がある &hellip;">
+  <meta name="description" content="ブログにコメント欄を追加したい 本ブログにコメント欄を追加しようと思い立った。 DISQUSというコミュニケーションサービスが好評のようなので導入してみる。 DISQUSを使うための準備
+OctopressでのDISQUS導入方法 DISQUSを使うための準備 DISQUSのアカウントを作成する &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -96,6 +95,614 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/">OctopressにDISQUSのコメント欄を導入する</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-09T16:02:24+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:02 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>ブログにコメント欄を追加したい</h2>
+
+<p>本ブログにコメント欄を追加しようと思い立った。</p>
+
+<p><a href="https://disqus.com/">DISQUS</a>というコミュニケーションサービスが好評のようなので導入してみる。</p>
+
+<ul>
+<li>DISQUSを使うための準備</li>
+<li>OctopressでのDISQUS導入方法</li>
+</ul>
+
+
+<h2>DISQUSを使うための準備</h2>
+
+<h3>DISQUSのアカウントを作成する</h3>
+
+<p><a href="https://disqus.com/">DISQUS</a>のWebサイトからアカウントを作成。登録に必要なのはメールアドレスのみ。</p>
+
+<h3>自分のWebサイトをDISQUSに登録する</h3>
+
+<p>DISQUSの<a href="https://disqus.com/admin/create/">サイト登録ページ</a>から自分のサイトを登録する</p>
+
+<p>登録が完了すると設定ページが表示されるので、ここで設定をしつつ、ページ中段に表示されている<code>Shortname</code>の文字列を確認する</p>
+
+<h2>OctopressでのDISQUS導入方法</h2>
+
+<h3>configファイルへの記載</h3>
+
+<p>OctopressでのDISQUS導入はconfigファイルに先ほどDISQUSで取得したShortnameを記載するのみで完了する。</p>
+
+<p> <code>_config.yml</code> の<code>disqus_short_name</code>に自分のサイトのShortnameを指定する。</p>
+
+<figure class='code'><figcaption><span>_config.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Disqus Comments</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_short_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yoursitesshortname</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_show_comment_count</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでブログの各ページの下部にDISQUSのコメント欄が表示されるようになる。</p>
+
+<h3>disqus_show_comment_count</h3>
+
+<p><code>disqus_show_comment_count</code> はDISQUSコメント欄を導入するページのヘッダにコメント欄へのリンクを表示させるかどうかを指定する項目。</p>
+
+<h4>trueのとき</h4>
+
+<p><img src="/images/disqus/header_with_comment_link.png"></p>
+
+<h4>falseのとき</h4>
+
+<p><img src="/images/disqus/header_without_comment_link.png"></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/">HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-31T04:45:04+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>4:45 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">こちらの記事</a>でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため）</p>
+
+<h2>HUBOT_IRC_SEND_NOTICE_MODE</h2>
+
+<p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
+
+<p>実行ファイル(runhubot)に追記</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SEND_NOTICE_MODE</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
+</span><span class='line'>
+</span><span class='line'>bin/hubot -a irc --name myhubot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>この実行ファイルからirc-botを起動すると当該irc-botの発言はすべてnoticeとなる。</p>
+
+<h2>処理の実体</h2>
+
+<p>HUBOT_IRC_SEND_NOTICE_MODEフラグが立っている場合は <code>bot</code> オブジェクトから <code>notice</code> メソッドが呼ばれる。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L18">フラグの確認</a></li>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L56-76">noticeメソッド呼び出し</a></li>
+</ul>
+
+
+<p><code>notice</code> メソッドが呼ばれている <code>bot</code> オブジェクトの実体は <code>new Irc.Client</code> である。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L192">botオブジェクトの生成</a></li>
+</ul>
+
+
+<p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/27/rediss-data-type-and-usage/">Redisに用意されたデータ型とその扱い</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-27T00:47:21+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:47 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Redisで扱えるデータ型</h2>
+
+<ul>
+<li>String</li>
+<li>List</li>
+<li>Set</li>
+<li>Sorted Set</li>
+<li>Hash</li>
+</ul>
+
+
+<h2>String</h2>
+
+<p>文字列型</p>
+
+<p>文字列や数値など、Keyに対して1つに定まる値。</p>
+
+<h3>値のset</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>set key value                     # 1つのkey-valueをsetする
+</span><span class='line'>mset key_1 value_1 key_2 value_2  # key-valueの組を複数setする</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値のget</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>get key                 # 1つのkeyに対するvalueをgetする
+</span><span class='line'>mget key_1 key_2 key_3  # 複数のkeyに対するvalueをgetする</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; set name Steven
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; get name
+</span><span class='line'>"Steven"
+</span><span class='line'>redis&gt; mset number 8 color red
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; mget name number color
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "8"
+</span><span class='line'>3) "red"</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>List</h2>
+
+<p>リスト型</p>
+
+<p>順番をもった値の集合。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpush key member  # リストの末尾に値を追加
+</span><span class='line'>lpush key member  # リストの先頭に値を追加</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpop key  # リストの末尾の値を削除
+</span><span class='line'>lpop key  # リストの先頭の値を削除</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>範囲を指定して値を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lrange key 0 3   # 1番目から4番目まで値を取得
+</span><span class='line'>lrange key 0 -1  # 1番目から最後（最後から1番目）までの値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>位置を指定して値を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lindex key 2   # 3番目の値を取得
+</span><span class='line'>lindex key -1  # 最後の値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>要素の数を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>llen key</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; rpush player Steven
+</span><span class='line'>redis&gt; rpush player Michael James
+</span><span class='line'>redis&gt; lrange player 0 -1
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>3) "James"
+</span><span class='line'>redis&gt; lrange player 0 1
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; lindex player 1
+</span><span class='line'>"Michael"
+</span><span class='line'>redis&gt; lindex player -1
+</span><span class='line'>"James"
+</span><span class='line'>redis&gt; rpop player
+</span><span class='line'>"James"
+</span><span class='line'>redis&gt; lrange player 0 -1
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; llen player
+</span><span class='line'>(integer) 2</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Set</h2>
+
+<p>セット型</p>
+
+<p>順不同の値の集合。値の重複を許さない。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sadd key member  # keyに対応するセットに指定した値を追加</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>srem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の参照</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>smembers key  # keyに対応するセットの値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>和集合の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sunion key1 key2  # key1に対応するセットとkey2に対応するセットの値の集合を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>差集合の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sdiff key1 key2  # key1に対応するセットとkey2に対応するセットの値の差分の集合を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>積集合の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sinter key1 key2  # key1に対応するセットとkey2に対応するセットの値の重複部分の集合を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; sadd reds Steven
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1) "Steven"
+</span><span class='line'>redis&gt; sadd reds Steve
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; sadd reds Michael
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>3) "Steve"
+</span><span class='line'>redis&gt; srem reds Michael
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Steve"
+</span><span class='line'>redis&gt; sadd three_lions Steven Michael
+</span><span class='line'>(integer) 2
+</span><span class='line'>redis&gt; smembers three_lions
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; sunion reds three_lions
+</span><span class='line'>1) "Steven"
+</span><span class='line'>2) "Michael"
+</span><span class='line'>3) "Steve"
+</span><span class='line'>redis&gt; sdiff reds three_lions
+</span><span class='line'>1) "Steve"
+</span><span class='line'>redis&gt; sdiff three_lions reds  # sdiffの後のkeyの順番により結果が違うことに注意
+</span><span class='line'>1) "Michael"
+</span><span class='line'>redis&gt; sinter reds three_lions
+</span><span class='line'>1) "Steven"</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sorted Set</h2>
+
+<p>ソート済みセット型</p>
+
+<p>セット型と同様の特徴に加えて個々の値がスコアを持つ。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zadd key score member  # keyに対応するセットにスコア付きで値を追加</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zrem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zrange key 0 3     # keyに対応するセットからスコアの低い順に1番目から4番目の値を取得
+</span><span class='line'>zrevrange key 0 3  # keyに対応するセットからスコアの高い順に1番目から4番目の値を取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の順位を取得</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zrank key member     # 指定した値の、keyに対応するセット中のランクを取得（スコアの低い順）
+</span><span class='line'>zrevrank key member  # 指定した値の、keyに対応するセット中のランクを取得（スコアの高い順）</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; zadd fifa 1 germany
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; zrange fifa 0 0
+</span><span class='line'>1) "germany"
+</span><span class='line'>redis&gt; zadd fifa 2 argentina
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; zadd fifa 3 holland 4 colombia 45 japan
+</span><span class='line'>(integer) 3
+</span><span class='line'>redis&gt; zrange fifa 0 -1
+</span><span class='line'>1) "germany"
+</span><span class='line'>2) "argentina"
+</span><span class='line'>3) "holland"
+</span><span class='line'>4) "colombia"
+</span><span class='line'>5) "japan"
+</span><span class='line'>redis&gt; zrevrange fifa 0 -1
+</span><span class='line'>1) "japan"
+</span><span class='line'>2) "colombia"
+</span><span class='line'>3) "holland"
+</span><span class='line'>4) "argentina"
+</span><span class='line'>5) "germany"
+</span><span class='line'>redis&gt; zrank fifa japan
+</span><span class='line'>(integer) 4                      # 0番目から数えた値が返るので注意
+</span><span class='line'>redis&gt; zrevrank fifa argentina
+</span><span class='line'>(integer) 3                      # 0番目から数えた値が返るので注意
+</span><span class='line'>redis&gt; zrem fifa japan
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; zrange fifa 0 -1
+</span><span class='line'>1) "germany"
+</span><span class='line'>2) "argentina"
+</span><span class='line'>3) "holland"
+</span><span class='line'>4) "colombia"</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Hash</h2>
+
+<p>ハッシュ型</p>
+
+<p>field（valueについた名前）とvalueを1セットとする値の集合（ハッシュ）。</p>
+
+<h3>値のset</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>hset key field value                       # keyにfieldとvalueのハッシュをset
+</span><span class='line'>hmset key field_1 value_1 field_2 value_2  # keyにハッシュのfieldとvalueを複数セット</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値のget</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>hget key field             # keyに対応するハッシュから指定したfieldのvalueを取得
+</span><span class='line'>hmget key field_1 field_2  # keyに対応するハッシュから指定した複数のfieldのvalueを取得
+</span><span class='line'>hkeys key                  # keyに対応するハッシュのすべてのfieldを取得
+</span><span class='line'>hvals key                  # keyに対応するハッシュのすべてのvalueを取得</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; hset steven position mf
+</span><span class='line'>(integer) 1
+</span><span class='line'>redis&gt; hget steven position
+</span><span class='line'>"mf"
+</span><span class='line'>redis&gt; hmset steven nationality england club reds
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; hmget steven club position
+</span><span class='line'>1) "reds"
+</span><span class='line'>2) "mf"
+</span><span class='line'>redis&gt; hkeys steven
+</span><span class='line'>1) "position"
+</span><span class='line'>2) "nationality"
+</span><span class='line'>3) "club"
+</span><span class='line'>redis&gt; hvals steven
+</span><span class='line'>1) "mf"
+</span><span class='line'>2) "england"
+</span><span class='line'>3) "reds"</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1505,23 +2112,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/05/07/what-is-token/">「トークン」とは何か</a>
+        <a href="/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/08/what-is-mean/">MEANとはなにか</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/07/what-is-token/">「トークン」とはなにか</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (yoを使った雛形作成)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/05/hubot-create-is-now-old/">&#8216;hubot &#8211;create&#8217; は古い</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/04/transfer-the-slack-bot-to-heroku/">Slack BotをHeroku上で動かす</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a>
       </li>
     
   </ul>
