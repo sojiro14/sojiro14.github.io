@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Repl | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/repl/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-15T05:12:47+09:00</updated>
+  <updated>2015-05-15T05:17:20+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -18,7 +18,7 @@
     <link href="http://sojiro14.github.io/blog/2015/05/09/try-reply/"/>
     <updated>2015-05-09T23:34:36+09:00</updated>
     <id>http://sojiro14.github.io/blog/2015/05/09/try-reply</id>
-    <content type="html"><![CDATA[<p>Perl の REPL 環境である Reply というツールを教えてもらったので使ったみます。</p>
+    <content type="html"><![CDATA[<p>Perl の REPL 環境である Reply というツールを教えてもらったので使ってみます。</p>
 
 <h2>REPL とは？</h2>
 
