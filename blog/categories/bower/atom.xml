@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bower | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/bower/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-18T04:02:48+09:00</updated>
+  <updated>2015-05-18T04:09:09+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -291,7 +291,7 @@ Waiting...
 <h2>参照</h2>
 
 <ul>
-<li><a href="https://github.com/DaftMonk/generator-angular-fullstack/issues/710"> Error sass when build mode product #710 </a></li>
+<li><a href="https://github.com/DaftMonk/generator-angular-fullstack/issues/710">Error sass when build mode product #710</a></li>
 <li><a href="http://zkohi.hatenablog.com/entry/2013/12/14/021639">yeoman, grunt, bowerで静的サイト構築（第三回）</a></li>
 </ul>
 
