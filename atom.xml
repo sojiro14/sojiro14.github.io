@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-15T05:17:20+09:00</updated>
+  <updated>2015-05-18T04:02:48+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,83 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerとは)]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/11/the-third-step-of-yeoman/"/>
+    <updated>2015-05-11T23:51:11+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/11/the-third-step-of-yeoman</id>
+    <content type="html"><![CDATA[<p>初めてのYeoman というタイトルでこれまで2つのエントリを投稿しました。</p>
+
+<ul>
+<li><a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a></li>
+<li><a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a></li>
+</ul>
+
+
+<p>ここであらためて Grunt と Bower について書いておきます。</p>
+
+<p>特に技術的なことはないです。</p>
+
+<h2>Grunt とは</h2>
+
+<blockquote><p>The JavaScript Task Runner</p></blockquote>
+
+<p>と公式サイトに書いてある。一言で言うと自動化、とも。</p>
+
+<p>要するに予め決められたタスクをその通りに実行してくれるツールである。
+（似たようなツールとして make や rake を使ったことがある）</p>
+
+<p>そして js 界隈で話題のツールやプラグイン、フレームワークがどんどん移り変わって行くのと同様に Grunt も gulp にとって変わられると話題になっている。</p>
+
+<p>しかしこれは自分でやりたいことを自動化したい場合の話であって、何か自分のやりたいことを他の人がやっていたら素直にその人の作ったタスクを使わせてもらえば言い訳である。</p>
+
+<p>（そういう意味で他の人が作った設定に多少手を加えられるほどの理解はあると嬉しいかもしれないが、それは必要になったときで良い）</p>
+
+<p>つまり Grunt でも gulp でも、自分がやりたいことを他の人が既にやっていればそれに乗っかれば良いし、他の人がまだやっていなければ、その時点で自分が一番書きやすい方法をつかって自動化すれば良い。</p>
+
+<p>問題は自分にやりたいこと（自動化したいこと）があるかどうかであって、自分が自分以外の何者でもない以上、それはあるはずで、それに気づいてないとか、考え続けられないから僕はまだまだ三流以下ということなんですね。</p>
+
+<h2>Bower とは</h2>
+
+<p>フロントエンドのパッケージマネージャーで</p>
+
+<ul>
+<li>cpan(perl)</li>
+<li>gem(ruby)</li>
+<li>Node.js(npm)</li>
+</ul>
+
+
+<p>みたいなものだと理解している</p>
+
+<p>使い方も対して変わらないですね</p>
+
+<h2>Yeoman</h2>
+
+<p>ここまで Yeoman を見てきて Yeoman の要は yo のように思える</p>
+
+<p>使う側の立場では雛形(generator)を選んで yo を実行したらやりたいことは既に決まっている</p>
+
+<p>作る側としては最終的にどんな雛形を作るかが問題である</p>
+
+<p>ここで雛形のルール（設定）を Grunt で規定し、フロントエンドを Bower で規定することをルールとしたら雛形もまとめやすいよね、ということか</p>
+
+<h2>最後に</h2>
+
+<p>なんだか雑なエントリになってしまった。。。</p>
+
+<p>まずは Yeoman の恩恵をもっと受けまくってみます</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://gruntjs.com/">Grunt</a></li>
+<li><a href="http://bower.io/">Bower</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerを使ってみる)]]></title>
@@ -331,6 +408,7 @@
 
 <ul>
 <li><a href="https://github.com/DaftMonk/generator-angular-fullstack/issues/710"> Error sass when build mode product #710 </a></li>
+<li><a href="http://zkohi.hatenablog.com/entry/2013/12/14/021639">yeoman, grunt, bowerで静的サイト構築（第三回）</a></li>
 </ul>
 
 ]]></content>
@@ -3122,109 +3200,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <h2>参照</h2>
 
 <p><a href="http://dotinstall.com/lessons/basic_rails_v2">ドットインストール</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/"/>
-    <updated>2014-11-16T23:59:05+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator</id>
-    <content type="html"><![CDATA[<p>railsには <code>scaffold</code> という単純なリソースを一気に生成するコマンドが存在する。
-今回はこのコマンドを使ってみる。</p>
-
-<h2>Usersリソースの生成</h2>
-
-<p>今回は <code>scaffold</code> コマンドを使ってリソースを生成する。
-ここでは以下の要素をもつUsersリソースを生成する。</p>
-
-<ul>
-<li>id int</li>
-<li>name string</li>
-<li>email string</li>
-</ul>
-
-
-<p> <code>rails generate</code> スクリプトに <code>scaffold</code> コマンドを指定し、リソースの単数系と要素の情報を渡す</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate scaffold User name:string email:string
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>id要素はRailsが主キーとしてデフォルトで設定する</p>
-
-<h2>DBにusersのセットアップを行う</h2>
-
-<p> <code>rake</code> コマンドを使ってDBをmigrate（更新）する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
-</span><span class='line'><span class="o">==</span> <span class="m">20141111170736</span> CreateUsers: <span class="nv">migrating</span> <span class="o">======================================</span>
-</span><span class='line'>-- create_table<span class="o">(</span>:users<span class="o">)</span>
-</span><span class='line'>   -&gt; 0.0012s
-</span><span class='line'><span class="o">==</span> <span class="m">20141111170736</span> CreateUsers: migrated <span class="o">(</span>0.0014s<span class="o">)</span> <span class="o">=============================</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>出力から <code>users</code> テーブルが作られたことがわかる</p>
-
-<h2>ブラウザで確認</h2>
-
-<p> <code>rails server</code> コマンドの短縮版である <code>rails s</code> を使って3000番portにアプリを立ち上げる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails s
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
-
-<p>にブラウザでアクセスすると <code>#1 railsのセットアップ</code> で見たデフォルトのRailsページが表示される</p>
-
-<p>次に以下のエンドポイントにアクセスしてみる</p>
-
-<p><a href="http://xx.xxx.xxx.xxx:3000/users">http://xx.xxx.xxx.xxx:3000/users</a></p>
-
-<p>すると既にUser一覧ページができあがっているのがわかる。この他に</p>
-
-<ul>
-<li>新規ユーザーを作成するページ</li>
-<li>特定のidのユーザー情報を表示するページ</li>
-<li>特定のidのユーザー情報を編集するページ</li>
-</ul>
-
-
-<p>が作られている。</p>
-
-<h2>Micropostsリソースの生成</h2>
-
-<p>Usersリソースと同様に <code>scaffold</code> コマンドと <code>rake</code> の <code>migrate</code> タスクで生成する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate scaffold Micropost content:string user_id:integer
-</span><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
-</span><span class='line'><span class="o">==</span> <span class="m">20141112174234</span> CreateMicroposts: <span class="nv">migrating</span> <span class="o">=================================</span>
-</span><span class='line'>-- create_table<span class="o">(</span>:microposts<span class="o">)</span>
-</span><span class='line'>   -&gt; 0.0029s
-</span><span class='line'><span class="o">==</span> <span class="m">20141112174234</span> CreateMicroposts: migrated <span class="o">(</span>0.0031s<span class="o">)</span> <span class="o">========================</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>config/routes.rb</code> にmicropostsリソースの設定が追加された</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
 ]]></content>
   </entry>
   

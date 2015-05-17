@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Grunt | Sojiro's Blog]]></title>
-  <link href="http://sojiro14.github.io/blog/categories/grunt/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Bower | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/bower/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
   <updated>2015-05-18T04:02:48+09:00</updated>
   <id>http://sojiro14.github.io/</id>

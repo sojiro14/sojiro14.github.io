@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Yeoman | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/yeoman/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-15T05:17:20+09:00</updated>
+  <updated>2015-05-18T04:02:48+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,83 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerとは)]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/11/the-third-step-of-yeoman/"/>
+    <updated>2015-05-11T23:51:11+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/11/the-third-step-of-yeoman</id>
+    <content type="html"><![CDATA[<p>初めてのYeoman というタイトルでこれまで2つのエントリを投稿しました。</p>
+
+<ul>
+<li><a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a></li>
+<li><a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a></li>
+</ul>
+
+
+<p>ここであらためて Grunt と Bower について書いておきます。</p>
+
+<p>特に技術的なことはないです。</p>
+
+<h2>Grunt とは</h2>
+
+<blockquote><p>The JavaScript Task Runner</p></blockquote>
+
+<p>と公式サイトに書いてある。一言で言うと自動化、とも。</p>
+
+<p>要するに予め決められたタスクをその通りに実行してくれるツールである。
+（似たようなツールとして make や rake を使ったことがある）</p>
+
+<p>そして js 界隈で話題のツールやプラグイン、フレームワークがどんどん移り変わって行くのと同様に Grunt も gulp にとって変わられると話題になっている。</p>
+
+<p>しかしこれは自分でやりたいことを自動化したい場合の話であって、何か自分のやりたいことを他の人がやっていたら素直にその人の作ったタスクを使わせてもらえば言い訳である。</p>
+
+<p>（そういう意味で他の人が作った設定に多少手を加えられるほどの理解はあると嬉しいかもしれないが、それは必要になったときで良い）</p>
+
+<p>つまり Grunt でも gulp でも、自分がやりたいことを他の人が既にやっていればそれに乗っかれば良いし、他の人がまだやっていなければ、その時点で自分が一番書きやすい方法をつかって自動化すれば良い。</p>
+
+<p>問題は自分にやりたいこと（自動化したいこと）があるかどうかであって、自分が自分以外の何者でもない以上、それはあるはずで、それに気づいてないとか、考え続けられないから僕はまだまだ三流以下ということなんですね。</p>
+
+<h2>Bower とは</h2>
+
+<p>フロントエンドのパッケージマネージャーで</p>
+
+<ul>
+<li>cpan(perl)</li>
+<li>gem(ruby)</li>
+<li>Node.js(npm)</li>
+</ul>
+
+
+<p>みたいなものだと理解している</p>
+
+<p>使い方も対して変わらないですね</p>
+
+<h2>Yeoman</h2>
+
+<p>ここまで Yeoman を見てきて Yeoman の要は yo のように思える</p>
+
+<p>使う側の立場では雛形(generator)を選んで yo を実行したらやりたいことは既に決まっている</p>
+
+<p>作る側としては最終的にどんな雛形を作るかが問題である</p>
+
+<p>ここで雛形のルール（設定）を Grunt で規定し、フロントエンドを Bower で規定することをルールとしたら雛形もまとめやすいよね、ということか</p>
+
+<h2>最後に</h2>
+
+<p>なんだか雑なエントリになってしまった。。。</p>
+
+<p>まずは Yeoman の恩恵をもっと受けまくってみます</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://gruntjs.com/">Grunt</a></li>
+<li><a href="http://bower.io/">Bower</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerを使ってみる)]]></title>
@@ -215,6 +292,7 @@ Waiting...
 
 <ul>
 <li><a href="https://github.com/DaftMonk/generator-angular-fullstack/issues/710"> Error sass when build mode product #710 </a></li>
+<li><a href="http://zkohi.hatenablog.com/entry/2013/12/14/021639">yeoman, grunt, bowerで静的サイト構築（第三回）</a></li>
 </ul>
 
 ]]></content>
