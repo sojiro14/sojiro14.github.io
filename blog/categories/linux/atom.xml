@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-21T02:33:43+09:00</updated>
+  <updated>2015-05-21T02:39:33+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -163,6 +163,13 @@ $ xdg-open test/
 <p><img src="/images/xdg_open/google.png"></p>
 
 <p>ブラウザはないが URL を指定すると CUI 上で Web ページが開ける</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
