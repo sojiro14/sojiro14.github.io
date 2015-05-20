@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Yeoman | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/yeoman/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-18T04:15:19+09:00</updated>
+  <updated>2015-05-21T02:33:43+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -219,12 +219,14 @@ Aborted due to warnings.
 
 <p>また怒られる</p>
 
-<pre><code>xdg-mime: コマンドが見つかりません
+<pre><code>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
 </code></pre>
 
-<p>xdg-mime は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
+<p>xdg-open は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
 
-<p>今回は <code>xdg-mime URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
+<p>このコマンドが、指定されたオブジェクトを適切なアプリケーションで開くために mime タイプを取得するとき、 <code>xdg-mime</code> コマンドを使用するようである</p>
+
+<p>今回は <code>xdg-open URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
 
 <p>そもそもここで使っているサーバーはブラウザが入っていないリモートのサーバーなので、該当タスクをコメントアウトする。また、サーバーのURLもIPアドレスで指定するように設定ファイル(Gruntfile.js)を変更する。</p>
 

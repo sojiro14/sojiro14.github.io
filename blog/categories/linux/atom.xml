@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-18T04:15:19+09:00</updated>
+  <updated>2015-05-21T02:33:43+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,159 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Xdg-open コマンドとは]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command/"/>
+    <updated>2015-05-12T23:55:57+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command</id>
+    <content type="html"><![CDATA[<p>以前 <a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a> というエントリで Grunt を実行したときに</p>
+
+<pre><code class="bash">Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
+</code></pre>
+
+<p>と怒られたことがあったので <code>xdg-open</code> コマンドについて少し調べてみます</p>
+
+<h2>xdg-open コマンドのインストール</h2>
+
+<p>xdg-open の実体はシェルスクリプトである</p>
+
+<p>すんなりインストールできるかと思いきや普段の CentOS に入れるのに手こずってしまった</p>
+
+<p>どうやら Ubuntu との相性が良いようなので Vagrant で Ubuntu を立ち上げてそこでインストールしてみる</p>
+
+<h3>Ubuntu のセットアップ</h3>
+
+<p>Vagrant で Ubuntu 環境をセットアップする</p>
+
+<p>まずは box のインストールから</p>
+
+<pre><code class="bash">$ vagrant box add ubuntu http://goo.gl/8kWkm
+==&gt; box: Adding box 'ubuntu' (v0) for provider: 
+   box: Downloading: http://goo.gl/8kWkm
+==&gt; box: Successfully added box 'ubuntu' (v0) for 'virtualbox'!
+</code></pre>
+
+<pre><code class="bash">$ vagrant box list
+centos64 (virtualbox, 0)
+ubuntu   (virtualbox, 0)
+</code></pre>
+
+<p>box がセットアップできたら立ち上げまで行ってしまう</p>
+
+<pre><code class="bash">$ mkdir ubuntu
+$ cd ubuntu/
+$ vagrant init ubuntu
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+$ ls
+Vagrantfile
+$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==&gt; default: Importing base box 'ubuntu'...
+==&gt; default: Matching MAC address for NAT networking...
+==&gt; default: Setting the name of the VM: ubuntu_default_1432117537476_54763
+==&gt; default: Fixed port collision for 22 =&gt; 2222. Now on port 2200.
+==&gt; default: Clearing any previously set network interfaces...
+==&gt; default: Preparing network interfaces based on configuration...
+   default: Adapter 1: nat
+==&gt; default: Forwarding ports...
+   default: 22 =&gt; 2200 (adapter 1)
+==&gt; default: Booting VM...
+==&gt; default: Waiting for machine to boot. This may take a few minutes...
+</code></pre>
+
+<p>立ち上がったら以下のコマンドで Ubuntu 環境に入り、インストールの準備が完了する</p>
+
+<pre><code class="bash">$ vagrant ssh
+Welcome to Ubuntu 12.04.1 LTS (GNU/Linux 3.2.0-32-generic x86_64)
+
+* Documentation:  https://help.ubuntu.com/
+
+ System information as of Wed May 20 07:30:10 BRT 2015
+
+ System load:  0.0               Processes:           73
+ Usage of /:   11.7% of 7.87GB   Users logged in:     0
+ Memory usage: 1%                IP address for eth0: 10.0.2.15
+ Swap usage:   0%
+
+ Graph this data and manage this system at https://landscape.canonical.com/
+
+New release '14.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+</code></pre>
+
+<h3>インストール</h3>
+
+<p>ここからいよいよ Ubuntu に <code>xdg-open</code> をインストールしていく</p>
+
+<p>最初から入ってたらラッキーだなーと思いつつ打ってみる</p>
+
+<pre><code class="bash">$ xdg-open
+The program 'xdg-open' is currently not installed.  You can install it by typing:
+sudo apt-get install xdg-utils
+</code></pre>
+
+<p>思いがけず大ヒントが返ってきたので従う</p>
+
+<p>xdg-utils は <code>xdg-open</code> を内包するパッケージである</p>
+
+<pre><code class="bash">$ sudo apt-get install xdg-utils
+Reading package lists... Done
+Building dependency tree
+...
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+</code></pre>
+
+<p>エラーになってしまった</p>
+
+<p>しかしまたヒントがあるので従う</p>
+
+<pre><code class="bash">$ sudo apt-get install xdg-utils --fix-missing
+Reading package lists... Done
+Building dependency tree
+...
+Extracting templates from packages: 100%
+Preconfiguring packages ...
+Selecting previously unselected package ttf-dejavu-core.
+</code></pre>
+
+<p>晴れてインストール完了</p>
+
+<h2>使ってみる</h2>
+
+<ul>
+<li>テキストファイル: 普通に開ける</li>
+<li>画像ファイル: 開けるメソッドがなくエラー（環境立ち上げたばかりなので）</li>
+</ul>
+
+
+<h3>ディレクトリを指定</h3>
+
+<pre><code class="bash">$ mkdir test
+$ touch test/file
+$ xdg-open test/
+</code></pre>
+
+<p><img src="/images/xdg_open/directory.png"></p>
+
+<h3>URL を指定してみる</h3>
+
+<pre><code class="bash">xdg-open http://blog.sojiro.me
+</code></pre>
+
+<p><img src="/images/xdg_open/blog.png"></p>
+
+<pre><code class="bash">xdg-open http://google.com
+</code></pre>
+
+<p><img src="/images/xdg_open/google.png"></p>
+
+<p>ブラウザはないが URL を指定すると CUI 上で Web ページが開ける</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[AWSのLinuxにMongoDBをインストール]]></title>
@@ -325,113 +478,6 @@ $ source .bashrc
 <li><a href="http://qiita.com/sifue/items/55d0c5c11a0571af3b8e">grepやackよりも速いコード検索ツールのagをローカルビルドインストールする</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[AWSに複数のユーザーを設定した手順]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/08/22/add-users-on-aws-instance/"/>
-    <updated>2014-08-22T00:58:55+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/08/22/add-users-on-aws-instance</id>
-    <content type="html"><![CDATA[<p>AWSでサーバーを借りて複数人で共同開発することになった。
-それに伴い、借りたサーバーに各々がアクセスできるようユーザーの設定をした際の手順メモ。</p>
-
-<h2>AWSでWEBサーバーを借りる</h2>
-
-<p>AWSのWebサーバーレンタルサービスはEC2と呼ばれる。
-サーバーをレンタルするには様々あるサービス群からEC2を選択し、<code>Launch Instance</code> ボタンを押してInstanceの立ち上げを開始する。</p>
-
-<ul>
-<li>AMI(Amazon Machine Image)の選択
-
-<ul>
-<li>借りるマシンの種類を選ぶ。用途によって様々な種類がある（WordPressが既に設定されているものなど）</li>
-</ul>
-</li>
-<li>Instance Typeの選択
-
-<ul>
-<li>マシンのスペックを選ぶ。メモリやストレージのサイズなど</li>
-</ul>
-</li>
-<li>Instanceの詳細設定</li>
-<li>Storageの設定</li>
-<li>Instanceへのtag付け</li>
-<li>Security Groupの選択
-
-<ul>
-<li>アクセスを許可するプロトコルやIPなどを指定してその設定をグループとして扱う</li>
-</ul>
-</li>
-</ul>
-
-
-<p>上記のほとんどの設定は後から変更できる。AMIの選択がしっかりできれば問題なさそう。</p>
-
-<p>最後まで完了すると秘密鍵(hogehoge.pem)が発行される。これは絶対になくしてはいけない。</p>
-
-<h2>立ち上げたInstanceに複数ユーザーを設定する</h2>
-
-<p>立ち上げたInstanceにアクセスする。
-今回はWebサーバーとして立ち上げるのでSecurity GroupにはHTTPとSSHでのアクセスを許可するよう設定しておく。</p>
-
-<h3>秘密鍵でアクセスする</h3>
-
-<p>まずはInstance立ち上げ時に発行された秘密鍵でアクセスする
-<code>bash
-[sojiro@local ~]$ chmod 600 hogehoge.pem  # 秘密鍵の権限を設定（厳しすぎても甘過ぎても使えない）
-[sojiro@local ~]$ ssh -i hogehoge.pem ec2-user@xx.xx.xx.xxx  # ec2-userでログイン
-</code>
-* ダウンロード直後の秘密鍵は権限が適切ではない可能性がある。その場合は600に設定する。
-* <code>ssh</code>の<code>-i</code>オプションを使って秘密鍵を指定してログイン（秘密鍵を指定しないと~/.ssh/id_rsaが使われる）
-    * 最初は初期設定されているec2-userというユーザーでログインする
-    * コマンドはEC2のメニューバーからInstancesページに行き、Instanceを選択してページ上部の<code>Connect</code>ボタンを押すと表示される</p>
-
-<h3>ユーザーの作成</h3>
-
-<p>Instanceにログインできたら早速ユーザーを作成していく
-<code>bash
-[ec2-user@ip-hogehoge ~]$ sudo su -  # rootユーザーになる
-[root@ip-hogehoge ~] adduser sojiro  # ユーザー(sojiro)を作成
-[root@ip-hogehoge ~] passwd sojiro   # sojiroにパスワードを設定
-[root@ip-hogehoge ~] vim /etc/sudoers  # sojiroに権限を設定
-</code>
-ユーザーを作り、ユーザーに権限を付与する。今回は大雑把にrootと同じことができる権限を付与。
-<code>bash
-[root@ip-hogehoge ~] cat /etc/sudors
-...
-root    ALL=(ALL)       ALL
-sojiro  ALL=(ALL)       ALL
-...
-</code></p>
-
-<h3>公開鍵の登録</h3>
-
-<p>作成したユーザーにlocalからアクセスするための公開鍵を設定する。
-（鍵のペアはlocalで予め<code>ssh-keygen -t rsa</code>で作成しておく）
-<code>bash
-[root@ip-hogehoge ~] su sojiro
-[sojiro@ip-hogehoge root]$ cd  # sojiroのホームディレクトリに移動
-[sojiro@ip-hogehoge ~]$ mkdir .ssh
-[sojiro@ip-hogehoge ~]$ vim .ssh/authorized_keys  # 公開鍵を置く（今回はlocalのid_rsa.pubをコピペした）
-[sojiro@ip-hogehoge ~]$ chmod 700 .ssh
-[sojiro@ip-hogehoge ~]$ chmod 600 .ssh/authorized_keys
-</code>
-* 公開鍵を置くファイルの名前は<code>.ssh</code>ディレクトリ配下の<code>authorized_keys</code>と決まっている
-* <code>.ssh</code>ディレクトリと<code>authorized_keys</code>の権限にも気をつける</p>
-
-<h3>作成したユーザーでInstanceにログインできることを確認</h3>
-
-<pre><code class="bash">[sojiro@local ~]$ ssh sojiro@xx.xx.xx.xxx  # ログインできればOK
-</code></pre>
-
-<p>localのrsa鍵でログインできることを確認できれば完了。</p>
-
-<p>この操作で必要なユーザーを適宜作成する。</p>
-
-<h2>参考</h2>
-
-<p><a href="http://d.hatena.ne.jp/torazuka/20110420/ssh">新規に作成した鍵でEC2インスタンスにSSH接続する</a></p>
 ]]></content>
   </entry>
   

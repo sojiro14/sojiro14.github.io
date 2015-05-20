@@ -319,13 +319,15 @@
 <p>また怒られる</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>xdg-mime: コマンドが見つかりません
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>xdg-mime は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
+<p>xdg-open は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
 
-<p>今回は <code>xdg-mime URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
+<p>このコマンドが、指定されたオブジェクトを適切なアプリケーションで開くために mime タイプを取得するとき、 <code>xdg-mime</code> コマンドを使用するようである</p>
+
+<p>今回は <code>xdg-open URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
 
 <p>そもそもここで使っているサーバーはブラウザが入っていないリモートのサーバーなので、該当タスクをコメントアウトする。また、サーバーのURLもIPアドレスで指定するように設定ファイル(Gruntfile.js)を変更する。</p>
 

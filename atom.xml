@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-18T04:15:19+09:00</updated>
+  <updated>2015-05-21T02:33:43+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,238 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Xdg-open コマンドとは]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command/"/>
+    <updated>2015-05-12T23:55:57+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command</id>
+    <content type="html"><![CDATA[<p>以前 <a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a> というエントリで Grunt を実行したときに</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>と怒られたことがあったので <code>xdg-open</code> コマンドについて少し調べてみます</p>
+
+<h2>xdg-open コマンドのインストール</h2>
+
+<p>xdg-open の実体はシェルスクリプトである</p>
+
+<p>すんなりインストールできるかと思いきや普段の CentOS に入れるのに手こずってしまった</p>
+
+<p>どうやら Ubuntu との相性が良いようなので Vagrant で Ubuntu を立ち上げてそこでインストールしてみる</p>
+
+<h3>Ubuntu のセットアップ</h3>
+
+<p>Vagrant で Ubuntu 環境をセットアップする</p>
+
+<p>まずは box のインストールから</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box add ubuntu http://goo.gl/8kWkm
+</span><span class='line'><span class="o">==</span>&gt; box: Adding box <span class="s1">&#39;ubuntu&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> provider:
+</span><span class='line'>   box: Downloading: http://goo.gl/8kWkm
+</span><span class='line'><span class="o">==</span>&gt; box: Successfully added box <span class="s1">&#39;ubuntu&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> <span class="s1">&#39;virtualbox&#39;</span>!
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box list
+</span><span class='line'>centos64 <span class="o">(</span>virtualbox, 0<span class="o">)</span>
+</span><span class='line'>ubuntu   <span class="o">(</span>virtualbox, 0<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>box がセットアップできたら立ち上げまで行ってしまう</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir ubuntu
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>ubuntu/
+</span><span class='line'><span class="nv">$ </span>vagrant init ubuntu
+</span><span class='line'>A <span class="sb">`</span>Vagrantfile<span class="sb">`</span> has been placed in this directory. You are now
+</span><span class='line'>ready to <span class="sb">`</span>vagrant up<span class="sb">`</span> your first virtual environment! Please <span class="nb">read</span>
+</span><span class='line'>the comments in the Vagrantfile as well as documentation on
+</span><span class='line'><span class="sb">`</span>vagrantup.com<span class="sb">`</span> <span class="k">for</span> more information on using Vagrant.
+</span><span class='line'><span class="nv">$ </span>ls
+</span><span class='line'>Vagrantfile
+</span><span class='line'><span class="nv">$ </span>vagrant up
+</span><span class='line'>Bringing machine <span class="s1">&#39;default&#39;</span> up with <span class="s1">&#39;virtualbox&#39;</span> provider...
+</span><span class='line'><span class="o">==</span>&gt; default: Importing base box <span class="s1">&#39;ubuntu&#39;</span>...
+</span><span class='line'><span class="o">==</span>&gt; default: Matching MAC address <span class="k">for</span> NAT networking...
+</span><span class='line'><span class="o">==</span>&gt; default: Setting the name of the VM: <span class="nv">ubuntu_default_1432117537476_54763</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Fixed port collision <span class="k">for</span> <span class="nv">22</span> <span class="o">=</span>&gt; 2222. Now on port 2200.
+</span><span class='line'><span class="o">==</span>&gt; default: Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">==</span>&gt; default: Preparing network interfaces based on configuration...
+</span><span class='line'>   default: Adapter 1: <span class="nv">nat</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Forwarding ports...
+</span><span class='line'>   default: <span class="nv">22</span> <span class="o">=</span>&gt; <span class="m">2200</span> <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Booting VM...
+</span><span class='line'><span class="o">==</span>&gt; default: Waiting <span class="k">for</span> machine to boot. This may take a few minutes...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>立ち上がったら以下のコマンドで Ubuntu 環境に入り、インストールの準備が完了する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh
+</span><span class='line'>Welcome to Ubuntu 12.04.1 LTS <span class="o">(</span>GNU/Linux 3.2.0-32-generic x86_64<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>* Documentation:  https://help.ubuntu.com/
+</span><span class='line'>
+</span><span class='line'> System information as of Wed May <span class="m">20</span> 07:30:10 BRT 2015
+</span><span class='line'>
+</span><span class='line'> System load:  0.0               Processes:           73
+</span><span class='line'> Usage of /:   11.7% of 7.87GB   Users logged in:     0
+</span><span class='line'> Memory usage: 1%                IP address <span class="k">for</span> eth0: 10.0.2.15
+</span><span class='line'> Swap usage:   0%
+</span><span class='line'>
+</span><span class='line'> Graph this data and manage this system at https://landscape.canonical.com/
+</span><span class='line'>
+</span><span class='line'>New release <span class="s1">&#39;14.04.2 LTS&#39;</span> available.
+</span><span class='line'>Run <span class="s1">&#39;do-release-upgrade&#39;</span> to upgrade to it.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>インストール</h3>
+
+<p>ここからいよいよ Ubuntu に <code>xdg-open</code> をインストールしていく</p>
+
+<p>最初から入ってたらラッキーだなーと思いつつ打ってみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>xdg-open
+</span><span class='line'>The program <span class="s1">&#39;xdg-open&#39;</span> is currently not installed.  You can install it by typing:
+</span><span class='line'>sudo apt-get install xdg-utils
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>思いがけず大ヒントが返ってきたので従う</p>
+
+<p>xdg-utils は <code>xdg-open</code> を内包するパッケージである</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install xdg-utils
+</span><span class='line'>Reading package lists... Done
+</span><span class='line'>Building dependency tree
+</span><span class='line'>...
+</span><span class='line'>E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>エラーになってしまった</p>
+
+<p>しかしまたヒントがあるので従う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install xdg-utils --fix-missing
+</span><span class='line'>Reading package lists... Done
+</span><span class='line'>Building dependency tree
+</span><span class='line'>...
+</span><span class='line'>Extracting templates from packages: 100%
+</span><span class='line'>Preconfiguring packages ...
+</span><span class='line'>Selecting previously unselected package ttf-dejavu-core.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>晴れてインストール完了</p>
+
+<h2>使ってみる</h2>
+
+<ul>
+<li>テキストファイル: 普通に開ける</li>
+<li>画像ファイル: 開けるメソッドがなくエラー（環境立ち上げたばかりなので）</li>
+</ul>
+
+
+<h3>ディレクトリを指定</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir <span class="nb">test</span>
+</span><span class='line'><span class="nv">$ </span>touch <span class="nb">test</span>/file
+</span><span class='line'><span class="nv">$ </span>xdg-open <span class="nb">test</span>/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://sojiro14.github.io/images/xdg_open/directory.png"></p>
+
+<h3>URL を指定してみる</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>xdg-open http://blog.sojiro.me
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://sojiro14.github.io/images/xdg_open/blog.png"></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>xdg-open http://google.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://sojiro14.github.io/images/xdg_open/google.png"></p>
+
+<p>ブラウザはないが URL を指定すると CUI 上で Web ページが開ける</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerとは)]]></title>
@@ -298,13 +530,15 @@
 <p>また怒られる</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>xdg-mime: コマンドが見つかりません
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>xdg-mime は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
+<p>xdg-open は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
 
-<p>今回は <code>xdg-mime URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
+<p>このコマンドが、指定されたオブジェクトを適切なアプリケーションで開くために mime タイプを取得するとき、 <code>xdg-mime</code> コマンドを使用するようである</p>
+
+<p>今回は <code>xdg-open URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
 
 <p>そもそもここで使っているサーバーはブラウザが入っていないリモートのサーバーなので、該当タスクをコメントアウトする。また、サーバーのURLもIPアドレスで指定するように設定ファイル(Gruntfile.js)を変更する。</p>
 
@@ -3044,156 +3278,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 </span><span class='line'>      <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:stock</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
 </span><span class='line'>    <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<p><a href="http://dotinstall.com/lessons/basic_rails_v2">ドットインストール</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #4 -リソースの生成-]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources/"/>
-    <updated>2014-11-27T16:32:38+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources</id>
-    <content type="html"><![CDATA[<p><a href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/">Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-</a> で <code>scaffold</code> コマンドを使ったリソースの生成を行ったが、このコマンドでは決められた形式でのリソースの生成にしか対応できないため、手動で自由にリソースを作成してみる。</p>
-
-<h2>rails generate model</h2>
-
-<p>まずはモデルを作成する。railsの規約に従って、モデルは単数系、最初の文字を大文字で始める。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate model Stock title:string
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドで <code>generate</code> は <code>g</code> と省略できる。また、要素の属性はデフォルトが <code>string</code> なので、 <code>string</code> も省略することができる。</p>
-
-<p>省略したコマンドが以下。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails g model Stock title
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドでmodelに加えてmigrateファイルが生成されるのでDBをmigrateする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!-- more -->
-
-
-<h2>rails db</h2>
-
-<p>作成したmodelを確認するため、現在使用しているDBのクライアントを立ち上げてみる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails db
-</span><span class='line'>sqlite&gt; .schema
-</span><span class='line'>CREATE TABLE <span class="s2">&quot;schema_migrations&quot;</span> <span class="o">(</span><span class="s2">&quot;version&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span> NOT NULL<span class="o">)</span><span class="p">;</span>
-</span><span class='line'>CREATE UNIQUE INDEX <span class="s2">&quot;unique_schema_migrations&quot;</span> ON <span class="s2">&quot;schema_migrations&quot;</span> <span class="o">(</span><span class="s2">&quot;version&quot;</span><span class="o">)</span><span class="p">;</span>
-</span><span class='line'>CREATE TABLE <span class="s2">&quot;users&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, <span class="s2">&quot;name&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span>, <span class="s2">&quot;email&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span>, <span class="s2">&quot;created_at&quot;</span> datetime, <span class="s2">&quot;updated_at&quot;</span> datetime<span class="o">)</span><span class="p">;</span>
-</span><span class='line'>CREATE TABLE <span class="s2">&quot;microposts&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, <span class="s2">&quot;content&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span>, <span class="s2">&quot;user_id&quot;</span> integer, <span class="s2">&quot;created_at&quot;</span> datetime, <span class="s2">&quot;updated_at&quot;</span> datetime<span class="o">)</span><span class="p">;</span>
-</span><span class='line'>CREATE TABLE <span class="s2">&quot;stocks&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, <span class="s2">&quot;title&quot;</span> varchar<span class="o">(</span>255<span class="o">)</span>, <span class="s2">&quot;created_at&quot;</span> datetime, <span class="s2">&quot;updated_at&quot;</span> datetime<span class="o">)</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>sqliteのクライアントが立ち上がったら <code>.schema</code> コマンドでこれまで作成されてきたテーブルが確認できる。
- <code>id</code> や <code>created_at</code> 、 <code>updated_at</code> はrailsが自動で生成する</p>
-
-<p>ちなみにsqliteクライアントから抜けるには <code>.exit</code> とする。 <code>.</code> が付くことに注意。</p>
-
-<h2>rails console</h2>
-
-<p>railsが用意しているconsoleを立ち上げてリソースを追加したり、確認したりすることもできる。</p>
-
-<p>Stockオブジェクトを生成して保存する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails console
-</span><span class='line'>2.0.0-p594 :001 &gt; <span class="nv">s</span> <span class="o">=</span> Stock.new<span class="o">(</span>title: <span class="s2">&quot;stock1&quot;</span><span class="o">)</span>
-</span><span class='line'><span class="o">=</span>&gt; <span class="c">#&lt;Stock id: nil, title: &quot;stock1&quot;, created_at: nil, updated_at: nil&gt; </span>
-</span><span class='line'>2.0.0-p594 :002 &gt; s.save
-</span><span class='line'>  <span class="o">(</span>0.1ms<span class="o">)</span>  begin transaction
-</span><span class='line'> SQL <span class="o">(</span>2.1ms<span class="o">)</span>  INSERT INTO <span class="s2">&quot;stocks&quot;</span> <span class="o">(</span><span class="s2">&quot;created_at&quot;</span>, <span class="s2">&quot;title&quot;</span>, <span class="s2">&quot;updated_at&quot;</span><span class="o">)</span> VALUES <span class="o">(</span>?, ?, ?<span class="o">)</span>  <span class="o">[[</span><span class="s2">&quot;created_at&quot;</span>, Sat, <span class="m">15</span> Nov <span class="m">2014</span> 15:02:39 UTC +00:00<span class="o">]</span>, <span class="o">[</span><span class="s2">&quot;title&quot;</span>, <span class="s2">&quot;stock1&quot;</span><span class="o">]</span>, <span class="o">[</span><span class="s2">&quot;updated_at&quot;</span>, Sat, <span class="m">15</span> Nov <span class="m">2014</span> 15:02:39 UTC +00:00<span class="o">]]</span>
-</span><span class='line'>  <span class="o">(</span>4.9ms<span class="o">)</span>  commit <span class="nv">transaction</span>
-</span><span class='line'><span class="o">=</span>&gt; <span class="nb">true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>作られたオブジェクトを確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>2.0.0-p594 :003 &gt; <span class="nv">s</span>
-</span><span class='line'><span class="o">=</span>&gt; <span class="c">#&lt;Stock id: 1, title: &quot;stock1&quot;, created_at: &quot;2014-11-15 15:02:39&quot;, updated_at: &quot;2014-11-15 15:02:39&quot;&gt; </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>new</code> と <code>save</code> を一括で行ってくれるコマンドが <code>create</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>2.0.0-p594 :004 &gt; Stock.create<span class="o">(</span>title: <span class="s2">&quot;stock2&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="o">(</span>0.1ms<span class="o">)</span>  begin transaction
-</span><span class='line'> SQL <span class="o">(</span>0.3ms<span class="o">)</span>  INSERT INTO <span class="s2">&quot;stocks&quot;</span> <span class="o">(</span><span class="s2">&quot;created_at&quot;</span>, <span class="s2">&quot;title&quot;</span>, <span class="s2">&quot;updated_at&quot;</span><span class="o">)</span> VALUES <span class="o">(</span>?, ?, ?<span class="o">)</span>  <span class="o">[[</span><span class="s2">&quot;created_at&quot;</span>, Sat, <span class="m">15</span> Nov <span class="m">2014</span> 15:03:44 UTC +00:00<span class="o">]</span>, <span class="o">[</span><span class="s2">&quot;title&quot;</span>, <span class="s2">&quot;stock2&quot;</span><span class="o">]</span>, <span class="o">[</span><span class="s2">&quot;updated_at&quot;</span>, Sat, <span class="m">15</span> Nov <span class="m">2014</span> 15:03:44 UTC +00:00<span class="o">]]</span>
-</span><span class='line'>  <span class="o">(</span>5.8ms<span class="o">)</span>  commit <span class="nv">transaction</span>
-</span><span class='line'><span class="o">=</span>&gt; <span class="c">#&lt;Stock id: 2, title: &quot;stock2&quot;, created_at: &quot;2014-11-15 15:03:44&quot;, updated_at: &quot;2014-11-15 15:03:44&quot;&gt; </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>作られたオブジェクト全てを確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>2.0.0-p594 :005 &gt; Stock.all
-</span><span class='line'> Stock Load <span class="o">(</span>0.2ms<span class="o">)</span>  SELECT <span class="s2">&quot;stocks&quot;</span>.* FROM <span class="s2">&quot;stocks&quot;</span>
-</span><span class='line'><span class="o">=</span>&gt; <span class="c">#&lt;ActiveRecord::Relation [#&lt;Stock id: 1, title: &quot;stock1&quot;, created_at: &quot;2014-11-15 15:02:39&quot;, updated_at: &quot;2014-11-15 15:02:39&quot;&gt;, #&lt;Stock id: 2, title: &quot;stock2&quot;, created_at: &quot;2014-11-15 15:03:44&quot;, updated_at: &quot;2014-11-15 15:03:44&quot;&gt;]&gt; </span>
-</span><span class='line'>2.0.0-p594 :006 &gt; quit
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>最後にもう一度 <code>rails db</code> で直接確認する</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@ip-172-31-2-112 demo_app<span class="o">]</span><span class="nv">$ </span>rails db
-</span><span class='line'>SQLite version 3.7.17 2013-05-20 00:56:22
-</span><span class='line'>Enter <span class="s2">&quot;.help&quot;</span> <span class="k">for</span> instructions
-</span><span class='line'>Enter SQL statements terminated with a <span class="s2">&quot;;&quot;</span>
-</span><span class='line'>sqlite&gt; <span class="k">select</span> * from stocks<span class="p">;</span>
-</span><span class='line'>1<span class="p">|</span>stock1<span class="p">|</span>2014-11-15 15:02:39.781183<span class="p">|</span>2014-11-15 15:02:39.781183
-</span><span class='line'>2<span class="p">|</span>stock2<span class="p">|</span>2014-11-15 15:03:44.294543<span class="p">|</span>2014-11-15 15:03:44.294543
 </span></code></pre></td></tr></table></div></figure>
 
 

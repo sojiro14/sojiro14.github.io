@@ -9,8 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="AWSでサーバーを借りて複数人で共同開発することになった。
-それに伴い、借りたサーバーに各々がアクセスできるようユーザーの設定をした際の手順メモ。 AWSでWEBサーバーを借りる AWSのWebサーバーレンタルサービスはEC2と呼ばれる。 &hellip;">
+  <meta name="description" content="AWSでWebサーバーを借りた。このサーバーにagをインストールした際の手順。 agとは ソースコードから特定のwordを検索する際に使うコマンドgrepがより賢く改良されたのがackコマンド。 このackをさらに改良し、検索を高速化させたのがagコマンド（正式名称:The Silver &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -95,6 +94,120 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami/">Amazon Linux AMIにagをインストールした手順</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-25T23:38:16+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:38 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>AWSでWebサーバーを借りた。このサーバーに<code>ag</code>をインストールした際の手順。</p>
+
+<h2>agとは</h2>
+
+<p>ソースコードから特定のwordを検索する際に使うコマンド<code>grep</code>がより賢く改良されたのが<code>ack</code>コマンド。</p>
+
+<p>この<code>ack</code>をさらに改良し、検索を高速化させたのが<code>ag</code>コマンド（正式名称:The Silver Searcher）である。</p>
+
+<h2>Amazon Linux AMIへのインストール</h2>
+
+<p>MacにはHomebrewを使って<code>brew install the_silver_searcher</code>とするだけで簡単に入れることができた。</p>
+
+<p>AWSで借りたサーバーはAmazon Linux AMIという独自のイメージだったが、<code>yum</code>が使えるのでCentOSと同じ以下の手順で入れることができた。</p>
+
+<h3>ディレクトリの作成とソースのダウンロード</h3>
+
+<p>ソースをダウンロード、インストールするディレクトリを作成し、gitから<code>ag</code>のソースを持ってくる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir -p <span class="nv">$HOME</span>/local/source
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source
+</span><span class='line'><span class="nv">$ </span>git clone https://github.com/ggreer/the_silver_searcher
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>ソースをmakeするための準備</h3>
+
+<p>対象のサーバーはまっさらな状態でコンパイラなどもなかったため、それぞれインストールする。</p>
+
+<p>前述の通りAmazon Linux AMIではyumを使うことができる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo su -
+</span><span class='line'>yum -y groupinstall <span class="s2">&quot;Development Tools&quot;</span>
+</span><span class='line'>yum -y install pcre-devel xz-devel
+</span><span class='line'><span class="nb">exit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>インストール</h3>
+
+<p>コンパイルしてインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source/the_silver_searcher
+</span><span class='line'><span class="nv">$ </span>./build.sh
+</span><span class='line'><span class="nv">$ </span>sudo make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>パスを通す</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span>
+</span><span class='line'><span class="nv">$ </span>vim .bashrc
+</span><span class='line'><span class="nv">$ </span>cat .bashrc
+</span><span class='line'>...
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/local/bin:<span class="nv">$PATH</span>
+</span><span class='line'>...
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bashrc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで<code>ag</code>が使えるようになった</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="https://github.com/ggreer/the_silver_searcher">the_silver_searcher</a></li>
+<li><a href="http://qiita.com/sifue/items/55d0c5c11a0571af3b8e">grepやackよりも速いコード検索ツールのagをローカルビルドインストールする</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -462,23 +575,25 @@
 
 <h3>値のset</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>set key value                     # 1つのkey-valueをsetする
-</span><span class='line'>mset key_1 value_1 key_2 value_2  # key-valueの組を複数setする</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">set</span> <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>value<span class="o">]</span>  <span class="c"># 1つのkey-valueをsetする</span>
+</span><span class='line'>mset <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>value_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span> <span class="o">[</span>value_2<span class="o">]</span>  <span class="c"># key-valueの組を複数setする</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>値のget</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>get key                 # 1つのkeyに対するvalueをgetする
-</span><span class='line'>mget key_1 key_2 key_3  # 複数のkeyに対するvalueをgetする</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>get <span class="o">[</span>key_name<span class="o">]</span>  <span class="c"># 1つのkeyに対するvalueをgetする</span>
+</span><span class='line'>mget <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span> <span class="o">[</span>key_name_3<span class="o">]</span>  <span class="c"># 複数のkeyに対するvalueをgetする</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>使用例</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -488,16 +603,17 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; set name Steven
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; <span class="nb">set </span>name Steven
 </span><span class='line'>OK
 </span><span class='line'>redis&gt; get name
-</span><span class='line'>"Steven"
-</span><span class='line'>redis&gt; mset number 8 color red
+</span><span class='line'><span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>redis&gt; mset number <span class="m">8</span> color red
 </span><span class='line'>OK
 </span><span class='line'>redis&gt; mget name number color
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "8"
-</span><span class='line'>3) "red"</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;8&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;red&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h2>List</h2>
@@ -508,45 +624,50 @@
 
 <h3>値の追加</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rpush key member  # リストの末尾に値を追加
-</span><span class='line'>lpush key member  # リストの先頭に値を追加</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rpush <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># リストの末尾に値を追加</span>
+</span><span class='line'>lpush <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># リストの先頭に値を追加</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>値の削除</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rpop key  # リストの末尾の値を削除
-</span><span class='line'>lpop key  # リストの先頭の値を削除</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rpop <span class="o">[</span>key_name<span class="o">]</span>  <span class="c"># リストの末尾の値を削除</span>
+</span><span class='line'>lpop <span class="o">[</span>key_name<span class="o">]</span>  <span class="c"># リストの先頭の値を削除</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>範囲を指定して値を取得</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>lrange key 0 3   # 1番目から4番目まで値を取得
-</span><span class='line'>lrange key 0 -1  # 1番目から最後（最後から1番目）までの値を取得</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>lrange <span class="o">[</span>key_name<span class="o">]</span> <span class="m">0</span> <span class="m">3</span>   <span class="c"># 1番目から4番目まで値を取得</span>
+</span><span class='line'>lrange <span class="o">[</span>key_name<span class="o">]</span> <span class="m">0</span> -1  <span class="c"># 1番目から最後（最後から1番目）までの値を取得</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>位置を指定して値を取得</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>lindex key 2   # 3番目の値を取得
-</span><span class='line'>lindex key -1  # 最後の値を取得</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>lindex <span class="o">[</span>key_name<span class="o">]</span> <span class="m">2</span>   <span class="c"># 3番目の値を取得</span>
+</span><span class='line'>lindex <span class="o">[</span>key_name<span class="o">]</span> -1  <span class="c"># 最後の値を取得</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>要素の数を取得</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>llen key</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>llen <span class="o">[</span>key<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>使用例</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -566,26 +687,27 @@
 <span class='line-number'>18</span>
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; rpush player Steven
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; rpush player Steven
 </span><span class='line'>redis&gt; rpush player Michael James
-</span><span class='line'>redis&gt; lrange player 0 -1
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>3) "James"
-</span><span class='line'>redis&gt; lrange player 0 1
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
+</span><span class='line'>redis&gt; lrange player <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;James&quot;</span>
+</span><span class='line'>redis&gt; lrange player <span class="m">0</span> 1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
 </span><span class='line'>redis&gt; lindex player 1
-</span><span class='line'>"Michael"
+</span><span class='line'><span class="s2">&quot;Michael&quot;</span>
 </span><span class='line'>redis&gt; lindex player -1
-</span><span class='line'>"James"
+</span><span class='line'><span class="s2">&quot;James&quot;</span>
 </span><span class='line'>redis&gt; rpop player
-</span><span class='line'>"James"
-</span><span class='line'>redis&gt; lrange player 0 -1
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
+</span><span class='line'><span class="s2">&quot;James&quot;</span>
+</span><span class='line'>redis&gt; lrange player <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
 </span><span class='line'>redis&gt; llen player
-</span><span class='line'>(integer) 2</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 2
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h2>Set</h2>
@@ -596,43 +718,49 @@
 
 <h3>値の追加</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sadd key member  # keyに対応するセットに指定した値を追加</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sadd <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># keyに対応するセットに指定した値を追加</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>値の削除</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>srem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>srem <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># keyに対応するセットから指定した値を削除</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>値の参照</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>smembers key  # keyに対応するセットの値を取得</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>smembers <span class="o">[</span>key_name<span class="o">]</span>  <span class="c"># keyに対応するセットの値を取得</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>和集合の取得</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sunion key1 key2  # key1に対応するセットとkey2に対応するセットの値の集合を取得</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sunion <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span>  <span class="c"># key1に対応するセットとkey2に対応するセットの値の集合を取得</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>差集合の取得</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sdiff key1 key2  # key1に対応するセットとkey2に対応するセットの値の差分の集合を取得</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sdiff <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span>  <span class="c"># key1に対応するセットとkey2に対応するセットの値の差分の集合を取得</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>積集合の取得</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sinter key1 key2  # key1に対応するセットとkey2に対応するセットの値の重複部分の集合を取得</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sinter <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span>  <span class="c"># key1に対応するセットとkey2に対応するセットの値の重複部分の集合を取得</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>使用例</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -664,38 +792,39 @@
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
 <span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; sadd reds Steven
-</span><span class='line'>(integer) 1
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; sadd reds Steven
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
 </span><span class='line'>redis&gt; smembers reds
-</span><span class='line'>1) "Steven"
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
 </span><span class='line'>redis&gt; sadd reds Steve
-</span><span class='line'>(integer) 1
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
 </span><span class='line'>redis&gt; sadd reds Michael
-</span><span class='line'>(integer) 1
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
 </span><span class='line'>redis&gt; smembers reds
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>3) "Steve"
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;Steve&quot;</span>
 </span><span class='line'>redis&gt; srem reds Michael
-</span><span class='line'>(integer) 1
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
 </span><span class='line'>redis&gt; smembers reds
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Steve"
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Steve&quot;</span>
 </span><span class='line'>redis&gt; sadd three_lions Steven Michael
-</span><span class='line'>(integer) 2
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 2
 </span><span class='line'>redis&gt; smembers three_lions
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
 </span><span class='line'>redis&gt; sunion reds three_lions
-</span><span class='line'>1) "Steven"
-</span><span class='line'>2) "Michael"
-</span><span class='line'>3) "Steve"
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;Steve&quot;</span>
 </span><span class='line'>redis&gt; sdiff reds three_lions
-</span><span class='line'>1) "Steve"
-</span><span class='line'>redis&gt; sdiff three_lions reds  # sdiffの後のkeyの順番により結果が違うことに注意
-</span><span class='line'>1) "Michael"
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steve&quot;</span>
+</span><span class='line'>redis&gt; sdiff three_lions reds  <span class="c"># sdiffの後のkeyの順番により結果が違うことに注意</span>
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
 </span><span class='line'>redis&gt; sinter reds three_lions
-</span><span class='line'>1) "Steven"</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h2>Sorted Set</h2>
@@ -706,35 +835,39 @@
 
 <h3>値の追加</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zadd key score member  # keyに対応するセットにスコア付きで値を追加</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>zadd <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>score<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># keyに対応するセットにスコア付きで値を追加</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>値の削除</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zrem key member  # keyに対応するセットから指定した値を削除</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>zrem <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># keyに対応するセットから指定した値を削除</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>値の取得</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zrange key 0 3     # keyに対応するセットからスコアの低い順に1番目から4番目の値を取得
-</span><span class='line'>zrevrange key 0 3  # keyに対応するセットからスコアの高い順に1番目から4番目の値を取得</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>zrange <span class="o">[</span>key_name<span class="o">]</span> <span class="m">0</span> <span class="m">3</span>     <span class="c"># keyに対応するセットからスコアの低い順に1番目から4番目の値を取得</span>
+</span><span class='line'>zrevrange <span class="o">[</span>key_name<span class="o">]</span> <span class="m">0</span> <span class="m">3</span>  <span class="c"># keyに対応するセットからスコアの高い順に1番目から4番目の値を取得</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>値の順位を取得</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zrank key member     # 指定した値の、keyに対応するセット中のランクを取得（スコアの低い順）
-</span><span class='line'>zrevrank key member  # 指定した値の、keyに対応するセット中のランクを取得（スコアの高い順）</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>zrank <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>     <span class="c"># 指定した値の、keyに対応するセット中のランクを取得（スコアの低い順）</span>
+</span><span class='line'>zrevrank <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># 指定した値の、keyに対応するセット中のランクを取得（スコアの高い順）</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>使用例</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -765,37 +898,38 @@
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; zadd fifa 1 germany
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; zrange fifa 0 0
-</span><span class='line'>1) "germany"
-</span><span class='line'>redis&gt; zadd fifa 2 argentina
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; zadd fifa 3 holland 4 colombia 45 japan
-</span><span class='line'>(integer) 3
-</span><span class='line'>redis&gt; zrange fifa 0 -1
-</span><span class='line'>1) "germany"
-</span><span class='line'>2) "argentina"
-</span><span class='line'>3) "holland"
-</span><span class='line'>4) "colombia"
-</span><span class='line'>5) "japan"
-</span><span class='line'>redis&gt; zrevrange fifa 0 -1
-</span><span class='line'>1) "japan"
-</span><span class='line'>2) "colombia"
-</span><span class='line'>3) "holland"
-</span><span class='line'>4) "argentina"
-</span><span class='line'>5) "germany"
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; zadd fifa <span class="m">1</span> germany
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; zrange fifa <span class="m">0</span> 0
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;germany&quot;</span>
+</span><span class='line'>redis&gt; zadd fifa <span class="m">2</span> argentina
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; zadd fifa <span class="m">3</span> holland <span class="m">4</span> colombia <span class="m">45</span> japan
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 3
+</span><span class='line'>redis&gt; zrange fifa <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;germany&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;argentina&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;holland&quot;</span>
+</span><span class='line'>4<span class="o">)</span> <span class="s2">&quot;colombia&quot;</span>
+</span><span class='line'>5<span class="o">)</span> <span class="s2">&quot;japan&quot;</span>
+</span><span class='line'>redis&gt; zrevrange fifa <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;japan&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;colombia&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;holland&quot;</span>
+</span><span class='line'>4<span class="o">)</span> <span class="s2">&quot;argentina&quot;</span>
+</span><span class='line'>5<span class="o">)</span> <span class="s2">&quot;germany&quot;</span>
 </span><span class='line'>redis&gt; zrank fifa japan
-</span><span class='line'>(integer) 4                      # 0番目から数えた値が返るので注意
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> <span class="m">4</span>                      <span class="c"># 0番目から数えた値が返るので注意</span>
 </span><span class='line'>redis&gt; zrevrank fifa argentina
-</span><span class='line'>(integer) 3                      # 0番目から数えた値が返るので注意
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> <span class="m">3</span>                      <span class="c"># 0番目から数えた値が返るので注意</span>
 </span><span class='line'>redis&gt; zrem fifa japan
-</span><span class='line'>(integer) 1
-</span><span class='line'>redis&gt; zrange fifa 0 -1
-</span><span class='line'>1) "germany"
-</span><span class='line'>2) "argentina"
-</span><span class='line'>3) "holland"
-</span><span class='line'>4) "colombia"</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; zrange fifa <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;germany&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;argentina&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;holland&quot;</span>
+</span><span class='line'>4<span class="o">)</span> <span class="s2">&quot;colombia&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h2>Hash</h2>
@@ -806,27 +940,29 @@
 
 <h3>値のset</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>hset key field value                       # keyにfieldとvalueのハッシュをset
-</span><span class='line'>hmset key field_1 value_1 field_2 value_2  # keyにハッシュのfieldとvalueを複数セット</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>hset <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>field<span class="o">]</span> <span class="o">[</span>value<span class="o">]</span>  <span class="c"># keyにfieldとvalueのハッシュをset</span>
+</span><span class='line'>hmset <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>field_1<span class="o">]</span> <span class="o">[</span>value_1<span class="o">]</span> <span class="o">[</span>field_2<span class="o">]</span> <span class="o">[</span>value_2<span class="o">]</span>  <span class="c"># keyにハッシュのfieldとvalueを複数セット</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>値のget</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>hget key field             # keyに対応するハッシュから指定したfieldのvalueを取得
-</span><span class='line'>hmget key field_1 field_2  # keyに対応するハッシュから指定した複数のfieldのvalueを取得
-</span><span class='line'>hkeys key                  # keyに対応するハッシュのすべてのfieldを取得
-</span><span class='line'>hvals key                  # keyに対応するハッシュのすべてのvalueを取得</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>hget <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>field<span class="o">]</span>               <span class="c"># keyに対応するハッシュから指定したfieldのvalueを取得</span>
+</span><span class='line'>hmget <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>field_1<span class="o">]</span> <span class="o">[</span>field_2<span class="o">]</span>  <span class="c"># keyに対応するハッシュから指定した複数のfieldのvalueを取得</span>
+</span><span class='line'>hkeys <span class="o">[</span>key_name<span class="o">]</span>                      <span class="c"># keyに対応するハッシュのすべてのfieldを取得</span>
+</span><span class='line'>hvals <span class="o">[</span>key_name<span class="o">]</span>                      <span class="c"># keyに対応するハッシュのすべてのvalueを取得</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>使用例</h3>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -843,23 +979,24 @@
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>redis&gt; hset steven position mf
-</span><span class='line'>(integer) 1
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; hset steven position mf
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
 </span><span class='line'>redis&gt; hget steven position
-</span><span class='line'>"mf"
+</span><span class='line'><span class="s2">&quot;mf&quot;</span>
 </span><span class='line'>redis&gt; hmset steven nationality england club reds
 </span><span class='line'>OK
 </span><span class='line'>redis&gt; hmget steven club position
-</span><span class='line'>1) "reds"
-</span><span class='line'>2) "mf"
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;reds&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;mf&quot;</span>
 </span><span class='line'>redis&gt; hkeys steven
-</span><span class='line'>1) "position"
-</span><span class='line'>2) "nationality"
-</span><span class='line'>3) "club"
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;position&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;nationality&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;club&quot;</span>
 </span><span class='line'>redis&gt; hvals steven
-</span><span class='line'>1) "mf"
-</span><span class='line'>2) "england"
-</span><span class='line'>3) "reds"</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;mf&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;england&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;reds&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 </div>
   
@@ -1986,278 +2123,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-04-19T21:05:49+09:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:05 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>①HUBOTを動かすために必要な諸々のインストール</h2>
-
-<h3>準備として以下をインストールする</h3>
-
-<ul>
-<li>node.js（サーバー）</li>
-<li>npm（パッケージ管理コマンド）</li>
-<li>Redis（KVS）</li>
-</ul>
-
-
-<h3>上記をインストールするためにHomebrewのインストールから始める</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでHomebrewが入るはず</p>
-
-<h3>次にHomebrewを使ってそれぞれインストールする</h3>
-
-<p>まずnode.jsとnpm</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install node
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンド一発でnode.jsとnpmが入るはず</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
-</span><span class='line'>v0.10.26
-</span><span class='line'><span class="nv">$ </span>npm -v
-</span><span class='line'>1.4.6
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Redisもインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install redis
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Redisを起動しておく</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>redis-server <span class="p">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>②HUBOTをインストールする</h2>
-
-<h3>GitHubからリポジトリをクローンしてインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/
-</span><span class='line'><span class="nv">$ </span>git clone git://github.com/github/hubot.git
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>hubot/
-</span><span class='line'><span class="nv">$ </span>npm install -g hubot coffee-script
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>動くか確認</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot
-</span><span class='line'>Hubot&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>OK</p>
-
-<h2>③HUBOTをircと連携させる</h2>
-
-<h3>自分用のHUBOTを作る</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create myhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>myhubotの部分は自由に変更可。この名前のディレクトリが作られる</p>
-
-<h3>自分用HUBOTにhubot-ircをインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>myhubot/
-</span><span class='line'><span class="nv">$ </span>npm install hubot-irc --save <span class="o">&amp;&amp;</span> npm install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>irc連携のためのスクリプトを書く</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>中身はこんな感じ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat runhubot
-</span><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
-</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
-</span><span class='line'>
-</span><span class='line'>bin/hubot -a irc --name myhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>スクリプトの実行権限追加</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>chmod u+x runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>起動スクリプト実行！</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./runhubot <span class="p">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>irc上でbotがいるか確認する</h3>
-
-<p>bot_kunがいたのでOK</p>
-
-<h2>④botにさせたいことを設定する</h2>
-
-<h3>HUBOTにさせたいことはscriptsディレクトリ以下にCoffeeScriptもしくはJavaScriptで記述する</h3>
-
-<p>最初からいくつかのスクリプトが存在するので、それを参考に書けばOK</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim scripts/tell_fuga.coffee
-</span><span class='line'><span class="nv">$ </span>cat scripts/tell_fuga.coffee
-</span><span class='line'>module.exports <span class="o">=</span> <span class="o">(</span>robot<span class="o">)</span> -&gt;
-</span><span class='line'>
-</span><span class='line'>  robot.hear /hoge/, <span class="o">(</span>msg<span class="o">)</span> -&gt;
-</span><span class='line'>      msg.send <span class="s2">&quot;fuga&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>スクリプトを書いたら、再起動すると読み込んでくれる</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./runhubot <span class="p">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>⑤cronが使えるようにする</h2>
-
-<h3>node-cronをインストール</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install cron
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>cronを使ったスクリプトを書く</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim scripts/mention_hoge.coffee
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>今回は2時間おきに発言するスクリプトを書いてみた</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat scripts/mention_hoge.coffee
-</span><span class='line'><span class="nv">cron</span> <span class="o">=</span> require<span class="o">(</span><span class="s1">&#39;cron&#39;</span><span class="o">)</span>.CronJob
-</span><span class='line'>module.exports <span class="o">=</span> <span class="o">(</span>robot<span class="o">)</span> -&gt;
-</span><span class='line'>  robot.enter -&gt;
-</span><span class='line'>  new cron
-</span><span class='line'>    cronTime: <span class="s2">&quot;0 0 */2 * * *&quot;</span>
-</span><span class='line'>    start: <span class="nb">true</span>
-</span><span class='line'><span class="nb">    </span>timeZone: <span class="s2">&quot;Asia/Tokyo&quot;</span>
-</span><span class='line'>    onTick: -&gt;
-</span><span class='line'>      robot.send <span class="o">{</span>room: <span class="s2">&quot;#target_channel&quot;</span><span class="o">}</span>, <span class="s2">&quot;hoge&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参考資料</h2>
-
-<ul>
-<li><a href="http://www.tettori.net/post/293/">5分で終了。node.jsの環境構築が拍子抜けするほど簡単だったのでサンプルプログラム付きでまとめてみました【Mac編】</a></li>
-<li><a href="http://bulblub.com/2013/04/20/install_nodejs_with_homebrew/">Homebrewでnode.jsとnpmをインストール</a></li>
-<li><a href="http://tech-sketch.jp/2013/12/hubot-install-heroku.html">GitHubがOpsツールの中心として活用しているHubotを使ってみる</a></li>
-<li><a href="http://d.hatena.ne.jp/anatoo/20120204/1328368042">github社製ボットフレームワーク、hubotをIRCボットとして導入した話</a></li>
-<li><a href="http://mayo.hatenablog.com/entry/2013/10/15/074237">Redis 入門</a></li>
-<li>GitHub
-
-<ul>
-<li><a href="https://github.com/nandub/hubot-irc">https://github.com/nandub/hubot-irc</a></li>
-<li><a href="https://github.com/ncb000gt/node-cron">https://github.com/ncb000gt/node-cron</a></li>
-</ul>
-</li>
-<li><a href="http://com4tis.net/2013/05/30/node-js-background-pid-stop/">Node.jsをバックグラウンドでプロセスとして動かしたものを停止させる</a>
-
-<ul>
-<li>→もっといい方法あるはず。。。</li>
-</ul>
-</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/page5">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -2276,6 +2144,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/05/12/what-is-xdg-open-command/">xdg-open コマンドとは</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/05/11/the-third-step-of-yeoman/">初めてのYeoman (Grunt/Bowerとは)</a>
       </li>
     
@@ -2289,10 +2161,6 @@
     
       <li class="post">
         <a href="/blog/2015/05/08/what-is-mean/">MEANとはなにか</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/07/what-is-token/">「トークン」とはなにか</a>
       </li>
     
   </ul>
