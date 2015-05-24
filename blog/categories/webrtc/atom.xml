@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Webrtc | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/webrtc/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-24T15:33:54+09:00</updated>
+  <updated>2015-05-24T15:39:19+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -137,26 +137,26 @@ console.log('server listening...');
 <table>
 <thead>
 <tr>
-<th style="text-align:left;">引数           </th>
-<th style="text-align:left;">必須 / オプショナル            </th>
-<th style="text-align:left;"> 説明                                                                                 </th>
+<th>引数           </th>
+<th>必須 / オプショナル            </th>
+<th> 説明                                                                                 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">constraints    </td>
-<td style="text-align:left;">必須                           </td>
-<td style="text-align:left;"> successCallback に渡されるLocalMediaStream オブジェクトがサポートするメディアタイプ。</td>
+<td>constraints    </td>
+<td>必須                           </td>
+<td> successCallback に渡されるLocalMediaStream オブジェクトがサポートするメディアタイプ。</td>
 </tr>
 <tr>
-<td style="text-align:left;">successCallback</td>
-<td style="text-align:left;">必須                           </td>
-<td style="text-align:left;"> LocalMediaStream オブジェクトが取得できた場合、呼び出されるコールバック関数。        </td>
+<td>successCallback</td>
+<td>必須                           </td>
+<td> LocalMediaStream オブジェクトが取得できた場合、呼び出されるコールバック関数。        </td>
 </tr>
 <tr>
-<td style="text-align:left;">errorCallback  </td>
-<td style="text-align:left;">オプショナル (Firefox では必須)</td>
-<td style="text-align:left;"> 呼び出しが失敗した際に実行されるコールバック関数。最近の Firefox では必須となっています。省略された場合、 NS_ERROR_XPC_NOT_ENOUGH_ARGS error がスローされます。</td>
+<td>errorCallback  </td>
+<td>オプショナル (Firefox では必須)</td>
+<td> 呼び出しが失敗した際に実行されるコールバック関数。最近の Firefox では必須となっています。省略された場合、 NS_ERROR_XPC_NOT_ENOUGH_ARGS error がスローされます。</td>
 </tr>
 </tbody>
 </table>
