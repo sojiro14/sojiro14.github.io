@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。 「もっと見る」の場所を指定する 記事の内容としてトップページで表示させる範囲が決まったら、その直後に「もっと見る」リンクを設置します。 設置方法は以下のコメントを記事内の「もっと見る」 &hellip;">
+  <meta name="description" content="仮想環境構築ツールのVagrantが便利らしいという噂を聞いて使ってみたところ確かに便利でした。 以前VirtualBox上での環境構築に手間取った経験があったのでこれは今後も積極的に使って行きたいと思い、最初の手順をメモします。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,6 +94,267 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-03T22:18:11+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:18 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>仮想環境構築ツールのVagrantが便利らしいという噂を聞いて使ってみたところ確かに便利でした。</p>
+
+<p>以前VirtualBox上での環境構築に手間取った経験があったのでこれは今後も積極的に使って行きたいと思い、最初の手順をメモします。</p>
+
+<p>前提として今回仮想化ソフトとしてはVirtualBoxを使うのでインストールされているという前提で以下を書きます。</p>
+
+<h2>Vagrantのインストール</h2>
+
+<p>まずはVagrantをインストールする</p>
+
+<p><a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a></p>
+
+<p>こちらのダウンロードフォームから使っているOSに合ったものをダウンロードすればOK</p>
+
+<p>ダウンロードしたファイルをポチポチやってインストールが完了するので以下のコマンドで確かめる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant --version
+</span><span class='line'>Vagrant 1.7.2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>boxの追加</h2>
+
+<p>Vagrantでは仮想環境それぞれの設定をboxという単位で管理する</p>
+
+<p>現在管理しているboxの情報は <code>vagrant box list</code> で確認できる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box list
+</span><span class='line'>There are no installed boxes! Use <span class="sb">`</span>vagrant box add<span class="sb">`</span> to add some.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最初はboxが何もインストールされていないのでこのような結果</p>
+
+<p>boxは自分で作成することもできるが、既に誰かが作ってくれたものを取り込むこともできる</p>
+
+<p><a href="http://www.vagrantbox.es/">http://www.vagrantbox.es/</a></p>
+
+<p>こちらのサイトでは有志が様々なboxを提供してくれているので今回はこちらを使わせていただくことにする</p>
+
+<p>リストからインストールするboxを決めたら、以下のコマンドで追加する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box add 名前 boxファイル
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回はインストールするboxをcentos64という名前で管理するために以下のようにした</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box add centos64 http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20131103.box
+</span><span class='line'><span class="o">==</span>&gt; box: Adding box <span class="s1">&#39;centos64&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> provider:
+</span><span class='line'>   box: Downloading: http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20131103.box
+</span><span class='line'><span class="o">==</span>&gt; box: Successfully added box <span class="s1">&#39;centos64&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> <span class="s1">&#39;virtualbox&#39;</span>!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>vagrant box list</code> コマンドで確認するとcentos64という名前でboxがインストールされたことがわかる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box list
+</span><span class='line'>centos64 <span class="o">(</span>virtualbox, 0<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>仮想環境を立ち上げる</h2>
+
+<p>boxを追加したら早速そのboxを使って仮想環境を立ち上げる</p>
+
+<p>今回は <code>~/virtual_machines/centos64/</code> というディレクトリでこの仮想環境を管理することにする</p>
+
+<p>まずは <code>vagrant init</code> コマンドで環境立ち上げの準備をする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> ~/virtual_machines/centos64
+</span><span class='line'><span class="nv">$ </span>vagrant init centos64
+</span><span class='line'>A <span class="sb">`</span>Vagrantfile<span class="sb">`</span> has been placed in this directory. You are now
+</span><span class='line'>ready to <span class="sb">`</span>vagrant up<span class="sb">`</span> your first virtual environment! Please <span class="nb">read</span>
+</span><span class='line'>the comments in the Vagrantfile as well as documentation on
+</span><span class='line'><span class="sb">`</span>vagrantup.com<span class="sb">`</span> <span class="k">for</span> more information on using Vagrant.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このinitコマンドを打つことで <code>Vagrantfile</code> が作られ、VirtualBox上にも仮想環境が現れる</p>
+
+<p> <code>Vagrantfile</code> ではこの仮想環境の設定を規定している</p>
+
+<p>ここまで準備が完了したらいよいよ環境を立ち上げる <code>vagrant up</code> コマンドを使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant up
+</span><span class='line'>Bringing machine <span class="s1">&#39;default&#39;</span> up with <span class="s1">&#39;virtualbox&#39;</span> provider...
+</span><span class='line'><span class="o">==</span>&gt; default: Importing base box <span class="s1">&#39;centos64&#39;</span>...
+</span><span class='line'><span class="o">==</span>&gt; default: Matching MAC address <span class="k">for</span> NAT networking...
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>VirtualBox上で仮想環境が立ち上がっていることを確認できたら成功</p>
+
+<p>仮想環境の状態は <code>vagrant status</code> コマンドでも確認できる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant status
+</span><span class='line'>Current machine states:
+</span><span class='line'>
+</span><span class='line'>default                   running <span class="o">(</span>virtualbox<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>The VM is running. To stop this VM, you can run <span class="sb">`</span>vagrant halt<span class="sb">`</span> to
+</span><span class='line'>shut it down forcefully, or you can run <span class="sb">`</span>vagrant <span class="nb">suspend</span><span class="sb">`</span> to simply
+</span><span class='line'><span class="nb">suspend </span>the virtual machine. In either <span class="k">case</span>, to restart it again,
+</span><span class='line'>simply run <span class="sb">`</span>vagrant up<span class="sb">`</span>.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>立ち上げた仮想環境に入る</h2>
+
+<p>立ち上げた仮想環境に入るのは非常に簡単で、管理ディレクトリ上で <code>vagrant ssh</code> コマンドを打てばよい</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh
+</span><span class='line'>Welcome to your Vagrant-built virtual machine.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>後は通常通り好きなように仮想環境を使える</p>
+
+<h2>ネットワークの設定をする</h2>
+
+<p>今回立ち上げた環境では主にWebサービスの開発を行いたいのでローカルからこの環境にアクセスするための設定をする</p>
+
+<p>ネットワークの設定は <code>Vagrantfile</code> に規定されているのでこのファイルを変更する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim Vagrantfile
+</span><span class='line'><span class="nv">$ </span>cat Vagrantfile
+</span><span class='line'>...
+</span><span class='line'>config.vm.network <span class="s2">&quot;private_network&quot;</span>, ip: <span class="s2">&quot;192.168.33.10&quot;</span>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>private_networkの設定をしている行のコメントアウトを外すことでIP <code>192.168.33.10</code> でアクセス可能になる</p>
+
+<p> <code>Vagrantfile</code> の設定を変更したら <code>vagrant reload</code> コマンドで設定をリロードしてやる必要がある</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant <span class="nv">reload</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Attempting graceful shutdown of VM...
+</span><span class='line'><span class="o">==</span>&gt; default: Clearing any previously <span class="nb">set </span>forwarded ports...
+</span><span class='line'><span class="o">==</span>&gt; default: Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">==</span>&gt; default: Preparing network interfaces based on configuration...
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>決まった操作の設定</h2>
+
+<p>仮想環境を立ち上げた後、Webサーバーの設定など毎回やる操作がある場合はそれらを予め記述しておいてVagrant側で実行することができる(provisioning)</p>
+
+<p>まずは <code>Vagrantfile</code> に設定を追加する。設定する行は <code>config.vm.provision</code> の行。</p>
+
+<p>元々コメントアウトで記述があるようにインラインで <code>Vagrantfile</code> 内に直接書くこともできるが、以下のように設定することで外部ファイルに書き出すこともできる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>config.vm.provision :shell, :path <span class="o">=</span>&gt; <span class="s2">&quot;provision.sh&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>provision.sh</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo yum -y install httpd
+</span><span class='line'>sudo service httpd start
+</span><span class='line'>sudo chkconfig httpd on
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>Vagrantfile</code> を設定したら忘れず <code>vagrant reload</code></p>
+
+<p>その後provisionの実行は以下のコマンド</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant provision
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://dotinstall.com/lessons/basic_vagrant">Vagrant入門</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -625,54 +886,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view/">Ruby on Railsで初めてアプリを作ってみる #5 -controllerとviewの追加-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-29T23:58:09+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:58 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>生成したリソースに対応するcontrollerを作成し、このリソースに対するviewとそのためのアクションを追加していく。</p>
-
-<h2>rails generate controller</h2>
-
-<p>controllerを作成する。controllerの名前は1文字目が大文字で、複数形を指定するのがrailsの規約である。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails g controller Stocks
-</span><span class='line'><span class="c"># rails generateコマンドは rails g と省略できる</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドでcontrollerのファイルとviewのファイルが生成される。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page3">&larr; Older</a>
@@ -694,6 +907,10 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/05/13/start-up-a-web-camera-via-web/">Webからデバイスのカメラを起動する</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/05/12/what-is-xdg-open-command/">xdg-open コマンドとは</a>
       </li>
     
@@ -707,10 +924,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
     
       <li class="post">
         <a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/08/what-is-mean/">MEANとはなにか</a>
       </li>
     
   </ul>

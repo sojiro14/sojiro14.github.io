@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-21T02:39:33+09:00</updated>
+  <updated>2015-05-24T15:33:54+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,261 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Webからデバイスのカメラを起動する]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/13/start-up-a-web-camera-via-web/"/>
+    <updated>2015-05-13T18:58:45+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/13/start-up-a-web-camera-via-web</id>
+    <content type="html"><![CDATA[<p>Web からデバイスのカメラを起動してみたいと思いたち、少し調べて見たことのメモ</p>
+
+<h2>準備</h2>
+
+<p>以前のエントリ <a href="http://blog.sojiro.me/blog/2015/01/07/making-a-web-server-with-node-dot-js/">Node.jsを使ってWeb Serverを作ってみました</a> で立てたサーバーで実験してみます</p>
+
+<h2>ベースとなるコード</h2>
+
+<p>このコードに手を入れていきます</p>
+
+<figure class='code'><figcaption><span>web.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/html&#39;</span><span class="p">});</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;&lt;title&gt;Hello World&lt;/title&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="o">****</span><span class="p">,</span> <span class="s1">&#39;xxx.xx.x.xxx&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;server listening...&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>コードの全体像</h2>
+
+<p>最終的なコードはこちら。かなり手抜きしてます</p>
+
+<p><a href="http://python-gazo.blog.jp/html5/javascript/webcamera">こちら</a> を参考にさせていただきました</p>
+
+<figure class='code'><figcaption><span>web_camera.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">_html</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="cm">/*</span>
+</span><span class='line'><span class="cm">&lt;!doctype html&gt;</span>
+</span><span class='line'><span class="cm">&lt;html&gt;</span>
+</span><span class='line'><span class="cm">&lt;head&gt;</span>
+</span><span class='line'><span class="cm">  &lt;title&gt;Web Camera&lt;/title&gt;</span>
+</span><span class='line'><span class="cm">  &lt;script type=&quot;text/javascript&quot;&gt;</span>
+</span><span class='line'><span class="cm">function capCamera(){</span>
+</span><span class='line'><span class="cm">  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || window.navigator.mozGetUserMedia;</span>
+</span><span class='line'><span class="cm">    window.URL = window.URL || window.webkitURL;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">  var video = document.getElementById(&quot;camera&quot;);</span>
+</span><span class='line'><span class="cm">  var localStream = null;</span>
+</span><span class='line'><span class="cm">  navigator.getUserMedia({video: true, audio: false},</span>
+</span><span class='line'><span class="cm">  function(stream) {</span>
+</span><span class='line'><span class="cm">    console.log(stream);</span>
+</span><span class='line'><span class="cm">    video.src = window.URL.createObjectURL(stream);</span>
+</span><span class='line'><span class="cm">  },</span>
+</span><span class='line'><span class="cm">  function(err) {</span>
+</span><span class='line'><span class="cm">    console.log(err);</span>
+</span><span class='line'><span class="cm">  }</span>
+</span><span class='line'><span class="cm">  );</span>
+</span><span class='line'><span class="cm">} </span>
+</span><span class='line'><span class="cm">  &lt;/script&gt;</span>
+</span><span class='line'><span class="cm">&lt;/head&gt;</span>
+</span><span class='line'><span class="cm">&lt;body&gt;</span>
+</span><span class='line'><span class="cm">   &lt;input type=&quot;button&quot;  value=&quot;Web Camera&quot; onClick=&quot;capCamera()&quot;&gt;</span>
+</span><span class='line'><span class="cm">   &lt;br&gt;</span>
+</span><span class='line'><span class="cm">   &lt;video id=&quot;camera&quot; width=&quot;640&quot; height=&quot;480&quot; autoplay=&quot;1&quot; &gt;&lt;/video&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">&lt;/body&gt;</span>
+</span><span class='line'><span class="cm">&lt;/html&gt;</span>
+</span><span class='line'><span class="cm">*/</span><span class="p">}).</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(\n)/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/html&#39;</span><span class="p">});</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">_html</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="o">****</span><span class="p">,</span> <span class="s1">&#39;xxx.xx.x.xxx&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;server listening...&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>HTML 部分</h2>
+
+<p>HTML の部分をみてみます</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;body&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span>  <span class="na">value=</span><span class="s">&quot;Web Camera&quot;</span> <span class="na">onClick=</span><span class="s">&quot;capCamera()&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;br&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;video</span> <span class="na">id=</span><span class="s">&quot;camera&quot;</span> <span class="na">width=</span><span class="s">&quot;640&quot;</span> <span class="na">height=</span><span class="s">&quot;480&quot;</span> <span class="na">autoplay=</span><span class="s">&quot;1&quot;</span> <span class="nt">&gt;&lt;/video&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>構成はボタンと、カメラからの映像をキャプチャする範囲の2つだけ</p>
+
+<p>ボタンには <code>capCamera()</code> という関数が紐づけられています</p>
+
+<h2>JavaScript 部分</h2>
+
+<p>次に JavaScript の部分をみてみます</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">capCamera</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span> <span class="o">=</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span> <span class="o">||</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">webkitGetUserMedia</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">mozGetUserMedia</span><span class="p">;</span>
+</span><span class='line'>    <span class="nb">window</span><span class="p">.</span><span class="nx">URL</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">URL</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">webkitURL</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">video</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;camera&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">localStream</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span><span class="p">({</span><span class="nx">video</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">audio</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span>
+</span><span class='line'>  <span class="kd">function</span><span class="p">(</span><span class="nx">stream</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">stream</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">video</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nx">createObjectURL</span><span class="p">(</span><span class="nx">stream</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここで <code>navigator</code> インターフェースの <code>getUserMedia()</code> メソッドを使用しているのがわかります</p>
+
+<h3>getUserMedia の構文</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span> <span class="p">(</span> <span class="nx">constraints</span><span class="p">,</span> <span class="nx">successCallback</span><span class="p">,</span> <span class="nx">errorCallback</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">引数           </th>
+<th style="text-align:left;">必須 / オプショナル            </th>
+<th style="text-align:left;"> 説明                                                                                 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">constraints    </td>
+<td style="text-align:left;">必須                           </td>
+<td style="text-align:left;"> successCallback に渡されるLocalMediaStream オブジェクトがサポートするメディアタイプ。</td>
+</tr>
+<tr>
+<td style="text-align:left;">successCallback</td>
+<td style="text-align:left;">必須                           </td>
+<td style="text-align:left;"> LocalMediaStream オブジェクトが取得できた場合、呼び出されるコールバック関数。        </td>
+</tr>
+<tr>
+<td style="text-align:left;">errorCallback  </td>
+<td style="text-align:left;">オプショナル (Firefox では必須)</td>
+<td style="text-align:left;"> 呼び出しが失敗した際に実行されるコールバック関数。最近の Firefox では必須となっています。省略された場合、 NS_ERROR_XPC_NOT_ENOUGH_ARGS error がスローされます。</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>constraints</h3>
+
+<p>video, audio の二つの属性に対して真偽値を指定する</p>
+
+<h3>successcallback</h3>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_API#LocalMediaStream">LocalMediaStream</a> が引数として渡されるので <code>window.URL.createObjectURL()</code> メソッドにそのまま渡してオブジェクトの URL を取得する</p>
+
+<p>このように取得したビデオストリームの URL を <code>video</code> の DOM に渡すことで <code>video</code> 領域にビデオを表示します</p>
+
+<h2>JavaScript 内のヒアドキュメント</h2>
+
+<p>今回は横着して <code>web_camera.js</code> の中に HTML をすべてヒアドキュメントで記述しました JavaScript 内のヒアドキュメントに関してはちょっとしたテクニックがあるようなのでそれはまた次の機会に書こうと思います。</p>
+
+<p>Web からデバイスのカメラを操作できるというのはとても面白いのですが、今回扱ったメソッドはまだまだ一部のブラウザでしかサポートされていないので、特にモバイルで使えるようになったらもっと面白くなるのに、という感想をもってこのエントリを終わります。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://developer.mozilla.org/ja/docs/Web/API/Navigator/getUserMedia">Navigator.getUserMedia</a></li>
+<li><a href="http://python-gazo.blog.jp/html5/javascript/webcamera">WebRTCでカメラの起動とキャプチャ</a></li>
+<li><a href="http://qiita.com/ampersand/items/c6c773ba7ae9115856d0">SafariでもエラーにならないJavascriptのヒアドキュメントの書き方</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Xdg-open コマンドとは]]></title>
@@ -228,14 +483,14 @@
 <h3>URL を指定してみる</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>xdg-open http://blog.sojiro.me
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>xdg-open http://blog.sojiro.me
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p><img src="http://sojiro14.github.io/images/xdg_open/blog.png"></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>xdg-open http://google.com
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>xdg-open http://google.com
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -3062,235 +3317,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <li><a href="http://sixeight.hatenablog.com/entry/20090730/1248973178">screenのデタッチ/アタッチ</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #5 -controllerとviewの追加-]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view/"/>
-    <updated>2014-11-29T23:58:09+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view</id>
-    <content type="html"><![CDATA[<p>生成したリソースに対応するcontrollerを作成し、このリソースに対するviewとそのためのアクションを追加していく。</p>
-
-<h2>rails generate controller</h2>
-
-<p>controllerを作成する。controllerの名前は1文字目が大文字で、複数形を指定するのがrailsの規約である。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails g controller Stocks
-</span><span class='line'><span class="c"># rails generateコマンドは rails g と省略できる</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドでcontrollerのファイルとviewのファイルが生成される。</p>
-
-<!-- more -->
-
-
-<h2>routesの設定</h2>
-
-<p>railsでは <code>config/routes</code> ファイルにてdispatch管理をしている。このファイルの設定でRESTfulなURLを自動生成してくれる。</p>
-
-<p>今回追加したcontrollerの設定も追加する。
- <code>config/routes</code> に以下の行を追加する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:stocks</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>この設定により、リソースの基本的な操作を行うURLが生成される。</p>
-
-<p>この他にもroutesの設定方法はいくつかあり、それにより自由にエンドポイントの追加ができるがここでは省略。</p>
-
-<h2>設定されているroutesの確認</h2>
-
-<p>routesの設定が完了したら、生成されたURLの確認をする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake routes
-</span><span class='line'>        Prefix Verb   URI Pattern                    Controller#Action
-</span><span class='line'>        stocks GET    /stocks<span class="o">(</span>.:format<span class="o">)</span>              stocks#index
-</span><span class='line'>               POST   /stocks<span class="o">(</span>.:format<span class="o">)</span>              stocks#create
-</span><span class='line'>     new_stock GET    /stocks/new<span class="o">(</span>.:format<span class="o">)</span>          stocks#new
-</span><span class='line'>    edit_stock GET    /stocks/:id/edit<span class="o">(</span>.:format<span class="o">)</span>     stocks#edit
-</span><span class='line'>         stock GET    /stocks/:id<span class="o">(</span>.:format<span class="o">)</span>          stocks#show
-</span><span class='line'>               PATCH  /stocks/:id<span class="o">(</span>.:format<span class="o">)</span>          stocks#update
-</span><span class='line'>               PUT    /stocks/:id<span class="o">(</span>.:format<span class="o">)</span>          stocks#update
-</span><span class='line'>               DELETE /stocks/:id<span class="o">(</span>.:format<span class="o">)</span>          stocks#destroy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>アクションの追加</h2>
-
-<p> <code>$ rake routes</code> で示されたController#Actionに沿って、controllerにアクションを追加していく。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">app</span><span class="o">/</span><span class="n">controllers</span><span class="o">/</span><span class="n">stocks_controller</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">StocksController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:set_stock</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="p">,</span> <span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:destroy</span><span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># GET /stocks</span>
-</span><span class='line'>  <span class="c1"># GET /stocks.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
-</span><span class='line'>    <span class="vi">@stocks</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">all</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># GET /stocks/1</span>
-</span><span class='line'>  <span class="c1"># GET /stocks/1.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># GET /stocks/new</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">new</span>
-</span><span class='line'>    <span class="vi">@stock</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># GET /stocks/1/edit</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">edit</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># POST /stocks</span>
-</span><span class='line'>  <span class="c1"># POST /stocks.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>    <span class="vi">@stock</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">stock_params</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>      <span class="k">if</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="vi">@stock</span><span class="p">,</span> <span class="ss">notice</span><span class="p">:</span> <span class="s1">&#39;Stock was successfully created.&#39;</span> <span class="p">}</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">action</span><span class="p">:</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:created</span><span class="p">,</span> <span class="ss">location</span><span class="p">:</span> <span class="vi">@stock</span> <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">action</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span> <span class="p">}</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:unprocessable_entity</span> <span class="p">}</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># PATCH/PUT /stocks/1</span>
-</span><span class='line'>  <span class="c1"># PATCH/PUT /stocks/1.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">update</span>
-</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>      <span class="k">if</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">stock_params</span><span class="p">)</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="vi">@stock</span><span class="p">,</span> <span class="ss">notice</span><span class="p">:</span> <span class="s1">&#39;Stock was successfully updated.&#39;</span> <span class="p">}</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:no_content</span> <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">action</span><span class="p">:</span> <span class="s1">&#39;edit&#39;</span> <span class="p">}</span>
-</span><span class='line'>        <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@stock</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="ss">:unprocessable_entity</span> <span class="p">}</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># DELETE /stocks/1</span>
-</span><span class='line'>  <span class="c1"># DELETE /stocks/1.json</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">destroy</span>
-</span><span class='line'>    <span class="vi">@stock</span><span class="o">.</span><span class="n">destroy</span>
-</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>      <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="n">stocks_url</span> <span class="p">}</span>
-</span><span class='line'>      <span class="nb">format</span><span class="o">.</span><span class="n">json</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:no_content</span> <span class="p">}</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">private</span>
-</span><span class='line'>    <span class="c1"># Use callbacks to share common setup or constraints between actions.</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">set_stock</span>
-</span><span class='line'>      <span class="vi">@stock</span> <span class="o">=</span> <span class="no">Stock</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># Never trust parameters from the scary internet, only allow the white list through.</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">stock_params</span>
-</span><span class='line'>      <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:stock</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<p><a href="http://dotinstall.com/lessons/basic_rails_v2">ドットインストール</a></p>
 ]]></content>
   </entry>
   

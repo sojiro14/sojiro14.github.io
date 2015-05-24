@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-21T02:39:33+09:00</updated>
+  <updated>2015-05-24T15:33:54+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -152,12 +152,12 @@ $ xdg-open test/
 
 <h3>URL を指定してみる</h3>
 
-<pre><code class="bash">xdg-open http://blog.sojiro.me
+<pre><code class="bash">$ xdg-open http://blog.sojiro.me
 </code></pre>
 
 <p><img src="/images/xdg_open/blog.png"></p>
 
-<pre><code class="bash">xdg-open http://google.com
+<pre><code class="bash">$ xdg-open http://google.com
 </code></pre>
 
 <p><img src="/images/xdg_open/google.png"></p>
