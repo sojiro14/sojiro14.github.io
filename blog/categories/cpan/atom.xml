@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Cpan | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/cpan/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-06-14T15:02:39+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PAUSE ID の取得]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/17/get-pause-id/"/>
+    <updated>2015-05-17T23:23:14+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/17/get-pause-id</id>
+    <content type="html"><![CDATA[<p>いま私は日本の Perl シーンにおける名立たるプログラマの方々の元で仕事させていただくという大変ありがたい立場にいるのですが、常々</p>
+
+<p><strong> OSS に対する活動が成長の大きな糧になるからチャレンジすべし </strong></p>
+
+<p>とアドバイスを受けています。</p>
+
+<p>ところが初めてその言葉を受けてから既に1年以上経とうというのに何もしていない。これは本当にいかんと思ってとにかく CAPN に貢献してみようと。</p>
+
+<p>そこで調べてみると PAUSE ID なるものが必要なようなので取得までの過程をここへメモします</p>
+
+<h2>PAUSE ID の取得</h2>
+
+<p>PAUSE は The Perl Authors Upload Server の略称で、ここから CPAN へのアップなどするよう</p>
+
+<p><a href="http://pause.perl.org/pause/query?ACTION=request_id">ここ</a> から登録を開始する</p>
+
+<p>各項目に入力してアカウント申請を行う</p>
+
+<p>full name の欄はそれっぽい名前じゃないとはじかれるが、後から変えられる</p>
+
+<p>申請を行うと、しばらくしてアカウント発行の通知が登録したメールアドレスに届く</p>
+
+<p>この通知は人によって届くまでの時間にばらつきがあるようだが、今回は申請したその日のうちに来た</p>
+
+<p>通知にはパスワード変更ページへのリンクと暫定のパスワードが記載されているので、登録した ID と暫定パスワードで Basic 認証を突破してパスワードを設定する</p>
+
+<p>アカウントが発行されると Edit Account Info というメニューへアクセスできるようになる</p>
+
+<p>ここに</p>
+
+<blockquote><p>The email address [id]@cpan.org should be configured to forward mail to &hellip;</p></blockquote>
+
+<p>という項目があるので、 <code>[id]@cpan.org</code> へのメールを受け取るメールアドレスを設定する</p>
+
+<p>ここで設定しておかないと後々 <code>[id]@cpan.org</code> に対するメールが受け取れず不便を被るので要設定とのこと</p>
+
+<h2>Gravatar の設定</h2>
+
+<p>Gravatar は Email アカウントにアイコンを紐づけて様々なサービスで使えるようにするサービスで、 GitHub などでも使われている</p>
+
+<p><a href="https://ja.gravatar.com/">https://ja.gravatar.com/</a></p>
+
+<p>Gravatar に PAUSE ID に紐づいたアドレスでアイコンを設定することで CPAN のアカウントへアイコンを設定することができる</p>
+
+<pre><code>[id]@cpan.org  # 設定するメールアドレス
+</code></pre>
+
+<p>既に Gravatar のアカウントがある場合は「メールアドレスの追加」から上記アドレスを追加すればよい</p>
+
+<p>新たに Gravatar のアカウントを取得する場合は注意が必要なようである。 <code>@cpan.org</code> のメールアドレスが前項の PAUSE ID 取得の際に自分のメールアドレスへ転送されるよう設定してからでないと、メールアドレスの認証が取れず、 Gravatar のアカウント取得に失敗するようだ。</p>
+
+<p><img src="/images/cpan/gravatar.png"></p>
+
+<p>Gravatar の設定が済むと PAUSE アカウントに設定したアイコンが表示されるようになる</p>
+
+<p><img src="/images/cpan/sojiro.png"></p>
+
+<p>さて、アカウントは取得した。後はコードを書いて上げるだけ。</p>
+
+<p>やるしかないのです。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.livedoor.jp/sasata299/archives/51284970.html">こんな僕が CPAN Author （一応） になるまで。</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

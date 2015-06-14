@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-05-24T15:54:55+09:00</updated>
+  <updated>2015-06-14T15:02:39+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,240 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Homebrewをupdateしよう]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/19/update-homebrew/"/>
+    <updated>2015-05-19T23:39:53+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/19/update-homebrew</id>
+    <content type="html"><![CDATA[<p>以前の記事で Homebrew を使って Docker のもろもろをインストールしたが、実はそのときインストールされたツールのバージョンが古く、それが原因で作業が少し詰まった。</p>
+
+<p>そんなときは Homebrew の update である。</p>
+
+<h2>Homebrew を update する</h2>
+
+<p>おもむろに</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew update
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>新しい FORMULA 、更新された FORMULA 、削除された FORMULA の一覧が表示されて Homebrew の update が完了する</p>
+
+<h2>古いモジュールの upgrade</h2>
+
+<p>Homebrew を update しただけでは、すでにインストールされているモジュールは新しくならない</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew upgrade <span class="o">[</span>FORMULA<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>で最新バージョンに upgrade する</p>
+
+<p>今後 Homebrew を使うときは参照する FORMULA のバージョンも気にしたい</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JSON Schema のバリデーション]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/18/validate-json-schema/"/>
+    <updated>2015-05-18T23:41:47+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/18/validate-json-schema</id>
+    <content type="html"><![CDATA[<p>JSON Schema を勉強中であります。</p>
+
+<p>その名の通り JSON でリソースそのものやリソースの操作まで表現できる面白いツールだと思います。</p>
+
+<p>しかし、 JSON Schema は往々にして複雑になりがちで、書く量が多くなると typo も増えてきます。</p>
+
+<p>そこで今回は JSON Schema のバリデーションに使えるツールをメモ程度に書いておきます。</p>
+
+<h2>validate-schema コマンド</h2>
+
+<p>まずは <code>validate-schema</code> コマンドから。簡単なバリデーションをしてくれる。</p>
+
+<p>gem の json_schema パッケージに入っているのでインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install json_schema
+</span><span class='line'>Password:
+</span><span class='line'>Fetching: json_schema-0.6.0.gem <span class="o">(</span>100%<span class="o">)</span>
+</span><span class='line'>Successfully installed json_schema-0.6.0
+</span><span class='line'>...
+</span><span class='line'><span class="m">1</span> gem installed
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールできたらオプションに <code>-d</code> をつけて実行</p>
+
+<p>これがバリデーションに通った例</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>validate-schema -d json_schema/directory/test.json
+</span><span class='line'>json_schema/directory/test.json is valid.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>バリデーションに落ちるとこうなる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>validate-schema -d json_schema/directory/test.json
+</span><span class='line'>json_schema/directory/test.json: Invalid JSON. Try to validate using <span class="sb">`</span>jsonlint<span class="sb">`</span>.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>なんと別のツールを使って確かめろということなので、以下につづく。</p>
+
+<h2>jsonlint コマンド</h2>
+
+<p>さて、 validate-schema に jsonlint を使え、と言われたので早速インストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install jsonlint -g
+</span><span class='line'>npm http GET https://registry.npmjs.org/jsonlint
+</span><span class='line'>npm http <span class="m">200</span> https://registry.npmjs.org/jsonlint
+</span><span class='line'>...
+</span><span class='line'>/usr/local/bin/jsonlint -&gt; /usr/local/lib/node_modules/jsonlint/lib/cli.js
+</span><span class='line'>jsonlint@1.6.2 /usr/local/lib/node_modules/jsonlint
+</span><span class='line'>├── nomnom@1.8.1 <span class="o">(</span>underscore@1.6.0, chalk@0.4.0<span class="o">)</span>
+</span><span class='line'>└── JSV@4.0.2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールが完了したら早速チェック</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>jsonlint json_schema/directory/test.json
+</span><span class='line'><span class="o">[</span>Error: Parse error on line 20:
+</span><span class='line'>...<span class="err">&quot;</span><span class="o">]</span>,                <span class="o">}</span>            <span class="o">}</span>,
+</span><span class='line'>----------------------^
+</span><span class='line'>Expecting <span class="s1">&#39;STRING&#39;</span>, got <span class="s1">&#39;}&#39;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今度はバリデーションに落ちる理由と場所を示してくれるのですぐに修正できる</p>
+
+<p>だいたいバリデーションに落ちるときは <code>,</code> のつけ過ぎが多い</p>
+
+<p>これらのツールで無駄にハマる時間をなくしたいものです。</p>
+
+<h2>validate-schema コマンド（再）</h2>
+
+<p>今回は JSON Schema 単体のチェックだったので <code>validate-schema</code> コマンドが使い勝手悪く見えるので補足</p>
+
+<p>もともとは、ある JSON データが JSON Schema に則っているかのバリデーションをするツールである</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>validate-schema json_schema/check.json test.json
+</span><span class='line'>test.json#/emotion: failed schema <span class="c">#/properties/emotion: embarrassment is not a member of [&quot;pleasure&quot;, &quot;anger&quot;, &quot;sadness&quot;, &quot;enjoyment&quot;].</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/brandur/json_schema">validate-schema</a></li>
+<li><a href="https://www.npmjs.com/package/jsonlint">jsonlint</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PAUSE ID の取得]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/17/get-pause-id/"/>
+    <updated>2015-05-17T23:23:14+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/17/get-pause-id</id>
+    <content type="html"><![CDATA[<p>いま私は日本の Perl シーンにおける名立たるプログラマの方々の元で仕事させていただくという大変ありがたい立場にいるのですが、常々</p>
+
+<p><strong> OSS に対する活動が成長の大きな糧になるからチャレンジすべし </strong></p>
+
+<p>とアドバイスを受けています。</p>
+
+<p>ところが初めてその言葉を受けてから既に1年以上経とうというのに何もしていない。これは本当にいかんと思ってとにかく CAPN に貢献してみようと。</p>
+
+<p>そこで調べてみると PAUSE ID なるものが必要なようなので取得までの過程をここへメモします</p>
+
+<h2>PAUSE ID の取得</h2>
+
+<p>PAUSE は The Perl Authors Upload Server の略称で、ここから CPAN へのアップなどするよう</p>
+
+<p><a href="http://pause.perl.org/pause/query?ACTION=request_id">ここ</a> から登録を開始する</p>
+
+<p>各項目に入力してアカウント申請を行う</p>
+
+<p>full name の欄はそれっぽい名前じゃないとはじかれるが、後から変えられる</p>
+
+<p>申請を行うと、しばらくしてアカウント発行の通知が登録したメールアドレスに届く</p>
+
+<p>この通知は人によって届くまでの時間にばらつきがあるようだが、今回は申請したその日のうちに来た</p>
+
+<p>通知にはパスワード変更ページへのリンクと暫定のパスワードが記載されているので、登録した ID と暫定パスワードで Basic 認証を突破してパスワードを設定する</p>
+
+<p>アカウントが発行されると Edit Account Info というメニューへアクセスできるようになる</p>
+
+<p>ここに</p>
+
+<blockquote><p>The email address [id]@cpan.org should be configured to forward mail to &hellip;</p></blockquote>
+
+<p>という項目があるので、 <code>[id]@cpan.org</code> へのメールを受け取るメールアドレスを設定する</p>
+
+<p>ここで設定しておかないと後々 <code>[id]@cpan.org</code> に対するメールが受け取れず不便を被るので要設定とのこと</p>
+
+<h2>Gravatar の設定</h2>
+
+<p>Gravatar は Email アカウントにアイコンを紐づけて様々なサービスで使えるようにするサービスで、 GitHub などでも使われている</p>
+
+<p><a href="https://ja.gravatar.com/">https://ja.gravatar.com/</a></p>
+
+<p>Gravatar に PAUSE ID に紐づいたアドレスでアイコンを設定することで CPAN のアカウントへアイコンを設定することができる</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[id]@cpan.org  # 設定するメールアドレス</span></code></pre></td></tr></table></div></figure>
+
+
+<p>既に Gravatar のアカウントがある場合は「メールアドレスの追加」から上記アドレスを追加すればよい</p>
+
+<p>新たに Gravatar のアカウントを取得する場合は注意が必要なようである。 <code>@cpan.org</code> のメールアドレスが前項の PAUSE ID 取得の際に自分のメールアドレスへ転送されるよう設定してからでないと、メールアドレスの認証が取れず、 Gravatar のアカウント取得に失敗するようだ。</p>
+
+<p><img src="http://sojiro14.github.io/images/cpan/gravatar.png"></p>
+
+<p>Gravatar の設定が済むと PAUSE アカウントに設定したアイコンが表示されるようになる</p>
+
+<p><img src="http://sojiro14.github.io/images/cpan/sojiro.png"></p>
+
+<p>さて、アカウントは取得した。後はコードを書いて上げるだけ。</p>
+
+<p>やるしかないのです。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.livedoor.jp/sasata299/archives/51284970.html">こんな僕が CPAN Author （一応） になるまで。</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Webからデバイスのカメラを起動する]]></title>
@@ -2866,455 +3100,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <ul>
 <li><a href="http://vimwiki.net/?FrontPage">VIM wiki</a></li>
 <li><a href="http://nanasi.jp/articles/howto/editing/et-inserttab.html">:set expandtab（:set et）設定の時に、タブ文字を挿入する </a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[HUBOTを使ったSlack Bot作成メモ]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/12/15/slack-bot-by-hubot/"/>
-    <updated>2014-12-15T03:02:30+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/12/15/slack-bot-by-hubot</id>
-    <content type="html"><![CDATA[<p>SlackにBotを入れたいと思い、少し調べてみたところHUBOTがやはり簡単らしいのでやってみた</p>
-
-<h2>HUBOT用のAPI Tokenを取得する</h2>
-
-<p>まずはSlackのチームメニューからConfigure Integrationsを選択</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/team_menu.png"></p>
-
-<p>様々な外部サービスとの連携メニューからHUBOTを選択する</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/add_hubot.png"></p>
-
-<p>追加するbotの名前を入力</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/set_botname.png"></p>
-
-<p>ここまでのステップを踏むとAPI Tokenが記されたページが表示される</p>
-
-<p>そしてこの段階でbotがSlackにjoinする</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/join_bot.png"></p>
-
-<!-- more -->
-
-
-<h2>HUBOTの設定をする</h2>
-
-<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>にも記したHUBOTのセットアップを進める。</p>
-
-<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>の「②HUBOTをインストールする」までを済ませておく。</p>
-
-<p>新たなbotの生成</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create slack_sojiro_test
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>slack用のpluginをインストール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>slack_sojiro_test/
-</span><span class='line'><span class="nv">$ </span>npm install hubot-slack --save
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>起動用スクリプトの作成。先ほど取得したAPI Tokenを使用する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim runhubot
-</span><span class='line'><span class="nv">$ </span>cat runhubot
-</span><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_TOKEN</span><span class="o">=</span>xxxx-123456789-ABCDEFGHIJKLMN
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_TEAM</span><span class="o">=</span>Sojiro-test
-</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_SLACK_BOTNAME</span><span class="o">=</span><span class="nb">test</span>-bot
-</span><span class='line'>
-</span><span class='line'>bin/hubot --adapter slack
-</span><span class='line'><span class="nv">$ </span>chmod u+x runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>botの起動</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./runhubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでSlack上のbotがHUBOTのスクリプトに沿って反応するようになったはず</p>
-
-<h2>botを使ってみる</h2>
-
-<p>HUBOTではデフォルトでいくつかのスクリプトが用意されているので使って試してみる</p>
-
-<h3>ping</h3>
-
-<p>生存確認</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/ping.png"></p>
-
-<h3>image me</h3>
-
-<p>画像検索</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/image_me.png"></p>
-
-<h3>animate me</h3>
-
-<p>アニメーション検索</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/animate_me.png"></p>
-
-<h3>youtube me</h3>
-
-<p>動画検索</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/youtube_me.png"></p>
-
-<h3>translate me</h3>
-
-<p>翻訳（日本語から英語）</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/translate_me_1.png"></p>
-
-<p>翻訳（英語から日本語）</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/translate_me_2.png"></p>
-
-<h3>map me</h3>
-
-<p>地図検索</p>
-
-<p><img src="http://sojiro14.github.io/images/slack_hubot/map_me.png"></p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
-<li><a href="http://memo.sanographix.net/post/88371442780">Hubotで西木野真姫bot作ってSlackに呼ぶ</a></li>
-<li><a href="http://qiita.com/Katsumata_RYO/items/dc4543aa5827d4c3211c">slackにHubotを導入(Heroku経由)</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MacにNode.jsとMongoDBをインストールしたメモ]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/"/>
-    <updated>2014-12-07T18:30:01+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac</id>
-    <content type="html"><![CDATA[<p>某勉強会でNode.jsとMongoDBを使うということがあったので、インストールした際のメモを残しておく。</p>
-
-<h2>Homebrewのインストール</h2>
-
-<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>でも触れた通り、以下の方法でインストールを試みる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;</span>
-</span><span class='line'>Whoops, the Homebrew installer has moved! Please instead run:
-</span><span class='line'>
-</span><span class='line'>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
-</span><span class='line'>
-</span><span class='line'>Also, please ask wherever you got this link from to update it to the above.
-</span><span class='line'>Thanks!
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>どうやらHomebrewのインストーラーの場所があれから変わったようで、以下のパスで再度実行。</p>
-
-<p>コマンドのレスポンスとして新しいパスをメッセージに残してくれるのはありがたい。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
-
-<!-- more -->
-
-
-<h2>Node.jsのインストール</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install node
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで完了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
-</span><span class='line'>v0.10.33
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>npmもばっちり入っている</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm -v
-</span><span class='line'>2.1.10
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>MongoDBのインストール</h2>
-
-<p>これも以下を実行するだけ。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install mongodb
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mongo --version
-</span><span class='line'>MongoDB shell version: 2.6.5
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>おしまい。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
-<li><a href="http://qiita.com/hajimeni/items/3c93fd981e92f66a20ce">Macにhomebrewを使ってmongodbをインストール</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Screenを使ってみる]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/12/01/screen-introduction/"/>
-    <updated>2014-12-01T17:15:25+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/12/01/screen-introduction</id>
-    <content type="html"><![CDATA[<p>デタッチ/アタッチという強力な機能をもった仮想端末管理アプリケーションであるscreenを使ってみた。</p>
-
-<h2>screenの設定ファイルを編集する</h2>
-
-<p>screenの操作に使うほとんどのコマンドはプレフィックスを用いる。
-このプレフィクスがデフォルトでは <code>ctrl + a</code> のため、Shellの行頭移動と被ってしまうので設定を編集する。</p>
-
-<p>ついでに色々編集してみた。（ <code>ctrl +</code> を <code>^</code> で表す）</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>escape ^j^j
-</span><span class='line'>startup_message off
-</span><span class='line'>defkanji utf-8
-</span><span class='line'>defencoding utf-8
-</span><span class='line'>encoding utf-8 utf-8
-</span><span class='line'>caption always <span class="s2">&quot;%{= wb} %-w%{=bu dr}%n %t%{-}%+w %= %{=b wk} [%l] %{=b wb}%y/%m/%d(%D) %{=b wm}%c&quot;</span>
-</span><span class='line'>autodetach on
-</span><span class='line'>bell_msg <span class="s2">&quot;^G&quot;</span>
-</span><span class='line'>defscrollback 10000
-</span><span class='line'>vbell off
-</span><span class='line'><span class="nb">bind </span>n screen
-</span><span class='line'><span class="nb">bind </span>h prev
-</span><span class='line'><span class="nb">bind </span>j next
-</span><span class='line'><span class="nb">bind </span>l windowlist
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!-- more -->
-
-
-<ul>
-<li>escape
-
-<ul>
-<li>escape keyの設定（ここでは <code>^j</code> をescape keyとして登録）</li>
-</ul>
-</li>
-<li>startup_message
-
-<ul>
-<li>起動時に表示されるメッセージをoff</li>
-</ul>
-</li>
-<li>encoding関連の設定</li>
-<li>caption
-
-<ul>
-<li>画面下部に表示されるcaptionの設定</li>
-</ul>
-</li>
-<li>autodetach
-
-<ul>
-<li>起動時に自動でデタッチ（後述）</li>
-</ul>
-</li>
-<li>bell_msg
-
-<ul>
-<li>バックグラウンドで出力されたベル文字をscreenに出力する（ <code>^G</code> はベル文字に置換される）</li>
-</ul>
-</li>
-<li>defscrollback
-
-<ul>
-<li>スクロールバックバッファの行数を設定</li>
-</ul>
-</li>
-<li>vbell
-
-<ul>
-<li>可視ベルの設定</li>
-</ul>
-</li>
-<li>windowlist
-
-<ul>
-<li>全ウィンドウをリスト表示し、使用するウィンドウを選択できるようにする</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>screenを立ち上げてみる</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>名前を付けて立ち上げる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -t <span class="nb">test</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ウィンドウが複数立ち上がると用途に合わせて移動が必要になる。上記 <code>.screenrc</code> の設定がなされた状態で以下のように移動できる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + <span class="o">[</span>number<span class="o">]</span>  <span class="c"># [number]に指定した番号のウィンドウに移動</span>
-</span><span class='line'><span class="nv">$ </span>^j + h         <span class="c"># 1つ前のウィンドウに移動</span>
-</span><span class='line'><span class="nv">$ </span>^j + j         <span class="c"># 1つ後のウィンドウに移動</span>
-</span><span class='line'><span class="nv">$ </span>^j + l         <span class="c"># 表示されるウィンドウリストから移動先のウィンドウを選択</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>ウィンドウの分割</h2>
-
-<p>ウィンドウを上下に分割する（縦方向の分割はscreenのバージョンを変えないといけないようなので割愛）</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + S
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>分割された領域間の移動</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + <span class="o">[</span>tab<span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>領域の破棄</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + X  <span class="c"># 現在の領域を破棄</span>
-</span><span class='line'><span class="nv">$ </span>^j + Q  <span class="c"># 現在の領域以外の全ての領域を破棄</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>デタッチとアタッチ</h2>
-
-<ul>
-<li>デタッチ（detach）
-
-<ul>
-<li>screen上での作業をセッションという形で保存しておくこと</li>
-</ul>
-</li>
-<li>アタッチ（attach）
-
-<ul>
-<li>デタッチによって保存されたセッションから作業に復帰すること</li>
-</ul>
-</li>
-</ul>
-
-
-<p>デタッチする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>^j + d
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>セッションを確認する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -ls
-</span><span class='line'>There is a screen on:
-</span><span class='line'>    72181.ttys010.your-pc   <span class="o">(</span>Detached<span class="o">)</span>
-</span><span class='line'><span class="m">1</span> Socket in /var/folders/56/dlftkv4d4191qwj6r_gxs_shmspdv_/T/.screen.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>アタッチ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>screen -r <span class="o">[</span>session_number <span class="p">|</span> session_name<span class="o">]</span>
-</span><span class='line'><span class="c"># 上の例では 72181 もしくは ttys010 を指定する</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://www.limy.org/program/screen.html">screenコマンド一覧 3.9.13対応 </a></li>
-<li><a href="http://linuxjm.sourceforge.jp/html/GNU_screen/man1/screen.1.html">SCREEN</a></li>
-<li><a href="http://sixeight.hatenablog.com/entry/20090730/1248973178">screenのデタッチ/アタッチ</a></li>
 </ul>
 
 ]]></content>

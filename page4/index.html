@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="YAPC::Asia 2014のLTに登壇させていただいた。その際、サクッとオシャレなプレゼンテーションを作ることができるということでreveal.jsを使って作ったのでメモ。 実際のプレゼンテーション（一部の画像を削除したもの） reveal.jsとは &hellip;">
+  <meta name="description" content="MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。 単列インサートと複数列インサートで挙動が変わる NOT NULLを指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,360 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/">MySQLにおけるNOT NULLカラムへのインサート時の挙動</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-10-20T13:44:28+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:44 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。</p>
+
+<h2>単列インサートと複数列インサートで挙動が変わる</h2>
+
+<p> <code>NOT NULL</code>を指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、一度に複数行を挿入する複数列インサート（バルクインサート）で挙動が変わる。</p>
+
+<p><a href="http://dev.mysql.com/doc/refman/5.6/en/insert.html">MySQLマニュアル</a>からの抜粋</p>
+
+<blockquote><p>Inserting NULL into a column that has been declared NOT NULL. For multiple-row INSERT statements or INSERT INTO &hellip; SELECT statements, the column is set to the implicit default value for the column data type. This is 0 for numeric types, the empty string (&lsquo;&rsquo;) for string types, and the “zero” value for date and time types. INSERT INTO &hellip; SELECT statements are handled the same way as multiple-row inserts because the server does not examine the result set from the SELECT to see whether it returns a single row. (For a single-row INSERT, no warning occurs when NULL is inserted into a NOT NULL column. Instead, the statement fails with an error.)</p></blockquote>
+
+<p>単列インサートの場合は<code>NOT NULL</code>が指定されたカラムに<code>NULL</code>値が挿入されるとそのクエリはエラーとなって失敗するが、複数列インサートの場合は警告(warning)を発するものの、クエリは正常に受け付けられる。</p>
+
+<p>その際、<code>NULL</code>値が指定された各カラムにはそれぞれのカラムのデータ型の暗黙的なデフォルト値が挿入される。（数値型なら<code>0</code>、文字列型なら空文字<code>''</code>、etc&hellip;）</p>
+
+<h2>検証</h2>
+
+<ul>
+<li>MySQLのバージョンは5.1.69
+
+<ul>
+<li>ただしマニュアルの該当箇所はバージョン5.7まで変更がないため、どのバージョンでも同じ挙動と思われる</li>
+</ul>
+</li>
+<li>テーブル定義は以下</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="ss">`not_null_test`</span> <span class="p">(</span>
+</span><span class='line'>  <span class="ss">`id`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">`test_score`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">`created_at`</span> <span class="kt">timestamp</span> <span class="k">NOT</span> <span class="no">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;0000-00-00 00:00:00&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="ss">`id`</span><span class="p">)</span>
+</span><span class='line'><span class="p">)</span> <span class="kp">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="kp">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>単列インサート</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
+</span><span class='line'><span class="nf">not_null_test</span>
+</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
+</span><span class='line'><span class="k">values</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ERROR</span> <span class="mi">1048</span> <span class="p">(</span><span class="mi">23000</span><span class="p">):</span> <span class="k">Column</span> <span class="s1">&#39;test_score&#39;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="no">null</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>複数列インサート</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
+</span><span class='line'><span class="nf">not_null_test</span>
+</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
+</span><span class='line'><span class="k">values</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">),</span>
+</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">2</span> <span class="n">rows</span> <span class="n">affected</span><span class="p">,</span> <span class="mi">2</span> <span class="nf">warnings</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</span><span class='line'><span class="n">Records</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">Duplicates</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Warnings</span><span class="p">:</span> <span class="mi">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">not_null_test</span><span class="p">;</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">test_score</span> <span class="o">|</span> <span class="n">created_at</span>          <span class="o">|</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
+</span><span class='line'><span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="mi">2</span> <span class="n">rows</span> <span class="k">in</span> <span class="kt">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>※ timestampにテーブル定義で設定したデフォルト値<code>'0000-00-00 00:00:00'</code>ではなく、型のデフォルト値である現在時刻が入っている点に注意</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/14/what-is-rest/">RESTとはなにか</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-09-14T13:57:07+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:57 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>APIを実装することになり、今更ながらWebのアーキテクチャスタイルであるRESTとはなにか理解するためにまとめてみた。</p>
+
+<h2>Webのアーキテクチャスタイル</h2>
+
+<p>Webのアーキテクチャスタイルはクライアント/サーバーというスタイルを中心に、いくつかの制限（アーキテクチャ）を複合的に組み合わせたREST(Representational State Transfer)を理想としている</p>
+
+<h2>RESTはどのようなスタイルなのか</h2>
+
+<p>RESTは以下のスタイルを複合的に組み合わせたアーキテクチャである</p>
+
+<ul>
+<li>クライアント/サーバー</li>
+<li>ステートレスサーバー</li>
+<li>キャッシュ</li>
+<li>統一インターフェース</li>
+<li>階層化システム</li>
+<li>コードオンデマンド</li>
+</ul>
+
+
+<h3>クライアント/サーバー</h3>
+
+<p>WebではHTTPでクライアントとサーバーが通信する、クライアント/サーバーアーキテクチャを採用している。クライアントはサーバーにリクエストを送り、サーバーはそれに対してレスポンスを返す。</p>
+
+<p>ユーザーインターフェースはクライアントに任せればよく、サーバーは処理に専念できるので様々なデバイス（PC・携帯電話・ゲーム機）に対応でき、サーバーの冗長化も容易である。</p>
+
+<h3>ステートレスサーバー</h3>
+
+<p>ステートフル/ステートレスという考え方があるが、サーバーがステートレスなやり取りを前提としていること。</p>
+
+<p>ステートフル/ステートレスに関しては以下のエントリを参照</p>
+
+<ul>
+<li><a href="http://sojiro14.github.io/blog/2014/09/13/stateful-and-stateless/">ステートフル/ステートレスとはどういうことか</a></li>
+</ul>
+
+
+<h3>キャッシュ</h3>
+
+<p>一度取得したリソースをクライアント側である程度の期間保持して使い回すこと。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>同じリソースを取得するためにその都度クライアント/サーバー間で通信する必要がなくなる</li>
+<li>これによりネットワークの帯域節約や処理の高速化を実現できる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>適切に制御しないと意図せず古いリソースを参照してしまうことがある</li>
+<li>特に大規模なシステムではどこで何がキャッシュされているか正確に把握するのは容易ではない</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>統一インターフェース</h3>
+
+<p>リソースに対する操作を統一したインターフェースで行う。</p>
+
+<p>HTTP/1.1ではリソースに対するメソッドが8つのみ定義されている。このようにインターフェースを限定することで様々なコンポーネントが生まれても統一された仕様としてリソースへの操作が行われ、それぞれの独立性が保たれることで多様性を受け入れることができる。</p>
+
+<h3>階層化システム</h3>
+
+<p>統一インターフェースを採用することにより、クライアント/サーバー間にプロキシなどのコンポーネントを設置してもクライアントはそのままリクエストを送ることができる。</p>
+
+<p>これにより大規模システムではロードバランサーを導入したり、HTTPインターフェースを持たないコンポーネントに対してHTTPインターフェースをもつサーバーを返して処理をするなどの階層化が可能となる。</p>
+
+<p>このようなアーキテクチャを階層化システムと呼ぶ。</p>
+
+<h3>コードオンデマンド</h3>
+
+<p>プログラムをサーバーからクライアントが受け取り、それをクライアント上で実行するアーキテクチャスタイル。JavaScriptやFlashがこれに該当する。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>サーバーと都度通信することなくクライアント側のみで処理できることが増える</li>
+<li>これによりユーザーのアクションに対する処理の速度が向上する</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>クライアント/サーバー間でやり取りされるリソースが不明確になる</li>
+<li>クライアント側の裁量が増える分、サーバーとやり取りされるリソースの内容が明確ではなくなる</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>RESTful</h2>
+
+<p>RESTの思想に忠実に設計されていることをRESTfulである、と言う。</p>
+
+<p>RESTは上記の通り分散ネットワークを効率的に、可用性・冗長性高く利用するための理論であり、Webが理想とするアーキテクチャスタイルである。</p>
+
+<p>この思想に則った設計がされることで多様なシステムの中にも仕様の統一感が生まれ、Webの世界が広がったと言える。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/13/stateful-and-stateless/">ステートフル ステートレスとはどういうことか</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-09-13T18:00:03+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:00 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>コンポーネント間のやり取りにはステートフル/ステートレスという考え方がある。FTPではステートフルなやり取りが、HTTPではステートレスなやり取りが採用されいるが、それぞれの特徴についてまとめてみる。</p>
+
+<h2>セッション状態（アプリケーション状態）</h2>
+
+<p>システムにログインしてからログアウトするまでの一連の操作をセッションと呼ぶ。その一連の操作の中のそれぞれの状態をセッション状態と呼ぶ。</p>
+
+<h2>ステートフル</h2>
+
+<p>ステートフルなやり取りではサーバーはクライアントのセッション状態を保持している。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>やり取りが完結に済む</li>
+<li>それによりネットワークの帯域を節約できる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>クライアントの状態を都度把握しておかなければいけないのでクライアントが増えると負荷も増える</li>
+<li>サーバーを複数台設置する場合にはそれぞれのサーバー間でクライアントの状態を同期しなければいけない</li>
+<li>これらの理由によりスケールアウトには向かない</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>ステートレス</h2>
+
+<p>ステートレスなやり取りではサーバーはクライアントのセッション情報を保持しない。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>クライアントのリクエストは状態に依存せず、常にリソースに対する操作に必要十分な情報となる</li>
+<li>よってサーバーが増えてもそのままのリクエストでいつも同じリソースに対する操作ができる</li>
+<li>このためスケールアウトに向いている</li>
+<li>また処理がクライアントの状態に依らないので処理がシンプルになる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>やり取りが冗長になりがちである</li>
+<li>またリソースへの操作が必要になる度にそのやり取りを繰り返す必要がある</li>
+<li>これによりネットワークの帯域を消費し、処理も遅くなる</li>
+<li>サーバーが状態を保持していないのでエラーが起きたときのハンドリングが複雑になりがちである</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1452,516 +1806,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/06/changing-login-shell/">シェルの変更について</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-07-06T20:43:22+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:43 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>さくらでレンタルサーバーを借りたが、デフォルトのシェルが使い慣れたbashではなかったので変更した際のメモ。</p>
-
-<h2>現在のシェルを確認</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% <span class="nb">echo</span> <span class="nv">$SHELL</span>
-</span><span class='line'>/bin/csh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>環境変数 <code>$SHELL</code> に現在のシェルのパスが入っている。</p>
-
-<h2>変更できるシェルの確認</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% cat /etc/shells
-</span><span class='line'><span class="c"># $FreeBSD: release/9.1.0/etc/shells 59717 2000-04-27 21:58:46Z ache $</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># List of acceptable shells for chpass(1).</span>
-</span><span class='line'><span class="c"># Ftpd will not allow users to connect who are not using</span>
-</span><span class='line'><span class="c"># one of these shells.</span>
-</span><span class='line'>
-</span><span class='line'>/bin/sh
-</span><span class='line'>/bin/csh
-</span><span class='line'>/bin/tcsh
-</span><span class='line'>/usr/local/bin/bash
-</span><span class='line'>/usr/local/bin/rbash
-</span><span class='line'>/usr/local/bin/zsh
-</span><span class='line'>/usr/local/bin/rzsh
-</span><span class='line'>/usr/bin/passwd
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>bashが使えることが確認できる。</p>
-
-<h2>シェルを変更する</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% chsh -s /usr/local/bin/bash
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>chsh</code> はログインシェルを変更するコマンド。 <code>-s</code> オプションを付けないとインタラクティブに動作する。</p>
-
-<p>ログインシェルはユーザー毎に設定できるログイン時に起動されるシェルのことで、 <code>/etc/passwd</code> ファイルで設定されている。</p>
-
-<p> <code>chsh</code> はこのファイルを書き換える。</p>
-
-<h2>bashの設定ファイルを書く</h2>
-
-<p>ログインシェルをbashに変更したら</p>
-
-<ul>
-<li>.bash_profile</li>
-<li>.bashrc</li>
-</ul>
-
-
-<p>など、いつもの設定ファイルを記述する</p>
-
-<h2>再度サーバーにログイン</h2>
-
-<p>設定を終えて再度サーバーにログインするとbashが立ち上がる。</p>
-
-<h2>メモ</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% <span class="nb">exec</span> /usr/local/bin/bash -l
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>でbashをログインシェルとして立ち上げることもできるが設定ファイルは変わらないのでログインの度にデフォルトのシェルに戻る。</p>
-
-<p><code>exec</code> コマンドは引数で渡された処理にプロセスを置き換える。</p>
-
-<p>よって上記コマンドが実行されるとbashがログインシェルとして置き換わる。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/14/writing-serial-numbers-with-vim/">Vimで連番を振る方法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-06-14T02:01:05+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:01 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>大量のvalueに連番を振りたくなったのでvimの機能を調べて使ってみた。
-目標は以下のようにurlのリストをPerlのハッシュ化すること。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>example_1.com
-</span><span class='line'>example_2.com
-</span><span class='line'>example_3.com
-</span><span class='line'>~
-</span><span class='line'>example_254.com
-</span><span class='line'>example_255.com
-</span><span class='line'>example_256.com</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">my</span> <span class="nv">%urls</span> <span class="o">=</span> <span class="p">(</span>
-</span><span class='line'>    <span class="mi">1</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_1.com&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="mi">2</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_2.com&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="mi">3</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_3.com&#39;</span><span class="p">,</span>
-</span><span class='line'><span class="o">~</span>
-</span><span class='line'>    <span class="mi">254</span> <span class="o">=&gt;</span> <span class="s">&#39;example_254.com&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="mi">255</span> <span class="o">=&gt;</span> <span class="s">&#39;example_255.com&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="mi">256</span> <span class="o">=&gt;</span> <span class="s">&#39;example_256.com&#39;</span><span class="p">,</span>
-</span><span class='line'><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>使うvimの機能</h2>
-
-<ul>
-<li>数字のインクリメント/デクリメント</li>
-<li>操作の記録（complex repeat）</li>
-</ul>
-
-
-<h2>①数字のインクリメント/デクリメント</h2>
-
-<h3>数字のインクリメント</h3>
-
-<p>数字にカーソルを合わせて</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">a</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>数字のデクリメント</h3>
-
-<p>数字にカーソルを合わせて</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">x</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>②操作の記録（complex repeat）</h2>
-
-<p>操作の記録は以下の順序で行う</p>
-
-<ol>
-<li>準備</li>
-<li>一連の操作に名前をつけて記録を開始</li>
-<li>一連の操作を行う</li>
-<li>記録を終了</li>
-<li>記録した操作を繰り返し実行</li>
-</ol>
-
-
-<h3>1. 準備</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">1</span> <span class="o">=&gt;</span> <span class="n">example_1</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="n">example_2</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="n">example_3</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="o">~</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>最初のキーである1だけ用意しておく。</p>
-
-<h3>2. 一連の操作に名前をつけて記録を開始</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">q</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">a</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>操作を開始する位置（キー1の上）にカーソルを合わせ、q, aの順でキーを押すと、&#8217;a&#8217;という名前で操作が記録される。</p>
-
-<p>操作の名前は&#8217;a&#8217;の大文字、小文字のアルファベット、もしくは数字から1字を選んで付けることができる。</p>
-
-<h3>3. 一連の操作を行う</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">v</span> <span class="p">(</span><span class="n">visual</span> <span class="n">mode</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">llllll</span> <span class="p">(</span><span class="o">=&gt;</span> <span class="err">までを選択</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">y</span> <span class="p">(</span><span class="n">yank</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">j</span> <span class="n">P</span> <span class="p">(</span><span class="mi">1</span><span class="err">行下がって</span><span class="n">paste</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">0</span> <span class="p">(</span><span class="err">行頭へカーソルを移動</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">a</span> <span class="p">(</span><span class="err">インクリメント</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">0</span> <span class="p">(</span><span class="err">行頭へカーソルを移動</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>4. 記録を終了</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">q</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>qを押して記録を終了</p>
-
-<h3>5. 記録した操作を繰り返し実行</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">254</span> <span class="p">(</span><span class="err">繰り返す回数</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nv">@a</span> <span class="p">(</span><span class="s">&#39;a&#39;</span><span class="err">と名付けた操作を指定</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここまで完了時点で以下のようになる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">1</span>   <span class="o">=&gt;</span> <span class="n">example_1</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="mi">2</span>   <span class="o">=&gt;</span> <span class="n">example_2</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="mi">3</span>   <span class="o">=&gt;</span> <span class="n">example_3</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="o">~</span>
-</span><span class='line'><span class="mi">254</span> <span class="o">=&gt;</span> <span class="n">example_254</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="mi">255</span> <span class="o">=&gt;</span> <span class="n">example_255</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="mi">256</span> <span class="o">=&gt;</span> <span class="n">example_256</span><span class="o">.</span><span class="n">com</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Perlの記法に合わせて整形</h2>
-
-<p>vimの矩形選択( <code>Ctrl + v</code> )などをつかって正しいハッシュの文法に整形する</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/03/changing-octopress-theme/">Octopressのテーマを変える</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-05-03T17:37:29+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>5:37 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Octopressのテーマを変更する</p>
-
-<ul>
-<li><a href="http://octopress.org/docs/theme/">Octopressの公式ドキュメント</a></li>
-</ul>
-
-
-<p>今回は既に作られ、公開されているテーマを拝借する</p>
-
-<h2>好みのテーマを探す</h2>
-
-<p><a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">3rd Party Octopress Themes</a>にテーマリストが公開されている。ここから使いたいテーマを探す。</p>
-
-<p><a href="http://opthemes.com/">Octopress Themes</a>にPreviewが見やすくまとめられている</p>
-
-<p>今回使用するテーマ</p>
-
-<ul>
-<li><a href="https://github.com/lucaslew/whitespace">Whitespace</a></li>
-</ul>
-
-
-<h2>テーマのインストール</h2>
-
-<h3>テーマをダウンロード</h3>
-
-<p>テーマ毎にclone元とclone先のpathを指定する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/octopress
-</span><span class='line'><span class="nv">$ </span>git clone GIT_URL .themes/THEME_NAME
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマ: Whitespaceの場合</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone git://github.com/lucaslew/whitespace.git .themes/whitespace
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>テーマをインストール</h3>
-
-<p>テーマを指定して <code>rake install</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;THEME_NAME&#39;</span><span class="o">]</span>
-</span><span class='line'><span class="nv">$ </span>rake generate
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマ: Whitespaceの場合</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;whitespace&#39;</span><span class="o">]</span>
-</span><span class='line'>A theme is already installed, proceeding will overwrite existing files. Are you sure? <span class="o">[</span>y/n<span class="o">]</span> y
-</span><span class='line'><span class="c">## Copying whitespace theme into ./source and ./sass</span>
-</span><span class='line'>mkdir -p <span class="nb">source</span>
-</span><span class='line'>cp -r .themes/whitespace/source/. <span class="nb">source</span>
-</span><span class='line'>mkdir -p sass
-</span><span class='line'>cp -r .themes/whitespace/sass/. sass
-</span><span class='line'>mkdir -p <span class="nb">source</span>/_posts
-</span><span class='line'>mkdir -p public
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマを上書きするか？と聞かれたので <code>y</code> で答える</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate
-</span><span class='line'><span class="c">## Generating Site with Jekyll</span>
-</span><span class='line'>overwrite <span class="nb">source</span>/stylesheets/screen.css
-</span><span class='line'>Configuration from /Users/user.name/git/octopress/_config.yml
-</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
-</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>デプロイ</h2>
-
-<p>テーマをインストールしたらデプロイ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ページにアクセスしてテーマが変更されていることを確認できればok</p>
-
-<h2>テーマがアップデートされたら</h2>
-
-<p>テーマが開発者によってアップデートされたら手元のファイルもアップデートする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/.themes/THEME_NAME
-</span><span class='line'><span class="nv">$ </span>git pull
-</span><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;THEME_NAME&#39;</span><span class="o">]</span>
-</span><span class='line'><span class="nv">$ </span>rake generate
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマ: Whitespaceの場合</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/.themes/whitespace
-</span><span class='line'><span class="nv">$ </span>git pull
-</span><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;whitespace&#39;</span><span class="o">]</span>
-</span><span class='line'><span class="nv">$ </span>rake generate
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>デプロイしてアップデート完了</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page5">&larr; Older</a>
@@ -1983,23 +1827,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/05/19/update-homebrew/">Homebrewをupdateしよう</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/18/validate-json-schema/">JSON Schema のバリデーション</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/17/get-pause-id/">PAUSE ID の取得</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/05/13/start-up-a-web-camera-via-web/">Webからデバイスのカメラを起動する</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/05/12/what-is-xdg-open-command/">xdg-open コマンドとは</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/11/the-third-step-of-yeoman/">初めてのYeoman (Grunt/Bowerとは)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a>
       </li>
     
   </ul>

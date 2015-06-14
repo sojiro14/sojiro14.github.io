@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="生成したリソースに対応するcontrollerを作成し、このリソースに対するviewとそのためのアクションを追加していく。 rails generate controller controllerを作成する。controllerの名前は1文字目が大文字で、複数形を指定するのがrailsの規約である &hellip;">
+  <meta name="description" content="SlackにBotを入れたいと思い、少し調べてみたところHUBOTがやはり簡単らしいのでやってみた HUBOT用のAPI Tokenを取得する まずはSlackのチームメニューからConfigure Integrationsを選択 様々な外部サービスとの連携メニューからHUBOTを選択する &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,203 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-15T03:02:30+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:02 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>SlackにBotを入れたいと思い、少し調べてみたところHUBOTがやはり簡単らしいのでやってみた</p>
+
+<h2>HUBOT用のAPI Tokenを取得する</h2>
+
+<p>まずはSlackのチームメニューからConfigure Integrationsを選択</p>
+
+<p><img src="/images/slack_hubot/team_menu.png"></p>
+
+<p>様々な外部サービスとの連携メニューからHUBOTを選択する</p>
+
+<p><img src="/images/slack_hubot/add_hubot.png"></p>
+
+<p>追加するbotの名前を入力</p>
+
+<p><img src="/images/slack_hubot/set_botname.png"></p>
+
+<p>ここまでのステップを踏むとAPI Tokenが記されたページが表示される</p>
+
+<p>そしてこの段階でbotがSlackにjoinする</p>
+
+<p><img src="/images/slack_hubot/join_bot.png"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/15/slack-bot-by-hubot/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/">MacにNode.jsとMongoDBをインストールしたメモ</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-07T18:30:01+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:30 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>某勉強会でNode.jsとMongoDBを使うということがあったので、インストールした際のメモを残しておく。</p>
+
+<h2>Homebrewのインストール</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>でも触れた通り、以下の方法でインストールを試みる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;</span>
+</span><span class='line'>Whoops, the Homebrew installer has moved! Please instead run:
+</span><span class='line'>
+</span><span class='line'>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
+</span><span class='line'>
+</span><span class='line'>Also, please ask wherever you got this link from to update it to the above.
+</span><span class='line'>Thanks!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>どうやらHomebrewのインストーラーの場所があれから変わったようで、以下のパスで再度実行。</p>
+
+<p>コマンドのレスポンスとして新しいパスをメッセージに残してくれるのはありがたい。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/01/screen-introduction/">Screenを使ってみる</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-01T17:15:25+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>5:15 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>デタッチ/アタッチという強力な機能をもった仮想端末管理アプリケーションであるscreenを使ってみた。</p>
+
+<h2>screenの設定ファイルを編集する</h2>
+
+<p>screenの操作に使うほとんどのコマンドはプレフィックスを用いる。
+このプレフィクスがデフォルトでは <code>ctrl + a</code> のため、Shellの行頭移動と被ってしまうので設定を編集する。</p>
+
+<p>ついでに色々編集してみた。（ <code>ctrl +</code> を <code>^</code> で表す）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>escape ^j^j
+</span><span class='line'>startup_message off
+</span><span class='line'>defkanji utf-8
+</span><span class='line'>defencoding utf-8
+</span><span class='line'>encoding utf-8 utf-8
+</span><span class='line'>caption always <span class="s2">&quot;%{= wb} %-w%{=bu dr}%n %t%{-}%+w %= %{=b wk} [%l] %{=b wb}%y/%m/%d(%D) %{=b wm}%c&quot;</span>
+</span><span class='line'>autodetach on
+</span><span class='line'>bell_msg <span class="s2">&quot;^G&quot;</span>
+</span><span class='line'>defscrollback 10000
+</span><span class='line'>vbell off
+</span><span class='line'><span class="nb">bind </span>n screen
+</span><span class='line'><span class="nb">bind </span>h prev
+</span><span class='line'><span class="nb">bind </span>j next
+</span><span class='line'><span class="nb">bind </span>l windowlist
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/01/screen-introduction/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -950,360 +1147,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/">MySQLにおけるNOT NULLカラムへのインサート時の挙動</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-10-20T13:44:28+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:44 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。</p>
-
-<h2>単列インサートと複数列インサートで挙動が変わる</h2>
-
-<p> <code>NOT NULL</code>を指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、一度に複数行を挿入する複数列インサート（バルクインサート）で挙動が変わる。</p>
-
-<p><a href="http://dev.mysql.com/doc/refman/5.6/en/insert.html">MySQLマニュアル</a>からの抜粋</p>
-
-<blockquote><p>Inserting NULL into a column that has been declared NOT NULL. For multiple-row INSERT statements or INSERT INTO &hellip; SELECT statements, the column is set to the implicit default value for the column data type. This is 0 for numeric types, the empty string (&lsquo;&rsquo;) for string types, and the “zero” value for date and time types. INSERT INTO &hellip; SELECT statements are handled the same way as multiple-row inserts because the server does not examine the result set from the SELECT to see whether it returns a single row. (For a single-row INSERT, no warning occurs when NULL is inserted into a NOT NULL column. Instead, the statement fails with an error.)</p></blockquote>
-
-<p>単列インサートの場合は<code>NOT NULL</code>が指定されたカラムに<code>NULL</code>値が挿入されるとそのクエリはエラーとなって失敗するが、複数列インサートの場合は警告(warning)を発するものの、クエリは正常に受け付けられる。</p>
-
-<p>その際、<code>NULL</code>値が指定された各カラムにはそれぞれのカラムのデータ型の暗黙的なデフォルト値が挿入される。（数値型なら<code>0</code>、文字列型なら空文字<code>''</code>、etc&hellip;）</p>
-
-<h2>検証</h2>
-
-<ul>
-<li>MySQLのバージョンは5.1.69
-
-<ul>
-<li>ただしマニュアルの該当箇所はバージョン5.7まで変更がないため、どのバージョンでも同じ挙動と思われる</li>
-</ul>
-</li>
-<li>テーブル定義は以下</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="ss">`not_null_test`</span> <span class="p">(</span>
-</span><span class='line'>  <span class="ss">`id`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
-</span><span class='line'>  <span class="ss">`test_score`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
-</span><span class='line'>  <span class="ss">`created_at`</span> <span class="kt">timestamp</span> <span class="k">NOT</span> <span class="no">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;0000-00-00 00:00:00&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="ss">`id`</span><span class="p">)</span>
-</span><span class='line'><span class="p">)</span> <span class="kp">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="kp">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>単列インサート</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
-</span><span class='line'><span class="nf">not_null_test</span>
-</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
-</span><span class='line'><span class="k">values</span>
-</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">ERROR</span> <span class="mi">1048</span> <span class="p">(</span><span class="mi">23000</span><span class="p">):</span> <span class="k">Column</span> <span class="s1">&#39;test_score&#39;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="no">null</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>複数列インサート</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
-</span><span class='line'><span class="nf">not_null_test</span>
-</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
-</span><span class='line'><span class="k">values</span>
-</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">),</span>
-</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">2</span> <span class="n">rows</span> <span class="n">affected</span><span class="p">,</span> <span class="mi">2</span> <span class="nf">warnings</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</span><span class='line'><span class="n">Records</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">Duplicates</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Warnings</span><span class="p">:</span> <span class="mi">2</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">not_null_test</span><span class="p">;</span>
-</span><span class='line'><span class="o">+----+------------+---------------------+</span>
-</span><span class='line'><span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">test_score</span> <span class="o">|</span> <span class="n">created_at</span>          <span class="o">|</span>
-</span><span class='line'><span class="o">+----+------------+---------------------+</span>
-</span><span class='line'><span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
-</span><span class='line'><span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
-</span><span class='line'><span class="o">+----+------------+---------------------+</span>
-</span><span class='line'><span class="mi">2</span> <span class="n">rows</span> <span class="k">in</span> <span class="kt">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>※ timestampにテーブル定義で設定したデフォルト値<code>'0000-00-00 00:00:00'</code>ではなく、型のデフォルト値である現在時刻が入っている点に注意</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/14/what-is-rest/">RESTとはなにか</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-09-14T13:57:07+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:57 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>APIを実装することになり、今更ながらWebのアーキテクチャスタイルであるRESTとはなにか理解するためにまとめてみた。</p>
-
-<h2>Webのアーキテクチャスタイル</h2>
-
-<p>Webのアーキテクチャスタイルはクライアント/サーバーというスタイルを中心に、いくつかの制限（アーキテクチャ）を複合的に組み合わせたREST(Representational State Transfer)を理想としている</p>
-
-<h2>RESTはどのようなスタイルなのか</h2>
-
-<p>RESTは以下のスタイルを複合的に組み合わせたアーキテクチャである</p>
-
-<ul>
-<li>クライアント/サーバー</li>
-<li>ステートレスサーバー</li>
-<li>キャッシュ</li>
-<li>統一インターフェース</li>
-<li>階層化システム</li>
-<li>コードオンデマンド</li>
-</ul>
-
-
-<h3>クライアント/サーバー</h3>
-
-<p>WebではHTTPでクライアントとサーバーが通信する、クライアント/サーバーアーキテクチャを採用している。クライアントはサーバーにリクエストを送り、サーバーはそれに対してレスポンスを返す。</p>
-
-<p>ユーザーインターフェースはクライアントに任せればよく、サーバーは処理に専念できるので様々なデバイス（PC・携帯電話・ゲーム機）に対応でき、サーバーの冗長化も容易である。</p>
-
-<h3>ステートレスサーバー</h3>
-
-<p>ステートフル/ステートレスという考え方があるが、サーバーがステートレスなやり取りを前提としていること。</p>
-
-<p>ステートフル/ステートレスに関しては以下のエントリを参照</p>
-
-<ul>
-<li><a href="http://sojiro14.github.io/blog/2014/09/13/stateful-and-stateless/">ステートフル/ステートレスとはどういうことか</a></li>
-</ul>
-
-
-<h3>キャッシュ</h3>
-
-<p>一度取得したリソースをクライアント側である程度の期間保持して使い回すこと。</p>
-
-<ul>
-<li>メリット
-
-<ul>
-<li>同じリソースを取得するためにその都度クライアント/サーバー間で通信する必要がなくなる</li>
-<li>これによりネットワークの帯域節約や処理の高速化を実現できる</li>
-</ul>
-</li>
-<li>デメリット
-
-<ul>
-<li>適切に制御しないと意図せず古いリソースを参照してしまうことがある</li>
-<li>特に大規模なシステムではどこで何がキャッシュされているか正確に把握するのは容易ではない</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>統一インターフェース</h3>
-
-<p>リソースに対する操作を統一したインターフェースで行う。</p>
-
-<p>HTTP/1.1ではリソースに対するメソッドが8つのみ定義されている。このようにインターフェースを限定することで様々なコンポーネントが生まれても統一された仕様としてリソースへの操作が行われ、それぞれの独立性が保たれることで多様性を受け入れることができる。</p>
-
-<h3>階層化システム</h3>
-
-<p>統一インターフェースを採用することにより、クライアント/サーバー間にプロキシなどのコンポーネントを設置してもクライアントはそのままリクエストを送ることができる。</p>
-
-<p>これにより大規模システムではロードバランサーを導入したり、HTTPインターフェースを持たないコンポーネントに対してHTTPインターフェースをもつサーバーを返して処理をするなどの階層化が可能となる。</p>
-
-<p>このようなアーキテクチャを階層化システムと呼ぶ。</p>
-
-<h3>コードオンデマンド</h3>
-
-<p>プログラムをサーバーからクライアントが受け取り、それをクライアント上で実行するアーキテクチャスタイル。JavaScriptやFlashがこれに該当する。</p>
-
-<ul>
-<li>メリット
-
-<ul>
-<li>サーバーと都度通信することなくクライアント側のみで処理できることが増える</li>
-<li>これによりユーザーのアクションに対する処理の速度が向上する</li>
-</ul>
-</li>
-<li>デメリット
-
-<ul>
-<li>クライアント/サーバー間でやり取りされるリソースが不明確になる</li>
-<li>クライアント側の裁量が増える分、サーバーとやり取りされるリソースの内容が明確ではなくなる</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>RESTful</h2>
-
-<p>RESTの思想に忠実に設計されていることをRESTfulである、と言う。</p>
-
-<p>RESTは上記の通り分散ネットワークを効率的に、可用性・冗長性高く利用するための理論であり、Webが理想とするアーキテクチャスタイルである。</p>
-
-<p>この思想に則った設計がされることで多様なシステムの中にも仕様の統一感が生まれ、Webの世界が広がったと言える。</p>
-
-<h2>参考</h2>
-
-<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/13/stateful-and-stateless/">ステートフル ステートレスとはどういうことか</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-09-13T18:00:03+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:00 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>コンポーネント間のやり取りにはステートフル/ステートレスという考え方がある。FTPではステートフルなやり取りが、HTTPではステートレスなやり取りが採用されいるが、それぞれの特徴についてまとめてみる。</p>
-
-<h2>セッション状態（アプリケーション状態）</h2>
-
-<p>システムにログインしてからログアウトするまでの一連の操作をセッションと呼ぶ。その一連の操作の中のそれぞれの状態をセッション状態と呼ぶ。</p>
-
-<h2>ステートフル</h2>
-
-<p>ステートフルなやり取りではサーバーはクライアントのセッション状態を保持している。</p>
-
-<ul>
-<li>メリット
-
-<ul>
-<li>やり取りが完結に済む</li>
-<li>それによりネットワークの帯域を節約できる</li>
-</ul>
-</li>
-<li>デメリット
-
-<ul>
-<li>クライアントの状態を都度把握しておかなければいけないのでクライアントが増えると負荷も増える</li>
-<li>サーバーを複数台設置する場合にはそれぞれのサーバー間でクライアントの状態を同期しなければいけない</li>
-<li>これらの理由によりスケールアウトには向かない</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>ステートレス</h2>
-
-<p>ステートレスなやり取りではサーバーはクライアントのセッション情報を保持しない。</p>
-
-<ul>
-<li>メリット
-
-<ul>
-<li>クライアントのリクエストは状態に依存せず、常にリソースに対する操作に必要十分な情報となる</li>
-<li>よってサーバーが増えてもそのままのリクエストでいつも同じリソースに対する操作ができる</li>
-<li>このためスケールアウトに向いている</li>
-<li>また処理がクライアントの状態に依らないので処理がシンプルになる</li>
-</ul>
-</li>
-<li>デメリット
-
-<ul>
-<li>やり取りが冗長になりがちである</li>
-<li>またリソースへの操作が必要になる度にそのやり取りを繰り返す必要がある</li>
-<li>これによりネットワークの帯域を消費し、処理も遅くなる</li>
-<li>サーバーが状態を保持していないのでエラーが起きたときのハンドリングが複雑になりがちである</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>参考</h2>
-
-<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page4">&larr; Older</a>
@@ -1325,23 +1168,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/05/19/update-homebrew/">Homebrewをupdateしよう</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/18/validate-json-schema/">JSON Schema のバリデーション</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/17/get-pause-id/">PAUSE ID の取得</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/05/13/start-up-a-web-camera-via-web/">Webからデバイスのカメラを起動する</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/05/12/what-is-xdg-open-command/">xdg-open コマンドとは</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/11/the-third-step-of-yeoman/">初めてのYeoman (Grunt/Bowerとは)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a>
       </li>
     
   </ul>

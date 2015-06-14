@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Homebrew | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/homebrew/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-06-14T15:02:39+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Homebrewをupdateしよう]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/19/update-homebrew/"/>
+    <updated>2015-05-19T23:39:53+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/19/update-homebrew</id>
+    <content type="html"><![CDATA[<p>以前の記事で Homebrew を使って Docker のもろもろをインストールしたが、実はそのときインストールされたツールのバージョンが古く、それが原因で作業が少し詰まった。</p>
+
+<p>そんなときは Homebrew の update である。</p>
+
+<h2>Homebrew を update する</h2>
+
+<p>おもむろに</p>
+
+<pre><code class="bash">$ brew update
+</code></pre>
+
+<p>新しい FORMULA 、更新された FORMULA 、削除された FORMULA の一覧が表示されて Homebrew の update が完了する</p>
+
+<h2>古いモジュールの upgrade</h2>
+
+<p>Homebrew を update しただけでは、すでにインストールされているモジュールは新しくならない</p>
+
+<pre><code class="bash">$ brew upgrade [FORMULA]
+</code></pre>
+
+<p>で最新バージョンに upgrade する</p>
+
+<p>今後 Homebrew を使うときは参照する FORMULA のバージョンも気にしたい</p>
+]]></content>
+  </entry>
+  
+</feed>

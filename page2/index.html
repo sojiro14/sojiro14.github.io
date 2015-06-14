@@ -9,7 +9,9 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="仮想環境構築ツールのVagrantが便利らしいという噂を聞いて使ってみたところ確かに便利でした。 以前VirtualBox上での環境構築に手間取った経験があったのでこれは今後も積極的に使って行きたいと思い、最初の手順をメモします。 &hellip;">
+  <meta name="description" content="前回 ‘Hubot –create’ は古い というエントリでYeomanを試してみたいと宣言したので試してみます。 Yeoman は以下の3要素で構成されているそうな yo: 雛形作成ツール
+Grunt: タスクランナー
+Bower: フロントエンドパッケージマネージャ 今回は前回に引き続き &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +93,573 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-06T18:55:02+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:55 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>前回 <a href="http://blog.sojiro.me/blog/2015/05/05/hubot-create-is-now-old/">‘Hubot –create’ は古い</a> というエントリでYeomanを試してみたいと宣言したので試してみます。</p>
+
+<p>Yeoman は以下の3要素で構成されているそうな</p>
+
+<ul>
+<li>yo: 雛形作成ツール</li>
+<li>Grunt: タスクランナー</li>
+<li>Bower: フロントエンドパッケージマネージャ</li>
+</ul>
+
+
+<p>今回は前回に引き続き <code>yo</code> を使ってみたいと思います。</p>
+
+<p>前提としては <code>yo</code> をインストール済みであること。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g yo
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>また、 <code>yo</code> は npm のバージョン2.1.0以上が推奨なので必要に応じて npm もアップデートします。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm update -g npm
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>generator-angular-fullstack を使ってみる</h2>
+
+<p>今回 <code>yo</code> で作成する雛形として generator-angular-fullstack を使ってみる</p>
+
+<p>generator-angular-fullstack は MEAN なアプリケーションの雛形で、使い勝手が良いという噂</p>
+
+<p>早速インストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>yeoman/angular_fullstack
+</span><span class='line'><span class="nv">$ </span>npm install generator-angular-fullstack
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールできたので実行してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yo angular-fullstack
+</span><span class='line'>     _-----_
+</span><span class='line'>    <span class="p">|</span>       <span class="p">|</span>
+</span><span class='line'>    <span class="p">|</span>--<span class="o">(</span>o<span class="o">)</span>--<span class="p">|</span>   .--------------------------.
+</span><span class='line'>   <span class="sb">`</span>---------´  <span class="p">|</span>    Welcome to Yeoman,    <span class="p">|</span>
+</span><span class='line'>    <span class="o">(</span> _´U<span class="sb">`</span>_ <span class="o">)</span>   <span class="p">|</span>   ladies and gentlemen!  <span class="p">|</span>
+</span><span class='line'>    /___A___<span class="se">\ </span>  <span class="s1">&#39;__________________________&#39;</span>
+</span><span class='line'>     <span class="p">|</span>  ~  <span class="p">|</span>
+</span><span class='line'>   __<span class="s1">&#39;.___.&#39;</span>__
+</span><span class='line'> ´   <span class="sb">`</span>  <span class="p">|</span>° ´ Y <span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'>Out of the box I create an AngularJS app with an Express server.
+</span><span class='line'>
+</span><span class='line'><span class="c"># Client</span>
+</span><span class='line'>
+</span><span class='line'>? What would you like to write scripts with? JavaScript
+</span><span class='line'>? What would you like to write markup with? HTML
+</span><span class='line'>? What would you like to write stylesheets with? Sass
+</span><span class='line'>? What Angular router would you like to use? uiRouter
+</span><span class='line'>? Would you like to include Bootstrap? Yes
+</span><span class='line'>? Would you like to include UI Bootstrap? Yes
+</span><span class='line'>
+</span><span class='line'><span class="c"># Server</span>
+</span><span class='line'>
+</span><span class='line'>? Would you like to use mongoDB with Mongoose <span class="k">for</span> data modeling? Yes
+</span><span class='line'>? Would you scaffold out an authentication boilerplate? Yes
+</span><span class='line'>? Would you like to include additional oAuth strategies? Google, Facebook, Twitter
+</span><span class='line'>? Would you like to use socket.io? Yes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>雛形作成を実行するといくつかインタラクティブに聞かれるので答える</p>
+
+<p>今回は基本的に Yes と答えてみた</p>
+
+<p>実行が終わると雛形ができていた</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ls
+</span><span class='line'>Gruntfile.js  bower.json  client  e2e  karma.conf.js  node_modules  package.json  protractor.conf.js  server
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>つづく</h2>
+
+<p>次回は <code>grunt</code> を使って実際にアプリケーションを動かしてみる</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.chat.ac/yeoman%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6meanmongodbexpressangularjsnode-js%E3%82%92%E4%BD%9C%E6%88%90%E3%81%97%E3%82%88%E3%81%86/">YEOMANを使ってMEAN(MongoDB+Express+AngularJS+Node.js)を作成しよう</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/05/hubot-create-is-now-old/">&#8216;Hubot &#8211;create&#8217; は古い</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-05T17:50:15+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:50 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>このブログで過去に何度かHubotについて書いたときに、新しいbotを作るときのコマンドは <code>hubot --create bot_name</code> だったのですが、このコマンドが非推奨になったようなのでメモ。</p>
+
+<h2>hubot &ndash;create が使えない</h2>
+
+<p>新しいbotを作ろうとして <code>hubot --create</code> コマンドを打つと以下のように怒られた</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create test_bot
+</span><span class='line'><span class="s1">&#39;hubot --create&#39;</span> is deprecated. Use the yeoman generator instead:
+</span><span class='line'>    npm install -g yo generator-hubot
+</span><span class='line'>    mkdir -p test_bot
+</span><span class='line'>    yo hubot
+</span><span class='line'>See https://github.com/github/hubot/blob/master/docs/README.md <span class="k">for</span> more details on getting started.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ところがseeとなっているREADMEファイルは存在しない模様&hellip;</p>
+
+<h2>yo と generator-hubot とは何か</h2>
+
+<p>よくわからないが <code>yo</code> と <code>generator-hubot</code> をインストールしろと言われているのはわかるので調べてみる</p>
+
+<h3>yo と generator-xxx</h3>
+
+<p>yoはYeomanというGoole社が開発した統合開発ツール群に属するツールの一つで、「雛形作成ツール」であるらしい</p>
+
+<p>そしてその雛形は &ldquo;generator-xxx&rdquo; という形でさまざま用意されており、そのHubot版が <code>generator-hubot</code> と言う訳である</p>
+
+<p>つまり上記エラーメッセージは</p>
+
+<ul>
+<li>雛形作成ツールである <code>yo</code> と、Hubotの雛形である <code>generator-hubot</code> をインストールし</li>
+<li>新規ディレクトリ上で <code>yo</code> を実行してHubotの雛形を作るべし</li>
+</ul>
+
+
+<p>ということのようである</p>
+
+<h2>yo と generator-hubot のインストール</h2>
+
+<p>指定された通り以下のようにインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g yo generator-hubot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（余談：私の場合はNode.jsのインストールされたpathとnpmのrootが違っていたため少々上手くいかなかった。エラーメッセージは素直によく読むべきだ。。。）</p>
+
+<h2>yo の実行</h2>
+
+<p>インストールが成功したら、新しいbotのディレクトリを作ってそこで <code>yo</code> を実行する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir test_bot
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>test_bot
+</span><span class='line'><span class="nv">$ </span>yo hubot  <span class="c"># これは generator-hubot の雛形を作る、という意味</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>yo hubot</code> を実行するとHubotのAAが表示され、いくつかのやり取りが立ち上がる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yo hubot
+</span><span class='line'>                     _____________________________
+</span><span class='line'>                    /                             <span class="se">\ </span>
+</span><span class='line'>   //<span class="se">\ </span>             <span class="p">|</span>      Extracting input <span class="k">for</span>    <span class="p">|</span>
+</span><span class='line'>  ////<span class="se">\ </span>   _____    <span class="p">|</span>   self-replication process   <span class="p">|</span>
+</span><span class='line'> //////<span class="se">\ </span> /_____<span class="se">\ </span>  <span class="se">\ </span>                            /
+</span><span class='line'> <span class="o">=======</span> <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
+</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
+</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
+</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
+</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
+</span><span class='line'>         <span class="se">\ </span>     /   +---+
+</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
+</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
+</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
+</span><span class='line'>
+</span><span class='line'>? Owner: sojiro
+</span><span class='line'>? Bot name: slack-test-bot
+</span><span class='line'>? Description: Slack Bot <span class="nb">test</span>
+</span><span class='line'>? Bot adapter: <span class="o">(</span>campfire<span class="o">)</span> slack
+</span><span class='line'>? Bot adapter: slack
+</span><span class='line'>   create bin/hubot
+</span><span class='line'>   create bin/hubot.cmd
+</span><span class='line'>   create Procfile
+</span><span class='line'>   create README.md
+</span><span class='line'>   create external-scripts.json
+</span><span class='line'>   create hubot-scripts.json
+</span><span class='line'>   create .gitignore
+</span><span class='line'>   create package.json
+</span><span class='line'>   create scripts/example.coffee
+</span><span class='line'>   create .editorconfig
+</span><span class='line'>                     _____________________________
+</span><span class='line'> _____              /                             <span class="se">\ </span>
+</span><span class='line'> <span class="se">\ </span>   <span class="se">\ </span>            <span class="p">|</span>   Self-replication process   <span class="p">|</span>
+</span><span class='line'> <span class="p">|</span>    <span class="p">|</span>    _____    <span class="p">|</span>          complete...         <span class="p">|</span>
+</span><span class='line'> <span class="p">|</span>__<span class="se">\\</span><span class="p">|</span>   /_____<span class="se">\ </span>  <span class="se">\ </span>    Good luck with that.    /
+</span><span class='line'>   <span class="p">|</span>//+  <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
+</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
+</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
+</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
+</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
+</span><span class='line'>         <span class="se">\ </span>     /   +---+
+</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
+</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
+</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
+</span><span class='line'>...
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>各項目それぞれデフォルト値が設定されており、なにも入力せずEnterを押していくとその通りになる</p>
+
+<p>今回はSlack用のbotだったので Bot adapter: の欄で <code>slack</code> と入力した</p>
+
+<p>他にも用途に合わせてadapterが用意されているようである</p>
+
+<p>この <code>yo</code> 実行により、Hubotの雛形が作成され、 <code>hubot --create</code> と同様にセットアップが完了する</p>
+
+<p>なおかつadapterを予め設定できる分、セットアップが楽になっている</p>
+
+<h2>最後に</h2>
+
+<p>今回はHubotに絡んで偶発的に <code>yo</code> を知りましたが、かなり便利そうなのでYeoman含めて今後も使ってみたいところです</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://yosuke-furukawa.hatenablog.com/entry/2013/07/04/085814">Yeoman入門(第一部、yoを使う)</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/04/transfer-the-slack-bot-to-heroku/">Slack BotをHeroku上で動かす</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-04T21:38:12+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:38 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://blog.sojiro.me/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a>で作ったSlack Botをローカル以外の環境で動かしたくなったのでHeroku上で動かせるようにしてみます。</p>
+
+<p>あらかじめ<a href="https://www.heroku.com">Heroku</a>にSign upしておきます。</p>
+
+<h2>Heroku Toolbelt のインストール</h2>
+
+<p>HerokuのCLIツールであるHeroku Toolbeltをインストールします</p>
+
+<p>今回はMacを使っているのでこちらからダウンロード&amp;インストールしました</p>
+
+<p><a href="https://toolbelt.heroku.com/osx">https://toolbelt.heroku.com/osx</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku version
+</span><span class='line'>heroku-toolbelt/3.34.0 <span class="o">(</span>x86_64-darwin10.8.0<span class="o">)</span> ruby/1.9.3
+</span><span class='line'>You have no installed plugins.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>コマンドラインからHerokuにログイン</h2>
+
+<p>HerokuにSign upしたときのIDとPasswordでコマンドライン上からHerokuにログインする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku login
+</span><span class='line'>Enter your Heroku credentials.
+</span><span class='line'>Email: sojiro@example.com
+</span><span class='line'>Password <span class="o">(</span>typing will be hidden<span class="o">)</span>:
+</span><span class='line'>Authentication successful.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>hubotのディレクトリをGitHubにpush</h2>
+
+<p>HerokuにはGitHubを通じてデプロイするようなのでhubotのあるディレクトリをGitHubにpushしておく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> ~/git/hubot/my_slack_bot/
+</span><span class='line'><span class="nv">$ </span>git init
+</span><span class='line'><span class="nv">$ </span>git add .
+</span><span class='line'><span class="nv">$ </span>git commit -m <span class="s1">&#39;initial commit&#39;</span>
+</span><span class='line'><span class="nv">$ </span>git remote add origin git@github.com:your_name/slack_bot_repository  <span class="c"># 自分で用意したslack bot用のGitリポジトリ</span>
+</span><span class='line'><span class="nv">$ </span>git push origin master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Herokuにデプロイ</h2>
+
+<p>Herokuにアプリケーションを作る</p>
+
+<p>このときstackにcedarを指定する。アプリケーションの名前は指定しないとHerokuが勝手に名前をつけてくれる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku create --stack cedar
+</span><span class='line'>Creating random_name... <span class="k">done</span>, stack is cedar-10
+</span><span class='line'>https://random_name.herokuapp.com/ <span class="p">|</span> https://git.heroku.com/random_name.git
+</span><span class='line'>Git remote heroku added
+</span><span class='line'>updating...done. Updated to 3.35.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここまできたらいよいよデプロイ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push heroku master
+</span><span class='line'>Counting objects: 16, <span class="k">done</span>.
+</span><span class='line'>Delta compression using up to <span class="m">8</span> threads.
+</span><span class='line'>Compressing objects: 100% <span class="o">(</span>13/13<span class="o">)</span>, <span class="k">done</span>.
+</span><span class='line'>Writing objects: 100% <span class="o">(</span>16/16<span class="o">)</span>, 6.58 KiB <span class="p">|</span> <span class="m">0</span> bytes/s, <span class="k">done</span>.
+</span><span class='line'>Total <span class="m">16</span> <span class="o">(</span>delta 0<span class="o">)</span>, reused <span class="m">0</span> <span class="o">(</span>delta 0<span class="o">)</span>
+</span><span class='line'>remote: Compressing <span class="nb">source </span>files... <span class="k">done</span>.
+</span><span class='line'>remote: Building <span class="nb">source</span>:
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Herokuに設定を追加</h2>
+
+<p>HerokuにHubotとSlackの設定を追加していく</p>
+
+<p>ここでは<a href="http://blog.sojiro.me/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a>で払い出されたものを指定する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># HUBOT_SLACK_TOKENの設定</span>
+</span><span class='line'><span class="nv">$ </span>heroku config:add <span class="nv">HUBOT_SLACK_TOKEN</span><span class="o">=</span>xxxx-123456789-abcdefghijklmnopqrstuvwxyz
+</span><span class='line'>Setting config vars and restarting random_name... <span class="k">done</span>, v4
+</span><span class='line'>HUBOT_SLACK_TOKEN: xxxx-123456789-abcdefghijklmnopqrstuvwxyz
+</span><span class='line'>
+</span><span class='line'><span class="c"># SlackのTeam設定</span>
+</span><span class='line'><span class="nv">$ </span>heroku config:add <span class="nv">HUBOT_SLACK_TEAM</span><span class="o">=</span>your_team_name
+</span><span class='line'>Setting config vars and restarting random_name... <span class="k">done</span>, v5
+</span><span class='line'>HUBOT_SLACK_TEAM: your_team_name
+</span><span class='line'>
+</span><span class='line'><span class="c"># Botの名前の設定</span>
+</span><span class='line'><span class="nv">$ </span>heroku config:add <span class="nv">HUBOT_SLACK_BOTNAME</span><span class="o">=</span>your_bot_name
+</span><span class='line'>Setting config vars and restarting random_name... <span class="k">done</span>, v6
+</span><span class='line'>HUBOT_SLACK_BOTNAME: your_bot_name
+</span><span class='line'>
+</span><span class='line'><span class="c"># HerokuアプリのURL設定</span>
+</span><span class='line'><span class="nv">$ </span>heroku config:add <span class="nv">HEROKU_URL</span><span class="o">=</span>http://random_name.herokuapp.com
+</span><span class='line'>Setting config vars and restarting random_name... <span class="k">done</span>, v7
+</span><span class='line'>HEROKU_URL: http://random_name.herokuapp.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>HerokuのWebプロセスの起動</h2>
+
+<p>最後にHerokuのWebプロセスを起動する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku ps:scale <span class="nv">web</span><span class="o">=</span>1
+</span><span class='line'>Scaling dynos... <span class="k">done</span>, now running web at 1:1X.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>SlackにBotが現れれば成功！</p>
+
+<p>今回はRedisを使わなかったのでHerokuのaddon設定やクレジットカードの登録無しでいけました</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://memo.sanographix.net/post/88371442780">Hubotで西木野真姫bot作ってSlackに呼ぶ</a></li>
+<li><a href="http://tech-sketch.jp/2013/12/hubot-install-heroku.html">GitHubがOpsツールの中心として活用しているHubotを使ってみる～インストール、スクリプトの作成、Herokuへのデプロイ～</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -686,203 +1255,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-12-15T03:02:30+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:02 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>SlackにBotを入れたいと思い、少し調べてみたところHUBOTがやはり簡単らしいのでやってみた</p>
-
-<h2>HUBOT用のAPI Tokenを取得する</h2>
-
-<p>まずはSlackのチームメニューからConfigure Integrationsを選択</p>
-
-<p><img src="/images/slack_hubot/team_menu.png"></p>
-
-<p>様々な外部サービスとの連携メニューからHUBOTを選択する</p>
-
-<p><img src="/images/slack_hubot/add_hubot.png"></p>
-
-<p>追加するbotの名前を入力</p>
-
-<p><img src="/images/slack_hubot/set_botname.png"></p>
-
-<p>ここまでのステップを踏むとAPI Tokenが記されたページが表示される</p>
-
-<p>そしてこの段階でbotがSlackにjoinする</p>
-
-<p><img src="/images/slack_hubot/join_bot.png"></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/12/15/slack-bot-by-hubot/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/">MacにNode.jsとMongoDBをインストールしたメモ</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-12-07T18:30:01+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:30 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>某勉強会でNode.jsとMongoDBを使うということがあったので、インストールした際のメモを残しておく。</p>
-
-<h2>Homebrewのインストール</h2>
-
-<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>でも触れた通り、以下の方法でインストールを試みる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;</span>
-</span><span class='line'>Whoops, the Homebrew installer has moved! Please instead run:
-</span><span class='line'>
-</span><span class='line'>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
-</span><span class='line'>
-</span><span class='line'>Also, please ask wherever you got this link from to update it to the above.
-</span><span class='line'>Thanks!
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>どうやらHomebrewのインストーラーの場所があれから変わったようで、以下のパスで再度実行。</p>
-
-<p>コマンドのレスポンスとして新しいパスをメッセージに残してくれるのはありがたい。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/01/screen-introduction/">Screenを使ってみる</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-12-01T17:15:25+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>5:15 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>デタッチ/アタッチという強力な機能をもった仮想端末管理アプリケーションであるscreenを使ってみた。</p>
-
-<h2>screenの設定ファイルを編集する</h2>
-
-<p>screenの操作に使うほとんどのコマンドはプレフィックスを用いる。
-このプレフィクスがデフォルトでは <code>ctrl + a</code> のため、Shellの行頭移動と被ってしまうので設定を編集する。</p>
-
-<p>ついでに色々編集してみた。（ <code>ctrl +</code> を <code>^</code> で表す）</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>escape ^j^j
-</span><span class='line'>startup_message off
-</span><span class='line'>defkanji utf-8
-</span><span class='line'>defencoding utf-8
-</span><span class='line'>encoding utf-8 utf-8
-</span><span class='line'>caption always <span class="s2">&quot;%{= wb} %-w%{=bu dr}%n %t%{-}%+w %= %{=b wk} [%l] %{=b wb}%y/%m/%d(%D) %{=b wm}%c&quot;</span>
-</span><span class='line'>autodetach on
-</span><span class='line'>bell_msg <span class="s2">&quot;^G&quot;</span>
-</span><span class='line'>defscrollback 10000
-</span><span class='line'>vbell off
-</span><span class='line'><span class="nb">bind </span>n screen
-</span><span class='line'><span class="nb">bind </span>h prev
-</span><span class='line'><span class="nb">bind </span>j next
-</span><span class='line'><span class="nb">bind </span>l windowlist
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/12/01/screen-introduction/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page3">&larr; Older</a>
@@ -904,23 +1276,23 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/05/19/update-homebrew/">Homebrewをupdateしよう</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/18/validate-json-schema/">JSON Schema のバリデーション</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/17/get-pause-id/">PAUSE ID の取得</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/05/13/start-up-a-web-camera-via-web/">Webからデバイスのカメラを起動する</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/05/12/what-is-xdg-open-command/">xdg-open コマンドとは</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/11/the-third-step-of-yeoman/">初めてのYeoman (Grunt/Bowerとは)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a>
       </li>
     
   </ul>
