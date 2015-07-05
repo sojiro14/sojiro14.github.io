@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-06-14T15:02:39+09:00</updated>
+  <updated>2015-07-06T02:13:45+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CPAN モジュールのための雛形を作る]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/07/02/create-basic-model-for-cpan-module/"/>
+    <updated>2015-07-02T00:13:24+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/07/02/create-basic-model-for-cpan-module</id>
+    <content type="html"><![CDATA[<p>いよいよ CPAN モジュールを作ろうと思います。</p>
+
+<p>しかし既存の CPAN モジュールを見てみると本体のプログラムの他に見慣れないファイルがちらほら。。。</p>
+
+<p>正直どんなファイル群で CPAN モジュールを構成すれば良いのか分かっていないわけです。</p>
+
+<p>そんな悩みを解決してくれたのが <em>Minilla</em> モジュールです。</p>
+
+<h2>Minilla のインストール</h2>
+
+<p> <em>Minilla</em> は CPAN モジュールなので <code>cpanm</code> コマンドでインストールできます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cpanm Minilla
+</span><span class='line'>--&gt; Working on Minilla
+</span><span class='line'>Fetching http://cpan.metacpan.org/authors/id/T/TO/TOKUHIROM/Minilla-v2.4.1.tar.gz ... OK
+</span><span class='line'>Configuring Minilla-v2.4.1 ... OK
+</span><span class='line'>...
+</span><span class='line'>Building and testing Minilla-v2.4.1 ... OK
+</span><span class='line'>Successfully installed Minilla-v2.4.1
+</span><span class='line'><span class="m">11</span> distributions installed
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>雛形の作成</h2>
+
+<p> <em>Minilla</em> がインストールできたら早速 CPAN モジュールの雛形を作ります。 <code>minil new Your::Module</code> で作成できます。</p>
+
+<p>今回は <em>JSON::MergePatch</em> というモジュールを作ります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$cd</span> ~/git/cpan
+</span><span class='line'><span class="nv">$ </span>minil new JSON::MergePatch
+</span><span class='line'>Writing lib/JSON/MergePatch.pm
+</span><span class='line'>Writing Changes
+</span><span class='line'>Writing t/00_compile.t
+</span><span class='line'>Writing .travis.yml
+</span><span class='line'>Writing .gitignore
+</span><span class='line'>Writing LICENSE
+</span><span class='line'>Writing cpanfile
+</span><span class='line'>Initializing git JSON::MergePatch
+</span><span class='line'><span class="o">[</span>JSON-MergePatch<span class="o">]</span> <span class="nv">$ </span>git init
+</span><span class='line'>Initialized empty Git repository in /user/home_directory/git/cpan/JSON-MergePatch/.git/
+</span><span class='line'>Retrieving meta data from lib/JSON/MergePatch.pm.
+</span><span class='line'>Name: JSON::MergePatch
+</span><span class='line'>Abstract: It<span class="s1">&#39;s new $module</span>
+</span><span class='line'><span class="s1">Version: 0.01</span>
+</span><span class='line'><span class="s1">fatal: bad default revision &#39;</span>HEAD<span class="err">&#39;</span>
+</span><span class='line'><span class="o">[</span>JSON-MergePatch<span class="o">]</span> <span class="nv">$ </span>git add .
+</span><span class='line'>Finished to create JSON::MergePatch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで雛形ができました。</p>
+
+<p>そしてこれから雛形を編集していくわけですが、自分で編集するのは基本的に以下のファイルのみです。</p>
+
+<ul>
+<li>lib/ 配下のプログラム</li>
+<li>t/ 配下のテストプラグラム</li>
+<li>cpanfile</li>
+</ul>
+
+
+<p>以下のファイルはそれぞれ <code>minil hoge</code> コマンド実行時に自動で編集されます。</p>
+
+<ul>
+<li>Changes: リリース時に更新される</li>
+<li>META.json: cpanfile に合わせて更新される</li>
+<li>README.md: lib/Your/Module.pm の記述から更新される</li>
+</ul>
+
+
+<h2>つづく</h2>
+
+<p>次回はいよいよ CPAN へ公開する際の手順を書こうと思います。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.64p.org/entry/2013/05/14/080423">Minilla を用いた Perl モジュールの作り方</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Homebrewをupdateしよう]]></title>
@@ -2962,144 +3078,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <li><a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat-centos-or-fedora-linux/">Install MongoDB on Red Hat Enterprise, CentOS, Fedora, or Amazon Linux</a></li>
 <li><a href="http://qiita.com/nownabe/items/123a8fd04ff5252b3036">CentOS6.5にMongoDBをインストールする</a></li>
 <li><a href="http://qiita.com/ykyk1218/items/1c1824e77fb8af78bcf5">MongoDBをLinuxにインストール</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[VimにおけるTABとスペースの扱いについて]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/12/26/tab-and-space-on-vim/"/>
-    <updated>2014-12-26T10:52:26+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/12/26/tab-and-space-on-vim</id>
-    <content type="html"><![CDATA[<p>Vimでは <code>&lt;TAB&gt;</code> やインデントについてその挙動を設定することができる。いくつか設定方法があるが、これまでこれらに関する <code>.vimrc</code> の設定は何も考えずにただコピペしていたので記述を見直してみた。</p>
-
-<h2>tabstop</h2>
-
-<p> <code>tabstop</code> で <code>&lt;TAB&gt;</code> にいくつのスペースを設定するか決めることができる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで <code>&lt;TAB&gt;</code> に半角4つ分が設定される。</p>
-
-<!-- more -->
-
-
-<h2><code>&lt;TAB&gt;</code> の挙動</h2>
-
-<p>そもそも <code>&lt;TAB&gt;</code> はどのような挙動をするのか。</p>
-
-<p>何となく、指定した数の分だけ半角スペースを入れてくれるもの、と思っていたが、</p>
-
-<p>正確には行頭からの文字数が<code>&lt;TAB&gt;</code> に指定された半角数の倍数になるようにスペースを補完するもの、というのが正しいかもしれない。何を言っているかわからないと思うので以下で実験する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">list</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">listchars</span><span class="p">=</span><span class="k">tab</span>:<span class="p">&gt;</span>.<span class="p">,</span>trail:_<span class="p">,</span><span class="nb">eol</span>:↲<span class="p">,</span>extends:<span class="p">&gt;,</span>precedes:<span class="p">&lt;,</span>nbsp:%
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>実験用に上記のように <code>.vimrc</code> を設定しておく。</p>
-
-<figure class='code'><figcaption><span>sample1</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="p">&gt;</span>...↲
-</span><span class='line'><span class="k">a</span><span class="p">&gt;</span>..↲
-</span><span class='line'>bb<span class="p">&gt;</span>.↲
-</span><span class='line'>ccc<span class="p">&gt;</span>↲
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これは以下のように打ち込んだ結果で、 <code>&lt;TAB&gt;</code> により、それぞれの行が <code>tabstop</code> で設定した半角4つ分で終わるように（タブ文字により）スペースが補完されているのがわかる。</p>
-
-<ul>
-<li><code>&lt;TAB&gt;</code></li>
-<li>a <code>&lt;TAB&gt;</code></li>
-<li>bb <code>&lt;TAB&gt;</code></li>
-<li>ccc <code>&lt;TAB&gt;</code></li>
-</ul>
-
-
-<figure class='code'><figcaption><span>sample2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="p">&gt;</span>...<span class="p">&gt;</span>...↲
-</span><span class='line'>test<span class="p">&gt;</span>...↲
-</span><span class='line'>sample<span class="p">&gt;</span>.↲
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>一行に半角4つ分以上の文字が打ち込まれている場合も同じく、 <code>&lt;TAB&gt;</code> はそれぞれの行が <code>tabstop</code> で指定した半角4つの倍数の文字数になるようにタブ文字を補完する。（この場合は一行につき半角8文字）</p>
-
-<h2>smarttabとshiftwidthとsmartindent</h2>
-
-<p> <code>smarttab</code> をONにすることで <code>shiftwidth</code> を設定することが可能になる。</p>
-
-<p> <code>shiftwidth</code> は行頭のインデントの幅を規定するもので、 <code>smarttab</code> が効いているときには行頭の <code>&lt;TAB&gt;</code> は <code>shiftwidth</code> の幅のスペース（タブ文字）を挿入する役目を果たす。</p>
-
-<p> <code>smartindent</code> をONにすると改行時に前の行の行末を見て自動でインデントが挿入される。例えば行末が <code>{</code> の場合は次の行に自動的にインデントが入る。このインデントの幅は <code>shiftwidth</code> で指定された幅となる。</p>
-
-<h2>autoindent</h2>
-
-<p> <code>autoindent</code> は改行時に前の行のインデントと同じ幅でインデントを挿入する。</p>
-
-<h2>expandtab</h2>
-
-<p> <code>expandtab</code> は <code>&lt;TAB&gt;</code> により挿入されるタブ文字を純粋なスペースに変換する。</p>
-
-<p>上記のsample1、2を以下の設定で記述してみる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">expandtab</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">list</span>
-</span><span class='line'><span class="k">set</span> <span class="nb">listchars</span><span class="p">=</span><span class="k">tab</span>:<span class="p">&gt;</span>.<span class="p">,</span>trail:_<span class="p">,</span><span class="nb">eol</span>:↲<span class="p">,</span>extends:<span class="p">&gt;,</span>precedes:<span class="p">&lt;,</span>nbsp:%
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>sample1&#8217;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'>____↲
-</span><span class='line'>a___↲
-</span><span class='line'>bb__↲
-</span><span class='line'>ccc_↲
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>sample2&#8217;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'>________↲
-</span><span class='line'>test____↲
-</span><span class='line'>sample__↲
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>expandtab</code> をONにした状態で一時的にタブ文字を記述したいときは、VimをINSERTモードにした状態で以下のように打つ。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'>Control<span class="p">-</span><span class="k">v</span> <span class="p">&lt;</span>TAB<span class="p">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://vimwiki.net/?FrontPage">VIM wiki</a></li>
-<li><a href="http://nanasi.jp/articles/howto/editing/et-inserttab.html">:set expandtab（:set et）設定の時に、タブ文字を挿入する </a></li>
 </ul>
 
 ]]></content>
