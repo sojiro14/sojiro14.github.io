@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-07-06T02:13:45+09:00</updated>
+  <updated>2015-07-07T23:54:51+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,348 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CPAN モジュールのリリース]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/07/06/release-cpan-module/"/>
+    <updated>2015-07-06T02:19:14+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/07/06/release-cpan-module</id>
+    <content type="html"><![CDATA[<p>上司にお膳立てされ、後輩にお尻を叩かれ、やっとのことで CPAN モジュールをリリースしました。</p>
+
+<p>前回のエントリに続き、リリースの手順を記します。</p>
+
+<h2>モジュールの作成</h2>
+
+<p>ここがコアの部分ですが、内容は作るモジュールに依るので割愛。編集すべきは以下のファイルです。</p>
+
+<ul>
+<li>lib/ 配下のプログラム</li>
+<li>t/ 配下のテストプラグラム</li>
+<li>cpanfile</li>
+</ul>
+
+
+<p>cpanfile の作成は <code>scan-prereqs-cpanfile</code> を使うと便利です。</p>
+
+<p>このコマンドは <strong>App::scan_prereqs_cpanfile</strong> モジュールで提供されています。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cpanm App::scan_prereqs_cpanfile
+</span><span class='line'>scan-prereqs-cpanfile &gt; cpanfile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>テスト</h2>
+
+<p>モジュールの作成ができたら test を実行しますが、このとき <code>minil test</code> コマンドを使うと Changes や META.json、README.md が自動で編集されます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>minil <span class="nb">test</span>
+</span><span class='line'>Creating working directory: /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7
+</span><span class='line'>cp Build.PL /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/Build.PL
+</span><span class='line'>cp Changes /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/Changes
+</span><span class='line'>cp LICENSE /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/LICENSE
+</span><span class='line'>cp META.json /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/META.json
+</span><span class='line'>cp README.md /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/README.md
+</span><span class='line'>cp cpanfile /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/cpanfile
+</span><span class='line'>cp lib/JSON/MergePatch.pm /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/lib/JSON/MergePatch.pm
+</span><span class='line'>cp minil.toml /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/minil.toml
+</span><span class='line'>cp t/00_compile.t /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/t/00_compile.t
+</span><span class='line'>Building /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7
+</span><span class='line'>Retrieving meta data from lib/JSON/MergePatch.pm.
+</span><span class='line'>Name: JSON::MergePatch
+</span><span class='line'>Abstract: It<span class="s1">&#39;s new $module</span>
+</span><span class='line'><span class="s1">Version: 0.01</span>
+</span><span class='line'><span class="s1">fatal: bad default revision &#39;</span>HEAD<span class="s1">&#39;</span>
+</span><span class='line'><span class="s1">Writing MANIFEST file</span>
+</span><span class='line'><span class="s1">Writing release tests: xt/minilla/minimum_version.t</span>
+</span><span class='line'><span class="s1">Writing release tests: xt/minilla/cpan_meta.t</span>
+</span><span class='line'><span class="s1">Writing release tests: xt/minilla/pod.t</span>
+</span><span class='line'><span class="s1">Writing release tests: xt/minilla/spelling.t</span>
+</span><span class='line'><span class="s1">Writing release tests: xt/minilla/permissions.t</span>
+</span><span class='line'><span class="s1">[5DuYQ9x7] $ perl -I. Build.PL</span>
+</span><span class='line'><span class="s1">Creating new &#39;</span>Build<span class="s1">&#39; script for &#39;</span>JSON-MergePatch<span class="s1">&#39; version &#39;</span>0.01<span class="err">&#39;</span>
+</span><span class='line'><span class="o">[</span>5DuYQ9x7<span class="o">]</span> <span class="nv">$ </span>perl -I. Build build
+</span><span class='line'>cp lib/JSON/MergePatch.pm blib/lib/JSON/MergePatch.pm
+</span><span class='line'>t/00_compile.t .. ok
+</span><span class='line'>All tests successful.
+</span><span class='line'><span class="nv">Files</span><span class="o">=</span>1, <span class="nv">Tests</span><span class="o">=</span>1,  <span class="m">0</span> wallclock secs <span class="o">(</span> 0.01 usr  0.01 sys +  0.03 cusr  0.01 <span class="nv">csys</span> <span class="o">=</span>  0.06 CPU<span class="o">)</span>
+</span><span class='line'>Result: PASS
+</span><span class='line'>Removing /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>リリース</h2>
+
+<p>テストが通ったらいよいよリリースします。</p>
+
+<p>CPAN へのリリースには PAUSE ID が必要です。取得方法は<a href="http://blog.sojiro.me/blog/2015/05/17/get-pause-id/">こちら</a>。</p>
+
+<p>リリースには <code>minil release</code> コマンドを使います。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>minil release
+</span><span class='line'>
+</span><span class='line'>Release engineering requires Version::Next, but it is not available. Please install Version::Next using your preferred CPAN client at ...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <strong>Version::Next</strong> がないと怒られたので入れて再度実行。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cpanm Version::Next
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>minil release
+</span><span class='line'>
+</span><span class='line'>Release engineering requires CPAN::Uploader, but it is not available. Please install CPAN::Uploader using your preferred CPAN client at ...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今度は <strong>CPAN::Uploader</strong> がないと怒られたので入れて再度実行。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cpanm CPAN::Uploader
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ $ </span>minil release
+</span><span class='line'>
+</span><span class='line'>Retrieving meta data from lib/JSON/MergePatch.pm.
+</span><span class='line'>Name: JSON::MergePatch
+</span><span class='line'>Abstract: JSON Merge Patch implementation
+</span><span class='line'>Version: 0.01
+</span><span class='line'>Next Release? <span class="o">[</span>0.01<span class="o">]</span>
+</span><span class='line'>Name: JSON::MergePatch
+</span><span class='line'>Abstract: JSON Merge Patch implementation
+</span><span class='line'>Version: 0.01
+</span><span class='line'>...
+</span><span class='line'>All tests successful.
+</span><span class='line'><span class="nv">Files</span><span class="o">=</span>8, <span class="nv">Tests</span><span class="o">=</span>67,  <span class="m">0</span> wallclock secs <span class="o">(</span> 0.04 usr  0.03 sys +  0.18 cusr  0.04 <span class="nv">csys</span> <span class="o">=</span>  0.29 CPU<span class="o">)</span>
+</span><span class='line'>Result: PASS
+</span><span class='line'>Wrote JSON-MergePatch-0.01.tar.gz
+</span><span class='line'>Upload to CPAN
+</span><span class='line'>Release to CPAN ? <span class="o">[</span>y/n<span class="o">]</span>   y
+</span><span class='line'>missing user argument at
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>リリースバージョンの確認と、 CPAN にリリースするかの確認に答えていざリリース、と思いきや</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>missing user argument at
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>と怒られました。</p>
+
+<p>どうやら <code>~/.pause</code> ファイルに PAUSE のユーザー情報を記載する必要があるようです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim ~/.pause
+</span><span class='line'><span class="nv">$ </span>cat ~/.pause
+</span><span class='line'>user SOJIRO
+</span><span class='line'>password your_password
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再度実行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>minil release
+</span><span class='line'>
+</span><span class='line'>Retrieving meta data from lib/JSON/MergePatch.pm.
+</span><span class='line'>Name: JSON::MergePatch
+</span><span class='line'>Abstract: JSON Merge Patch implementation
+</span><span class='line'>Version: 0.01
+</span><span class='line'>Next Release? <span class="o">[</span>0.01<span class="o">]</span>
+</span><span class='line'>Name: JSON::MergePatch
+</span><span class='line'>Abstract: JSON Merge Patch implementation
+</span><span class='line'>Version: 0.01
+</span><span class='line'>...
+</span><span class='line'>All tests successful.
+</span><span class='line'><span class="nv">Files</span><span class="o">=</span>8, <span class="nv">Tests</span><span class="o">=</span>67,  <span class="m">0</span> wallclock secs <span class="o">(</span> 0.04 usr  0.03 sys +  0.18 cusr  0.05 <span class="nv">csys</span> <span class="o">=</span>  0.30 CPU<span class="o">)</span>
+</span><span class='line'>Result: PASS
+</span><span class='line'>Wrote JSON-MergePatch-0.01.tar.gz
+</span><span class='line'>Upload to CPAN
+</span><span class='line'>Release to CPAN ? <span class="o">[</span>y/n<span class="o">]</span>   y
+</span><span class='line'>registering upload with PAUSE web server
+</span><span class='line'>POSTing upload <span class="k">for</span> /user/home_directory/git/cpan/JSON-MergePatch/.build/ilpDOKuE/JSON-MergePatch-0.01.tar.gz to https://pause.perl.org/pause/authenquery
+</span><span class='line'>PAUSE add message sent ok <span class="o">[</span>200<span class="o">]</span>
+</span><span class='line'>Name: JSON::MergePatch
+</span><span class='line'>Abstract: JSON Merge Patch implementation
+</span><span class='line'>Version: 0.01
+</span><span class='line'><span class="o">[</span>JSON-MergePatch<span class="o">]</span> <span class="nv">$ </span>git commit -a -m Checking in changes prior to tagging of version 0.01.
+</span><span class='line'>Changelog diff is:
+</span><span class='line'>diff --git a/Changes b/Changes
+</span><span class='line'>index 643c7bc..dae7daa 100644
+</span><span class='line'>--- a/Changes
+</span><span class='line'>+++ b/Changes
+</span><span class='line'>@@ -2,5 +2,7 @@ Revision <span class="nb">history </span><span class="k">for</span> Perl extension JSON-MergePatch
+</span><span class='line'>
+</span><span class='line'> <span class="o"></span>
+</span><span class='line'>
+</span><span class='line'>+0.01 2015-07-02T18:29:20Z
+</span><span class='line'>+
+</span><span class='line'>     - original version
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>master 3bf0db2<span class="o">]</span> Checking in changes prior to tagging of version 0.01.
+</span><span class='line'>
+</span><span class='line'> <span class="m">2</span> files changed, <span class="m">17</span> insertions<span class="o">(</span>+<span class="o">)</span>, <span class="m">1</span> deletion<span class="o">(</span>-<span class="o">)</span>
+</span><span class='line'>Pushing to origin
+</span><span class='line'><span class="o">[</span>JSON-MergePatch<span class="o">]</span> <span class="nv">$ </span>git push origin master
+</span><span class='line'>Counting objects: 7, <span class="k">done</span>.
+</span><span class='line'>Delta compression using up to <span class="m">8</span> threads.
+</span><span class='line'>Compressing objects: 100% <span class="o">(</span>4/4<span class="o">)</span>, <span class="k">done</span>.
+</span><span class='line'>Writing objects: 100% <span class="o">(</span>4/4<span class="o">)</span>, <span class="m">831</span> bytes <span class="p">|</span> <span class="m">0</span> bytes/s, <span class="k">done</span>.
+</span><span class='line'>Total <span class="m">4</span> <span class="o">(</span>delta 2<span class="o">)</span>, reused <span class="m">0</span> <span class="o">(</span>delta 0<span class="o">)</span>
+</span><span class='line'>To git@github.com:sojiro14/JSON-MergePatch.git
+</span><span class='line'>
+</span><span class='line'>   9c8c207..3bf0db2  master -&gt; master
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span>JSON-MergePatch<span class="o">]</span> <span class="nv">$ </span>git tag 0.01
+</span><span class='line'><span class="o">[</span>JSON-MergePatch<span class="o">]</span> <span class="nv">$ </span>git push origin tag 0.01
+</span><span class='line'>Total <span class="m">0</span> <span class="o">(</span>delta 0<span class="o">)</span>, reused <span class="m">0</span> <span class="o">(</span>delta 0<span class="o">)</span>
+</span><span class='line'>To git@github.com:sojiro14/JSON-MergePatch.git
+</span><span class='line'>
+</span><span class='line'> * <span class="o">[</span>new tag<span class="o">]</span>         0.01 -&gt; 0.01
+</span><span class='line'>
+</span><span class='line'>Removing /user/home_directory/git/cpan/JSON-MergePatch/.build/ilpDOKuE
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>テストが実行された後、CPAN にリリースされました。最後にその時点の tag が切られて完了。</p>
+
+<p>ついに CPAN モジュールをリリースしてしまいました。メンテナンスちゃんとしなくては。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.64p.org/entry/2013/05/14/080423">Minilla を用いた Perl モジュールの作り方</a></li>
+<li><a href="http://hotolab.net/blog/first_minil/">はじめてのCPAN Authorになろうとして困ったメモ</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CPAN モジュールのための雛形を作る]]></title>
@@ -24,11 +366,11 @@
 
 <p>正直どんなファイル群で CPAN モジュールを構成すれば良いのか分かっていないわけです。</p>
 
-<p>そんな悩みを解決してくれたのが <em>Minilla</em> モジュールです。</p>
+<p>そんな悩みを解決してくれたのが <strong>Minilla</strong> モジュールです。</p>
 
 <h2>Minilla のインストール</h2>
 
-<p> <em>Minilla</em> は CPAN モジュールなので <code>cpanm</code> コマンドでインストールできます。</p>
+<p> <strong>Minilla</strong> は CPAN モジュールなので <code>cpanm</code> コマンドでインストールできます。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -51,9 +393,9 @@
 
 <h2>雛形の作成</h2>
 
-<p> <em>Minilla</em> がインストールできたら早速 CPAN モジュールの雛形を作ります。 <code>minil new Your::Module</code> で作成できます。</p>
+<p> <strong>Minilla</strong> がインストールできたら早速 CPAN モジュールの雛形を作ります。 <code>minil new Your::Module</code> で作成できます。</p>
 
-<p>今回は <em>JSON::MergePatch</em> というモジュールを作ります。</p>
+<p>今回は <strong>JSON::MergePatch</strong> というモジュールを作ります。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2969,117 +3311,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 <h2>参照</h2>
 
 <p><a href="http://dotinstall.com/lessons/basic_mongodb_v2">ドットインストール</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[AWSのLinuxにMongoDBをインストール]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/12/30/installing-mongodb-on-linux-aws/"/>
-    <updated>2014-12-30T13:32:15+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/12/30/installing-mongodb-on-linux-aws</id>
-    <content type="html"><![CDATA[<p>AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順</p>
-
-<h2>YUMの設定</h2>
-
-<p>パッケージ管理システムであるYUMにmongoDB用の設定を追加する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo vim /etc/yum.repos.d/mongodb.repo
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>/etc/yum.repos.d/mongodb.repo </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>mongodb<span class="o">]</span>
-</span><span class='line'><span class="nv">name</span><span class="o">=</span>MongoDB Repository
-</span><span class='line'><span class="nv">baseurl</span><span class="o">=</span>http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
-</span><span class='line'><span class="nv">gpgcheck</span><span class="o">=</span>0
-</span><span class='line'><span class="nv">enabled</span><span class="o">=</span>1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでYUMにmongoDBのリポジトリが追加される</p>
-
-<!-- more -->
-
-
-<h2>mongoDBのインストール</h2>
-
-<p>今回は何も考えず最新のバージョンをインストールするので以下のコマンドで実行する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install mongodb-org
-</span><span class='line'>読み込んだプラグイン:priorities, update-motd, upgrade-helper
-</span><span class='line'>...
-</span><span class='line'><span class="o">============================================================================================================================================================================================================</span>
-</span><span class='line'> Package                                                  アーキテクチャー                             バージョン                                       リポジトリー                                   容量
-</span><span class='line'><span class="o">============================================================================================================================================================================================================</span>
-</span><span class='line'>インストール中:
-</span><span class='line'> mongodb-org                                              x86_64                                       2.6.6-1                                          mongodb                                       4.9 k
-</span><span class='line'>依存性関連でのインストールをします:
-</span><span class='line'> mongodb-org-mongos                                       x86_64                                       2.6.6-1                                          mongodb                                       6.8 M
-</span><span class='line'> mongodb-org-server                                       x86_64                                       2.6.6-1                                          mongodb                                       9.0 M
-</span><span class='line'> mongodb-org-shell                                        x86_64                                       2.6.6-1                                          mongodb                                       4.3 M
-</span><span class='line'> mongodb-org-tools                                        x86_64                                       2.6.6-1                                          mongodb                                        <span class="m">90</span> M
-</span><span class='line'>
-</span><span class='line'>トランザクションの要約
-</span><span class='line'><span class="o">============================================================================================================================================================================================================</span>
-</span><span class='line'>インストール  <span class="m">1</span> パッケージ <span class="o">(</span>+4 個の依存関係のパッケージ<span class="o">)</span>
-</span><span class='line'>
-</span><span class='line'>総ダウンロード容量: <span class="m">110</span> M
-</span><span class='line'>インストール容量: <span class="m">277</span> M
-</span><span class='line'>Is this ok <span class="o">[</span>y/d/N<span class="o">]</span>: y
-</span><span class='line'>Downloading packages:
-</span><span class='line'>...
-</span><span class='line'>完了しました!
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>確認</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mongo --version
-</span><span class='line'>MongoDB shell version: 2.6.6
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール完了</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat-centos-or-fedora-linux/">Install MongoDB on Red Hat Enterprise, CentOS, Fedora, or Amazon Linux</a></li>
-<li><a href="http://qiita.com/nownabe/items/123a8fd04ff5252b3036">CentOS6.5にMongoDBをインストールする</a></li>
-<li><a href="http://qiita.com/ykyk1218/items/1c1824e77fb8af78bcf5">MongoDBをLinuxにインストール</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

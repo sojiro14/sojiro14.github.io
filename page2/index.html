@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="半年以上前のある夜、大先輩エンジニアの方に隠れ家的なオシャレな大人のBarに連れて行っていただきました。 その日はそれまでに既に結構飲んでいまして、本当に恥ずかしながらそこでお話した内容のほとんどは覚えていないのですが、一つだけ鮮明に覚えているのは、 「トークン」ってなに？ &hellip;">
+  <meta name="description" content="以前のエントリ、 初めてのYeoman (Yoを使った雛形作成) にて generator-angular-fullstack という雛形を使いましたが、この雛形は MEAN なアプリケーションの雛形、と呼ばれているそうです。 MEANとはどういう意味でしょうか？ MEAN とはなにか MEAN &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,76 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/08/what-is-mean/">MEANとはなにか</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-08T22:14:38+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:14 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>以前のエントリ、 <a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a> にて generator-angular-fullstack という雛形を使いましたが、この雛形は <strong>MEAN</strong> なアプリケーションの雛形、と呼ばれているそうです。</p>
+
+<p>MEANとはどういう意味でしょうか？</p>
+
+<h2>MEAN とはなにか</h2>
+
+<p>MEAN は</p>
+
+<ul>
+<li><strong>M</strong>ongoDB</li>
+<li><strong>E</strong>xpress.js</li>
+<li><strong>A</strong>ngular.js</li>
+<li><strong>N</strong>ode.js</li>
+</ul>
+
+
+<p>これらの頭文字をとったもので、これらの技術を使ったサービスのことを言う</p>
+
+<h2>特徴はなにか</h2>
+
+<p>まだ使ったこともないので想像だが、（恥ずかしいので早く使いたい）</p>
+
+<ul>
+<li>サーバーサイドからクライアントサイドまですべて JavaScript で制御できること
+
+<ul>
+<li>現状他の言語ではなかなかマネできないのではないか</li>
+</ul>
+</li>
+<li>DB含むすべてのデータを JSON 形式でやり取りできること
+
+<ul>
+<li>すべて JavaScript で、というのと被るところもあるが、やはりシンプルで良い感じがする</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>最後に</h2>
+
+<p>やっぱり使わないと上記のようなしょうもないことしか言えないので generator-angular-fullstack で作った雛形を少しずつ触りながら次回はもう少しまともなことを言えるようにします。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1237,65 +1307,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">AWSのLinuxにMongoDBをインストール</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-12-30T13:32:15+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:32 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順</p>
-
-<h2>YUMの設定</h2>
-
-<p>パッケージ管理システムであるYUMにmongoDB用の設定を追加する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo vim /etc/yum.repos.d/mongodb.repo
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>/etc/yum.repos.d/mongodb.repo </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>mongodb<span class="o">]</span>
-</span><span class='line'><span class="nv">name</span><span class="o">=</span>MongoDB Repository
-</span><span class='line'><span class="nv">baseurl</span><span class="o">=</span>http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
-</span><span class='line'><span class="nv">gpgcheck</span><span class="o">=</span>0
-</span><span class='line'><span class="nv">enabled</span><span class="o">=</span>1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでYUMにmongoDBのリポジトリが追加される</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page3">&larr; Older</a>
@@ -1317,6 +1328,10 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/07/06/release-cpan-module/">CPAN モジュールのリリース</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/02/create-basic-model-for-cpan-module/">CPAN モジュールのための雛形を作る</a>
       </li>
     
@@ -1330,10 +1345,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
     
       <li class="post">
         <a href="/blog/2015/05/17/get-pause-id/">PAUSE ID の取得</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/13/start-up-a-web-camera-via-web/">Webからデバイスのカメラを起動する</a>
       </li>
     
   </ul>
