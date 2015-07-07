@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cpan | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/cpan/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-07-07T23:54:51+09:00</updated>
+  <updated>2015-07-07T23:58:37+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -107,7 +107,7 @@ Release engineering requires CPAN::Uploader, but it is not available. Please ins
 <pre><code class="bash">$ cpanm CPAN::Uploader
 ...
 
-$ $ minil release
+$ minil release
 
 Retrieving meta data from lib/JSON/MergePatch.pm.
 Name: JSON::MergePatch

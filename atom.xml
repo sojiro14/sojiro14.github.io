@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-07-07T23:54:51+09:00</updated>
+  <updated>2015-07-07T23:58:37+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -175,7 +175,7 @@
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cpanm CPAN::Uploader
 </span><span class='line'>...
 </span><span class='line'>
-</span><span class='line'><span class="nv">$ $ </span>minil release
+</span><span class='line'><span class="nv">$ </span>minil release
 </span><span class='line'>
 </span><span class='line'>Retrieving meta data from lib/JSON/MergePatch.pm.
 </span><span class='line'>Name: JSON::MergePatch
