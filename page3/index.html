@@ -9,8 +9,9 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順 YUMの設定 パッケージ管理システムであるYUMにmongoDB用の設定を追加する 1
-$ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
+  <meta name="description" content="NoSQLの流れを汲むMongoDBを初めて使ってみるにあたり、基本的な操作をまとめてみる。 基本的な用語 データベース(database)
+コレクション(collection)
+ドキュメント(document) データベース MySQLなどのRDBMSにおけるデータベース、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +93,65 @@ $ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/02/the-first-step-for-mongodb/">初めてのMongoDB</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-02T02:20:55+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>2:20 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>NoSQLの流れを汲むMongoDBを初めて使ってみるにあたり、基本的な操作をまとめてみる。</p>
+
+<h1>基本的な用語</h1>
+
+<ul>
+<li>データベース(database)</li>
+<li>コレクション(collection)</li>
+<li>ドキュメント(document)</li>
+</ul>
+
+
+<h2>データベース</h2>
+
+<p>MySQLなどのRDBMSにおけるデータベース、という言葉とほぼ同じ意味として使われる。
+データ管理の大元となる単位。</p>
+
+<h2>コレクション</h2>
+
+<p>RDBMSにおけるテーブル(table)に相当するもの。
+MongoDBはスキーマレスなので、テーブルのように厳格なスキーマが決まっている訳ではなく、特定の対象に対するデータの集まり(正にコレクション)と言える。</p>
+
+<h2>ドキュメント</h2>
+
+<p>RDBMSにおけるレコード(record)に相当するもの。
+各コレクションを構成する要素であり、BSONと呼ばれるJSONライクな形式で記述される。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/01/02/the-first-step-for-mongodb/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -810,214 +870,6 @@ $ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/">Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-10T03:27:49+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:27 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby on Railsで初めてアプリを作ってみます。
-今回はRailsの立ち上がりを確認するところまで。</p>
-
-<h2>アプリのセットアップ（rails new）</h2>
-
-<p>railsのアプリ作成は <code>rails new</code> コマンドで始まる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir rails_projects
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>rails_projects
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回のアプリ作成の為にディレクトリを作成し、早速コマンドを実行。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails new first_app
-</span><span class='line'>...
-</span><span class='line'>An error occurred <span class="k">while</span> installing sqlite3 <span class="o">(</span>1.3.10<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>いくつかのディレクトリやファイルが作成されるが、最後にこのようなエラーが出てbundle失敗。
-そこでGemfileを編集してbundleをやり直す。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>first_app/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Gemfileを編集。内容は<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-bundler">Ruby on Rails #Bundler</a>を参照。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
-</span><span class='line'>...
-</span><span class='line'>Building native extensions.  This could take a <span class="k">while</span>...
-</span><span class='line'>ERROR:  Error installing sqlite3:
-</span><span class='line'>    ERROR: Failed to build gem native extension.
-</span><span class='line'>
-</span><span class='line'>    /home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
-</span><span class='line'>checking <span class="k">for</span> sqlite3.h... no
-</span><span class='line'>sqlite3.h is missing. Try <span class="s1">&#39;port install sqlite3 +universal&#39;</span>
-</span><span class='line'>or <span class="s1">&#39;yum install sqlite-devel&#39;</span> and check your shared library search path <span class="o">(</span>the
-</span><span class='line'>location where your sqlite3 shared library is located<span class="o">)</span>.
-</span><span class='line'>*** extconf.rb failed ***
-</span><span class='line'>Could not create Makefile due to some reason, probably lack of necessary
-</span><span class='line'>libraries and/or headers.  Check the mkmf.log file <span class="k">for</span> more details.  You may
-</span><span class='line'>need configuration options.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>またも失敗。よく見るとsqlite-develが足りていないらしい</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install sqlite-devel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>sqlite-develをインストール後再度bundleによるgemのインストールを試みる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
-</span><span class='line'>Installing sqlite3 1.3.8
-</span><span class='line'>Installing turbolinks 1.1.1
-</span><span class='line'>Installing uglifier 2.1.1
-</span><span class='line'>Your bundle is updated!
-</span><span class='line'><span class="nv">$ </span>bundle install
-</span><span class='line'>Your bundle is <span class="nb">complete</span>!
-</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール成功。</p>
-
-<h2>サーバーの立ち上げ（rails server）</h2>
-
-<p>ローカルでrailsを立ち上げるコマンド <code>rails server</code> を実行。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails server
-</span><span class='line'>...
-</span><span class='line'>Could not find a JavaScript runtime. See https://github.com/sstephenson/execjs <span class="k">for</span> a list of available runtimes. <span class="o">(</span>ExecJS::RuntimeUnavailable<span class="o">)</span>
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Node.jsのインストール</h3>
-
-<p> <code>rails server</code> コマンド実行でエラーが出てしまう。JavaScript runtimeがインストールされていないことが原因のよう。メッセージ通り <a href="https://github.com/sstephenson/execjs">https://github.com/sstephenson/execjs</a> に行ってみるとJavaScript runtimeとしてNode.jsが有効と書いてあるのでNode.jsをインストールする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
-</span><span class='line'><span class="nv">$ </span>sudo yum install nodejs npm --enablerepo<span class="o">=</span>epel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回はyumでインストールした。そして再度 <code>rails server</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails <span class="nv">server</span>
-</span><span class='line'><span class="o">=</span>&gt; Booting <span class="nv">WEBrick</span>
-</span><span class='line'><span class="o">=</span>&gt; Rails 4.0.5 application starting in development on http://0.0.0.0:3000
-</span><span class='line'><span class="o">=</span>&gt; Run <span class="sb">`</span>rails server -h<span class="sb">`</span> <span class="k">for</span> more startup <span class="nv">options</span>
-</span><span class='line'><span class="o">=</span>&gt; Ctrl-C to shutdown server
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ローカルでサーバーが立ち上がる。
-今回はAWS上で作業しているので、AWS該当インスタンスのSecurity Groupで3000番portを空ける。</p>
-
-<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
-
-<p>にブラウザでアクセスして以下の画面が見えればOK</p>
-
-<p><img src="/images/rails/rails_starting.png"></p>
-
-<h2>GitHubに上げておく</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git init
-</span><span class='line'><span class="nv">$ </span>git remote add origin https://github.com/sojiro14/first_app.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>GitHubでリポジトリ作成</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git add .
-</span><span class='line'><span class="nv">$ </span>git commit -m <span class="s1">&#39;Initialize repository&#39;</span>
-</span><span class='line'><span class="nv">$ </span>git push -u origin master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://qiita.com/you21979@github/items/4efd9fc4363573191b5c">node.jsをyumでインストールする(centos6.5)</a></li>
-<li><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page4">&larr; Older</a>
@@ -1039,6 +891,10 @@ $ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/14/how-to-use-find-command/">find コマンドの使い方</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/06/release-cpan-module/">CPAN モジュールのリリース</a>
       </li>
     
@@ -1052,10 +908,6 @@ $ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
     
       <li class="post">
         <a href="/blog/2015/05/18/validate-json-schema/">JSON Schema のバリデーション</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/17/get-pause-id/">PAUSE ID の取得</a>
       </li>
     
   </ul>

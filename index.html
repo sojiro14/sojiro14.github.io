@@ -9,8 +9,9 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="上司にお膳立てされ、後輩にお尻を叩かれ、やっとのことで CPAN モジュールをリリースしました。 前回のエントリに続き、リリースの手順を記します。 モジュールの作成 ここがコアの部分ですが、内容は作るモジュールに依るので割愛。編集すべきは以下のファイルです。 lib/ 配下のプログラム
-t/ &hellip;">
+  <meta name="description" content="いつまでも find コマンドの使い方を覚えられないアホなのでメモしておく。。。 基本的に 1
+find [探すディレクトリ] -name &#39;ファイルの条件&#39; これだけは覚えとけ、と。 たまには 1
+find . -name &#39;*.swp&#39; -ok rm &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +93,54 @@ t/ &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/14/how-to-use-find-command/">Find コマンドの使い方</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-14T09:37:49+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:37 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>いつまでも <code>find</code> コマンドの使い方を覚えられないアホなのでメモしておく。。。</p>
+
+<h3>基本的に</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find <span class="o">[</span>探すディレクトリ<span class="o">]</span> -name <span class="s1">&#39;ファイルの条件&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これだけは覚えとけ、と。</p>
+
+<h3>たまには</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . -name <span class="s1">&#39;*.swp&#39;</span> -ok rm <span class="o">{}</span> <span class="se">\;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>見つけたファイルをそのまま次のコマンドに受け渡す <code>-ok</code> オプションもたまには使えるかも知れない。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1871,121 +1920,6 @@ t/ &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-09T23:34:36+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:34 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Perl の REPL 環境である Reply というツールを教えてもらったので使ってみます。</p>
-
-<h2>REPL とは？</h2>
-
-<p>REPL とは <strong>R</strong>ead-<strong>E</strong>val-<strong>P</strong>rint <strong>L</strong>oop の頭文字を取った言葉であり、</p>
-
-<p>プログラムを読み(Read)、評価し(Evaluate)、結果を出力(Print)することを繰り返す(Loop)という意味である。</p>
-
-<p>この環境があればファイルにプログラムを書いて保存し、実行する、という手続きを踏まなくてもスクリプトを実行できる</p>
-
-<p>この REPL の Perl 版が Reply と言うことだそう</p>
-
-<h2>Reply のインストール</h2>
-
-<p>Reply は CPAN からインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cpanm Reply
-</span><span class='line'>--&gt; Working on Reply
-</span><span class='line'>Fetching http://cpan.metacpan.org/authors/id/D/DO/DOY/Reply-0.37.tar.gz ... OK
-</span><span class='line'>Configuring Reply-0.37 ... OK
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストールできたら早速実行してみる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>reply
-</span><span class='line'>/Users/sojiro/.replyrc not found. Generating a default...
-</span><span class='line'>0&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>コンソールが立ち上がった</p>
-
-<p>早速なにかプログラムを入力してみよう</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>0&gt; print <span class="s1">&#39;Hello Reply&#39;</span><span class="p">;</span>
-</span><span class='line'>Hello Reply<span class="nv">$res</span><span class="o">[</span>0<span class="o">]</span> <span class="o">=</span> 1
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>1&gt; <span class="m">12</span> * 12
-</span><span class='line'><span class="nv">$res</span><span class="o">[</span>1<span class="o">]</span> <span class="o">=</span> 144
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>なるほど単純なプログラムの動作が確認できた。今度は <code>use</code> してみる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>2&gt; use UUID::Tiny<span class="p">;</span>
-</span><span class='line'>3&gt; my <span class="nv">$id</span> <span class="o">=</span> create_UUID_as_string<span class="o">(</span>UUID_V4<span class="o">)</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$res</span><span class="o">[</span>2<span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;87b16a6b-c712-41b4-bf46-965eeb01d3f1&#39;</span>
-</span><span class='line'>
-</span><span class='line'>4&gt; print <span class="nv">$id</span><span class="p">;</span>
-</span><span class='line'>87b16a6b-c712-41b4-bf46-965eeb01d3f1<span class="nv">$res</span><span class="o">[</span>3<span class="o">]</span> <span class="o">=</span> 1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このように実行結果は記憶された状態で進むので簡単にプログラムの実行結果を知りたいときに重宝しそうである。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://papix.hatenablog.com/entry/2014/12/15/233800">Replyでお手軽にPerlのコードを動かす話</a></li>
-<li><a href="http://www.amazon.co.jp/gp/product/4774156647/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774156647&amp;linkCode=as2&amp;tag=sojiro14-22">小飼弾のコードなエッセイ ~我々は本当に世界を理解してコードしているのだろうか? </a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -2005,6 +1939,10 @@ t/ &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/14/how-to-use-find-command/">find コマンドの使い方</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/06/release-cpan-module/">CPAN モジュールのリリース</a>
       </li>
     
@@ -2018,10 +1956,6 @@ t/ &hellip;">
     
       <li class="post">
         <a href="/blog/2015/05/18/validate-json-schema/">JSON Schema のバリデーション</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/17/get-pause-id/">PAUSE ID の取得</a>
       </li>
     
   </ul>

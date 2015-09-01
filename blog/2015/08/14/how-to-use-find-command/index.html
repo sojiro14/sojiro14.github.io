@@ -5,11 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Github - Sojiro&#8217;s Blog</title>
+  <title>Find コマンドの使い方 - Sojiro&#8217;s Blog</title>
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Category: github">
+  <meta name="description" content="いつまでも find コマンドの使い方を覚えられないアホなのでメモしておく。。。 基本的に 1
+find [探すディレクトリ] -name &#39;ファイルの条件&#39; これだけは覚えとけ、と。 たまには 1
+find . -name &#39;*.swp&#39; -ok rm &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sojiro14.github.io/blog/categories/github">
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2015/08/14/how-to-use-find-command">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
@@ -90,76 +92,111 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Github</h1>
+    
+      
+        <h1 class="entry-title">Find コマンドの使い方</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-14T09:37:49+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:37 am</span></time>
+        
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>いつまでも <code>find</code> コマンドの使い方を覚えられないアホなのでメモしておく。。。</p>
 
-  
-  <h2>2014</h2>
+<h3>基本的に</h3>
 
-<article>
-  
-<h1><a href="/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/">Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-</a></h1>
-<time datetime="2014-11-10T03:27:49+09:00" pubdate><span class='month'>Nov</span> <span class='day'>10</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/ruby-on-rails/'>ruby on rails</a></span>
-</footer>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find <span class="o">[</span>探すディレクトリ<span class="o">]</span> -name <span class="s1">&#39;ファイルの条件&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-</article>
+<p>これだけは覚えとけ、と。</p>
 
+<h3>たまには</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . -name <span class="s1">&#39;*.swp&#39;</span> -ok rm <span class="o">{}</span> <span class="se">\;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>見つけたファイルをそのまま次のコマンドに受け渡す <code>-ok</code> オプションもたまには使えるかも知れない。</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-08-14T09:37:49+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:37 am</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2015/08/14/how-to-use-find-command/" data-via="" data-counturl="http://sojiro14.github.io/blog/2015/08/14/how-to-use-find-command/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/07/06/release-cpan-module/" title="Previous Post: CPAN モジュールのリリース">&laquo; CPAN モジュールのリリース</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 
 </div>
-
-<aside class="sidebar">
-  
-    <section>
-  <h1>About Me</h1>
-  <p>A little something about me.</p>
-</section>
-<section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/08/14/how-to-use-find-command/">find コマンドの使い方</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/06/release-cpan-module/">CPAN モジュールのリリース</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/02/create-basic-model-for-cpan-module/">CPAN モジュールのための雛形を作る</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/19/update-homebrew/">Homebrewをupdateしよう</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/18/validate-json-schema/">JSON Schema のバリデーション</a>
-      </li>
-    
-  </ul>
-</section>
-
-  
-</aside>
-
 
     </div>
   </div>
@@ -175,7 +212,10 @@
       var disqus_shortname = 'sojirosblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2015/08/14/how-to-use-find-command/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2015/08/14/how-to-use-find-command/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

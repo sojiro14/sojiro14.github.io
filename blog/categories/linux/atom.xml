@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-07-07T23:58:37+09:00</updated>
+  <updated>2015-09-01T20:59:54+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,29 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Find コマンドの使い方]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/08/14/how-to-use-find-command/"/>
+    <updated>2015-08-14T09:37:49+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/08/14/how-to-use-find-command</id>
+    <content type="html"><![CDATA[<p>いつまでも <code>find</code> コマンドの使い方を覚えられないアホなのでメモしておく。。。</p>
+
+<h3>基本的に</h3>
+
+<pre><code class="bash">find [探すディレクトリ] -name 'ファイルの条件'
+</code></pre>
+
+<p>これだけは覚えとけ、と。</p>
+
+<h3>たまには</h3>
+
+<pre><code class="bash">find . -name '*.swp' -ok rm {} \;
+</code></pre>
+
+<p>見つけたファイルをそのまま次のコマンドに受け渡す <code>-ok</code> オプションもたまには使えるかも知れない。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Xdg-open コマンドとは]]></title>
@@ -413,78 +436,6 @@ $ rvm install 2.0.0 --with-openssl-dir=$HOME/.rvm/usr
 <h2>参考</h2>
 
 <p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Amazon Linux AMIにagをインストールした手順]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami/"/>
-    <updated>2014-08-25T23:38:16+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami</id>
-    <content type="html"><![CDATA[<p>AWSでWebサーバーを借りた。このサーバーに<code>ag</code>をインストールした際の手順。</p>
-
-<h2>agとは</h2>
-
-<p>ソースコードから特定のwordを検索する際に使うコマンド<code>grep</code>がより賢く改良されたのが<code>ack</code>コマンド。</p>
-
-<p>この<code>ack</code>をさらに改良し、検索を高速化させたのが<code>ag</code>コマンド（正式名称:The Silver Searcher）である。</p>
-
-<h2>Amazon Linux AMIへのインストール</h2>
-
-<p>MacにはHomebrewを使って<code>brew install the_silver_searcher</code>とするだけで簡単に入れることができた。</p>
-
-<p>AWSで借りたサーバーはAmazon Linux AMIという独自のイメージだったが、<code>yum</code>が使えるのでCentOSと同じ以下の手順で入れることができた。</p>
-
-<h3>ディレクトリの作成とソースのダウンロード</h3>
-
-<p>ソースをダウンロード、インストールするディレクトリを作成し、gitから<code>ag</code>のソースを持ってくる
-<code>bash
-$ mkdir -p $HOME/local/source
-$ cd $HOME/local/source
-$ git clone https://github.com/ggreer/the_silver_searcher
-</code></p>
-
-<h3>ソースをmakeするための準備</h3>
-
-<p>対象のサーバーはまっさらな状態でコンパイラなどもなかったため、それぞれインストールする。</p>
-
-<p>前述の通りAmazon Linux AMIではyumを使うことができる
-<code>bash
-$ sudo su -
-yum -y groupinstall "Development Tools"
-yum -y install pcre-devel xz-devel
-exit
-</code></p>
-
-<h3>インストール</h3>
-
-<p>コンパイルしてインストールする
-<code>bash
-$ cd $HOME/local/source/the_silver_searcher
-$ ./build.sh
-$ sudo make install
-</code></p>
-
-<h3>パスを通す</h3>
-
-<pre><code class="bash">$ cd
-$ vim .bashrc
-$ cat .bashrc
-...
-export PATH=$HOME/local/bin:$PATH
-...
-$ source .bashrc
-</code></pre>
-
-<p>これで<code>ag</code>が使えるようになった</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="https://github.com/ggreer/the_silver_searcher">the_silver_searcher</a></li>
-<li><a href="http://qiita.com/sifue/items/55d0c5c11a0571af3b8e">grepやackよりも速いコード検索ツールのagをローカルビルドインストールする</a></li>
-</ul>
-
 ]]></content>
   </entry>
   
