@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-15T09:54:40+09:00</updated>
+  <updated>2015-09-15T09:56:28+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -22,9 +22,13 @@
 
 <h3>使うオプション</h3>
 
-<p>今回使うのは
-* 変換処理の条件式を指定するための <code>e</code> オプション
-* 変換してそのままファイルを上書きする <code>i</code> オプション</p>
+<p>今回使うのは</p>
+
+<ul>
+<li>変換処理の条件式を指定するための <code>e</code> オプション</li>
+<li>変換してそのままファイルを上書きする <code>i</code> オプション</li>
+</ul>
+
 
 <h3>やってみる</h3>
 
