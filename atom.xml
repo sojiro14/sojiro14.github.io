@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-01T20:59:54+09:00</updated>
+  <updated>2015-09-15T09:54:40+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,59 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sed コマンドで置換]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command/"/>
+    <updated>2015-09-15T01:58:45+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command</id>
+    <content type="html"><![CDATA[<p>ファイルの中身を置換する必要があったので <code>sed</code> コマンドを使った。</p>
+
+<h3>使うオプション</h3>
+
+<p>今回使うのは
+* 変換処理の条件式を指定するための <code>e</code> オプション
+* 変換してそのままファイルを上書きする <code>i</code> オプション</p>
+
+<h3>やってみる</h3>
+
+<p>今回はこんな感じ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sed -ie <span class="s1">&#39;条件式&#39;</span> ファイル名
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat <span class="nb">test</span>
+</span><span class='line'>testtesttest
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>sed -ie <span class="s1">&#39;s/test/hoge/g&#39;</span> <span class="nb">test</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>cat <span class="nb">test</span>
+</span><span class='line'>hogehogehoge
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>ls
+</span><span class='line'><span class="nb">test </span>teste
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>指定したファイルは条件に沿って置換されているが、オリジナルの内容を持ったファイルも生成されている</p>
+
+<p>オリジナルの内容を持ったファイルは使う sed コマンド（OS）によって元のファイル名に &lsquo;e&rsquo; が付いたり &lsquo;-e&rsquo; が付いたりする</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Find コマンドの使い方]]></title>
@@ -2730,135 +2783,6 @@ Github Pagesの元々のドメインへのアクセスが独自ドメインに�
 <ul>
 <li><a href="http://octopress.org/docs/deploying/github/">Deploying to Github Pages</a></li>
 <li><a href="http://blog.livedoor.jp/techblog/archives/65340720.html">CNAMEの間違った使い方</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Node.jsを使ってWeb Serverを作ってみました]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/01/07/making-a-web-server-with-node-dot-js/"/>
-    <updated>2015-01-07T00:55:25+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/01/07/making-a-web-server-with-node-dot-js</id>
-    <content type="html"><![CDATA[<p>Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。</p>
-
-<p>今回使うNode.jsのバージョン</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
-</span><span class='line'>v0.10.32
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Web Serverオブジェクトの準備</h2>
-
-<p>Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nodeの <code>http</code> モジュールを読み込んだ後、 <code>createServer()</code> メソッドでWeb Serverオブジェクトを取得できる</p>
-
-<!-- more -->
-
-
-<h2>requestイベントの追加</h2>
-
-<p>取得したServerオブジェクトのリスナーとして、requestを受けたときに発火するrequestイベントを追加する</p>
-
-<p>リスナーの追加には <code>emitter.on(event, listener)</code> という形式のメソッドを使う。今回はeventに <code>'request'</code> を指定する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">});</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;Hello World.&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここでリスナーとして指定するコールバック関数は以下の2つの引数を受ける</p>
-
-<ul>
-<li>requestの内容をもつ <code>http.IncomingMessage</code> クラスのインスタンス</li>
-<li>responseの内容となる <code>http.ServerResponse</code> クラスのインスタンス</li>
-</ul>
-
-
-<h3>response.writeHead(statusCode, [reasonPhrase], [headers])</h3>
-
-<p>responseのHeadを規定するメソッド</p>
-
-<h3>response.write(chunk, [encoding])</h3>
-
-<p>responseのbodyを規定するメソッド。 <code>chunk</code> に文字列を指定した場合は第二引数にencodingを指定することができる。デフォルトはUTF-8。</p>
-
-<h3>response.end([data], [encoding])</h3>
-
-<p>serverにresponseの完了を通知するメソッド。responseの終了時に必ず呼ばなければならない。</p>
-
-<h2>接続を受け入れる</h2>
-
-<p>ポートとホスト名を指定してWeb Serverへの接続を受け付ける</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">1337</span><span class="p">,</span> <span class="s1">&#39;xx.xxx.xxx.xxx&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>コードの全体像</h2>
-
-<figure class='code'><figcaption><span>web.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
-</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">});</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;Hello World.&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">1337</span><span class="p">,</span> <span class="s1">&#39;xx.xxx.xxx.xxx&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;server listening...&#39;</span><span class="p">);</span>  <span class="c1">//起動時のメッセージ</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Web Serverの起動と確認</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node web.js
-</span><span class='line'>server listening...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Web Serverを起動したらブラウザで確認する</p>
-
-<p><img src="http://sojiro14.github.io/images/nodejs/web_server/hello_world.png"></p>
-
-<p>簡単なWeb Serverの完成</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://nodejs.org/api/http.html#http_http">Node.js v0.10.35 Manual &amp; Documentation#HTTP</a></li>
-<li><a href="http://nodejs.org/api/events.html#events_events">Node.js v0.10.35 Manual &amp; Documentation#Events</a></li>
-<li><a href="http://dotinstall.com/lessons/basic_nodejs/26205">ドットインストール</a></li>
 </ul>
 
 ]]></content>

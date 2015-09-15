@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-01T20:59:54+09:00</updated>
+  <updated>2015-09-15T09:54:40+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sed コマンドで置換]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command/"/>
+    <updated>2015-09-15T01:58:45+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command</id>
+    <content type="html"><![CDATA[<p>ファイルの中身を置換する必要があったので <code>sed</code> コマンドを使った。</p>
+
+<h3>使うオプション</h3>
+
+<p>今回使うのは
+* 変換処理の条件式を指定するための <code>e</code> オプション
+* 変換してそのままファイルを上書きする <code>i</code> オプション</p>
+
+<h3>やってみる</h3>
+
+<p>今回はこんな感じ
+<code>bash
+sed -ie '条件式' ファイル名
+</code></p>
+
+<pre><code class="bash">$ cat test
+testtesttest
+
+$ sed -ie 's/test/hoge/g' test
+
+$ cat test
+hogehogehoge
+
+$ ls
+test teste
+</code></pre>
+
+<p>指定したファイルは条件に沿って置換されているが、オリジナルの内容を持ったファイルも生成されている</p>
+
+<p>オリジナルの内容を持ったファイルは使う sed コマンド（OS）によって元のファイル名に &lsquo;e&rsquo; が付いたり &lsquo;-e&rsquo; が付いたりする</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Find コマンドの使い方]]></title>
@@ -358,82 +396,6 @@ Rails 4.0.5
 Railsがインストールされたことを確認できた</p>
 
 <h2>参照</h2>
-
-<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Linuxに最新のRubyをインストールする]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/"/>
-    <updated>2014-10-31T05:29:00+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux</id>
-    <content type="html"><![CDATA[<p>Ruby on Railsを使ってみたいと思い、調べてみるとRails4ではRubyのバージョンは1.9以降が必須のようである。</p>
-
-<p>自分がさくらで借りているサーバーではRubyのバージョンが1.8.7だったのでこれを新しくしてみた。</p>
-
-<h2>RVMのインストール</h2>
-
-<p>新しいRubyをインストールする前にRVM(Ruby Version Manager)をインストールする。これはRubyをバージョンごとに管理するツール
-<code>bash
-$ curl -L https://get.rvm.io | bash -s
-</code></p>
-
-<p>このコマンドで自分のホームディレクトリ以下に <code>.rvm/</code> が作られ、ここにRVMがインストールされる。</p>
-
-<p>そして <code>.profile</code> <code>.bashrc</code> <code>.zshrc</code> にPATHを通す記述が追加される。</p>
-
-<p>また、 <code>.bash_profile</code> <code>.zlogin</code> にRVMをロードする記述が追加される。</p>
-
-<p>RVMのインストールが完了したらロードする。ここではbashを使っているので以下のようにする。
-<code>bash
-$ source .bash_profile
-</code></p>
-
-<h2>Rubyのインストール</h2>
-
-<h3>さくらのレンタルサーバーでの失敗</h3>
-
-<p>まずはRubyのインストールに必要なパーツを調べ、無ければインストールする。
-以下のコマンドで必要なものをピックアップしインストールまで行ってくれる。
-<code>bash
-$ rvm requirements
-/your/home/directry/.rvm/scripts/functions/support: line 314: rvm_debug: command not found
-Checking requirements for freebsd.
-Installing requirements for freebsd.
-Updating system.
-Installing required packages: automake, bison, readline, libyaml...
-Error running 'requirements_freebsd_libs_install automake bison readline libyaml',
-</code>
-ここでErrorが発生。内容は必要なパッケージがインストールできなかったということ。
-そこでFreeBSDのパッケージ管理コマンドである <code>pkg</code> コマンドを使ってインストールを試みる。</p>
-
-<p>が、サーバーの設定的に自分でパッケージを追加することができなかったのでさくらのサーバーを断念してAWSに移行した。</p>
-
-<h3>AWSに移行</h3>
-
-<p>AWSに移行して <code>$ rvm requirements</code> までを実行する。（AWSは始めからRubyのバージョンが2.0.0だったが構わず実行）
-ここでも <code>$ rvm requirements</code> が転ける。</p>
-
-<p>そこで今度はCentOSだったので <code>yum</code> を使ってインストールを試みる。以下のコマンドは <code>$ rvm requirements</code> が教えてくれる。Errorの原因が <code>sudo</code> で実行していなかったことなので <code>sudo</code> 付きで実行する。
-<code>bash
-sudo yum install -y patch libyaml-devel libffi-devel glibc-headers autoconf gcc-c++ glibc-devel patch readline-devel zlib-devel openssl-devel automake libtool bison
-</code>
-これで成功。
-<code>bash
-$ rvm requirements
-Checking requirements for amazon.
-Requirements installation successful.
-</code>
- <code>$ rvm requirements</code>も成功。</p>
-
-<p>このサーバーではすでにバージョン2.0.0のRubyがインストールされていたが、RVMの配下に新たにバージョン2.0.0のRubyをインストールする。
-<code>bash
-$ rvm install 2.0.0 --with-openssl-dir=$HOME/.rvm/usr
-</code>
-インストール完了。</p>
-
-<h2>参考</h2>
 
 <p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
 ]]></content>

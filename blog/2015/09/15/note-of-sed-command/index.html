@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Reply - Sojiro&#8217;s Blog</title>
+  <title>Sed コマンドで置換 - Sojiro&#8217;s Blog</title>
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Category: reply">
+  <meta name="description" content="ファイルの中身を置換する必要があったので sed コマンドを使った。 使うオプション 今回使うのは
+* 変換処理の条件式を指定するための e オプション
+* 変換してそのままファイルを上書きする i オプション やってみる 今回はこんな感じ 1
+sed -ie &#39;条件式&#39; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sojiro14.github.io/blog/categories/reply">
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
@@ -90,76 +93,137 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Reply</h1>
+    
+      
+        <h1 class="entry-title">Sed コマンドで置換</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-15T01:58:45+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:58 am</span></time>
+        
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
+
+
+<div class="entry-content"><p>ファイルの中身を置換する必要があったので <code>sed</code> コマンドを使った。</p>
+
+<h3>使うオプション</h3>
+
+<p>今回使うのは
+* 変換処理の条件式を指定するための <code>e</code> オプション
+* 変換してそのままファイルを上書きする <code>i</code> オプション</p>
+
+<h3>やってみる</h3>
+
+<p>今回はこんな感じ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sed -ie <span class="s1">&#39;条件式&#39;</span> ファイル名
+</span></code></pre></td></tr></table></div></figure>
 
 
 
-  
-  <h2>2015</h2>
 
-<article>
-  
-<h1><a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a></h1>
-<time datetime="2015-05-09T23:34:36+09:00" pubdate><span class='month'>May</span> <span class='day'>09</span> <span class='year'>2015</span></time>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat <span class="nb">test</span>
+</span><span class='line'>testtesttest
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>sed -ie <span class="s1">&#39;s/test/hoge/g&#39;</span> <span class="nb">test</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>cat <span class="nb">test</span>
+</span><span class='line'>hogehogehoge
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>ls
+</span><span class='line'><span class="nb">test </span>teste
+</span></code></pre></td></tr></table></div></figure>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/perl/'>perl</a>, <a class='category' href='/blog/categories/repl/'>repl</a>, <a class='category' href='/blog/categories/reply/'>reply</a></span>
-</footer>
 
+<p>指定したファイルは条件に沿って置換されているが、オリジナルの内容を持ったファイルも生成されている</p>
 
-</article>
-
+<p>オリジナルの内容を持ったファイルは使う sed コマンド（OS）によって元のファイル名に &lsquo;e&rsquo; が付いたり &lsquo;-e&rsquo; が付いたりする</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-09-15T01:58:45+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:58 am</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command/" data-via="" data-counturl="http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/08/14/how-to-use-find-command/" title="Previous Post: find コマンドの使い方">&laquo; find コマンドの使い方</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 
 </div>
-
-<aside class="sidebar">
-  
-    <section>
-  <h1>About Me</h1>
-  <p>A little something about me.</p>
-</section>
-<section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/09/15/note-of-sed-command/">sed コマンドで置換</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/14/how-to-use-find-command/">find コマンドの使い方</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/06/release-cpan-module/">CPAN モジュールのリリース</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/02/create-basic-model-for-cpan-module/">CPAN モジュールのための雛形を作る</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/19/update-homebrew/">Homebrewをupdateしよう</a>
-      </li>
-    
-  </ul>
-</section>
-
-  
-</aside>
-
 
     </div>
   </div>
@@ -175,7 +239,10 @@
       var disqus_shortname = 'sojirosblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
