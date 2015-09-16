@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rvm | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/rvm/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2015-09-17T05:32:08+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vagrant Provisioning の謎]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/09/17/mystery-of-vagrant-provisioning/"/>
+    <updated>2015-09-17T05:21:08+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/09/17/mystery-of-vagrant-provisioning</id>
+    <content type="html"><![CDATA[<p>Vagrant で立てた CentOS の仮想環境にちょっとした環境構築をしようと、provision ファイルを作って <code>vagrant provision</code> で実行しようとしたところ RVM のインストールから先が上手くいかなかった。</p>
+
+<p>（ <code>vagrant provision</code> に関しては <a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">過去のエントリ</a> に記載があります）</p>
+
+<p>provision ファイルの該当箇所は以下</p>
+
+<pre><code class="bash"># ruby and rails
+curl -L https://get.rvm.io | bash -s
+source ~/.profile
+
+rvm requirements
+rvm install 2.0.0 --with-openssl-dir=$HOME/.rvm/usr
+</code></pre>
+
+<p>上記コマンドのうち、</p>
+
+<pre><code class="bash">curl -L https://get.rvm.io | bash -s
+</code></pre>
+
+<p>だけが実行できているが、このコマンドの結果も意図したものとなっていない。
+それ以降のコマンドは失敗する。</p>
+
+<p>まだ原因は良くわかっていない。</p>
+
+<ul>
+<li>RVM のインストール自体はできている</li>
+<li>どのユーザー（vagrant? root?）で実行されているのか分からない</li>
+<li>vagrant ユーザーに対しては <code>rvm</code> コマンドの path が通っているが、root ユーザーには通っていない</li>
+<li>provision 実行のログ的には root で実行しているように見える</li>
+<li><code>vagrant ssh</code> して手動でコマンドを実行すると意図した結果になる</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

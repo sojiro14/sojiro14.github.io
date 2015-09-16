@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-15T09:56:28+09:00</updated>
+  <updated>2015-09-17T05:32:08+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Vagrant Provisioning の謎]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/09/17/mystery-of-vagrant-provisioning/"/>
+    <updated>2015-09-17T05:21:08+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/09/17/mystery-of-vagrant-provisioning</id>
+    <content type="html"><![CDATA[<p>Vagrant で立てた CentOS の仮想環境にちょっとした環境構築をしようと、provision ファイルを作って <code>vagrant provision</code> で実行しようとしたところ RVM のインストールから先が上手くいかなかった。</p>
+
+<p>（ <code>vagrant provision</code> に関しては <a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">過去のエントリ</a> に記載があります）</p>
+
+<p>provision ファイルの該当箇所は以下</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># ruby and rails</span>
+</span><span class='line'>curl -L https://get.rvm.io <span class="p">|</span> bash -s
+</span><span class='line'><span class="nb">source</span> ~/.profile
+</span><span class='line'>
+</span><span class='line'>rvm requirements
+</span><span class='line'>rvm install 2.0.0 --with-openssl-dir<span class="o">=</span><span class="nv">$HOME</span>/.rvm/usr
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上記コマンドのうち、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -L https://get.rvm.io <span class="p">|</span> bash -s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>だけが実行できているが、このコマンドの結果も意図したものとなっていない。
+それ以降のコマンドは失敗する。</p>
+
+<p>まだ原因は良くわかっていない。</p>
+
+<ul>
+<li>RVM のインストール自体はできている</li>
+<li>どのユーザー（vagrant? root?）で実行されているのか分からない</li>
+<li>vagrant ユーザーに対しては <code>rvm</code> コマンドの path が通っているが、root ユーザーには通っていない</li>
+<li>provision 実行のログ的には root で実行しているように見える</li>
+<li><code>vagrant ssh</code> して手動でコマンドを実行すると意図した結果になる</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sed コマンドで置換]]></title>
@@ -2685,108 +2734,6 @@
 
 <ul>
 <li><a href="http://morizyun.github.io/blog/octopress-hatena-disqus-new-tab/">5分でできる簡単 Octopress セッティング</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Github PagesとOctopressで作ったブログに独自ドメインを設定する]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/"/>
-    <updated>2015-01-30T00:14:23+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages</id>
-    <content type="html"><![CDATA[<p>本ブログをリニューアルしたついでに新しくドメインを取ってこのブログに適用してみた。</p>
-
-<p>Github PagesとOctopressを使ったブログへの独自ドメイン設定のメモとして残しておく。</p>
-
-<h2>やるべきこと</h2>
-
-<p>今回は <code>blog.sojiro.me</code> というサブドメインを使うことにしたので、やるべき手順は以下の2つのみ。</p>
-
-<ul>
-<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
-<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
-</ul>
-
-
-<!-- more -->
-
-
-<h2>CNAMEレコードとはなにか</h2>
-
-<p>CNAMEレコードとはDNSに用意されたレコード(ドメイン設定)の種類の一つで、
-特定のドメインに対して別名を設定することができる。</p>
-
-<p>今回は元々のGithub Pagesのドメインである</p>
-
-<p> <code>sojiro14.github.io</code></p>
-
-<p>というドメインの別名として</p>
-
-<p> <code>blog.sojiro.me</code></p>
-
-<p>というドメインを設定することで、ブラウザから<code>blog.sojiro.me</code>にアクセスした場合も内部的に名前解決して <code>sojiro14.github.io</code> の内容を表示できるようにする。</p>
-
-<h2>CNAMEファイル</h2>
-
-<p>Github Pagesでは <code>CNAME</code> というファイルをルートディレクトリに設置することでリダイレクト処理を設定することができる</p>
-
-<p>このリダイレクト処理として、 <code>sojiro14.github.io</code> にアクセスがあった場合に <code>blog.sojiro.me</code> にリダイレクトする、という設定をしておけば、さらに前述のDNS上のCNAMEレコードにより内部的にGithub Pagesの内容を見に行くことになり、常に <code>blog.sojiro.me</code> ドメインでブログにアクセスすることになる。</p>
-
-<h2>実施手順</h2>
-
-<p>DNSへのCNAMEレコードの登録よりも <code>CNAME</code> ファイルの設置を先に行ってしまうと、
-Github Pagesの元々のドメインへのアクセスが独自ドメインにリダイレクトされた際に名前解決が上手く行かず、適切なページが表示されない、
-という状態になってしまうので、</p>
-
-<ol>
-<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
-<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
-</ol>
-
-
-<p>という順序で行う</p>
-
-<h2>実践</h2>
-
-<h3>CNAMEレコードの登録</h3>
-
-<p>今回はお名前.comでドメインを取得したのでお名前.comでのCNAMEレコード追加の手順となる</p>
-
-<p>お名前Navi > ドメイン設定 > DNS関連機能の設定</p>
-
-<p>から対象のドメインを選択して次へ進むと、</p>
-
-<p>DNSレコード設定を利用する</p>
-
-<p>という選択肢があるので、そこから以下のようにCNAMEレコードを設定する。</p>
-
-<p><img src="http://sojiro14.github.io/images/onamae/add_cname_record.png"></p>
-
-<p>通常CNAMEレコードのvalueに設定するドメインは最後に <code>.</code> を付ける必要があるが、お名前.comでは自動で設定してくれるので、最後の <code>.</code> を付ける必要はない。</p>
-
-<p>また、レコードを追加後、ページ下部の確認ボタンから確認、完了の手続きを踏まないと登録されないので注意。</p>
-
-<p>登録完了から反映まで10分ほどかかる。</p>
-
-<h3>CNAMEファイルの設置</h3>
-
-<p>Octopressの管理ディレクトリにて以下の手順で設置する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;blog.sojiro.me&#39;</span> &gt;&gt; <span class="nb">source</span>/CNAME
-</span><span class='line'><span class="nv">$ </span>rake gen_deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで <code>sojiro14.github.io</code> にアクセスすると <code>blog.sojiro.me</code> にリダイレクトされ、 <code>blog.sojiro.me</code> ではGithub Pagesの内容を表示することができるようになった。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://octopress.org/docs/deploying/github/">Deploying to Github Pages</a></li>
-<li><a href="http://blog.livedoor.jp/techblog/archives/65340720.html">CNAMEの間違った使い方</a></li>
 </ul>
 
 ]]></content>
