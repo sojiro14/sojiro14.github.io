@@ -141,7 +141,7 @@ $ rails new app_name -d mysql mysql2 &hellip;">
 
 <h3>mysql のパスワード設定</h3>
 
-<p> <code>config/database,yml</code> に mysql のパスワードを設定する。環境変数の指定は以下のようにする。</p>
+<p> <code>config/database.yml</code> に mysql のパスワードを設定する。環境変数の指定は以下のようにする。</p>
 
 <figure class='code'><figcaption><span>config/database.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -154,7 +154,7 @@ $ rails new app_name -d mysql mysql2 &hellip;">
 </pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql2</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">encoding</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">utf8</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cork_development</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_name_development</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">pool</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;%= ENV[&#39;MYSQLPASS&#39;] %&gt;</span>

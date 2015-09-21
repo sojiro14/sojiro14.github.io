@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby on Rails | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/ruby-on-rails/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-21T22:52:09+09:00</updated>
+  <updated>2015-09-21T22:54:48+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -39,12 +39,12 @@
 
 <h3>mysql のパスワード設定</h3>
 
-<p> <code>config/database,yml</code> に mysql のパスワードを設定する。環境変数の指定は以下のようにする。
+<p> <code>config/database.yml</code> に mysql のパスワードを設定する。環境変数の指定は以下のようにする。
 <code>yml config/database.yml
 development:
   adapter: mysql2
   encoding: utf8
-  database: cork_development
+  database: app_name_development
   pool: 5
   username: root
   password: &lt;%= ENV['MYSQLPASS'] %&gt;
