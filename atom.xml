@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-17T05:32:08+09:00</updated>
+  <updated>2015-09-21T22:52:09+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails アプリを MySQL で作るときのメモ]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/09/21/rails-new-with-mysql/"/>
+    <updated>2015-09-21T22:34:43+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/09/21/rails-new-with-mysql</id>
+    <content type="html"><![CDATA[<p>Rails 4.0.5 のアプリを MySQL で立てるときのメモ</p>
+
+<h3>rails new にオプションをつける</h3>
+
+<p>オプションを付けずに <code>rails new</code> すると SQLite で立てられてしまうので、以下のようにする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails new app_name -d mysql
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>mysql2 のバージョンを指定</h3>
+
+<p>2015/09/21 時点の mysql2 は rails 上での実行時にバグを含んでいるようなのでバージョン指定する。</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;mysql2&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 0.3.20&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>mysql のパスワード設定</h3>
+
+<p> <code>config/database,yml</code> に mysql のパスワードを設定する。環境変数の指定は以下のようにする。</p>
+
+<figure class='code'><figcaption><span>config/database.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql2</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">encoding</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">utf8</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cork_development</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">pool</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;%= ENV[&#39;MYSQLPASS&#39;] %&gt;</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">socket</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/var/lib/mysql/mysql.sock</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>database の作成</h3>
+
+<p>最後に database を作って完了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake db:create
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/shizuma/items/0f9660d5d46a0012eb9e">Rails mysql2でrake db:createがエラー問題</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Vagrant Provisioning の謎]]></title>
@@ -2685,55 +2756,6 @@
 
 <ul>
 <li><a href="http://dotinstall.com/lessons/basic_vagrant">Vagrant入門</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopressのページに「もっと見る」を設定する方法]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages/"/>
-    <updated>2015-04-30T20:12:17+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages</id>
-    <content type="html"><![CDATA[<p>今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。</p>
-
-<h2>「もっと見る」の場所を指定する</h2>
-
-<p>記事の内容としてトップページで表示させる範囲が決まったら、その直後に「もっと見る」リンクを設置します。</p>
-
-<p>設置方法は以下のコメントを記事内の「もっと見る」リンクを設置する箇所に記述するだけです。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'> <span class="c">&lt;!-- more --&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>「もっと見る」以降の記事内容はトップページ上では省略されます。</p>
-
-<p>「もっと見る」リンクは個別記事ページにリンクしています。</p>
-
-<h2>リンクの文言を変更する</h2>
-
-<p>上記で設定したリンクはデフォルトでは「Read on →」と表示されます。</p>
-
-<p>リンクの文言は <code>_config.yml</code> ファイルの項目 <code>excerpt_link</code> で管理されています。</p>
-
-<p>従って以下のように設定することでリンクの文言が「もっと見る」となります。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>excerpt_link: &quot;もっと見る&quot;
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!-- more -->
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://morizyun.github.io/blog/octopress-hatena-disqus-new-tab/">5分でできる簡単 Octopress セッティング</a></li>
 </ul>
 
 ]]></content>

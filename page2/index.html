@@ -9,8 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="初めてのYeoman というタイトルでこれまで2つのエントリを投稿しました。 初めてのYeoman (Yoを使った雛形作成)
-初めてのYeoman (Grunt/Bowerを使ってみる) ここであらためて Grunt と Bower について書いておきます。 特に技術的なことはないです。 &hellip;">
+  <meta name="description" content="以前 初めてのYeoman (Grunt/Bowerを使ってみる) というエントリで Grunt を実行したときに 1
+Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +92,266 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/12/what-is-xdg-open-command/">Xdg-open コマンドとは</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-12T23:55:57+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:55 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>以前 <a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a> というエントリで Grunt を実行したときに</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>と怒られたことがあったので <code>xdg-open</code> コマンドについて少し調べてみます</p>
+
+<h2>xdg-open コマンドのインストール</h2>
+
+<p>xdg-open の実体はシェルスクリプトである</p>
+
+<p>すんなりインストールできるかと思いきや普段の CentOS に入れるのに手こずってしまった</p>
+
+<p>どうやら Ubuntu との相性が良いようなので Vagrant で Ubuntu を立ち上げてそこでインストールしてみる</p>
+
+<h3>Ubuntu のセットアップ</h3>
+
+<p>Vagrant で Ubuntu 環境をセットアップする</p>
+
+<p>まずは box のインストールから</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box add ubuntu http://goo.gl/8kWkm
+</span><span class='line'><span class="o">==</span>&gt; box: Adding box <span class="s1">&#39;ubuntu&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> provider:
+</span><span class='line'>   box: Downloading: http://goo.gl/8kWkm
+</span><span class='line'><span class="o">==</span>&gt; box: Successfully added box <span class="s1">&#39;ubuntu&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> <span class="s1">&#39;virtualbox&#39;</span>!
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box list
+</span><span class='line'>centos64 <span class="o">(</span>virtualbox, 0<span class="o">)</span>
+</span><span class='line'>ubuntu   <span class="o">(</span>virtualbox, 0<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>box がセットアップできたら立ち上げまで行ってしまう</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir ubuntu
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>ubuntu/
+</span><span class='line'><span class="nv">$ </span>vagrant init ubuntu
+</span><span class='line'>A <span class="sb">`</span>Vagrantfile<span class="sb">`</span> has been placed in this directory. You are now
+</span><span class='line'>ready to <span class="sb">`</span>vagrant up<span class="sb">`</span> your first virtual environment! Please <span class="nb">read</span>
+</span><span class='line'>the comments in the Vagrantfile as well as documentation on
+</span><span class='line'><span class="sb">`</span>vagrantup.com<span class="sb">`</span> <span class="k">for</span> more information on using Vagrant.
+</span><span class='line'><span class="nv">$ </span>ls
+</span><span class='line'>Vagrantfile
+</span><span class='line'><span class="nv">$ </span>vagrant up
+</span><span class='line'>Bringing machine <span class="s1">&#39;default&#39;</span> up with <span class="s1">&#39;virtualbox&#39;</span> provider...
+</span><span class='line'><span class="o">==</span>&gt; default: Importing base box <span class="s1">&#39;ubuntu&#39;</span>...
+</span><span class='line'><span class="o">==</span>&gt; default: Matching MAC address <span class="k">for</span> NAT networking...
+</span><span class='line'><span class="o">==</span>&gt; default: Setting the name of the VM: <span class="nv">ubuntu_default_1432117537476_54763</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Fixed port collision <span class="k">for</span> <span class="nv">22</span> <span class="o">=</span>&gt; 2222. Now on port 2200.
+</span><span class='line'><span class="o">==</span>&gt; default: Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">==</span>&gt; default: Preparing network interfaces based on configuration...
+</span><span class='line'>   default: Adapter 1: <span class="nv">nat</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Forwarding ports...
+</span><span class='line'>   default: <span class="nv">22</span> <span class="o">=</span>&gt; <span class="m">2200</span> <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Booting VM...
+</span><span class='line'><span class="o">==</span>&gt; default: Waiting <span class="k">for</span> machine to boot. This may take a few minutes...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>立ち上がったら以下のコマンドで Ubuntu 環境に入り、インストールの準備が完了する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh
+</span><span class='line'>Welcome to Ubuntu 12.04.1 LTS <span class="o">(</span>GNU/Linux 3.2.0-32-generic x86_64<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>* Documentation:  https://help.ubuntu.com/
+</span><span class='line'>
+</span><span class='line'> System information as of Wed May <span class="m">20</span> 07:30:10 BRT 2015
+</span><span class='line'>
+</span><span class='line'> System load:  0.0               Processes:           73
+</span><span class='line'> Usage of /:   11.7% of 7.87GB   Users logged in:     0
+</span><span class='line'> Memory usage: 1%                IP address <span class="k">for</span> eth0: 10.0.2.15
+</span><span class='line'> Swap usage:   0%
+</span><span class='line'>
+</span><span class='line'> Graph this data and manage this system at https://landscape.canonical.com/
+</span><span class='line'>
+</span><span class='line'>New release <span class="s1">&#39;14.04.2 LTS&#39;</span> available.
+</span><span class='line'>Run <span class="s1">&#39;do-release-upgrade&#39;</span> to upgrade to it.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>インストール</h3>
+
+<p>ここからいよいよ Ubuntu に <code>xdg-open</code> をインストールしていく</p>
+
+<p>最初から入ってたらラッキーだなーと思いつつ打ってみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>xdg-open
+</span><span class='line'>The program <span class="s1">&#39;xdg-open&#39;</span> is currently not installed.  You can install it by typing:
+</span><span class='line'>sudo apt-get install xdg-utils
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>思いがけず大ヒントが返ってきたので従う</p>
+
+<p>xdg-utils は <code>xdg-open</code> を内包するパッケージである</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install xdg-utils
+</span><span class='line'>Reading package lists... Done
+</span><span class='line'>Building dependency tree
+</span><span class='line'>...
+</span><span class='line'>E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>エラーになってしまった</p>
+
+<p>しかしまたヒントがあるので従う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install xdg-utils --fix-missing
+</span><span class='line'>Reading package lists... Done
+</span><span class='line'>Building dependency tree
+</span><span class='line'>...
+</span><span class='line'>Extracting templates from packages: 100%
+</span><span class='line'>Preconfiguring packages ...
+</span><span class='line'>Selecting previously unselected package ttf-dejavu-core.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>晴れてインストール完了</p>
+
+<h2>使ってみる</h2>
+
+<ul>
+<li>テキストファイル: 普通に開ける</li>
+<li>画像ファイル: 開けるメソッドがなくエラー（環境立ち上げたばかりなので）</li>
+</ul>
+
+
+<h3>ディレクトリを指定</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir <span class="nb">test</span>
+</span><span class='line'><span class="nv">$ </span>touch <span class="nb">test</span>/file
+</span><span class='line'><span class="nv">$ </span>xdg-open <span class="nb">test</span>/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/xdg_open/directory.png"></p>
+
+<h3>URL を指定してみる</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>xdg-open http://blog.sojiro.me
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/xdg_open/blog.png"></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>xdg-open http://google.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/xdg_open/google.png"></p>
+
+<p>ブラウザはないが URL を指定すると CUI 上で Web ページが開ける</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1640,71 +1900,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/30/add-excerpt-link-on-octopress-pages/">Octopressのページに「もっと見る」を設定する方法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-04-30T20:12:17+09:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:12 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。</p>
-
-<h2>「もっと見る」の場所を指定する</h2>
-
-<p>記事の内容としてトップページで表示させる範囲が決まったら、その直後に「もっと見る」リンクを設置します。</p>
-
-<p>設置方法は以下のコメントを記事内の「もっと見る」リンクを設置する箇所に記述するだけです。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'> <span class="c">&lt;!-- more --&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>「もっと見る」以降の記事内容はトップページ上では省略されます。</p>
-
-<p>「もっと見る」リンクは個別記事ページにリンクしています。</p>
-
-<h2>リンクの文言を変更する</h2>
-
-<p>上記で設定したリンクはデフォルトでは「Read on →」と表示されます。</p>
-
-<p>リンクの文言は <code>_config.yml</code> ファイルの項目 <code>excerpt_link</code> で管理されています。</p>
-
-<p>従って以下のように設定することでリンクの文言が「もっと見る」となります。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>excerpt_link: &quot;もっと見る&quot;
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/04/30/add-excerpt-link-on-octopress-pages/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page3">&larr; Older</a>
@@ -1726,6 +1921,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/09/21/rails-new-with-mysql/">Rails アプリを MySQL で作るときのメモ</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/17/mystery-of-vagrant-provisioning/">Vagrant provisioning の謎</a>
       </li>
     
@@ -1739,10 +1938,6 @@
     
       <li class="post">
         <a href="/blog/2015/07/06/release-cpan-module/">CPAN モジュールのリリース</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/02/create-basic-model-for-cpan-module/">CPAN モジュールのための雛形を作る</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Domain | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/domain/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-21T22:51:16+09:00</updated>
+  <updated>2015-09-21T22:52:09+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -84,7 +84,7 @@ Github Pagesの元々のドメインへのアクセスが独自ドメインに�
 
 <p>という選択肢があるので、そこから以下のようにCNAMEレコードを設定する。</p>
 
-<p>{% img /images/onamae/add_cname_record.png %}</p>
+<p><img src="/images/onamae/add_cname_record.png"></p>
 
 <p>通常CNAMEレコードのvalueに設定するドメインは最後に <code>.</code> を付ける必要があるが、お名前.comでは自動で設定してくれるので、最後の <code>.</code> を付ける必要はない。</p>
 

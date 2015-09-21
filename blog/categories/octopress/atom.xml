@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-21T22:51:16+09:00</updated>
+  <updated>2015-09-21T22:52:09+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -127,7 +127,7 @@ Github Pagesの元々のドメインへのアクセスが独自ドメインに�
 
 <p>という選択肢があるので、そこから以下のようにCNAMEレコードを設定する。</p>
 
-<p>{% img /images/onamae/add_cname_record.png %}</p>
+<p><img src="/images/onamae/add_cname_record.png"></p>
 
 <p>通常CNAMEレコードのvalueに設定するドメインは最後に <code>.</code> を付ける必要があるが、お名前.comでは自動で設定してくれるので、最後の <code>.</code> を付ける必要はない。</p>
 
@@ -205,11 +205,11 @@ disqus_show_comment_count: false
 
 <h4>trueのとき</h4>
 
-<p>{% img /images/disqus/header_with_comment_link.png %}</p>
+<p><img src="/images/disqus/header_with_comment_link.png"></p>
 
 <h4>falseのとき</h4>
 
-<p>{% img /images/disqus/header_without_comment_link.png %}</p>
+<p><img src="/images/disqus/header_without_comment_link.png"></p>
 ]]></content>
   </entry>
   
@@ -431,34 +431,54 @@ cd -
 <h3>ページの作成</h3>
 
 <p>必要ファイルを作成
-&#8220;`bash
-$ rake generate</p>
-
-<h2>Generating Site with Jekyll</h2>
-
-<p>directory source/stylesheets/
-   create source/stylesheets/screen.css
-Configuration from /Your/Octopress/Directory/git/octopress/_config.yml
-Building site: source -> public
-Successfully generated site: source -> public
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Generating Site with Jekyll&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;directory <span class="nb">source</span>/stylesheets/
+</span><span class='line'>   create <span class="nb">source</span>/stylesheets/screen.css
+</span><span class='line'>Configuration from /Your/Octopress/Directory/git/octopress/_config.yml
+</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
+</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>deploy
-&#8220;`bash
-$ rake deploy</p>
-
-<h2>Deploying branch to Github Pages</h2>
-
-<h2>Pulling any updates from Github Pages</h2>
-
-<p>cd _deploy</p>
-
-<p>・・・・（略）</p>
-
-<h2>Github Pages deploy complete</h2>
-
-<p>cd -
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Deploying branch to Github Pages&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Pulling any updates from Github Pages&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd _deploy&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;・・・・（略）&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Github Pages deploy <span class="nb">complete</span>&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd -
+</span></code></pre></td></tr></table></div></figure></p>
 
 <h3>deployの確認</h3>
 

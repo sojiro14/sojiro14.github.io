@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby on Rails | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/ruby-on-rails/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-21T22:51:16+09:00</updated>
+  <updated>2015-09-21T22:52:09+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -31,7 +31,7 @@
 
 <p>2015/09/21 時点の mysql2 は rails 上での実行時にバグを含んでいるようなのでバージョン指定する。</p>
 
-<pre><code class="gem Gemfile">gem 'mysql2', '~&gt; 0.3.20'
+<pre><code class="ruby Gemfile">gem 'mysql2', '~&gt; 0.3.20'
 </code></pre>
 
 <pre><code class="bash">$ bundle install
