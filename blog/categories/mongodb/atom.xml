@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mongodb | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/mongodb/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-17T05:32:08+09:00</updated>
+  <updated>2015-09-21T22:51:16+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -364,57 +364,33 @@ enabled=1
 <h2>mongoDBのインストール</h2>
 
 <p>今回は何も考えず最新のバージョンをインストールするので以下のコマンドで実行する
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install mongodb-org
-</span><span class='line'>読み込んだプラグイン:priorities, update-motd, upgrade-helper&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;<span class="p">&amp;</span>hellip<span class="p">;</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt; Package                                                  アーキテクチャー                             バージョン                                       リポジトリー                                   容量&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;インストール中:
-</span><span class='line'> mongodb-org                                              x86_64                                       2.6.6-1                                          mongodb                                       4.9 k
-</span><span class='line'>依存性関連でのインストールをします:
-</span><span class='line'> mongodb-org-mongos                                       x86_64                                       2.6.6-1                                          mongodb                                       6.8 M
-</span><span class='line'> mongodb-org-server                                       x86_64                                       2.6.6-1                                          mongodb                                       9.0 M
-</span><span class='line'> mongodb-org-shell                                        x86_64                                       2.6.6-1                                          mongodb                                       4.3 M
-</span><span class='line'> mongodb-org-tools                                        x86_64                                       2.6.6-1                                          mongodb                                        <span class="m">90</span> M&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;トランザクションの要約&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;インストール  <span class="m">1</span> パッケージ <span class="o">(</span>+4 個の依存関係のパッケージ<span class="o">)</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;総ダウンロード容量: <span class="m">110</span> M
-</span><span class='line'>インストール容量: <span class="m">277</span> M
-</span><span class='line'>Is this ok <span class="o">[</span>y/d/N<span class="o">]</span>: y
-</span><span class='line'>Downloading packages:
-</span><span class='line'><span class="p">&amp;</span>hellip<span class="p">;</span>
-</span><span class='line'>完了しました!
-</span></code></pre></td></tr></table></div></figure></p>
+&#8220;` bash
+$ sudo yum install mongodb-org
+読み込んだプラグイン:priorities, update-motd, upgrade-helper</p>
+
+<h1>&hellip;</h1>
+
+<h1> Package                                                  アーキテクチャー                             バージョン                                       リポジトリー                                   容量</h1>
+
+<p>インストール中:
+ mongodb-org                                              x86_64                                       2.6.6-1                                          mongodb                                       4.9 k
+依存性関連でのインストールをします:
+ mongodb-org-mongos                                       x86_64                                       2.6.6-1                                          mongodb                                       6.8 M
+ mongodb-org-server                                       x86_64                                       2.6.6-1                                          mongodb                                       9.0 M
+ mongodb-org-shell                                        x86_64                                       2.6.6-1                                          mongodb                                       4.3 M
+ mongodb-org-tools                                        x86_64                                       2.6.6-1                                          mongodb                                        90 M</p>
+
+<h1>トランザクションの要約</h1>
+
+<p>インストール  1 パッケージ (+4 個の依存関係のパッケージ)</p>
+
+<p>総ダウンロード容量: 110 M
+インストール容量: 277 M
+Is this ok [y/d/N]: y
+Downloading packages:
+&hellip;
+完了しました!
+&#8220;`</p>
 
 <h2>確認</h2>
 
@@ -445,21 +421,15 @@ MongoDB shell version: 2.6.6
 <h2>Homebrewのインストール</h2>
 
 <p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>でも触れた通り、以下の方法でインストールを試みる。
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.github.com/mxcl/homebrew/go/install&quot;</span>&gt;https://raw.github.com/mxcl/homebrew/go/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
-</span><span class='line'>Whoops, the Homebrew installer has moved! Please instead run:&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.githubusercontent.com/Homebrew/install/master/install&quot;</span>&gt;https://raw.githubusercontent.com/Homebrew/install/master/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Also, please ask wherever you got this link from to update it to the above.
-</span><span class='line'>Thanks!
-</span></code></pre></td></tr></table></div></figure>
+&#8220;` bash
+$ ruby -e &ldquo;$(curl -fsSL <a href="https://raw.github.com/mxcl/homebrew/go/install">https://raw.github.com/mxcl/homebrew/go/install</a>)&rdquo;
+Whoops, the Homebrew installer has moved! Please instead run:</p>
+
+<p>ruby -e &ldquo;$(curl -fsSL <a href="https://raw.githubusercontent.com/Homebrew/install/master/install">https://raw.githubusercontent.com/Homebrew/install/master/install</a>)&rdquo;</p>
+
+<p>Also, please ask wherever you got this link from to update it to the above.
+Thanks!
+&#8220;`
 どうやらHomebrewのインストーラーの場所があれから変わったようで、以下のパスで再度実行。</p>
 
 <p>コマンドのレスポンスとして新しいパスをメッセージに残してくれるのはありがたい。
