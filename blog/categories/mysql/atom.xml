@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mysql | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/mysql/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-09-21T22:57:51+09:00</updated>
+  <updated>2015-10-25T23:22:38+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[InnoDBにおけるロックの種類]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/10/25/kinds-of-locks-of-innodb/"/>
+    <updated>2015-10-25T23:02:53+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/10/25/kinds-of-locks-of-innodb</id>
+    <content type="html"><![CDATA[<p>MySQL でよく使う InnoDB のロックについて研修時代に書いたメモ。</p>
+
+<h2>種類</h2>
+
+<ul>
+<li>レコードロック: <strong>インデックスレコードの</strong> ロック</li>
+<li>ギャップロック: インデックスレコード間にあるギャップのロック、先頭のインデックスレコードの前や末尾のインデックスレコードの後にあるギャップのロック、のいずれか</li>
+<li>ネクストキーロック: インデックスレコードに対するレコードロックと、そのインデックスレコードの前、または後ろにあるギャップに対するギャップロックとを組み合わせたもの</li>
+</ul>
+
+
+<h2>InnoDBの行ロック（レコードロック）</h2>
+
+<p>InnoDBは行ロックができる、とよく言いますが、
+正確には <strong>インデックスレコード</strong> にロックをかけているので、
+primary key や、unique key といったレコードを一意に特定できるインデックスを使用せずにロックをかけるとテーブルロックの様な挙動を示します。（実際には隠しクラスタインデックスが生成、使用される。）</p>
+
+<h2>ギャップロック、ネクストキーロック</h2>
+
+<p>ギャップロック、ネクストキーロックは</p>
+
+<ul>
+<li>範囲を指定して（複数のレコードにまたがって）ロックを獲得しようとしたとき</li>
+<li>存在しないレコードに対してロックを獲得しようとしたとき</li>
+</ul>
+
+
+<p>のみ起こりうる。</p>
+
+<p>また、 <strong>ギャップロックは常に共有ロックと同じ挙動</strong> を示す</p>
+
+<h2>例</h2>
+
+<p>前提：id(primary key)が10, 20, 30のレコードが入っているテーブル</p>
+
+<pre><code class="sql">select from table where id = 15 for update;    #id 11~19にギャップロック
+</code></pre>
+
+<pre><code class="sql">select from table where id &lt; 15 for update;    #id ~20にネクストキーロック
+</code></pre>
+
+<pre><code class="sql">select from table where id &lt; 20 for update;    #id ~20にネクストキーロック
+</code></pre>
+
+<pre><code class="sql">select from table where id &lt;= 20 for update;   #id ~30にネクストキーロック
+</code></pre>
+
+<pre><code class="sql">select from table where id &gt; 15 for update;    #id 11~にギャップロック
+</code></pre>
+
+<pre><code class="sql">select from table where id = 35 for update;    #id 31~にギャップロック
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[MySQLにおけるNOT NULLカラムへのインサート時の挙動]]></title>
