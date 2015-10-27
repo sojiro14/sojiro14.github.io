@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-10-25T23:22:38+09:00</updated>
+  <updated>2015-10-27T14:10:49+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -82,6 +82,10 @@ primary key や、unique key といったレコードを一意に特定できる
 </pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">from</span> <span class="k">table</span> <span class="k">where</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">35</span> <span class="k">for</span> <span class="k">update</span><span class="p">;</span>    <span class="o">#</span><span class="n">id</span> <span class="mi">31</span><span class="o">~</span><span class="err">にギャップロック</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4873116384/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4873116384&amp;linkCode=as2&amp;tag=sojiro14-22">実践ハイパフォーマンスMySQL 第3版</a></p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mysql | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/mysql/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-10-25T23:22:38+09:00</updated>
+  <updated>2015-10-27T14:10:49+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -70,6 +70,10 @@ primary key や、unique key といったレコードを一意に特定できる
 
 <pre><code class="sql">select from table where id = 35 for update;    #id 31~にギャップロック
 </code></pre>
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4873116384/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4873116384&amp;linkCode=as2&amp;tag=sojiro14-22">実践ハイパフォーマンスMySQL 第3版</a></p>
 ]]></content>
   </entry>
   
