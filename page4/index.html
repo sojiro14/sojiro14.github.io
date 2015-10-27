@@ -9,7 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="生成したリソースに対応するcontrollerを作成し、このリソースに対するviewとそのためのアクションを追加していく。 rails generate controller controllerを作成する。controllerの名前は1文字目が大文字で、複数形を指定するのがrailsの規約である &hellip;">
+  <meta name="description" content="デタッチ/アタッチという強力な機能をもった仮想端末管理アプリケーションであるscreenを使ってみた。 screenの設定ファイルを編集する screenの操作に使うほとんどのコマンドはプレフィックスを用いる。
+このプレフィクスがデフォルトでは ctrl + a のため、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +92,81 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/01/screen-introduction/">Screenを使ってみる</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-01T17:15:25+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>5:15 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>デタッチ/アタッチという強力な機能をもった仮想端末管理アプリケーションであるscreenを使ってみた。</p>
+
+<h2>screenの設定ファイルを編集する</h2>
+
+<p>screenの操作に使うほとんどのコマンドはプレフィックスを用いる。
+このプレフィクスがデフォルトでは <code>ctrl + a</code> のため、Shellの行頭移動と被ってしまうので設定を編集する。</p>
+
+<p>ついでに色々編集してみた。（ <code>ctrl +</code> を <code>^</code> で表す）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>escape ^j^j
+</span><span class='line'>startup_message off
+</span><span class='line'>defkanji utf-8
+</span><span class='line'>defencoding utf-8
+</span><span class='line'>encoding utf-8 utf-8
+</span><span class='line'>caption always <span class="s2">&quot;%{= wb} %-w%{=bu dr}%n %t%{-}%+w %= %{=b wk} [%l] %{=b wb}%y/%m/%d(%D) %{=b wm}%c&quot;</span>
+</span><span class='line'>autodetach on
+</span><span class='line'>bell_msg <span class="s2">&quot;^G&quot;</span>
+</span><span class='line'>defscrollback 10000
+</span><span class='line'>vbell off
+</span><span class='line'><span class="nb">bind </span>n screen
+</span><span class='line'><span class="nb">bind </span>h prev
+</span><span class='line'><span class="nb">bind </span>j next
+</span><span class='line'><span class="nb">bind </span>l windowlist
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/01/screen-introduction/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -1217,93 +1293,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/13/stateful-and-stateless/">ステートフル ステートレスとはどういうことか</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-09-13T18:00:03+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:00 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>コンポーネント間のやり取りにはステートフル/ステートレスという考え方がある。FTPではステートフルなやり取りが、HTTPではステートレスなやり取りが採用されいるが、それぞれの特徴についてまとめてみる。</p>
-
-<h2>セッション状態（アプリケーション状態）</h2>
-
-<p>システムにログインしてからログアウトするまでの一連の操作をセッションと呼ぶ。その一連の操作の中のそれぞれの状態をセッション状態と呼ぶ。</p>
-
-<h2>ステートフル</h2>
-
-<p>ステートフルなやり取りではサーバーはクライアントのセッション状態を保持している。</p>
-
-<ul>
-<li>メリット
-
-<ul>
-<li>やり取りが完結に済む</li>
-<li>それによりネットワークの帯域を節約できる</li>
-</ul>
-</li>
-<li>デメリット
-
-<ul>
-<li>クライアントの状態を都度把握しておかなければいけないのでクライアントが増えると負荷も増える</li>
-<li>サーバーを複数台設置する場合にはそれぞれのサーバー間でクライアントの状態を同期しなければいけない</li>
-<li>これらの理由によりスケールアウトには向かない</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>ステートレス</h2>
-
-<p>ステートレスなやり取りではサーバーはクライアントのセッション情報を保持しない。</p>
-
-<ul>
-<li>メリット
-
-<ul>
-<li>クライアントのリクエストは状態に依存せず、常にリソースに対する操作に必要十分な情報となる</li>
-<li>よってサーバーが増えてもそのままのリクエストでいつも同じリソースに対する操作ができる</li>
-<li>このためスケールアウトに向いている</li>
-<li>また処理がクライアントの状態に依らないので処理がシンプルになる</li>
-</ul>
-</li>
-<li>デメリット
-
-<ul>
-<li>やり取りが冗長になりがちである</li>
-<li>またリソースへの操作が必要になる度にそのやり取りを繰り返す必要がある</li>
-<li>これによりネットワークの帯域を消費し、処理も遅くなる</li>
-<li>サーバーが状態を保持していないのでエラーが起きたときのハンドリングが複雑になりがちである</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>参考</h2>
-
-<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page5">&larr; Older</a>
@@ -1318,11 +1307,15 @@
   
     <section>
   <h1>About Me</h1>
-  <p>A little something about me.</p>
+  <p>twitter: https://twitter.com/sojiro14</p>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb/">InnoDBにおけるSQL別ロックの挙動</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/10/25/kinds-of-locks-of-innodb/">InnoDBにおけるロックの種類</a>
@@ -1338,10 +1331,6 @@
     
       <li class="post">
         <a href="/blog/2015/09/15/note-of-sed-command/">sed コマンドで置換</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/14/how-to-use-find-command/">find コマンドの使い方</a>
       </li>
     
   </ul>

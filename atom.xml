@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-10-27T14:10:49+09:00</updated>
+  <updated>2015-10-27T21:27:24+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[InnoDBにおけるSQL別ロックの挙動]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb/"/>
+    <updated>2015-10-27T21:17:32+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb</id>
+    <content type="html"><![CDATA[<p>研修時代に書いた InnoDB に関するメモ第二弾。</p>
+
+<p>ロックの挙動に関しては基礎の基礎でちょっと考えれば分かるものの、開発しているとふとしたところで考慮が漏れていたりするので注意したい。</p>
+
+<h2>SELECT &hellip; FROM</h2>
+
+<p>一貫性読み取りであり、データベースのスナップショットを読み取り、トランザクションの遮断レベルが SERIALIZABLE に設定されなければロックは設定しません。SERIALIZABLE レベルの場合、検索時に直面したインデックスレコード上に共有ネクストキーロックが設定されます。</p>
+
+<h2>SELECT &hellip; FROM &hellip; LOCK IN SHARE MODE</h2>
+
+<p><em>検索時に直面したすべてのインデックスレコード上</em>に <strong>共有ネクストキーロック</strong> が設定されます。</p>
+
+<h2>SELECT &hellip; FROM &hellip; FOR UPDATE</h2>
+
+<p><em>検索で特定されたインデックスレコード</em>に対し、 <strong>排他ネクストキーロック</strong> が設定され、ほかのセッションが SELECT &hellip; FROM &hellip; LOCK IN SHARE MODE を実行したり、特定のトランザクション遮断レベルで読み取りを行ったりできないようにします。 <strong>ただし、ギャップロックの部分に関しては共有ロックとなります</strong> 。</p>
+
+<h2>UPDATE &hellip; WHERE &hellip;</h2>
+
+<p><em>検索が直面するすべてのレコード上</em>に <strong>排他ネクストキーロック</strong> を設定します。</p>
+
+<h2>DELETE FROM &hellip; WHERE &hellip;</h2>
+
+<p><em>検索が直面するすべてのレコード上</em>に <strong>排他ネクストキーロック</strong> を設定します。</p>
+
+<h2>INSERT</h2>
+
+<p><strong>挿入される行に排他ロック</strong> を設定します。このロックはネクストキーロックではなくインデックスレコードロックである (つまりギャップロックが存在しない) ため、ほかのセッションは挿入行の前にあるギャップへの挿入を自由に行えます。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/4873116384/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4873116384&amp;linkCode=as2&amp;tag=sojiro14-22">実践ハイパフォーマンスMySQL 第3版</a></li>
+<li><a href="ftp://ftp.ntu.edu.tw/MySQL/doc/refman/5.1-olh/ja/innodb-locks-set.html">ftp://ftp.ntu.edu.tw/MySQL/doc/refman/5.1-olh/ja/innodb-locks-set.html</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[InnoDBにおけるロックの種類]]></title>
@@ -2416,182 +2459,6 @@ primary key や、unique key といったレコードを一意に特定できる
 
 <ul>
 <li><a href="http://yosuke-furukawa.hatenablog.com/entry/2013/07/04/085814">Yeoman入門(第一部、yoを使う)</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Slack BotをHeroku上で動かす]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/05/04/transfer-the-slack-bot-to-heroku/"/>
-    <updated>2015-05-04T21:38:12+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/05/04/transfer-the-slack-bot-to-heroku</id>
-    <content type="html"><![CDATA[<p><a href="http://blog.sojiro.me/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a>で作ったSlack Botをローカル以外の環境で動かしたくなったのでHeroku上で動かせるようにしてみます。</p>
-
-<p>あらかじめ<a href="https://www.heroku.com">Heroku</a>にSign upしておきます。</p>
-
-<h2>Heroku Toolbelt のインストール</h2>
-
-<p>HerokuのCLIツールであるHeroku Toolbeltをインストールします</p>
-
-<p>今回はMacを使っているのでこちらからダウンロード&amp;インストールしました</p>
-
-<p><a href="https://toolbelt.heroku.com/osx">https://toolbelt.heroku.com/osx</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku version
-</span><span class='line'>heroku-toolbelt/3.34.0 <span class="o">(</span>x86_64-darwin10.8.0<span class="o">)</span> ruby/1.9.3
-</span><span class='line'>You have no installed plugins.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>コマンドラインからHerokuにログイン</h2>
-
-<p>HerokuにSign upしたときのIDとPasswordでコマンドライン上からHerokuにログインする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku login
-</span><span class='line'>Enter your Heroku credentials.
-</span><span class='line'>Email: sojiro@example.com
-</span><span class='line'>Password <span class="o">(</span>typing will be hidden<span class="o">)</span>:
-</span><span class='line'>Authentication successful.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>hubotのディレクトリをGitHubにpush</h2>
-
-<p>HerokuにはGitHubを通じてデプロイするようなのでhubotのあるディレクトリをGitHubにpushしておく</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> ~/git/hubot/my_slack_bot/
-</span><span class='line'><span class="nv">$ </span>git init
-</span><span class='line'><span class="nv">$ </span>git add .
-</span><span class='line'><span class="nv">$ </span>git commit -m <span class="s1">&#39;initial commit&#39;</span>
-</span><span class='line'><span class="nv">$ </span>git remote add origin git@github.com:your_name/slack_bot_repository  <span class="c"># 自分で用意したslack bot用のGitリポジトリ</span>
-</span><span class='line'><span class="nv">$ </span>git push origin master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuにデプロイ</h2>
-
-<p>Herokuにアプリケーションを作る</p>
-
-<p>このときstackにcedarを指定する。アプリケーションの名前は指定しないとHerokuが勝手に名前をつけてくれる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku create --stack cedar
-</span><span class='line'>Creating random_name... <span class="k">done</span>, stack is cedar-10
-</span><span class='line'>https://random_name.herokuapp.com/ <span class="p">|</span> https://git.heroku.com/random_name.git
-</span><span class='line'>Git remote heroku added
-</span><span class='line'>updating...done. Updated to 3.35.0
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここまできたらいよいよデプロイ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push heroku master
-</span><span class='line'>Counting objects: 16, <span class="k">done</span>.
-</span><span class='line'>Delta compression using up to <span class="m">8</span> threads.
-</span><span class='line'>Compressing objects: 100% <span class="o">(</span>13/13<span class="o">)</span>, <span class="k">done</span>.
-</span><span class='line'>Writing objects: 100% <span class="o">(</span>16/16<span class="o">)</span>, 6.58 KiB <span class="p">|</span> <span class="m">0</span> bytes/s, <span class="k">done</span>.
-</span><span class='line'>Total <span class="m">16</span> <span class="o">(</span>delta 0<span class="o">)</span>, reused <span class="m">0</span> <span class="o">(</span>delta 0<span class="o">)</span>
-</span><span class='line'>remote: Compressing <span class="nb">source </span>files... <span class="k">done</span>.
-</span><span class='line'>remote: Building <span class="nb">source</span>:
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuに設定を追加</h2>
-
-<p>HerokuにHubotとSlackの設定を追加していく</p>
-
-<p>ここでは<a href="http://blog.sojiro.me/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a>で払い出されたものを指定する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># HUBOT_SLACK_TOKENの設定</span>
-</span><span class='line'><span class="nv">$ </span>heroku config:add <span class="nv">HUBOT_SLACK_TOKEN</span><span class="o">=</span>xxxx-123456789-abcdefghijklmnopqrstuvwxyz
-</span><span class='line'>Setting config vars and restarting random_name... <span class="k">done</span>, v4
-</span><span class='line'>HUBOT_SLACK_TOKEN: xxxx-123456789-abcdefghijklmnopqrstuvwxyz
-</span><span class='line'>
-</span><span class='line'><span class="c"># SlackのTeam設定</span>
-</span><span class='line'><span class="nv">$ </span>heroku config:add <span class="nv">HUBOT_SLACK_TEAM</span><span class="o">=</span>your_team_name
-</span><span class='line'>Setting config vars and restarting random_name... <span class="k">done</span>, v5
-</span><span class='line'>HUBOT_SLACK_TEAM: your_team_name
-</span><span class='line'>
-</span><span class='line'><span class="c"># Botの名前の設定</span>
-</span><span class='line'><span class="nv">$ </span>heroku config:add <span class="nv">HUBOT_SLACK_BOTNAME</span><span class="o">=</span>your_bot_name
-</span><span class='line'>Setting config vars and restarting random_name... <span class="k">done</span>, v6
-</span><span class='line'>HUBOT_SLACK_BOTNAME: your_bot_name
-</span><span class='line'>
-</span><span class='line'><span class="c"># HerokuアプリのURL設定</span>
-</span><span class='line'><span class="nv">$ </span>heroku config:add <span class="nv">HEROKU_URL</span><span class="o">=</span>http://random_name.herokuapp.com
-</span><span class='line'>Setting config vars and restarting random_name... <span class="k">done</span>, v7
-</span><span class='line'>HEROKU_URL: http://random_name.herokuapp.com
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>HerokuのWebプロセスの起動</h2>
-
-<p>最後にHerokuのWebプロセスを起動する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku ps:scale <span class="nv">web</span><span class="o">=</span>1
-</span><span class='line'>Scaling dynos... <span class="k">done</span>, now running web at 1:1X.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>SlackにBotが現れれば成功！</p>
-
-<p>今回はRedisを使わなかったのでHerokuのaddon設定やクレジットカードの登録無しでいけました</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://memo.sanographix.net/post/88371442780">Hubotで西木野真姫bot作ってSlackに呼ぶ</a></li>
-<li><a href="http://tech-sketch.jp/2013/12/hubot-install-heroku.html">GitHubがOpsツールの中心として活用しているHubotを使ってみる～インストール、スクリプトの作成、Herokuへのデプロイ～</a></li>
 </ul>
 
 ]]></content>

@@ -9,8 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="MySQL でよく使う InnoDB のロックについて研修時代に書いたメモ。 種類 レコードロック: インデックスレコードの ロック
-ギャップロック: インデックスレコード間にあるギャップのロック、先頭のインデックスレコードの前や末尾のインデックスレコードの後にあるギャップのロック、のいずれか &hellip;">
+  <meta name="description" content="研修時代に書いた InnoDB に関するメモ第二弾。 ロックの挙動に関しては基礎の基礎でちょっと考えれば分かるものの、開発しているとふとしたところで考慮が漏れていたりするので注意したい。 SELECT &hellip; FROM 一貫性読み取りであり、データベースのスナップショットを読み取り、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +91,70 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb/">InnoDBにおけるSQL別ロックの挙動</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-27T21:17:32+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:17 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>研修時代に書いた InnoDB に関するメモ第二弾。</p>
+
+<p>ロックの挙動に関しては基礎の基礎でちょっと考えれば分かるものの、開発しているとふとしたところで考慮が漏れていたりするので注意したい。</p>
+
+<h2>SELECT &hellip; FROM</h2>
+
+<p>一貫性読み取りであり、データベースのスナップショットを読み取り、トランザクションの遮断レベルが SERIALIZABLE に設定されなければロックは設定しません。SERIALIZABLE レベルの場合、検索時に直面したインデックスレコード上に共有ネクストキーロックが設定されます。</p>
+
+<h2>SELECT &hellip; FROM &hellip; LOCK IN SHARE MODE</h2>
+
+<p><em>検索時に直面したすべてのインデックスレコード上</em>に <strong>共有ネクストキーロック</strong> が設定されます。</p>
+
+<h2>SELECT &hellip; FROM &hellip; FOR UPDATE</h2>
+
+<p><em>検索で特定されたインデックスレコード</em>に対し、 <strong>排他ネクストキーロック</strong> が設定され、ほかのセッションが SELECT &hellip; FROM &hellip; LOCK IN SHARE MODE を実行したり、特定のトランザクション遮断レベルで読み取りを行ったりできないようにします。 <strong>ただし、ギャップロックの部分に関しては共有ロックとなります</strong> 。</p>
+
+<h2>UPDATE &hellip; WHERE &hellip;</h2>
+
+<p><em>検索が直面するすべてのレコード上</em>に <strong>排他ネクストキーロック</strong> を設定します。</p>
+
+<h2>DELETE FROM &hellip; WHERE &hellip;</h2>
+
+<p><em>検索が直面するすべてのレコード上</em>に <strong>排他ネクストキーロック</strong> を設定します。</p>
+
+<h2>INSERT</h2>
+
+<p><strong>挿入される行に排他ロック</strong> を設定します。このロックはネクストキーロックではなくインデックスレコードロックである (つまりギャップロックが存在しない) ため、ほかのセッションは挿入行の前にあるギャップへの挿入を自由に行えます。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/4873116384/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4873116384&amp;linkCode=as2&amp;tag=sojiro14-22">実践ハイパフォーマンスMySQL 第3版</a></li>
+<li><a href="ftp://ftp.ntu.edu.tw/MySQL/doc/refman/5.1-olh/ja/innodb-locks-set.html">ftp://ftp.ntu.edu.tw/MySQL/doc/refman/5.1-olh/ja/innodb-locks-set.html</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1178,103 +1241,6 @@ primary key や、unique key といったレコードを一意に特定できる
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/17/get-pause-id/">PAUSE ID の取得</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-17T23:23:14+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:23 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>いま私は日本の Perl シーンにおける名立たるプログラマの方々の元で仕事させていただくという大変ありがたい立場にいるのですが、常々</p>
-
-<p><strong> OSS に対する活動が成長の大きな糧になるからチャレンジすべし </strong></p>
-
-<p>とアドバイスを受けています。</p>
-
-<p>ところが初めてその言葉を受けてから既に1年以上経とうというのに何もしていない。これは本当にいかんと思ってとにかく CAPN に貢献してみようと。</p>
-
-<p>そこで調べてみると PAUSE ID なるものが必要なようなので取得までの過程をここへメモします</p>
-
-<h2>PAUSE ID の取得</h2>
-
-<p>PAUSE は The Perl Authors Upload Server の略称で、ここから CPAN へのアップなどするよう</p>
-
-<p><a href="http://pause.perl.org/pause/query?ACTION=request_id">ここ</a> から登録を開始する</p>
-
-<p>各項目に入力してアカウント申請を行う</p>
-
-<p>full name の欄はそれっぽい名前じゃないとはじかれるが、後から変えられる</p>
-
-<p>申請を行うと、しばらくしてアカウント発行の通知が登録したメールアドレスに届く</p>
-
-<p>この通知は人によって届くまでの時間にばらつきがあるようだが、今回は申請したその日のうちに来た</p>
-
-<p>通知にはパスワード変更ページへのリンクと暫定のパスワードが記載されているので、登録した ID と暫定パスワードで Basic 認証を突破してパスワードを設定する</p>
-
-<p>アカウントが発行されると Edit Account Info というメニューへアクセスできるようになる</p>
-
-<p>ここに</p>
-
-<blockquote><p>The email address [id]@cpan.org should be configured to forward mail to &hellip;</p></blockquote>
-
-<p>という項目があるので、 <code>[id]@cpan.org</code> へのメールを受け取るメールアドレスを設定する</p>
-
-<p>ここで設定しておかないと後々 <code>[id]@cpan.org</code> に対するメールが受け取れず不便を被るので要設定とのこと</p>
-
-<h2>Gravatar の設定</h2>
-
-<p>Gravatar は Email アカウントにアイコンを紐づけて様々なサービスで使えるようにするサービスで、 GitHub などでも使われている</p>
-
-<p><a href="https://ja.gravatar.com/">https://ja.gravatar.com/</a></p>
-
-<p>Gravatar に PAUSE ID に紐づいたアドレスでアイコンを設定することで CPAN のアカウントへアイコンを設定することができる</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[id]@cpan.org  # 設定するメールアドレス</span></code></pre></td></tr></table></div></figure>
-
-
-<p>既に Gravatar のアカウントがある場合は「メールアドレスの追加」から上記アドレスを追加すればよい</p>
-
-<p>新たに Gravatar のアカウントを取得する場合は注意が必要なようである。 <code>@cpan.org</code> のメールアドレスが前項の PAUSE ID 取得の際に自分のメールアドレスへ転送されるよう設定してからでないと、メールアドレスの認証が取れず、 Gravatar のアカウント取得に失敗するようだ。</p>
-
-<p><img src="/images/cpan/gravatar.png"></p>
-
-<p>Gravatar の設定が済むと PAUSE アカウントに設定したアイコンが表示されるようになる</p>
-
-<p><img src="/images/cpan/sojiro.png"></p>
-
-<p>さて、アカウントは取得した。後はコードを書いて上げるだけ。</p>
-
-<p>やるしかないのです。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://blog.livedoor.jp/sasata299/archives/51284970.html">こんな僕が CPAN Author （一応） になるまで。</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -1287,11 +1253,15 @@ primary key や、unique key といったレコードを一意に特定できる
   
     <section>
   <h1>About Me</h1>
-  <p>A little something about me.</p>
+  <p>twitter: https://twitter.com/sojiro14</p>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb/">InnoDBにおけるSQL別ロックの挙動</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/10/25/kinds-of-locks-of-innodb/">InnoDBにおけるロックの種類</a>
@@ -1307,10 +1277,6 @@ primary key や、unique key といったレコードを一意に特定できる
     
       <li class="post">
         <a href="/blog/2015/09/15/note-of-sed-command/">sed コマンドで置換</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/14/how-to-use-find-command/">find コマンドの使い方</a>
       </li>
     
   </ul>

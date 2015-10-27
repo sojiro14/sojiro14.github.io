@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mysql | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/mysql/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-10-27T14:10:49+09:00</updated>
+  <updated>2015-10-27T21:27:24+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[InnoDBにおけるSQL別ロックの挙動]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb/"/>
+    <updated>2015-10-27T21:17:32+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb</id>
+    <content type="html"><![CDATA[<p>研修時代に書いた InnoDB に関するメモ第二弾。</p>
+
+<p>ロックの挙動に関しては基礎の基礎でちょっと考えれば分かるものの、開発しているとふとしたところで考慮が漏れていたりするので注意したい。</p>
+
+<h2>SELECT &hellip; FROM</h2>
+
+<p>一貫性読み取りであり、データベースのスナップショットを読み取り、トランザクションの遮断レベルが SERIALIZABLE に設定されなければロックは設定しません。SERIALIZABLE レベルの場合、検索時に直面したインデックスレコード上に共有ネクストキーロックが設定されます。</p>
+
+<h2>SELECT &hellip; FROM &hellip; LOCK IN SHARE MODE</h2>
+
+<p><em>検索時に直面したすべてのインデックスレコード上</em>に <strong>共有ネクストキーロック</strong> が設定されます。</p>
+
+<h2>SELECT &hellip; FROM &hellip; FOR UPDATE</h2>
+
+<p><em>検索で特定されたインデックスレコード</em>に対し、 <strong>排他ネクストキーロック</strong> が設定され、ほかのセッションが SELECT &hellip; FROM &hellip; LOCK IN SHARE MODE を実行したり、特定のトランザクション遮断レベルで読み取りを行ったりできないようにします。 <strong>ただし、ギャップロックの部分に関しては共有ロックとなります</strong> 。</p>
+
+<h2>UPDATE &hellip; WHERE &hellip;</h2>
+
+<p><em>検索が直面するすべてのレコード上</em>に <strong>排他ネクストキーロック</strong> を設定します。</p>
+
+<h2>DELETE FROM &hellip; WHERE &hellip;</h2>
+
+<p><em>検索が直面するすべてのレコード上</em>に <strong>排他ネクストキーロック</strong> を設定します。</p>
+
+<h2>INSERT</h2>
+
+<p><strong>挿入される行に排他ロック</strong> を設定します。このロックはネクストキーロックではなくインデックスレコードロックである (つまりギャップロックが存在しない) ため、ほかのセッションは挿入行の前にあるギャップへの挿入を自由に行えます。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/4873116384/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4873116384&amp;linkCode=as2&amp;tag=sojiro14-22">実践ハイパフォーマンスMySQL 第3版</a></li>
+<li><a href="ftp://ftp.ntu.edu.tw/MySQL/doc/refman/5.1-olh/ja/innodb-locks-set.html">ftp://ftp.ntu.edu.tw/MySQL/doc/refman/5.1-olh/ja/innodb-locks-set.html</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[InnoDBにおけるロックの種類]]></title>
