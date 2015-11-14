@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-10-27T21:27:24+09:00</updated>
+  <updated>2015-11-14T20:32:53+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,168 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのChef]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/11/01/the-first-step-of-chef/"/>
+    <updated>2015-11-01T02:17:51+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/11/01/the-first-step-of-chef</id>
+    <content type="html"><![CDATA[<p>Chef を使ってみます。
+Vagrant で環境をつくっておいてそこで色々試してみます。</p>
+
+<p>今回はゲスト側でクックブック、レシピを作って実行してみます。</p>
+
+<h2>Chef のインストール</h2>
+
+<p> <code>vagrant ssh</code> で Vagrant の環境に入って Chef をインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -L https://www.opscode.com/chef/install.sh <span class="p">|</span> sudo bash
+</span><span class='line'>...
+</span><span class='line'>Thank you <span class="k">for</span> installing Chef!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Chef Solo がインストールされているか確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>chef-solo -v
+</span><span class='line'>Chef: 12.5.1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>クックブックを作る</h2>
+
+<p>Chef をインストールすると <code>knife</code> というコマンドもインストールされる。
+この <code>knife</code> コマンドを使ってクックブックを作る</p>
+
+<p>今回は git をインストールするための git クックブックを作る</p>
+
+<p>コマンドは以下のように指定する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>knife cookbooks create <span class="o">[</span>クックブック名<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回は出力先を指定する <code>-o</code> オプションを指定</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo knife cookbook create git -o /var/chef/cookbooks
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドで git という名前のクックブックが作成され、 <code>/var/chef/cookbooks/git/recipes/default.rb</code> にレシピの雛形が作られる</p>
+
+<h2>レシピの編集</h2>
+
+<p>レシピの雛形に git をインストールするレシピを書く</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo vi /var/chef/cookbooks/git/recipes/default.rb
+</span><span class='line'><span class="nv">$ </span>cat /var/chef/cookbooks/git/recipes/default.rb
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Cookbook Name:: git</span>
+</span><span class='line'><span class="c"># Recipe:: default</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Copyright 2015, YOUR_COMPANY_NAME</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># All rights reserved - Do Not Redistribute</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'>
+</span><span class='line'>package <span class="s2">&quot;git&quot;</span> <span class="k">do</span>
+</span><span class='line'>  action :install
+</span><span class='line'>end
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>クックブックの実行</h2>
+
+<p>作成したクックブックを実行する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo chef-solo -o git
+</span><span class='line'>...
+</span><span class='line'>Compiling Cookbooks...
+</span><span class='line'>Converging <span class="m">1</span> resources
+</span><span class='line'>Recipe: git::default
+</span><span class='line'>  * yum_package<span class="o">[</span>git<span class="o">]</span> action install
+</span><span class='line'>    - install version 1.7.1-3.el6_4.1 of package git
+</span><span class='line'>
+</span><span class='line'>Running handlers:
+</span><span class='line'>Running handlers <span class="nb">complete</span>
+</span><span class='line'>Chef Client finished, 1/1 resources updated in <span class="m">38</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>git がインストールされたか確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git --version
+</span><span class='line'>git version 1.7.1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Chef の特徴</h2>
+
+<h3>OS の違いを吸収してくれる</h3>
+
+<p>上記 git の例ではこちらで指定していないにも関わらず、実行した環境が CentOS であることを解釈して yum パッケージでインストールが行われた</p>
+
+<p>実行された環境の OS 毎の違いを吸収してくれる</p>
+
+<h3>冪等性が担保されている</h3>
+
+<p>先ほどのクックブックをもう一度実行してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo chef-solo -o git
+</span><span class='line'>...
+</span><span class='line'>Chef Client finished, 0/1 resources updated in <span class="m">07</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回は何もせずに正常に終了したことが分かる</p>
+
+<p>Chef ではクックブックを何度実行しても、クックブックに規定された状態になる冪等性が担保されている</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[InnoDBにおけるSQL別ロックの挙動]]></title>
@@ -2265,200 +2427,6 @@ primary key や、unique key といったレコードを一意に特定できる
 
 <ul>
 <li><a href="http://blog.chat.ac/yeoman%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6meanmongodbexpressangularjsnode-js%E3%82%92%E4%BD%9C%E6%88%90%E3%81%97%E3%82%88%E3%81%86/">YEOMANを使ってMEAN(MongoDB+Express+AngularJS+Node.js)を作成しよう</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA['Hubot --create' は古い]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old/"/>
-    <updated>2015-05-05T17:50:15+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old</id>
-    <content type="html"><![CDATA[<p>このブログで過去に何度かHubotについて書いたときに、新しいbotを作るときのコマンドは <code>hubot --create bot_name</code> だったのですが、このコマンドが非推奨になったようなのでメモ。</p>
-
-<h2>hubot &ndash;create が使えない</h2>
-
-<p>新しいbotを作ろうとして <code>hubot --create</code> コマンドを打つと以下のように怒られた</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create test_bot
-</span><span class='line'><span class="s1">&#39;hubot --create&#39;</span> is deprecated. Use the yeoman generator instead:
-</span><span class='line'>    npm install -g yo generator-hubot
-</span><span class='line'>    mkdir -p test_bot
-</span><span class='line'>    yo hubot
-</span><span class='line'>See https://github.com/github/hubot/blob/master/docs/README.md <span class="k">for</span> more details on getting started.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ところがseeとなっているREADMEファイルは存在しない模様&hellip;</p>
-
-<h2>yo と generator-hubot とは何か</h2>
-
-<p>よくわからないが <code>yo</code> と <code>generator-hubot</code> をインストールしろと言われているのはわかるので調べてみる</p>
-
-<h3>yo と generator-xxx</h3>
-
-<p>yoはYeomanというGoole社が開発した統合開発ツール群に属するツールの一つで、「雛形作成ツール」であるらしい</p>
-
-<p>そしてその雛形は &ldquo;generator-xxx&rdquo; という形でさまざま用意されており、そのHubot版が <code>generator-hubot</code> と言う訳である</p>
-
-<p>つまり上記エラーメッセージは</p>
-
-<ul>
-<li>雛形作成ツールである <code>yo</code> と、Hubotの雛形である <code>generator-hubot</code> をインストールし</li>
-<li>新規ディレクトリ上で <code>yo</code> を実行してHubotの雛形を作るべし</li>
-</ul>
-
-
-<p>ということのようである</p>
-
-<h2>yo と generator-hubot のインストール</h2>
-
-<p>指定された通り以下のようにインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g yo generator-hubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>（余談：私の場合はNode.jsのインストールされたpathとnpmのrootが違っていたため少々上手くいかなかった。エラーメッセージは素直によく読むべきだ。。。）</p>
-
-<h2>yo の実行</h2>
-
-<p>インストールが成功したら、新しいbotのディレクトリを作ってそこで <code>yo</code> を実行する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir test_bot
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>test_bot
-</span><span class='line'><span class="nv">$ </span>yo hubot  <span class="c"># これは generator-hubot の雛形を作る、という意味</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>yo hubot</code> を実行するとHubotのAAが表示され、いくつかのやり取りが立ち上がる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yo hubot
-</span><span class='line'>                     _____________________________
-</span><span class='line'>                    /                             <span class="se">\ </span>
-</span><span class='line'>   //<span class="se">\ </span>             <span class="p">|</span>      Extracting input <span class="k">for</span>    <span class="p">|</span>
-</span><span class='line'>  ////<span class="se">\ </span>   _____    <span class="p">|</span>   self-replication process   <span class="p">|</span>
-</span><span class='line'> //////<span class="se">\ </span> /_____<span class="se">\ </span>  <span class="se">\ </span>                            /
-</span><span class='line'> <span class="o">=======</span> <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
-</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
-</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
-</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
-</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
-</span><span class='line'>         <span class="se">\ </span>     /   +---+
-</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
-</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
-</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
-</span><span class='line'>
-</span><span class='line'>? Owner: sojiro
-</span><span class='line'>? Bot name: slack-test-bot
-</span><span class='line'>? Description: Slack Bot <span class="nb">test</span>
-</span><span class='line'>? Bot adapter: <span class="o">(</span>campfire<span class="o">)</span> slack
-</span><span class='line'>? Bot adapter: slack
-</span><span class='line'>   create bin/hubot
-</span><span class='line'>   create bin/hubot.cmd
-</span><span class='line'>   create Procfile
-</span><span class='line'>   create README.md
-</span><span class='line'>   create external-scripts.json
-</span><span class='line'>   create hubot-scripts.json
-</span><span class='line'>   create .gitignore
-</span><span class='line'>   create package.json
-</span><span class='line'>   create scripts/example.coffee
-</span><span class='line'>   create .editorconfig
-</span><span class='line'>                     _____________________________
-</span><span class='line'> _____              /                             <span class="se">\ </span>
-</span><span class='line'> <span class="se">\ </span>   <span class="se">\ </span>            <span class="p">|</span>   Self-replication process   <span class="p">|</span>
-</span><span class='line'> <span class="p">|</span>    <span class="p">|</span>    _____    <span class="p">|</span>          complete...         <span class="p">|</span>
-</span><span class='line'> <span class="p">|</span>__<span class="se">\\</span><span class="p">|</span>   /_____<span class="se">\ </span>  <span class="se">\ </span>    Good luck with that.    /
-</span><span class='line'>   <span class="p">|</span>//+  <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
-</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
-</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
-</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
-</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
-</span><span class='line'>         <span class="se">\ </span>     /   +---+
-</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
-</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
-</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
-</span><span class='line'>...
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>各項目それぞれデフォルト値が設定されており、なにも入力せずEnterを押していくとその通りになる</p>
-
-<p>今回はSlack用のbotだったので Bot adapter: の欄で <code>slack</code> と入力した</p>
-
-<p>他にも用途に合わせてadapterが用意されているようである</p>
-
-<p>この <code>yo</code> 実行により、Hubotの雛形が作成され、 <code>hubot --create</code> と同様にセットアップが完了する</p>
-
-<p>なおかつadapterを予め設定できる分、セットアップが楽になっている</p>
-
-<h2>最後に</h2>
-
-<p>今回はHubotに絡んで偶発的に <code>yo</code> を知りましたが、かなり便利そうなのでYeoman含めて今後も使ってみたいところです</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://yosuke-furukawa.hatenablog.com/entry/2013/07/04/085814">Yeoman入門(第一部、yoを使う)</a></li>
 </ul>
 
 ]]></content>

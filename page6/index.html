@@ -9,7 +9,19 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Octopressのテーマを変更する Octopressの公式ドキュメント 今回は既に作られ、公開されているテーマを拝借する 好みのテーマを探す 3rd Party Octopress Themesにテーマリストが公開されている。ここから使いたいテーマを探す。 Octopress &hellip;">
+  <meta name="description" content="大量のvalueに連番を振りたくなったのでvimの機能を調べて使ってみた。
+目標は以下のようにurlのリストをPerlのハッシュ化すること。 1
+2
+3
+4
+5
+6
+7
+example_1.com
+example_2.com
+example_3.com
+~
+example_254.com &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +103,229 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/14/writing-serial-numbers-with-vim/">Vimで連番を振る方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-06-14T02:01:05+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:01 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>大量のvalueに連番を振りたくなったのでvimの機能を調べて使ってみた。
+目標は以下のようにurlのリストをPerlのハッシュ化すること。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>example_1.com
+</span><span class='line'>example_2.com
+</span><span class='line'>example_3.com
+</span><span class='line'>~
+</span><span class='line'>example_254.com
+</span><span class='line'>example_255.com
+</span><span class='line'>example_256.com</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="k">my</span> <span class="nv">%urls</span> <span class="o">=</span> <span class="p">(</span>
+</span><span class='line'>    <span class="mi">1</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_1.com&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="mi">2</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_2.com&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="mi">3</span>   <span class="o">=&gt;</span> <span class="s">&#39;example_3.com&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="o">~</span>
+</span><span class='line'>    <span class="mi">254</span> <span class="o">=&gt;</span> <span class="s">&#39;example_254.com&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="mi">255</span> <span class="o">=&gt;</span> <span class="s">&#39;example_255.com&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="mi">256</span> <span class="o">=&gt;</span> <span class="s">&#39;example_256.com&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使うvimの機能</h2>
+
+<ul>
+<li>数字のインクリメント/デクリメント</li>
+<li>操作の記録（complex repeat）</li>
+</ul>
+
+
+<h2>①数字のインクリメント/デクリメント</h2>
+
+<h3>数字のインクリメント</h3>
+
+<p>数字にカーソルを合わせて</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">a</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>数字のデクリメント</h3>
+
+<p>数字にカーソルを合わせて</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>②操作の記録（complex repeat）</h2>
+
+<p>操作の記録は以下の順序で行う</p>
+
+<ol>
+<li>準備</li>
+<li>一連の操作に名前をつけて記録を開始</li>
+<li>一連の操作を行う</li>
+<li>記録を終了</li>
+<li>記録した操作を繰り返し実行</li>
+</ol>
+
+
+<h3>1. 準備</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">1</span> <span class="o">=&gt;</span> <span class="n">example_1</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="n">example_2</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="n">example_3</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="o">~</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最初のキーである1だけ用意しておく。</p>
+
+<h3>2. 一連の操作に名前をつけて記録を開始</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">q</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">a</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>操作を開始する位置（キー1の上）にカーソルを合わせ、q, aの順でキーを押すと、&#8217;a&#8217;という名前で操作が記録される。</p>
+
+<p>操作の名前は&#8217;a&#8217;の大文字、小文字のアルファベット、もしくは数字から1字を選んで付けることができる。</p>
+
+<h3>3. 一連の操作を行う</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">v</span> <span class="p">(</span><span class="n">visual</span> <span class="n">mode</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">llllll</span> <span class="p">(</span><span class="o">=&gt;</span> <span class="err">までを選択</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">y</span> <span class="p">(</span><span class="n">yank</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">j</span> <span class="n">P</span> <span class="p">(</span><span class="mi">1</span><span class="err">行下がって</span><span class="n">paste</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">0</span> <span class="p">(</span><span class="err">行頭へカーソルを移動</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">Ctrl</span> <span class="o">+</span> <span class="n">a</span> <span class="p">(</span><span class="err">インクリメント</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">0</span> <span class="p">(</span><span class="err">行頭へカーソルを移動</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4. 記録を終了</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">q</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>qを押して記録を終了</p>
+
+<h3>5. 記録した操作を繰り返し実行</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">254</span> <span class="p">(</span><span class="err">繰り返す回数</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nv">@a</span> <span class="p">(</span><span class="s">&#39;a&#39;</span><span class="err">と名付けた操作を指定</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここまで完了時点で以下のようになる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="mi">1</span>   <span class="o">=&gt;</span> <span class="n">example_1</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="mi">2</span>   <span class="o">=&gt;</span> <span class="n">example_2</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="mi">3</span>   <span class="o">=&gt;</span> <span class="n">example_3</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="o">~</span>
+</span><span class='line'><span class="mi">254</span> <span class="o">=&gt;</span> <span class="n">example_254</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="mi">255</span> <span class="o">=&gt;</span> <span class="n">example_255</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="mi">256</span> <span class="o">=&gt;</span> <span class="n">example_256</span><span class="o">.</span><span class="n">com</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Perlの記法に合わせて整形</h2>
+
+<p>vimの矩形選択( <code>Ctrl + v</code> )などをつかって正しいハッシュの文法に整形する</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -930,6 +1165,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/01/the-first-step-of-chef/">初めてのChef</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb/">InnoDBにおけるSQL別ロックの挙動</a>
       </li>
     
@@ -943,10 +1182,6 @@
     
       <li class="post">
         <a href="/blog/2015/09/17/mystery-of-vagrant-provisioning/">Vagrant provisioning の謎</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/15/note-of-sed-command/">sed コマンドで置換</a>
       </li>
     
   </ul>
