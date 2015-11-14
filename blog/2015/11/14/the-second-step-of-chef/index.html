@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Chef のリモート実行 - Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="前回 対象サーバで直接 Chef を実行してみました。 今回は手元からリモートのサーバに対して Chef を実行する仕組みを試してみます。 knife-solo のインストール 手元のクックブックをリモートのサーバに転送して chef-solo コマンドを実行するまでの一連の作業を実行できる &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-50182043-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Chef のリモート実行</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-14T23:08:53+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:08 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="http://blog.sojiro.me/blog/2015/11/01/the-first-step-of-chef/">前回</a> 対象サーバで直接 Chef を実行してみました。</p>
+
+<p>今回は手元からリモートのサーバに対して Chef を実行する仕組みを試してみます。</p>
+
+<h2>knife-solo のインストール</h2>
+
+<p>手元のクックブックをリモートのサーバに転送して <code>chef-solo</code> コマンドを実行するまでの一連の作業を実行できる <code>knife-solo</code> コマンドをインストールする</p>
+
+<p> <code>knife-solo</code> コマンドは gem でインストールできる。手元の Mac OS でインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem install knife-solo
+</span><span class='line'>...
+</span><span class='line'>Thanks <span class="k">for</span> installing knife-solo!
+</span><span class='line'>...
+</span><span class='line'><span class="m">36</span> gems installed
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Berkshelf のインストール</h2>
+
+<p>クックブックの依存関係を管理する <code>Berkshelf</code> というツールもこのタイミングでインストールする。これは <code>knife-solo</code> が他の gem のインストール状況によってデフォルトのオプションが変わるため</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem install berkshelf
+</span><span class='line'>...
+</span><span class='line'><span class="m">25</span> gems installed
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ローカルにリポジトリを作る</h2>
+
+<p>まずはローカルにリポジトリを作る</p>
+
+<p>Vagrantfile があるディレクトリで以下のコマンドを実行して作成する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo init .
+</span><span class='line'>/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/specification.rb:2007:in <span class="sb">`</span>raise_if_conflicts<span class="err">&#39;</span>: Unable to activate rspec-3.0.0, because rspec-core-3.4.0 conflicts with rspec-core <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span>, rspec-expectations-3.4.0 conflicts with rspec-expectations <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span>, rspec-mocks-3.4.0 conflicts with rspec-mocks <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span> <span class="o">(</span>Gem::LoadError<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>エラーが発生した</p>
+
+<p>rspec と rspec-core のバージョンが合っていなかったので rspec を update する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem update rspec
+</span><span class='line'>...
+</span><span class='line'>Gems updated: rspec rspec-collection_matchers
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再度リポジトリの作成を実行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo init .
+</span><span class='line'>WARNING: No knife configuration file found
+</span><span class='line'>Creating kitchen...
+</span><span class='line'>Creating knife.rb in kitchen...
+</span><span class='line'>Creating cupboards...
+</span><span class='line'>Setting up Berkshelf...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで実行ディレクトリ内に様々な雛形ディレクトリ、ファイルが作成された</p>
+
+<h2>リモートのサーバに Chef Solo をインストールする</h2>
+
+<p>今回リモートサーバとして想定する Vagrant の環境に対して SSH の設定を以下のようにしておく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh-config --host testhost &gt;&gt; ~/.ssh/config
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以下のコマンドで Chef Solo をリモートサーバに対してインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo bootstrap testhost
+</span><span class='line'>Bootstrapping Chef...
+</span><span class='line'>...
+</span><span class='line'>Thank you <span class="k">for</span> installing Chef!
+</span><span class='line'>...
+</span><span class='line'>Chef Client finished, 0/0 resources updated in <span class="m">06</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回は前回 Chef Solo をインストールした環境に対して打ったので最終的な結果は <code>0/0 resources updated</code> になっている</p>
+
+<h2>クックブックの作成</h2>
+
+<p>ローカルにクックブックを作成する。今回は git をインストールするためのクックブックを作る</p>
+
+<p>自作のクックブックは site-cookbooks 以下に置くことが慣例になっているので出力先に site-cookbooks を指定している</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife cookbook create git -o site-cookbooks
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで site-cookbooks 以下に git クックブックの雛形が出来上がる</p>
+
+<h2>レシピの編集</h2>
+
+<p>レシピの雛形 <code>site-cookbooks/git/recipes/default.rb</code> を編集していく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim site-cookbooks/git/recipes/default.rb
+</span><span class='line'><span class="nv">$ </span>cat site-cookbooks/git/recipes/default.rb
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Cookbook Name:: git</span>
+</span><span class='line'><span class="c"># Recipe:: default</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Copyright 2015, YOUR_COMPANY_NAME</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># All rights reserved - Do Not Redistribute</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'>package <span class="s2">&quot;git&quot;</span> <span class="k">do</span>
+</span><span class='line'>    action :install
+</span><span class='line'>end
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Node オブジェクトの編集</h2>
+
+<p>Chef で管理する Node （サーバ）の状態を記述し、それぞれの Node に対してどのクックブックが適用されるかを設定する Node オブジェクトを編集する</p>
+
+<p>Node オブジェクトは <code>knife solo bootstrap testhost</code> 実行時に <code>nodes/testhost.json</code> として作成されている</p>
+
+<p>今回はここに先ほど作成した git クックブックの適用を記述する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim nodes/testhost.json
+</span><span class='line'><span class="nv">$ </span>cat nodes/testhost.json
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="s2">&quot;run_list&quot;</span>: <span class="o">[</span>
+</span><span class='line'>    <span class="s2">&quot;recipe[git]&quot;</span>
+</span><span class='line'>  <span class="o">]</span>,
+</span><span class='line'>  <span class="s2">&quot;automatic&quot;</span>: <span class="o">{</span>
+</span><span class='line'>    <span class="s2">&quot;ipaddress&quot;</span>: <span class="s2">&quot;testhost&quot;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>クックブックの実行</h2>
+
+<p>準備が整ったのでいよいよクックブックをリモートサーバに対して実行する</p>
+
+<p>以下のコマンドで実行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo cook testhost
+</span><span class='line'>Running Chef on testhost...
+</span><span class='line'>...
+</span><span class='line'>Chef Client finished, 0/1 resources updated in <span class="m">07</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これも同じく前回の環境ですでに git をインストール済みなので <code>0/1 resources updated</code> として正常に実行された</p>
+
+<p>これでリモートへの Chef 実行完了！</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-11-14T23:08:53+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:08 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/chef/'>chef</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef/" data-via="" data-counturl="http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/11/01/the-first-step-of-chef/" title="Previous Post: 初めてのChef">&laquo; 初めてのChef</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-11-14T20:32:53+09:00</updated>
+  <updated>2015-11-15T01:39:43+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,227 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Chef のリモート実行]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef/"/>
+    <updated>2015-11-14T23:08:53+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef</id>
+    <content type="html"><![CDATA[<p><a href="http://blog.sojiro.me/blog/2015/11/01/the-first-step-of-chef/">前回</a> 対象サーバで直接 Chef を実行してみました。</p>
+
+<p>今回は手元からリモートのサーバに対して Chef を実行する仕組みを試してみます。</p>
+
+<h2>knife-solo のインストール</h2>
+
+<p>手元のクックブックをリモートのサーバに転送して <code>chef-solo</code> コマンドを実行するまでの一連の作業を実行できる <code>knife-solo</code> コマンドをインストールする</p>
+
+<p> <code>knife-solo</code> コマンドは gem でインストールできる。手元の Mac OS でインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem install knife-solo
+</span><span class='line'>...
+</span><span class='line'>Thanks <span class="k">for</span> installing knife-solo!
+</span><span class='line'>...
+</span><span class='line'><span class="m">36</span> gems installed
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Berkshelf のインストール</h2>
+
+<p>クックブックの依存関係を管理する <code>Berkshelf</code> というツールもこのタイミングでインストールする。これは <code>knife-solo</code> が他の gem のインストール状況によってデフォルトのオプションが変わるため</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem install berkshelf
+</span><span class='line'>...
+</span><span class='line'><span class="m">25</span> gems installed
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ローカルにリポジトリを作る</h2>
+
+<p>まずはローカルにリポジトリを作る</p>
+
+<p>Vagrantfile があるディレクトリで以下のコマンドを実行して作成する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo init .
+</span><span class='line'>/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/specification.rb:2007:in <span class="sb">`</span>raise_if_conflicts<span class="err">&#39;</span>: Unable to activate rspec-3.0.0, because rspec-core-3.4.0 conflicts with rspec-core <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span>, rspec-expectations-3.4.0 conflicts with rspec-expectations <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span>, rspec-mocks-3.4.0 conflicts with rspec-mocks <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span> <span class="o">(</span>Gem::LoadError<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>エラーが発生した</p>
+
+<p>rspec と rspec-core のバージョンが合っていなかったので rspec を update する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem update rspec
+</span><span class='line'>...
+</span><span class='line'>Gems updated: rspec rspec-collection_matchers
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再度リポジトリの作成を実行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo init .
+</span><span class='line'>WARNING: No knife configuration file found
+</span><span class='line'>Creating kitchen...
+</span><span class='line'>Creating knife.rb in kitchen...
+</span><span class='line'>Creating cupboards...
+</span><span class='line'>Setting up Berkshelf...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで実行ディレクトリ内に様々な雛形ディレクトリ、ファイルが作成された</p>
+
+<h2>リモートのサーバに Chef Solo をインストールする</h2>
+
+<p>今回リモートサーバとして想定する Vagrant の環境に対して SSH の設定を以下のようにしておく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh-config --host testhost &gt;&gt; ~/.ssh/config
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以下のコマンドで Chef Solo をリモートサーバに対してインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo bootstrap testhost
+</span><span class='line'>Bootstrapping Chef...
+</span><span class='line'>...
+</span><span class='line'>Thank you <span class="k">for</span> installing Chef!
+</span><span class='line'>...
+</span><span class='line'>Chef Client finished, 0/0 resources updated in <span class="m">06</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回は前回 Chef Solo をインストールした環境に対して打ったので最終的な結果は <code>0/0 resources updated</code> になっている</p>
+
+<h2>クックブックの作成</h2>
+
+<p>ローカルにクックブックを作成する。今回は git をインストールするためのクックブックを作る</p>
+
+<p>自作のクックブックは site-cookbooks 以下に置くことが慣例になっているので出力先に site-cookbooks を指定している</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife cookbook create git -o site-cookbooks
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで site-cookbooks 以下に git クックブックの雛形が出来上がる</p>
+
+<h2>レシピの編集</h2>
+
+<p>レシピの雛形 <code>site-cookbooks/git/recipes/default.rb</code> を編集していく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim site-cookbooks/git/recipes/default.rb
+</span><span class='line'><span class="nv">$ </span>cat site-cookbooks/git/recipes/default.rb
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Cookbook Name:: git</span>
+</span><span class='line'><span class="c"># Recipe:: default</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Copyright 2015, YOUR_COMPANY_NAME</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># All rights reserved - Do Not Redistribute</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'>package <span class="s2">&quot;git&quot;</span> <span class="k">do</span>
+</span><span class='line'>    action :install
+</span><span class='line'>end
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Node オブジェクトの編集</h2>
+
+<p>Chef で管理する Node （サーバ）の状態を記述し、それぞれの Node に対してどのクックブックが適用されるかを設定する Node オブジェクトを編集する</p>
+
+<p>Node オブジェクトは <code>knife solo bootstrap testhost</code> 実行時に <code>nodes/testhost.json</code> として作成されている</p>
+
+<p>今回はここに先ほど作成した git クックブックの適用を記述する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim nodes/testhost.json
+</span><span class='line'><span class="nv">$ </span>cat nodes/testhost.json
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="s2">&quot;run_list&quot;</span>: <span class="o">[</span>
+</span><span class='line'>    <span class="s2">&quot;recipe[git]&quot;</span>
+</span><span class='line'>  <span class="o">]</span>,
+</span><span class='line'>  <span class="s2">&quot;automatic&quot;</span>: <span class="o">{</span>
+</span><span class='line'>    <span class="s2">&quot;ipaddress&quot;</span>: <span class="s2">&quot;testhost&quot;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>クックブックの実行</h2>
+
+<p>準備が整ったのでいよいよクックブックをリモートサーバに対して実行する</p>
+
+<p>以下のコマンドで実行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo cook testhost
+</span><span class='line'>Running Chef on testhost...
+</span><span class='line'>...
+</span><span class='line'>Chef Client finished, 0/1 resources updated in <span class="m">07</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これも同じく前回の環境ですでに git をインストール済みなので <code>0/1 resources updated</code> として正常に実行された</p>
+
+<p>これでリモートへの Chef 実行完了！</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[初めてのChef]]></title>
@@ -172,6 +393,8 @@ Vagrant で環境をつくっておいてそこで色々試してみます。</p
 <li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
 </ul>
 
+
+<p>余談: Chef に関する記事は web 上にも色々ありますが、 Chef は用途によって様々なツール、使い方があり、基本的な用語や概念などを理解できていないと思わぬところでハマってしまいがちです。 <a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a> は Chef に関して体系的に理解できるので最初にサラッと読んでしまうのが近道だと感じました。</p>
 ]]></content>
   </entry>
   
@@ -2295,140 +2518,6 @@ primary key や、unique key といったレコードを一意に特定できる
 
 
 <p>このように考えると「トークン」という言葉がしっくりくるのでは、と現在思っております。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[初めてのYeoman (Yoを使った雛形作成)]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/05/06/the-first-step-of-yeoman/"/>
-    <updated>2015-05-06T18:55:02+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/05/06/the-first-step-of-yeoman</id>
-    <content type="html"><![CDATA[<p>前回 <a href="http://blog.sojiro.me/blog/2015/05/05/hubot-create-is-now-old/">‘Hubot –create’ は古い</a> というエントリでYeomanを試してみたいと宣言したので試してみます。</p>
-
-<p>Yeoman は以下の3要素で構成されているそうな</p>
-
-<ul>
-<li>yo: 雛形作成ツール</li>
-<li>Grunt: タスクランナー</li>
-<li>Bower: フロントエンドパッケージマネージャ</li>
-</ul>
-
-
-<p>今回は前回に引き続き <code>yo</code> を使ってみたいと思います。</p>
-
-<p>前提としては <code>yo</code> をインストール済みであること。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g yo
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>また、 <code>yo</code> は npm のバージョン2.1.0以上が推奨なので必要に応じて npm もアップデートします。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm update -g npm
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>generator-angular-fullstack を使ってみる</h2>
-
-<p>今回 <code>yo</code> で作成する雛形として generator-angular-fullstack を使ってみる</p>
-
-<p>generator-angular-fullstack は MEAN なアプリケーションの雛形で、使い勝手が良いという噂</p>
-
-<p>早速インストール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>yeoman/angular_fullstack
-</span><span class='line'><span class="nv">$ </span>npm install generator-angular-fullstack
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストールできたので実行してみる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yo angular-fullstack
-</span><span class='line'>     _-----_
-</span><span class='line'>    <span class="p">|</span>       <span class="p">|</span>
-</span><span class='line'>    <span class="p">|</span>--<span class="o">(</span>o<span class="o">)</span>--<span class="p">|</span>   .--------------------------.
-</span><span class='line'>   <span class="sb">`</span>---------´  <span class="p">|</span>    Welcome to Yeoman,    <span class="p">|</span>
-</span><span class='line'>    <span class="o">(</span> _´U<span class="sb">`</span>_ <span class="o">)</span>   <span class="p">|</span>   ladies and gentlemen!  <span class="p">|</span>
-</span><span class='line'>    /___A___<span class="se">\ </span>  <span class="s1">&#39;__________________________&#39;</span>
-</span><span class='line'>     <span class="p">|</span>  ~  <span class="p">|</span>
-</span><span class='line'>   __<span class="s1">&#39;.___.&#39;</span>__
-</span><span class='line'> ´   <span class="sb">`</span>  <span class="p">|</span>° ´ Y <span class="sb">`</span>
-</span><span class='line'>
-</span><span class='line'>Out of the box I create an AngularJS app with an Express server.
-</span><span class='line'>
-</span><span class='line'><span class="c"># Client</span>
-</span><span class='line'>
-</span><span class='line'>? What would you like to write scripts with? JavaScript
-</span><span class='line'>? What would you like to write markup with? HTML
-</span><span class='line'>? What would you like to write stylesheets with? Sass
-</span><span class='line'>? What Angular router would you like to use? uiRouter
-</span><span class='line'>? Would you like to include Bootstrap? Yes
-</span><span class='line'>? Would you like to include UI Bootstrap? Yes
-</span><span class='line'>
-</span><span class='line'><span class="c"># Server</span>
-</span><span class='line'>
-</span><span class='line'>? Would you like to use mongoDB with Mongoose <span class="k">for</span> data modeling? Yes
-</span><span class='line'>? Would you scaffold out an authentication boilerplate? Yes
-</span><span class='line'>? Would you like to include additional oAuth strategies? Google, Facebook, Twitter
-</span><span class='line'>? Would you like to use socket.io? Yes
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>雛形作成を実行するといくつかインタラクティブに聞かれるので答える</p>
-
-<p>今回は基本的に Yes と答えてみた</p>
-
-<p>実行が終わると雛形ができていた</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ls
-</span><span class='line'>Gruntfile.js  bower.json  client  e2e  karma.conf.js  node_modules  package.json  protractor.conf.js  server
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>つづく</h2>
-
-<p>次回は <code>grunt</code> を使って実際にアプリケーションを動かしてみる</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://blog.chat.ac/yeoman%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6meanmongodbexpressangularjsnode-js%E3%82%92%E4%BD%9C%E6%88%90%E3%81%97%E3%82%88%E3%81%86/">YEOMANを使ってMEAN(MongoDB+Express+AngularJS+Node.js)を作成しよう</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

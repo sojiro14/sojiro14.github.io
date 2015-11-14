@@ -9,7 +9,9 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="このブログで過去に何度かHubotについて書いたときに、新しいbotを作るときのコマンドは hubot --create bot_name だったのですが、このコマンドが非推奨になったようなのでメモ。 hubot &ndash;create が使えない 新しいbotを作ろうとして hubot -- &hellip;">
+  <meta name="description" content="前回 ‘Hubot –create’ は古い というエントリでYeomanを試してみたいと宣言したので試してみます。 Yeoman は以下の3要素で構成されているそうな yo: 雛形作成ツール
+Grunt: タスクランナー
+Bower: フロントエンドパッケージマネージャ 今回は前回に引き続き &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +93,161 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-06T18:55:02+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:55 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>前回 <a href="http://blog.sojiro.me/blog/2015/05/05/hubot-create-is-now-old/">‘Hubot –create’ は古い</a> というエントリでYeomanを試してみたいと宣言したので試してみます。</p>
+
+<p>Yeoman は以下の3要素で構成されているそうな</p>
+
+<ul>
+<li>yo: 雛形作成ツール</li>
+<li>Grunt: タスクランナー</li>
+<li>Bower: フロントエンドパッケージマネージャ</li>
+</ul>
+
+
+<p>今回は前回に引き続き <code>yo</code> を使ってみたいと思います。</p>
+
+<p>前提としては <code>yo</code> をインストール済みであること。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g yo
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>また、 <code>yo</code> は npm のバージョン2.1.0以上が推奨なので必要に応じて npm もアップデートします。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm update -g npm
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>generator-angular-fullstack を使ってみる</h2>
+
+<p>今回 <code>yo</code> で作成する雛形として generator-angular-fullstack を使ってみる</p>
+
+<p>generator-angular-fullstack は MEAN なアプリケーションの雛形で、使い勝手が良いという噂</p>
+
+<p>早速インストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>yeoman/angular_fullstack
+</span><span class='line'><span class="nv">$ </span>npm install generator-angular-fullstack
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールできたので実行してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yo angular-fullstack
+</span><span class='line'>     _-----_
+</span><span class='line'>    <span class="p">|</span>       <span class="p">|</span>
+</span><span class='line'>    <span class="p">|</span>--<span class="o">(</span>o<span class="o">)</span>--<span class="p">|</span>   .--------------------------.
+</span><span class='line'>   <span class="sb">`</span>---------´  <span class="p">|</span>    Welcome to Yeoman,    <span class="p">|</span>
+</span><span class='line'>    <span class="o">(</span> _´U<span class="sb">`</span>_ <span class="o">)</span>   <span class="p">|</span>   ladies and gentlemen!  <span class="p">|</span>
+</span><span class='line'>    /___A___<span class="se">\ </span>  <span class="s1">&#39;__________________________&#39;</span>
+</span><span class='line'>     <span class="p">|</span>  ~  <span class="p">|</span>
+</span><span class='line'>   __<span class="s1">&#39;.___.&#39;</span>__
+</span><span class='line'> ´   <span class="sb">`</span>  <span class="p">|</span>° ´ Y <span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'>Out of the box I create an AngularJS app with an Express server.
+</span><span class='line'>
+</span><span class='line'><span class="c"># Client</span>
+</span><span class='line'>
+</span><span class='line'>? What would you like to write scripts with? JavaScript
+</span><span class='line'>? What would you like to write markup with? HTML
+</span><span class='line'>? What would you like to write stylesheets with? Sass
+</span><span class='line'>? What Angular router would you like to use? uiRouter
+</span><span class='line'>? Would you like to include Bootstrap? Yes
+</span><span class='line'>? Would you like to include UI Bootstrap? Yes
+</span><span class='line'>
+</span><span class='line'><span class="c"># Server</span>
+</span><span class='line'>
+</span><span class='line'>? Would you like to use mongoDB with Mongoose <span class="k">for</span> data modeling? Yes
+</span><span class='line'>? Would you scaffold out an authentication boilerplate? Yes
+</span><span class='line'>? Would you like to include additional oAuth strategies? Google, Facebook, Twitter
+</span><span class='line'>? Would you like to use socket.io? Yes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>雛形作成を実行するといくつかインタラクティブに聞かれるので答える</p>
+
+<p>今回は基本的に Yes と答えてみた</p>
+
+<p>実行が終わると雛形ができていた</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ls
+</span><span class='line'>Gruntfile.js  bower.json  client  e2e  karma.conf.js  node_modules  package.json  protractor.conf.js  server
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>つづく</h2>
+
+<p>次回は <code>grunt</code> を使って実際にアプリケーションを動かしてみる</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.chat.ac/yeoman%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6meanmongodbexpressangularjsnode-js%E3%82%92%E4%BD%9C%E6%88%90%E3%81%97%E3%82%88%E3%81%86/">YEOMANを使ってMEAN(MongoDB+Express+AngularJS+Node.js)を作成しよう</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1098,61 +1255,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-12-15T03:02:30+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:02 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>SlackにBotを入れたいと思い、少し調べてみたところHUBOTがやはり簡単らしいのでやってみた</p>
-
-<h2>HUBOT用のAPI Tokenを取得する</h2>
-
-<p>まずはSlackのチームメニューからConfigure Integrationsを選択</p>
-
-<p><img src="/images/slack_hubot/team_menu.png"></p>
-
-<p>様々な外部サービスとの連携メニューからHUBOTを選択する</p>
-
-<p><img src="/images/slack_hubot/add_hubot.png"></p>
-
-<p>追加するbotの名前を入力</p>
-
-<p><img src="/images/slack_hubot/set_botname.png"></p>
-
-<p>ここまでのステップを踏むとAPI Tokenが記されたページが表示される</p>
-
-<p>そしてこの段階でbotがSlackにjoinする</p>
-
-<p><img src="/images/slack_hubot/join_bot.png"></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/12/15/slack-bot-by-hubot/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page4">&larr; Older</a>
@@ -1174,6 +1276,10 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/14/the-second-step-of-chef/">Chef のリモート実行</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/01/the-first-step-of-chef/">初めてのChef</a>
       </li>
     
@@ -1187,10 +1293,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
     
       <li class="post">
         <a href="/blog/2015/09/21/rails-new-with-mysql/">Rails アプリを MySQL で作るときのメモ</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/17/mystery-of-vagrant-provisioning/">Vagrant provisioning の謎</a>
       </li>
     
   </ul>
