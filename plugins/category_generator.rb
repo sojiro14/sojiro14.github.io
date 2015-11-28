@@ -153,8 +153,29 @@ ERR
     # Returns string
     #
     def category_links(categories)
-      categories.sort.map { |c| category_link c }.join(', ')
+      categories = categories.sort!.map { |c| category_link c }
+
+      case categories.length
+      when 0
+        ""
+      when 1
+        categories[0].to_s
+      else
+        "#{categories[0...-1].join(', ')}, #{categories[-1]}"
+      end
     end
+
+    def site_categories_links(categories)
+      def adjust_fontsize(size)
+        [56, size*2 + 16].min
+      end
+      dir = @context.registers[:site].config['category_dir']
+      categories = categories.to_a.sort.map do |key, val|
+        "<article><h1><a style='font-size:#{adjust_fontsize(val.size)}px;' href='/#{dir}/#{key.gsub(/_|\P{Word}/, '-').gsub(/-{2,}/, '-').downcase}/'>#{key}</a></h1><span class='category'>#{val.size} posts in this category.</span></article>"
+      end
+      categories
+    end
+
 
     # Outputs a single category as an <a> link.
     #
@@ -174,8 +195,8 @@ ERR
     # Returns string
     def date_to_html_string(date)
       result = '<span class="month">' + date.strftime('%b').upcase + '</span> '
-      result << date.strftime('<span class="day">%d</span> ')
-      result << date.strftime('<span class="year">%Y</span> ')
+      result += date.strftime('<span class="day">%d</span> ')
+      result += date.strftime('<span class="year">%Y</span> ')
       result
     end
 
