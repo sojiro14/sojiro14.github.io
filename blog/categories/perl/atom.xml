@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Perl | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/perl/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-11-15T01:39:43+09:00</updated>
+  <updated>2016-02-21T01:53:32+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Minil を使った Changes ファイルの更新]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/02/21/how-to-write-changes-with-minil/"/>
+    <updated>2016-02-21T01:24:33+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/02/21/how-to-write-changes-with-minil</id>
+    <content type="html"><![CDATA[<p>CPAN モジュールの bug fix を行ったので修正版をリリース。</p>
+
+<p> <code>minil</code> 様様と思いながら <code>minil release</code> コマンドを打つのだが、
+いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。</p>
+
+<h2> の下に書く</h2>
+
+<p>今回のリリースだとこうなった</p>
+
+<pre><code>Revision history for Perl extension JSON-MergePatch
+
+
+
+    - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
+    - refactoring
+
+0.02 2015-09-13T09:08:20Z
+
+    - use JSON::MaybeXS and fix keys arg
+
+0.01 2015-07-02T18:29:20Z
+
+    - original version
+</code></pre>
+
+<p> <code></code> となっているところにバージョンやら日付やらが入る。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://perldoc.jp/docs/modules/Minilla-v0.6.4/lib/Minilla/Tutorial.pod#Make32a32new32build">Minilla チュートリアルドキュメント</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CPAN モジュールのリリース]]></title>

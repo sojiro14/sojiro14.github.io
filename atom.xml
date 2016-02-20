@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2015-11-15T01:39:43+09:00</updated>
+  <updated>2016-02-21T01:53:32+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Minil を使った Changes ファイルの更新]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/02/21/how-to-write-changes-with-minil/"/>
+    <updated>2016-02-21T01:24:33+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/02/21/how-to-write-changes-with-minil</id>
+    <content type="html"><![CDATA[<p>CPAN モジュールの bug fix を行ったので修正版をリリース。</p>
+
+<p> <code>minil</code> 様様と思いながら <code>minil release</code> コマンドを打つのだが、
+いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。</p>
+
+<h2>の下に書く</h2>
+
+<p>今回のリリースだとこうなった</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Revision history for Perl extension JSON-MergePatch
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
+</span><span class='line'>    - refactoring
+</span><span class='line'>
+</span><span class='line'>0.02 2015-09-13T09:08:20Z
+</span><span class='line'>
+</span><span class='line'>    - use JSON::MaybeXS and fix keys arg
+</span><span class='line'>
+</span><span class='line'>0.01 2015-07-02T18:29:20Z
+</span><span class='line'>
+</span><span class='line'>    - original version</span></code></pre></td></tr></table></div></figure>
+
+
+<p> &#8220; となっているところにバージョンやら日付やらが入る。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://perldoc.jp/docs/modules/Minilla-v0.6.4/lib/Minilla/Tutorial.pod#Make32a32new32build">Minilla チュートリアルドキュメント</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Chef のリモート実行]]></title>
@@ -2450,74 +2502,6 @@ primary key や、unique key といったレコードを一意に特定できる
 <h2>最後に</h2>
 
 <p>やっぱり使わないと上記のようなしょうもないことしか言えないので generator-angular-fullstack で作った雛形を少しずつ触りながら次回はもう少しまともなことを言えるようにします。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[「トークン」とはなにか]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/05/07/what-is-token/"/>
-    <updated>2015-05-07T23:57:03+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/05/07/what-is-token</id>
-    <content type="html"><![CDATA[<p>半年以上前のある夜、大先輩エンジニアの方に隠れ家的なオシャレな大人のBarに連れて行っていただきました。</p>
-
-<p>その日はそれまでに既に結構飲んでいまして、本当に恥ずかしながらそこでお話した内容のほとんどは覚えていないのですが、一つだけ鮮明に覚えているのは、</p>
-
-<p><strong> 「トークン」ってなに？ </strong></p>
-
-<p>と私に説明を求められたことです。なにかを答えはしたのですが、かなり曖昧な答えになっていたと思います。</p>
-
-<p>さらに最悪なのは、その後その大先輩が語られた内容を覚えていないことです。これは最悪です。次の日に「トークンって結局なんでしたっけ？」などとも聞けないのでそれ以来いろいろ考えてきたことを書きます。</p>
-
-<h2>トークンとはなにか</h2>
-
-<p>Webの開発をしているとしばしばトークンというものが登場します</p>
-
-<ul>
-<li>Access Token</li>
-<li>ID Token</li>
-<li>JWT(JSON Web Token)</li>
-<li>etc&hellip;</li>
-</ul>
-
-
-<p>このトークンとはなにか、という話です</p>
-
-<p>そもそもトークンなんて日本語はないのだから、トークンはトークン、という感じなのですが、あえて日本語にすると</p>
-
-<p><strong> 「証」（しょう） </strong></p>
-
-<p>という漢字一文字が合うのかな、と思います。</p>
-
-<ul>
-<li>通行証</li>
-<li>身分証</li>
-<li>免許証</li>
-<li>etc&hellip;</li>
-</ul>
-
-
-<h2>トークンの性質</h2>
-
-<p>これらに共通するのは</p>
-
-<ul>
-<li>誰かが発行し</li>
-<li>何かが書いてある</li>
-</ul>
-
-
-<p>ということではないでしょうか</p>
-
-<p>特に「何かが書いてある」、という部分は様々な内容を持ち得ます</p>
-
-<ul>
-<li>通行証には、ある場所を通ること、ある場所に到達することを許可する旨が書かれています</li>
-<li>身分証には、それを持っている人が誰なのか、それを示す内容が書かれています</li>
-<li>免許証には、誰に何をすることを許可するのかが書かれています</li>
-</ul>
-
-
-<p>このように考えると「トークン」という言葉がしっくりくるのでは、と現在思っております。</p>
 ]]></content>
   </entry>
   

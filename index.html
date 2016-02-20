@@ -9,7 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="前回 対象サーバで直接 Chef を実行してみました。 今回は手元からリモートのサーバに対して Chef を実行する仕組みを試してみます。 knife-solo のインストール 手元のクックブックをリモートのサーバに転送して chef-solo コマンドを実行するまでの一連の作業を実行できる &hellip;">
+  <meta name="description" content="CPAN モジュールの bug fix を行ったので修正版をリリース。 minil 様様と思いながら minil release コマンドを打つのだが、
+いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。 の下に書く &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +92,79 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/02/21/how-to-write-changes-with-minil/">Minil を使った Changes ファイルの更新</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-02-21T01:24:33+09:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>1:24 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>CPAN モジュールの bug fix を行ったので修正版をリリース。</p>
+
+<p> <code>minil</code> 様様と思いながら <code>minil release</code> コマンドを打つのだが、
+いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。</p>
+
+<h2>の下に書く</h2>
+
+<p>今回のリリースだとこうなった</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Revision history for Perl extension JSON-MergePatch
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
+</span><span class='line'>    - refactoring
+</span><span class='line'>
+</span><span class='line'>0.02 2015-09-13T09:08:20Z
+</span><span class='line'>
+</span><span class='line'>    - use JSON::MaybeXS and fix keys arg
+</span><span class='line'>
+</span><span class='line'>0.01 2015-07-02T18:29:20Z
+</span><span class='line'>
+</span><span class='line'>    - original version</span></code></pre></td></tr></table></div></figure>
+
+
+<p> &#8220; となっているところにバージョンやら日付やらが入る。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://perldoc.jp/docs/modules/Minilla-v0.6.4/lib/Minilla/Tutorial.pod#Make32a32new32build">Minilla チュートリアルドキュメント</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1331,143 +1405,6 @@ primary key や、unique key といったレコードを一意に特定できる
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/02/create-basic-model-for-cpan-module/">CPAN モジュールのための雛形を作る</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-02T00:13:24+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>12:13 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>いよいよ CPAN モジュールを作ろうと思います。</p>
-
-<p>しかし既存の CPAN モジュールを見てみると本体のプログラムの他に見慣れないファイルがちらほら。。。</p>
-
-<p>正直どんなファイル群で CPAN モジュールを構成すれば良いのか分かっていないわけです。</p>
-
-<p>そんな悩みを解決してくれたのが <strong>Minilla</strong> モジュールです。</p>
-
-<h2>Minilla のインストール</h2>
-
-<p> <strong>Minilla</strong> は CPAN モジュールなので <code>cpanm</code> コマンドでインストールできます。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cpanm Minilla
-</span><span class='line'>--&gt; Working on Minilla
-</span><span class='line'>Fetching http://cpan.metacpan.org/authors/id/T/TO/TOKUHIROM/Minilla-v2.4.1.tar.gz ... OK
-</span><span class='line'>Configuring Minilla-v2.4.1 ... OK
-</span><span class='line'>...
-</span><span class='line'>Building and testing Minilla-v2.4.1 ... OK
-</span><span class='line'>Successfully installed Minilla-v2.4.1
-</span><span class='line'><span class="m">11</span> distributions installed
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>雛形の作成</h2>
-
-<p> <strong>Minilla</strong> がインストールできたら早速 CPAN モジュールの雛形を作ります。 <code>minil new Your::Module</code> で作成できます。</p>
-
-<p>今回は <strong>JSON::MergePatch</strong> というモジュールを作ります。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$cd</span> ~/git/cpan
-</span><span class='line'><span class="nv">$ </span>minil new JSON::MergePatch
-</span><span class='line'>Writing lib/JSON/MergePatch.pm
-</span><span class='line'>Writing Changes
-</span><span class='line'>Writing t/00_compile.t
-</span><span class='line'>Writing .travis.yml
-</span><span class='line'>Writing .gitignore
-</span><span class='line'>Writing LICENSE
-</span><span class='line'>Writing cpanfile
-</span><span class='line'>Initializing git JSON::MergePatch
-</span><span class='line'><span class="o">[</span>JSON-MergePatch<span class="o">]</span> <span class="nv">$ </span>git init
-</span><span class='line'>Initialized empty Git repository in /user/home_directory/git/cpan/JSON-MergePatch/.git/
-</span><span class='line'>Retrieving meta data from lib/JSON/MergePatch.pm.
-</span><span class='line'>Name: JSON::MergePatch
-</span><span class='line'>Abstract: It<span class="s1">&#39;s new $module</span>
-</span><span class='line'><span class="s1">Version: 0.01</span>
-</span><span class='line'><span class="s1">fatal: bad default revision &#39;</span>HEAD<span class="err">&#39;</span>
-</span><span class='line'><span class="o">[</span>JSON-MergePatch<span class="o">]</span> <span class="nv">$ </span>git add .
-</span><span class='line'>Finished to create JSON::MergePatch
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで雛形ができました。</p>
-
-<p>そしてこれから雛形を編集していくわけですが、自分で編集するのは基本的に以下のファイルのみです。</p>
-
-<ul>
-<li>lib/ 配下のプログラム</li>
-<li>t/ 配下のテストプラグラム</li>
-<li>cpanfile</li>
-</ul>
-
-
-<p>以下のファイルはそれぞれ <code>minil hoge</code> コマンド実行時に自動で編集されます。</p>
-
-<ul>
-<li>Changes: リリース時に更新される</li>
-<li>META.json: cpanfile に合わせて更新される</li>
-<li>README.md: lib/Your/Module.pm の記述から更新される</li>
-</ul>
-
-
-<h2>つづく</h2>
-
-<p>次回はいよいよ CPAN へ公開する際の手順を書こうと思います。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://blog.64p.org/entry/2013/05/14/080423">Minilla を用いた Perl モジュールの作り方</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -1487,6 +1424,10 @@ primary key や、unique key といったレコードを一意に特定できる
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/21/how-to-write-changes-with-minil/">minil を使った Changes ファイルの更新</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/14/the-second-step-of-chef/">Chef のリモート実行</a>
       </li>
     
@@ -1502,10 +1443,6 @@ primary key や、unique key といったレコードを一意に特定できる
         <a href="/blog/2015/10/25/kinds-of-locks-of-innodb/">InnoDBにおけるロックの種類</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/09/21/rails-new-with-mysql/">Rails アプリを MySQL で作るときのメモ</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1515,7 +1452,7 @@ primary key や、unique key といったレコードを一意に特定できる
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Sojiro -
+  Copyright &copy; 2016 - Sojiro -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
 </p>
 

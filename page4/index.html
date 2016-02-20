@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="SlackにBotを入れたいと思い、少し調べてみたところHUBOTがやはり簡単らしいのでやってみた HUBOT用のAPI Tokenを取得する まずはSlackのチームメニューからConfigure Integrationsを選択 様々な外部サービスとの連携メニューからHUBOTを選択する &hellip;">
+  <meta name="description" content="Vimでは &lt;TAB&gt; やインデントについてその挙動を設定することができる。いくつか設定方法があるが、これまでこれらに関する .vimrc の設定は何も考えずにただコピペしていたので記述を見直してみた。 tabstop tabstop で &lt;TAB&gt; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/26/tab-and-space-on-vim/">VimにおけるTABとスペースの扱いについて</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-26T10:52:26+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:52 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Vimでは <code>&lt;TAB&gt;</code> やインデントについてその挙動を設定することができる。いくつか設定方法があるが、これまでこれらに関する <code>.vimrc</code> の設定は何も考えずにただコピペしていたので記述を見直してみた。</p>
+
+<h2>tabstop</h2>
+
+<p> <code>tabstop</code> で <code>&lt;TAB&gt;</code> にいくつのスペースを設定するか決めることができる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで <code>&lt;TAB&gt;</code> に半角4つ分が設定される。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/26/tab-and-space-on-vim/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -1026,127 +1072,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-10-31T05:29:00+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>5:29 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby on Railsを使ってみたいと思い、調べてみるとRails4ではRubyのバージョンは1.9以降が必須のようである。</p>
-
-<p>自分がさくらで借りているサーバーではRubyのバージョンが1.8.7だったのでこれを新しくしてみた。</p>
-
-<h2>RVMのインストール</h2>
-
-<p>新しいRubyをインストールする前にRVM(Ruby Version Manager)をインストールする。これはRubyをバージョンごとに管理するツール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -L https://get.rvm.io <span class="p">|</span> bash -s
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドで自分のホームディレクトリ以下に <code>.rvm/</code> が作られ、ここにRVMがインストールされる。</p>
-
-<p>そして <code>.profile</code> <code>.bashrc</code> <code>.zshrc</code> にPATHを通す記述が追加される。</p>
-
-<p>また、 <code>.bash_profile</code> <code>.zlogin</code> にRVMをロードする記述が追加される。</p>
-
-<p>RVMのインストールが完了したらロードする。ここではbashを使っているので以下のようにする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bash_profile
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Rubyのインストール</h2>
-
-<h3>さくらのレンタルサーバーでの失敗</h3>
-
-<p>まずはRubyのインストールに必要なパーツを調べ、無ければインストールする。
-以下のコマンドで必要なものをピックアップしインストールまで行ってくれる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
-</span><span class='line'>/your/home/directry/.rvm/scripts/functions/support: line 314: rvm_debug: <span class="nb">command </span>not found
-</span><span class='line'>Checking requirements <span class="k">for</span> freebsd.
-</span><span class='line'>Installing requirements <span class="k">for</span> freebsd.
-</span><span class='line'>Updating system.
-</span><span class='line'>Installing required packages: automake, bison, readline, libyaml...
-</span><span class='line'>Error running <span class="s1">&#39;requirements_freebsd_libs_install automake bison readline libyaml&#39;</span>,
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここでErrorが発生。内容は必要なパッケージがインストールできなかったということ。
-そこでFreeBSDのパッケージ管理コマンドである <code>pkg</code> コマンドを使ってインストールを試みる。</p>
-
-<p>が、サーバーの設定的に自分でパッケージを追加することができなかったのでさくらのサーバーを断念してAWSに移行した。</p>
-
-<h3>AWSに移行</h3>
-
-<p>AWSに移行して <code>$ rvm requirements</code> までを実行する。（AWSは始めからRubyのバージョンが2.0.0だったが構わず実行）
-ここでも <code>$ rvm requirements</code> が転ける。</p>
-
-<p>そこで今度はCentOSだったので <code>yum</code> を使ってインストールを試みる。以下のコマンドは <code>$ rvm requirements</code> が教えてくれる。Errorの原因が <code>sudo</code> で実行していなかったことなので <code>sudo</code> 付きで実行する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo yum install -y patch libyaml-devel libffi-devel glibc-headers autoconf gcc-c++ glibc-devel patch readline-devel zlib-devel openssl-devel automake libtool bison
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで成功。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
-</span><span class='line'>Checking requirements <span class="k">for</span> amazon.
-</span><span class='line'>Requirements installation successful.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>$ rvm requirements</code>も成功。</p>
-
-<p>このサーバーではすでにバージョン2.0.0のRubyがインストールされていたが、RVMの配下に新たにバージョン2.0.0のRubyをインストールする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm install 2.0.0 --with-openssl-dir<span class="o">=</span><span class="nv">$HOME</span>/.rvm/usr
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール完了。</p>
-
-<h2>参考</h2>
-
-<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page5">&larr; Older</a>
@@ -1168,6 +1093,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/21/how-to-write-changes-with-minil/">minil を使った Changes ファイルの更新</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/14/the-second-step-of-chef/">Chef のリモート実行</a>
       </li>
     
@@ -1183,10 +1112,6 @@
         <a href="/blog/2015/10/25/kinds-of-locks-of-innodb/">InnoDBにおけるロックの種類</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/09/21/rails-new-with-mysql/">Rails アプリを MySQL で作るときのメモ</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1196,7 +1121,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Sojiro -
+  Copyright &copy; 2016 - Sojiro -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
 </p>
 
