@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-02-21T03:29:12+09:00</updated>
+  <updated>2016-02-21T03:29:54+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -43,7 +43,7 @@
 <span class='line-number'>14</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>Revision history for Perl extension JSON-MergePatch
 </span><span class='line'>
-</span><span class='line'> 
+</span><span class='line'>  
 </span><span class='line'>
 </span><span class='line'>    - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
 </span><span class='line'>    - refactoring
