@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Perl | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/perl/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-02-21T03:41:13+09:00</updated>
+  <updated>2016-02-21T03:42:28+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -27,11 +27,9 @@
 
 <p>今回のリリースだとこうなった</p>
 
-<pre>
-<code>
-Revision history for Perl extension JSON-MergePatch
+<pre><code>Revision history for Perl extension JSON-MergePatch
 
-
+{\{$NEXT}}
 
     - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
     - refactoring
@@ -43,9 +41,7 @@ Revision history for Perl extension JSON-MergePatch
 0.01 2015-07-02T18:29:20Z
 
     - original version
-</code>
-</pre>
-
+</code></pre>
 
 <p> <code></code> となっているところにバージョンやら日付やらが入る。</p>
 
