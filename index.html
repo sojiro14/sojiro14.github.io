@@ -10,7 +10,7 @@
 
   
   <meta name="description" content="CPAN モジュールの bug fix を行ったので修正版をリリース。 minil 様様と思いながら minil release コマンドを打つのだが、
-いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。 $NEXT &hellip;">
+いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。 {{$NEXT &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -120,7 +120,7 @@
 <p> <code>minil</code> 様様と思いながら <code>minil release</code> コマンドを打つのだが、
 いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。</p>
 
-<h2>$NEXT の下に書く</h2>
+<h2>{{$NEXT}} の下に書く</h2>
 
 <p>今回のリリースだとこうなった</p>
 
@@ -140,7 +140,7 @@
 <span class='line-number'>14</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>Revision history for Perl extension JSON-MergePatch
 </span><span class='line'>
-</span><span class='line'>$NEXT
+</span><span class='line'>\{\{$NEXT\}\}
 </span><span class='line'>
 </span><span class='line'>    - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
 </span><span class='line'>    - refactoring
@@ -154,7 +154,7 @@
 </span><span class='line'>    - original version</span></code></pre></td></tr></table></div></figure>
 
 
-<p> <code>$NEXT</code> となっているところにバージョンやら日付やらが入る。</p>
+<p> <code>\{\{$NEXT\}\}</code> となっているところにバージョンやら日付やらが入る。</p>
 
 <h2>参照</h2>
 
