@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Perl | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/perl/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-02-21T03:39:08+09:00</updated>
+  <updated>2016-02-21T03:40:28+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -27,7 +27,7 @@
 
 <p>今回のリリースだとこうなった</p>
 
-<div>
+<pre>
 <code>
 Revision history for Perl extension JSON-MergePatch
 
@@ -44,7 +44,7 @@ Revision history for Perl extension JSON-MergePatch
 
     - original version
 </code>
-</div>
+</pre>
 
 
 <p> <code></code> となっているところにバージョンやら日付やらが入る。</p>
