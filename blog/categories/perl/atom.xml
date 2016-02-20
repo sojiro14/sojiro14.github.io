@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Perl | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/perl/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-02-21T02:11:09+09:00</updated>
+  <updated>2016-02-21T02:15:42+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -23,13 +23,13 @@
 <p> <code>minil</code> 様様と思いながら <code>minil release</code> コマンドを打つのだが、
 いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。</p>
 
-<h2> の下に書く</h2>
+<h2>C&lt;> の下に書く</h2>
 
 <p>今回のリリースだとこうなった</p>
 
 <pre><code>Revision history for Perl extension JSON-MergePatch
 
-
+C&lt;&gt;
 
     - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
     - refactoring
@@ -43,7 +43,7 @@
     - original version
 </code></pre>
 
-<p> <code></code> となっているところにバージョンやら日付やらが入る。</p>
+<p> C&lt;> となっているところにバージョンやら日付やらが入る。</p>
 
 <h2>参照</h2>
 
