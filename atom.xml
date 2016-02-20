@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-02-21T03:33:54+09:00</updated>
+  <updated>2016-02-21T03:34:58+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -57,7 +57,7 @@
 </span><span class='line'>    - original version</span></code></pre></td></tr></table></div></figure>
 
 
-<p> <code></code> となっているところにバージョンやら日付やらが入る。</p>
+<p> <code>{{$NEXT}}</code> となっているところにバージョンやら日付やらが入る。</p>
 
 <h2>参照</h2>
 
