@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Perl | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/perl/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-02-21T02:08:41+09:00</updated>
+  <updated>2016-02-21T02:11:09+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -23,33 +23,27 @@
 <p> <code>minil</code> 様様と思いながら <code>minil release</code> コマンドを打つのだが、
 いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。</p>
 
-<h2><p></p> の下に書く</h2>
+<h2> の下に書く</h2>
 
 <p>今回のリリースだとこうなった</p>
 
-<p>&#8220;`
-Revision history for Perl extension JSON-MergePatch</p>
-
-<p></p>
+<pre><code>Revision history for Perl extension JSON-MergePatch
 
 
-<pre><code>- (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
-- refactoring
+
+    - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
+    - refactoring
+
+0.02 2015-09-13T09:08:20Z
+
+    - use JSON::MaybeXS and fix keys arg
+
+0.01 2015-07-02T18:29:20Z
+
+    - original version
 </code></pre>
 
-<p>0.02 2015-09-13T09:08:20Z</p>
-
-<pre><code>- use JSON::MaybeXS and fix keys arg
-</code></pre>
-
-<p>0.01 2015-07-02T18:29:20Z</p>
-
-<pre><code>- original version
-</code></pre>
-
-<p>&#8220;`</p>
-
-<p> <code>&lt;p&gt;&lt;/p&gt;</code> となっているところにバージョンやら日付やらが入る。</p>
+<p> <code></code> となっているところにバージョンやら日付やらが入る。</p>
 
 <h2>参照</h2>
 
