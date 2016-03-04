@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-03-05T07:02:25+09:00</updated>
+  <updated>2016-03-05T07:48:32+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -93,16 +93,16 @@ Installing ruby-2.2.0...
 <p>インストールされたバージョンを確認
 <code>bash
 $ rbenv versions
-* system (set by /Users/taishi/.rbenv/version)
+* system (set by /My/Home/Directory/.rbenv/version)
   2.2.0
 </code></p>
 
-<h2>使用する ruby 設定</h2>
+<h2>使用する ruby を設定</h2>
 
 <pre><code class="bash">$ rbenv global 2.2.0
 $ rbenv versions
   system
-* 2.2.0 (set by /Users/taishi/.rbenv/version)
+* 2.2.0 (set by /My/Home/Directory/.rbenv/version)
 </code></pre>
 
 <p>ブログを管理しているディレクトリは system ruby にしておく
@@ -110,12 +110,12 @@ $ rbenv versions
 $ cd git/blog/
 $ rbenv local system
 $ rbenv versions
-* system (set by /Users/taishi/git/blog/.ruby-version)
+* system (set by /My/Home/Directory/git/blog/.ruby-version)
   2.2.0
 $ cd
 $ rbenv versions
   system
-* 2.2.0 (set by /Users/taishi/.rbenv/version)
+* 2.2.0 (set by /My/Home/Directory/.rbenv/version)
 </code></p>
 
 <h2>参照</h2>

@@ -9,14 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Redisで扱えるデータ型 String
-List
-Set
-Sorted Set
-Hash String 文字列型 文字列や数値など、Keyに対して1つに定まる値。 値のset 1
-2
-set [key_name] [value] # 1つのkey-valueをsetする
-mset [ &hellip;">
+  <meta name="description" content="こちらの記事でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため） HUBOT_IRC_SEND_NOTICE_MODE 環境変数 HUBOT_IRC_SEND_NOTICE_MODE を true &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -98,6 +91,84 @@ mset [ &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/31/irc-bot-by-hubot-repair-number-1/">HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-31T04:45:04+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>4:45 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">こちらの記事</a>でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため）</p>
+
+<h2>HUBOT_IRC_SEND_NOTICE_MODE</h2>
+
+<p>環境変数 <code>HUBOT_IRC_SEND_NOTICE_MODE</code> を <code>true</code> とすれば良い</p>
+
+<p>実行ファイル(runhubot)に追記</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_NICK</span><span class="o">=</span><span class="s2">&quot;bot_kun&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_ROOMS</span><span class="o">=</span><span class="s2">&quot;#target_channel&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SERVER</span><span class="o">=</span><span class="s2">&quot;irc.hogehoge.local&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">HUBOT_IRC_SEND_NOTICE_MODE</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'><span class="c">#export HUBOT_IRC_PASSWORD=&quot;hoge&quot;</span>
+</span><span class='line'>
+</span><span class='line'>bin/hubot -a irc --name myhubot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>この実行ファイルからirc-botを起動すると当該irc-botの発言はすべてnoticeとなる。</p>
+
+<h2>処理の実体</h2>
+
+<p>HUBOT_IRC_SEND_NOTICE_MODEフラグが立っている場合は <code>bot</code> オブジェクトから <code>notice</code> メソッドが呼ばれる。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L18">フラグの確認</a></li>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L56-76">noticeメソッド呼び出し</a></li>
+</ul>
+
+
+<p><code>notice</code> メソッドが呼ばれている <code>bot</code> オブジェクトの実体は <code>new Irc.Client</code> である。</p>
+
+<ul>
+<li><a href="https://github.com/nandub/hubot-irc/blob/master/src/irc.coffee#L192">botオブジェクトの生成</a></li>
+</ul>
+
+
+<p>参考: <a href="http://node-irc.readthedocs.org/en/latest/API.html">http://node-irc.readthedocs.org/en/latest/API.html</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1979,6 +2050,10 @@ mset [ &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/05/management-perl-versions-by-plenv/">plenv で perl を管理する</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv で ruby を管理する</a>
       </li>
     
@@ -1992,10 +2067,6 @@ mset [ &hellip;">
     
       <li class="post">
         <a href="/blog/2015/11/01/the-first-step-of-chef/">初めてのChef</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb/">InnoDBにおけるSQL別ロックの挙動</a>
       </li>
     
   </ul>

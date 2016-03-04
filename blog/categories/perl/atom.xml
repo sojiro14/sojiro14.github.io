@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Perl | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/perl/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-03-05T07:02:25+09:00</updated>
+  <updated>2016-03-05T07:48:32+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,127 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Plenv で Perl を管理する]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/03/05/management-perl-versions-by-plenv/"/>
+    <updated>2016-03-05T07:14:26+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/03/05/management-perl-versions-by-plenv</id>
+    <content type="html"><![CDATA[<p>Perl をバージョンごと、あるいはプロジェクトごとに管理するためのツールである plenv の導入手順メモ</p>
+
+<h2>plenv をインストールする</h2>
+
+<h3>homebrew の update</h3>
+
+<pre><code class="bash">$ brew update
+Updated Homebrew from c0fae05 to bfe20af.
+No changes to formulae.
+</code></pre>
+
+<p>先ほど <a href="http://blog.sojiro.me/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv をインストールする手順</a> で同じことをやったばかりなので更新なし</p>
+
+<h3>plenv と perl-build のインストール</h3>
+
+<p>これも <a href="http://blog.sojiro.me/blog/2016/03/05/management-ruby-versions-by-rbenv/">どこか</a> で見たような手順</p>
+
+<p><code>perl-build</code> は <code>plenv</code> のプラグイン</p>
+
+<pre><code class="bash">$ brew install plenv perl-build
+==&gt; Downloading https://github.com/tokuhirom/plenv/archive/2.2.0.tar.gz
+==&gt; Downloading from https://codeload.github.com/tokuhirom/plenv/tar.gz/2.2.0
+...
+</code></pre>
+
+<h2>plenv init</h2>
+
+<pre><code class="bash">$ echo 'eval "$(plenv init -)"' &gt;&gt; ~/.bash_profile
+$ source ~/.bash_profile
+</code></pre>
+
+<p> <code>plenv init -</code> でやっていることは以下の通り</p>
+
+<pre><code class="bash">$ plenv init -
+export PATH="/Your/Home/Directory/.plenv/shims:${PATH}"
+export PLENV_SHELL=bash
+source '/usr/local/Cellar/plenv/2.2.0/libexec/../completions/plenv.bash'
+
+plenv() {
+  local command
+
+  command="$1"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell)
+    eval "`plenv "sh-$command" "$@"`";;
+  *)
+    command plenv "$command" "$@";;
+  esac
+}
+</code></pre>
+
+<h2>perl のインストール</h2>
+
+<p>インストールできる perl のバージョンを確認
+<code>bash
+$ plenv install -l
+Available versions:
+ 5.6.0
+ 5.6.1-TRIAL1
+ 5.6.1-TRIAL2
+...
+</code></p>
+
+<p>最新の安定版であるバージョン <code>5.22.1</code> をインストールする
+<code>bash
+$ plenv install 5.22.1
+Installing 5.22.1 as 5.22.1
+...
+</code></p>
+
+<p>インストールされたバージョンを確認
+<code>bash
+$ plenv versions
+* system (set by /My/Home/Directory/.plenv/version)
+  5.22.1
+</code></p>
+
+<h2>使用する perl を設定</h2>
+
+<pre><code class="bash">$ plenv global 5.22.1
+$ plenv versions
+  system
+* 5.22.1 (set by /My/Home/Directory/.plenv/version)
+</code></pre>
+
+<h2>perl に cpanm をインストールする</h2>
+
+<p>現在使用している perl に <code>cpanm</code> をインストールする
+<code>bash
+$ plenv install-cpanm
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   314    0   314    0     0   2078      0 --:--:-- --:--:-- --:--:--  2079
+100  296k  100  296k    0     0   367k      0 --:--:-- --:--:-- --:--:-- 2135k
+...
+</code></p>
+
+<p> <code>cpanm</code> のパスが変わっていることを確認
+<code>bash
+$ which cpanm
+/My/Home/Directory/.plenv/shims/cpanm
+</code></p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/tokuhirom/plenv">plenv</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Minil を使った Changes ファイルの更新]]></title>

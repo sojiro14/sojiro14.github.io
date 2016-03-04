@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-03-05T07:02:25+09:00</updated>
+  <updated>2016-03-05T07:48:32+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,190 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Plenv で Perl を管理する]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/03/05/management-perl-versions-by-plenv/"/>
+    <updated>2016-03-05T07:14:26+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/03/05/management-perl-versions-by-plenv</id>
+    <content type="html"><![CDATA[<p>Perl をバージョンごと、あるいはプロジェクトごとに管理するためのツールである plenv の導入手順メモ</p>
+
+<h2>plenv をインストールする</h2>
+
+<h3>homebrew の update</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew update
+</span><span class='line'>Updated Homebrew from c0fae05 to bfe20af.
+</span><span class='line'>No changes to formulae.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>先ほど <a href="http://blog.sojiro.me/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv をインストールする手順</a> で同じことをやったばかりなので更新なし</p>
+
+<h3>plenv と perl-build のインストール</h3>
+
+<p>これも <a href="http://blog.sojiro.me/blog/2016/03/05/management-ruby-versions-by-rbenv/">どこか</a> で見たような手順</p>
+
+<p><code>perl-build</code> は <code>plenv</code> のプラグイン</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install plenv perl-build
+</span><span class='line'><span class="o">==</span>&gt; Downloading https://github.com/tokuhirom/plenv/archive/2.2.0.tar.gz
+</span><span class='line'><span class="o">==</span>&gt; Downloading from https://codeload.github.com/tokuhirom/plenv/tar.gz/2.2.0
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>plenv init</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;eval &quot;$(plenv init -)&quot;&#39;</span> &gt;&gt; ~/.bash_profile
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>plenv init -</code> でやっていることは以下の通り</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv init -
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Your/Home/Directory/.plenv/shims:${PATH}&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">PLENV_SHELL</span><span class="o">=</span>bash
+</span><span class='line'><span class="nb">source</span> <span class="s1">&#39;/usr/local/Cellar/plenv/2.2.0/libexec/../completions/plenv.bash&#39;</span>
+</span><span class='line'>
+</span><span class='line'>plenv<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nb">local command</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">  command</span><span class="o">=</span><span class="s2">&quot;$1&quot;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$#&quot;</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="nb">shift</span>
+</span><span class='line'><span class="nb">  </span><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">case</span> <span class="s2">&quot;$command&quot;</span> in
+</span><span class='line'>  rehash<span class="p">|</span>shell<span class="o">)</span>
+</span><span class='line'>    <span class="nb">eval</span> <span class="s2">&quot;`plenv &quot;</span>sh-<span class="nv">$command</span><span class="s2">&quot; &quot;</span><span class="nv">$@</span><span class="s2">&quot;`&quot;</span><span class="p">;;</span>
+</span><span class='line'>  *<span class="o">)</span>
+</span><span class='line'>    <span class="nb">command </span>plenv <span class="s2">&quot;$command&quot;</span> <span class="s2">&quot;$@&quot;</span><span class="p">;;</span>
+</span><span class='line'>  <span class="k">esac</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>perl のインストール</h2>
+
+<p>インストールできる perl のバージョンを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv install -l
+</span><span class='line'>Available versions:
+</span><span class='line'> 5.6.0
+</span><span class='line'> 5.6.1-TRIAL1
+</span><span class='line'> 5.6.1-TRIAL2
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最新の安定版であるバージョン <code>5.22.1</code> をインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv install 5.22.1
+</span><span class='line'>Installing 5.22.1 as 5.22.1
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールされたバージョンを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv versions
+</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.plenv/version<span class="o">)</span>
+</span><span class='line'>  5.22.1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使用する perl を設定</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv global 5.22.1
+</span><span class='line'><span class="nv">$ </span>plenv versions
+</span><span class='line'>  system
+</span><span class='line'>* 5.22.1 <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.plenv/version<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>perl に cpanm をインストールする</h2>
+
+<p>現在使用している perl に <code>cpanm</code> をインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv install-cpanm
+</span><span class='line'>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+</span><span class='line'>                                 Dload  Upload   Total   Spent    Left  Speed
+</span><span class='line'><span class="m">100</span>   <span class="m">314</span>    <span class="m">0</span>   <span class="m">314</span>    <span class="m">0</span>     <span class="m">0</span>   <span class="m">2078</span>      <span class="m">0</span> --:--:-- --:--:-- --:--:--  2079
+</span><span class='line'><span class="m">100</span>  296k  <span class="m">100</span>  296k    <span class="m">0</span>     <span class="m">0</span>   367k      <span class="m">0</span> --:--:-- --:--:-- --:--:-- 2135k
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>cpanm</code> のパスが変わっていることを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which cpanm
+</span><span class='line'>/My/Home/Directory/.plenv/shims/cpanm
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/tokuhirom/plenv">plenv</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rbenv で Ruby を管理する]]></title>
@@ -140,12 +324,12 @@
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv versions
-</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /Users/taishi/.rbenv/version<span class="o">)</span>
+</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.rbenv/version<span class="o">)</span>
 </span><span class='line'>  2.2.0
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>使用する ruby 設定</h2>
+<h2>使用する ruby を設定</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -154,7 +338,7 @@
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv global 2.2.0
 </span><span class='line'><span class="nv">$ </span>rbenv versions
 </span><span class='line'>  system
-</span><span class='line'>* 2.2.0 <span class="o">(</span><span class="nb">set </span>by /Users/taishi/.rbenv/version<span class="o">)</span>
+</span><span class='line'>* 2.2.0 <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.rbenv/version<span class="o">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -172,12 +356,12 @@
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/blog/
 </span><span class='line'><span class="nv">$ </span>rbenv <span class="nb">local </span>system
 </span><span class='line'><span class="nv">$ </span>rbenv versions
-</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /Users/taishi/git/blog/.ruby-version<span class="o">)</span>
+</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/git/blog/.ruby-version<span class="o">)</span>
 </span><span class='line'>  2.2.0
 </span><span class='line'><span class="nv">$ </span><span class="nb">cd</span>
 </span><span class='line'><span class="nv">$ </span>rbenv versions
 </span><span class='line'>  system
-</span><span class='line'>* 2.2.0 <span class="o">(</span><span class="nb">set </span>by /Users/taishi/.rbenv/version<span class="o">)</span>
+</span><span class='line'>* 2.2.0 <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.rbenv/version<span class="o">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2534,100 +2718,6 @@ primary key や、unique key といったレコードを一意に特定できる
 <ul>
 <li><a href="https://github.com/DaftMonk/generator-angular-fullstack/issues/710">Error sass when build mode product #710</a></li>
 <li><a href="http://zkohi.hatenablog.com/entry/2013/12/14/021639">yeoman, grunt, bowerで静的サイト構築（第三回）</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Replyを試してみる]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/05/09/try-reply/"/>
-    <updated>2015-05-09T23:34:36+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/05/09/try-reply</id>
-    <content type="html"><![CDATA[<p>Perl の REPL 環境である Reply というツールを教えてもらったので使ってみます。</p>
-
-<h2>REPL とは？</h2>
-
-<p>REPL とは <strong>R</strong>ead-<strong>E</strong>val-<strong>P</strong>rint <strong>L</strong>oop の頭文字を取った言葉であり、</p>
-
-<p>プログラムを読み(Read)、評価し(Evaluate)、結果を出力(Print)することを繰り返す(Loop)という意味である。</p>
-
-<p>この環境があればファイルにプログラムを書いて保存し、実行する、という手続きを踏まなくてもスクリプトを実行できる</p>
-
-<p>この REPL の Perl 版が Reply と言うことだそう</p>
-
-<h2>Reply のインストール</h2>
-
-<p>Reply は CPAN からインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cpanm Reply
-</span><span class='line'>--&gt; Working on Reply
-</span><span class='line'>Fetching http://cpan.metacpan.org/authors/id/D/DO/DOY/Reply-0.37.tar.gz ... OK
-</span><span class='line'>Configuring Reply-0.37 ... OK
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストールできたら早速実行してみる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>reply
-</span><span class='line'>/Users/sojiro/.replyrc not found. Generating a default...
-</span><span class='line'>0&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>コンソールが立ち上がった</p>
-
-<p>早速なにかプログラムを入力してみよう</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>0&gt; print <span class="s1">&#39;Hello Reply&#39;</span><span class="p">;</span>
-</span><span class='line'>Hello Reply<span class="nv">$res</span><span class="o">[</span>0<span class="o">]</span> <span class="o">=</span> 1
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>1&gt; <span class="m">12</span> * 12
-</span><span class='line'><span class="nv">$res</span><span class="o">[</span>1<span class="o">]</span> <span class="o">=</span> 144
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>なるほど単純なプログラムの動作が確認できた。今度は <code>use</code> してみる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>2&gt; use UUID::Tiny<span class="p">;</span>
-</span><span class='line'>3&gt; my <span class="nv">$id</span> <span class="o">=</span> create_UUID_as_string<span class="o">(</span>UUID_V4<span class="o">)</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$res</span><span class="o">[</span>2<span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;87b16a6b-c712-41b4-bf46-965eeb01d3f1&#39;</span>
-</span><span class='line'>
-</span><span class='line'>4&gt; print <span class="nv">$id</span><span class="p">;</span>
-</span><span class='line'>87b16a6b-c712-41b4-bf46-965eeb01d3f1<span class="nv">$res</span><span class="o">[</span>3<span class="o">]</span> <span class="o">=</span> 1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このように実行結果は記憶された状態で進むので簡単にプログラムの実行結果を知りたいときに重宝しそうである。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://papix.hatenablog.com/entry/2014/12/15/233800">Replyでお手軽にPerlのコードを動かす話</a></li>
-<li><a href="http://www.amazon.co.jp/gp/product/4774156647/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774156647&amp;linkCode=as2&amp;tag=sojiro14-22">小飼弾のコードなエッセイ ~我々は本当に世界を理解してコードしているのだろうか? </a></li>
 </ul>
 
 ]]></content>

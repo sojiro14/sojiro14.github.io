@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="以前のエントリ、 初めてのYeoman (Yoを使った雛形作成) にて generator-angular-fullstack という雛形を使いましたが、この雛形は MEAN なアプリケーションの雛形、と呼ばれているそうです。 MEANとはどういう意味でしょうか？ MEAN とはなにか MEAN &hellip;">
+  <meta name="description" content="Perl の REPL 環境である Reply というツールを教えてもらったので使ってみます。 REPL とは？ REPL とは Read-Eval-Print Loop の頭文字を取った言葉であり、 プログラムを読み(Read)、評価し(Evaluate)、結果を出力(Print) &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,121 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/09/try-reply/">Replyを試してみる</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-09T23:34:36+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:34 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Perl の REPL 環境である Reply というツールを教えてもらったので使ってみます。</p>
+
+<h2>REPL とは？</h2>
+
+<p>REPL とは <strong>R</strong>ead-<strong>E</strong>val-<strong>P</strong>rint <strong>L</strong>oop の頭文字を取った言葉であり、</p>
+
+<p>プログラムを読み(Read)、評価し(Evaluate)、結果を出力(Print)することを繰り返す(Loop)という意味である。</p>
+
+<p>この環境があればファイルにプログラムを書いて保存し、実行する、という手続きを踏まなくてもスクリプトを実行できる</p>
+
+<p>この REPL の Perl 版が Reply と言うことだそう</p>
+
+<h2>Reply のインストール</h2>
+
+<p>Reply は CPAN からインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cpanm Reply
+</span><span class='line'>--&gt; Working on Reply
+</span><span class='line'>Fetching http://cpan.metacpan.org/authors/id/D/DO/DOY/Reply-0.37.tar.gz ... OK
+</span><span class='line'>Configuring Reply-0.37 ... OK
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールできたら早速実行してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>reply
+</span><span class='line'>/Users/sojiro/.replyrc not found. Generating a default...
+</span><span class='line'>0&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>コンソールが立ち上がった</p>
+
+<p>早速なにかプログラムを入力してみよう</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>0&gt; print <span class="s1">&#39;Hello Reply&#39;</span><span class="p">;</span>
+</span><span class='line'>Hello Reply<span class="nv">$res</span><span class="o">[</span>0<span class="o">]</span> <span class="o">=</span> 1
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>1&gt; <span class="m">12</span> * 12
+</span><span class='line'><span class="nv">$res</span><span class="o">[</span>1<span class="o">]</span> <span class="o">=</span> 144
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>なるほど単純なプログラムの動作が確認できた。今度は <code>use</code> してみる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>2&gt; use UUID::Tiny<span class="p">;</span>
+</span><span class='line'>3&gt; my <span class="nv">$id</span> <span class="o">=</span> create_UUID_as_string<span class="o">(</span>UUID_V4<span class="o">)</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$res</span><span class="o">[</span>2<span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;87b16a6b-c712-41b4-bf46-965eeb01d3f1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>4&gt; print <span class="nv">$id</span><span class="p">;</span>
+</span><span class='line'>87b16a6b-c712-41b4-bf46-965eeb01d3f1<span class="nv">$res</span><span class="o">[</span>3<span class="o">]</span> <span class="o">=</span> 1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このように実行結果は記憶された状態で進むので簡単にプログラムの実行結果を知りたいときに重宝しそうである。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://papix.hatenablog.com/entry/2014/12/15/233800">Replyでお手軽にPerlのコードを動かす話</a></li>
+<li><a href="http://www.amazon.co.jp/gp/product/4774156647/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774156647&amp;linkCode=as2&amp;tag=sojiro14-22">小飼弾のコードなエッセイ ~我々は本当に世界を理解してコードしているのだろうか? </a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1248,65 +1363,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/01/02/the-first-step-for-mongodb/">初めてのMongoDB</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-01-02T02:20:55+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>2:20 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>NoSQLの流れを汲むMongoDBを初めて使ってみるにあたり、基本的な操作をまとめてみる。</p>
-
-<h1>基本的な用語</h1>
-
-<ul>
-<li>データベース(database)</li>
-<li>コレクション(collection)</li>
-<li>ドキュメント(document)</li>
-</ul>
-
-
-<h2>データベース</h2>
-
-<p>MySQLなどのRDBMSにおけるデータベース、という言葉とほぼ同じ意味として使われる。
-データ管理の大元となる単位。</p>
-
-<h2>コレクション</h2>
-
-<p>RDBMSにおけるテーブル(table)に相当するもの。
-MongoDBはスキーマレスなので、テーブルのように厳格なスキーマが決まっている訳ではなく、特定の対象に対するデータの集まり(正にコレクション)と言える。</p>
-
-<h2>ドキュメント</h2>
-
-<p>RDBMSにおけるレコード(record)に相当するもの。
-各コレクションを構成する要素であり、BSONと呼ばれるJSONライクな形式で記述される。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/01/02/the-first-step-for-mongodb/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page4">&larr; Older</a>
@@ -1329,6 +1385,10 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/05/management-perl-versions-by-plenv/">plenv で perl を管理する</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv で ruby を管理する</a>
       </li>
     
@@ -1342,10 +1402,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
     
       <li class="post">
         <a href="/blog/2015/11/01/the-first-step-of-chef/">初めてのChef</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/27/how-locks-behave-by-sqls-on-innodb/">InnoDBにおけるSQL別ロックの挙動</a>
       </li>
     
   </ul>
