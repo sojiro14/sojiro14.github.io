@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-02-21T03:42:28+09:00</updated>
+  <updated>2016-03-05T06:56:38+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rbenv で Ruby を管理する]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/03/05/management-ruby-versions-by-rbenv/"/>
+    <updated>2016-03-05T06:22:42+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/03/05/management-ruby-versions-by-rbenv</id>
+    <content type="html"><![CDATA[<p>Ruby をバージョンごと、あるいはプロジェクトごとに管理するためのツールである rbenv の導入手順メモ</p>
+
+<h2>rbenv をインストールする</h2>
+
+<h3>homebrew の update</h3>
+
+<pre><code class="bash">$ brew update
+Updated Homebrew from b369c25 to c0fae05.
+...
+</code></pre>
+
+<h3>rbenv と ruby-build のインストール</h3>
+
+<p> <code>rbenv</code> と同時に <code>ruby-build</code> もインストールする</p>
+
+<p> <code>ruby-build</code> は <code>rbenv</code> のプラグインで <code>rbenv install</code> コマンドを提供する</p>
+
+<pre><code class="bash">$ brew install rbenv ruby-build
+==&gt; Installing dependencies for rbenv: autoconf, pkg-config, openssl, ruby-build
+...
+</code></pre>
+
+<h2>rbenv init</h2>
+
+<pre><code class="bash">$ echo 'eval "$(rbenv init -)"' &gt;&gt; ~/.bash_profile
+$ source ~/.bash_profile
+</code></pre>
+
+<p> <code>rbenv init -</code> でやっていることは以下の通り</p>
+
+<pre><code class="bash">$ rbenv init -
+export PATH="/Your/Home/Directory/.rbenv/shims:${PATH}"
+export RBENV_SHELL=bash
+source '/usr/local/Cellar/rbenv/1.0.0/libexec/../completions/rbenv.bash'
+command rbenv rehash 2&gt;/dev/null
+rbenv() {
+  local command
+  command="$1"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell)
+    eval "$(rbenv "sh-$command" "$@")";;
+  *)
+    command rbenv "$command" "$@";;
+  esac
+}
+</code></pre>
+
+<h2>ruby のインストール</h2>
+
+<p>インストールできる ruby のバージョンを確認
+<code>bash
+$ rbenv install -l
+Available versions:
+  1.8.6-p383
+  1.8.6-p420
+  1.8.7-p249
+...
+</code></p>
+
+<p>バージョン <code>2.2.0</code> をインストールする
+<code>bash
+$ rbenv install 2.2.0
+Downloading ruby-2.2.0.tar.bz2...
+-&gt; https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.0.tar.bz2
+Installing ruby-2.2.0...
+...
+</code></p>
+
+<p>インストールされたバージョンを確認
+<code>bash
+$ rbenv versions
+* system (set by /Users/taishi/.rbenv/version)
+  2.2.0
+</code></p>
+
+<h2>使用する ruby 設定</h2>
+
+<pre><code class="bash">$ rbenv global 2.2.0
+$ rbenv versions
+  system
+* 2.2.0 (set by /Users/taishi/.rbenv/version)
+</code></pre>
+
+<p>ブログを管理しているディレクトリは system ruby にしておく
+<code>bash
+$ cd git/blog/
+$ rbenv local system
+$ rbenv versions
+* system (set by /Users/taishi/git/blog/.ruby-version)
+  2.2.0
+$ cd
+$ rbenv versions
+  system
+* 2.2.0 (set by /Users/taishi/.rbenv/version)
+</code></p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/rbenv/rbenv">rbenv</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-]]></title>

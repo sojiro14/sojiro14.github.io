@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-02-21T03:42:28+09:00</updated>
+  <updated>2016-03-05T06:56:38+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,183 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rbenv で Ruby を管理する]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/03/05/management-ruby-versions-by-rbenv/"/>
+    <updated>2016-03-05T06:22:42+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/03/05/management-ruby-versions-by-rbenv</id>
+    <content type="html"><![CDATA[<p>Ruby をバージョンごと、あるいはプロジェクトごとに管理するためのツールである rbenv の導入手順メモ</p>
+
+<h2>rbenv をインストールする</h2>
+
+<h3>homebrew の update</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew update
+</span><span class='line'>Updated Homebrew from b369c25 to c0fae05.
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>rbenv と ruby-build のインストール</h3>
+
+<p> <code>rbenv</code> と同時に <code>ruby-build</code> もインストールする</p>
+
+<p> <code>ruby-build</code> は <code>rbenv</code> のプラグインで <code>rbenv install</code> コマンドを提供する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install rbenv ruby-build
+</span><span class='line'><span class="o">==</span>&gt; Installing dependencies <span class="k">for</span> rbenv: autoconf, pkg-config, openssl, ruby-build
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>rbenv init</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;eval &quot;$(rbenv init -)&quot;&#39;</span> &gt;&gt; ~/.bash_profile
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>rbenv init -</code> でやっていることは以下の通り</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv init -
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Your/Home/Directory/.rbenv/shims:${PATH}&quot;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">RBENV_SHELL</span><span class="o">=</span>bash
+</span><span class='line'><span class="nb">source</span> <span class="s1">&#39;/usr/local/Cellar/rbenv/1.0.0/libexec/../completions/rbenv.bash&#39;</span>
+</span><span class='line'><span class="nb">command </span>rbenv rehash 2&gt;/dev/null
+</span><span class='line'>rbenv<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nb">local command</span>
+</span><span class='line'><span class="nb">  command</span><span class="o">=</span><span class="s2">&quot;$1&quot;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$#&quot;</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="nb">shift</span>
+</span><span class='line'><span class="nb">  </span><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">case</span> <span class="s2">&quot;$command&quot;</span> in
+</span><span class='line'>  rehash<span class="p">|</span>shell<span class="o">)</span>
+</span><span class='line'>    <span class="nb">eval</span> <span class="s2">&quot;$(rbenv &quot;</span>sh-<span class="nv">$command</span><span class="s2">&quot; &quot;</span><span class="nv">$@</span><span class="s2">&quot;)&quot;</span><span class="p">;;</span>
+</span><span class='line'>  *<span class="o">)</span>
+</span><span class='line'>    <span class="nb">command </span>rbenv <span class="s2">&quot;$command&quot;</span> <span class="s2">&quot;$@&quot;</span><span class="p">;;</span>
+</span><span class='line'>  <span class="k">esac</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ruby のインストール</h2>
+
+<p>インストールできる ruby のバージョンを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv install -l
+</span><span class='line'>Available versions:
+</span><span class='line'>  1.8.6-p383
+</span><span class='line'>  1.8.6-p420
+</span><span class='line'>  1.8.7-p249
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>バージョン <code>2.2.0</code> をインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv install 2.2.0
+</span><span class='line'>Downloading ruby-2.2.0.tar.bz2...
+</span><span class='line'>-&gt; https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.0.tar.bz2
+</span><span class='line'>Installing ruby-2.2.0...
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールされたバージョンを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv versions
+</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /Users/taishi/.rbenv/version<span class="o">)</span>
+</span><span class='line'>  2.2.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使用する ruby 設定</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv global 2.2.0
+</span><span class='line'><span class="nv">$ </span>rbenv versions
+</span><span class='line'>  system
+</span><span class='line'>* 2.2.0 <span class="o">(</span><span class="nb">set </span>by /Users/taishi/.rbenv/version<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ブログを管理しているディレクトリは system ruby にしておく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/blog/
+</span><span class='line'><span class="nv">$ </span>rbenv <span class="nb">local </span>system
+</span><span class='line'><span class="nv">$ </span>rbenv versions
+</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /Users/taishi/git/blog/.ruby-version<span class="o">)</span>
+</span><span class='line'>  2.2.0
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span>
+</span><span class='line'><span class="nv">$ </span>rbenv versions
+</span><span class='line'>  system
+</span><span class='line'>* 2.2.0 <span class="o">(</span><span class="nb">set </span>by /Users/taishi/.rbenv/version<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/rbenv/rbenv">rbenv</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Minil を使った Changes ファイルの更新]]></title>
@@ -2453,55 +2630,6 @@ primary key や、unique key といったレコードを一意に特定できる
 <li><a href="http://www.amazon.co.jp/gp/product/4774156647/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774156647&amp;linkCode=as2&amp;tag=sojiro14-22">小飼弾のコードなエッセイ ~我々は本当に世界を理解してコードしているのだろうか? </a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MEANとはなにか]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/05/08/what-is-mean/"/>
-    <updated>2015-05-08T22:14:38+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/05/08/what-is-mean</id>
-    <content type="html"><![CDATA[<p>以前のエントリ、 <a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a> にて generator-angular-fullstack という雛形を使いましたが、この雛形は <strong>MEAN</strong> なアプリケーションの雛形、と呼ばれているそうです。</p>
-
-<p>MEANとはどういう意味でしょうか？</p>
-
-<h2>MEAN とはなにか</h2>
-
-<p>MEAN は</p>
-
-<ul>
-<li><strong>M</strong>ongoDB</li>
-<li><strong>E</strong>xpress.js</li>
-<li><strong>A</strong>ngular.js</li>
-<li><strong>N</strong>ode.js</li>
-</ul>
-
-
-<p>これらの頭文字をとったもので、これらの技術を使ったサービスのことを言う</p>
-
-<h2>特徴はなにか</h2>
-
-<p>まだ使ったこともないので想像だが、（恥ずかしいので早く使いたい）</p>
-
-<ul>
-<li>サーバーサイドからクライアントサイドまですべて JavaScript で制御できること
-
-<ul>
-<li>現状他の言語ではなかなかマネできないのではないか</li>
-</ul>
-</li>
-<li>DB含むすべてのデータを JSON 形式でやり取りできること
-
-<ul>
-<li>すべて JavaScript で、というのと被るところもあるが、やはりシンプルで良い感じがする</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>最後に</h2>
-
-<p>やっぱり使わないと上記のようなしょうもないことしか言えないので generator-angular-fullstack で作った雛形を少しずつ触りながら次回はもう少しまともなことを言えるようにします。</p>
 ]]></content>
   </entry>
   
