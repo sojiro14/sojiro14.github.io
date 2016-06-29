@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-06-30T04:11:15+09:00</updated>
+  <updated>2016-06-30T04:19:14+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -21,6 +21,8 @@
     <content type="html"><![CDATA[<p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
 
 <h1>setting files</h1>
+
+<p>まずは用意した file から。</p>
 
 <h2>docker-compose.yml</h2>
 
