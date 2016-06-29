@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-06-30T04:09:52+09:00</updated>
+  <updated>2016-06-30T04:10:38+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -81,7 +81,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 <h2>Dockerfiles/nginx/nginx.conf</h2>
 
-<pre><code class="conf nginx.conf">user  nginx;
+<pre><code class="nginx.conf nginx.conf">user  nginx;
 worker_processes  1;
 
 error_log  /var/log/nginx/error.log warn;
