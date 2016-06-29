@@ -9,7 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="こちらの記事でつくったirc-botの発言をnoticeにしたい。（botの発言内容に名前やALLなどの文字列が含まれると当人にmentionが飛んでしまうため） HUBOT_IRC_SEND_NOTICE_MODE 環境変数 HUBOT_IRC_SEND_NOTICE_MODE を true &hellip;">
+  <meta name="description" content="ブログにコメント欄を追加したい 本ブログにコメント欄を追加しようと思い立った。 DISQUSというコミュニケーションサービスが好評のようなので導入してみる。 DISQUSを使うための準備
+OctopressでのDISQUS導入方法 DISQUSを使うための準備 DISQUSのアカウントを作成する &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +92,89 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/">OctopressにDISQUSのコメント欄を導入する</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-09T16:02:24+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:02 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>ブログにコメント欄を追加したい</h2>
+
+<p>本ブログにコメント欄を追加しようと思い立った。</p>
+
+<p><a href="https://disqus.com/">DISQUS</a>というコミュニケーションサービスが好評のようなので導入してみる。</p>
+
+<ul>
+<li>DISQUSを使うための準備</li>
+<li>OctopressでのDISQUS導入方法</li>
+</ul>
+
+
+<h2>DISQUSを使うための準備</h2>
+
+<h3>DISQUSのアカウントを作成する</h3>
+
+<p><a href="https://disqus.com/">DISQUS</a>のWebサイトからアカウントを作成。登録に必要なのはメールアドレスのみ。</p>
+
+<h3>自分のWebサイトをDISQUSに登録する</h3>
+
+<p>DISQUSの<a href="https://disqus.com/admin/create/">サイト登録ページ</a>から自分のサイトを登録する</p>
+
+<p>登録が完了すると設定ページが表示されるので、ここで設定をしつつ、ページ中段に表示されている<code>Shortname</code>の文字列を確認する</p>
+
+<h2>OctopressでのDISQUS導入方法</h2>
+
+<h3>configファイルへの記載</h3>
+
+<p>OctopressでのDISQUS導入はconfigファイルに先ほどDISQUSで取得したShortnameを記載するのみで完了する。</p>
+
+<p> <code>_config.yml</code> の<code>disqus_short_name</code>に自分のサイトのShortnameを指定する。</p>
+
+<figure class='code'><figcaption><span>_config.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Disqus Comments</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_short_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yoursitesshortname</span>
+</span><span class='line'><span class="l-Scalar-Plain">disqus_show_comment_count</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでブログの各ページの下部にDISQUSのコメント欄が表示されるようになる。</p>
+
+<h3>disqus_show_comment_count</h3>
+
+<p><code>disqus_show_comment_count</code> はDISQUSコメント欄を導入するページのヘッダにコメント欄へのリンクを表示させるかどうかを指定する項目。</p>
+
+<h4>trueのとき</h4>
+
+<p><img src="/images/disqus/header_with_comment_link.png"></p>
+
+<h4>falseのとき</h4>
+
+<p><img src="/images/disqus/header_without_comment_link.png"></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2050,6 +2134,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/06/26/docker-rails-setup-tutorial/">DockerでRails環境を構築した手順</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/05/management-perl-versions-by-plenv/">plenv で perl を管理する</a>
       </li>
     
@@ -2063,10 +2151,6 @@
     
       <li class="post">
         <a href="/blog/2015/11/14/the-second-step-of-chef/">Chef のリモート実行</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/01/the-first-step-of-chef/">初めてのChef</a>
       </li>
     
   </ul>

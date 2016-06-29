@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Disqus | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/disqus/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-06-30T04:10:38+09:00</updated>
+  <updated>2016-06-30T04:11:15+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -63,11 +63,11 @@ disqus_show_comment_count: false
 
 <h4>trueのとき</h4>
 
-<p>{% img /images/disqus/header_with_comment_link.png %}</p>
+<p><img src="/images/disqus/header_with_comment_link.png"></p>
 
 <h4>falseのとき</h4>
 
-<p>{% img /images/disqus/header_without_comment_link.png %}</p>
+<p><img src="/images/disqus/header_without_comment_link.png"></p>
 ]]></content>
   </entry>
   

@@ -9,11 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Ruby on Railsで初めてアプリを作ってみます。
-今回はRailsの立ち上がりを確認するところまで。 アプリのセットアップ（rails new） railsのアプリ作成は rails new コマンドで始まる。 1
-2
-$ mkdir rails_projects
-$ cd &hellip;">
+  <meta name="description" content="Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。 Herokuに必要なgemのインストール Herokuで使用するDBであるPostgreSQLと通信するための pg とHerokuで画像やスタイルシートなどの静的アセットを提供するための &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -95,6 +91,187 @@ $ cd &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/">Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-12T12:06:23+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:06 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
+
+<h2>Herokuに必要なgemのインストール</h2>
+
+<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span><span class="p">,</span> <span class="s1">&#39;0.15.1&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rails_12factor&#39;</span><span class="p">,</span> <span class="s1">&#39;0.0.2&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
+これによりGemfile.lockが更新され、production環境に備えることができる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install --without production
+</span><span class='line'>Your bundle is <span class="nb">complete</span>!
+</span><span class='line'>Gems in the group production were not installed.
+</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここまでできたらgitにcommitしておく。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git commit -a -m <span class="s2">&quot;Update Gemfile.lock for Heroku&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
+
+<h2>herokuコマンドが使えるようにする</h2>
+
+<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
+
+<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
+
+<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
+今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
+
+<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>wget -qO- https://toolbelt.heroku.com/install.sh <span class="p">|</span> sh
+</span><span class='line'>This script requires superuser access to install software.
+</span><span class='line'>You will be prompted <span class="k">for</span> your password by sudo.
+</span><span class='line'><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> sojiro:
+</span><span class='line'>Add the Heroku CLI to your PATH using:
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.profile
+</span><span class='line'>Installation <span class="nb">complete</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.bashrc
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bashrc
+</span><span class='line'><span class="nv">$ </span>heroku version
+</span><span class='line'>heroku-toolbelt/3.15.2 <span class="o">(</span>x86_64-linux<span class="o">)</span> ruby/2.0.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Herokuのセットアップ</h2>
+
+<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku login
+</span><span class='line'>Enter your Heroku credentials.
+</span><span class='line'>Email: your.account@email.com
+</span><span class='line'>Password <span class="o">(</span>typing will be hidden<span class="o">)</span>:
+</span><span class='line'>Your Heroku account does not have a public ssh key uploaded.
+</span><span class='line'>Could not find an existing public key at ~/.ssh/id_rsa.pub
+</span><span class='line'>Would you like to generate one? <span class="o">[</span>Yn<span class="o">]</span> Y
+</span><span class='line'>Generating new SSH public key.
+</span><span class='line'>Uploading SSH public key /home/user/.ssh/id_rsa.pub... <span class="k">done</span>
+</span><span class='line'>Authentication successful.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>認証が完了したらHerokuのセットアップをする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku create
+</span><span class='line'>Creating infinite-peak-4923... <span class="k">done</span>, stack is cedar-14
+</span><span class='line'>https://infinite-peak-4923.herokuapp.com/ <span class="p">|</span> git@heroku.com:infinite-peak-4923.git
+</span><span class='line'>Git remote heroku added
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでgitのremoteにherokuが追加される</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote -v
+</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>fetch<span class="o">)</span>
+</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>push<span class="o">)</span>
+</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>fetch<span class="o">)</span>
+</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>push<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Herokuへデプロイ</h2>
+
+<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push heroku master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
+
+<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1394,89 +1571,6 @@ $ cd &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/">OctopressにDISQUSのコメント欄を導入する</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-09T16:02:24+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:02 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>ブログにコメント欄を追加したい</h2>
-
-<p>本ブログにコメント欄を追加しようと思い立った。</p>
-
-<p><a href="https://disqus.com/">DISQUS</a>というコミュニケーションサービスが好評のようなので導入してみる。</p>
-
-<ul>
-<li>DISQUSを使うための準備</li>
-<li>OctopressでのDISQUS導入方法</li>
-</ul>
-
-
-<h2>DISQUSを使うための準備</h2>
-
-<h3>DISQUSのアカウントを作成する</h3>
-
-<p><a href="https://disqus.com/">DISQUS</a>のWebサイトからアカウントを作成。登録に必要なのはメールアドレスのみ。</p>
-
-<h3>自分のWebサイトをDISQUSに登録する</h3>
-
-<p>DISQUSの<a href="https://disqus.com/admin/create/">サイト登録ページ</a>から自分のサイトを登録する</p>
-
-<p>登録が完了すると設定ページが表示されるので、ここで設定をしつつ、ページ中段に表示されている<code>Shortname</code>の文字列を確認する</p>
-
-<h2>OctopressでのDISQUS導入方法</h2>
-
-<h3>configファイルへの記載</h3>
-
-<p>OctopressでのDISQUS導入はconfigファイルに先ほどDISQUSで取得したShortnameを記載するのみで完了する。</p>
-
-<p> <code>_config.yml</code> の<code>disqus_short_name</code>に自分のサイトのShortnameを指定する。</p>
-
-<figure class='code'><figcaption><span>_config.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Disqus Comments</span>
-</span><span class='line'><span class="l-Scalar-Plain">disqus_short_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yoursitesshortname</span>
-</span><span class='line'><span class="l-Scalar-Plain">disqus_show_comment_count</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでブログの各ページの下部にDISQUSのコメント欄が表示されるようになる。</p>
-
-<h3>disqus_show_comment_count</h3>
-
-<p><code>disqus_show_comment_count</code> はDISQUSコメント欄を導入するページのヘッダにコメント欄へのリンクを表示させるかどうかを指定する項目。</p>
-
-<h4>trueのとき</h4>
-
-<p><img src="/images/disqus/header_with_comment_link.png"></p>
-
-<h4>falseのとき</h4>
-
-<p><img src="/images/disqus/header_without_comment_link.png"></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page6">&larr; Older</a>
@@ -1499,6 +1593,10 @@ $ cd &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/06/26/docker-rails-setup-tutorial/">DockerでRails環境を構築した手順</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/05/management-perl-versions-by-plenv/">plenv で perl を管理する</a>
       </li>
     
@@ -1512,10 +1610,6 @@ $ cd &hellip;">
     
       <li class="post">
         <a href="/blog/2015/11/14/the-second-step-of-chef/">Chef のリモート実行</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/01/the-first-step-of-chef/">初めてのChef</a>
       </li>
     
   </ul>

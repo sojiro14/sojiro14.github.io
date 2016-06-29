@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-03-05T07:48:32+09:00</updated>
+  <updated>2016-06-30T04:11:15+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,402 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DockerでRails環境を構築した手順]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial/"/>
+    <updated>2016-06-26T03:45:48+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial</id>
+    <content type="html"><![CDATA[<p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
+
+<h1>setting files</h1>
+
+<h2>docker-compose.yml</h2>
+
+<figure class='code'><figcaption><span>docker-compose.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># not use datastore container now</span>
+</span><span class='line'><span class="c1">#datastore:</span>
+</span><span class='line'><span class="c1">#  build: Dockerfiles/datastore</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">mysql</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql:5.6.26</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">MYSQL_ROOT_PASSWORD</span><span class="p-Indicator">:</span> <span class="s">&#39;pass&#39;</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;3306:3306&#39;</span>
+</span><span class='line'><span class="c1">#  volumes_from:</span>
+</span><span class='line'><span class="c1">#    - datastore</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">nginx</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Dockerfiles/nginx</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;8080:80&#39;</span>
+</span><span class='line'><span class="c1">#  volumes_from:</span>
+</span><span class='line'><span class="c1">#    - datastore</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">web</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">.</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">bundle exec unicorn -c config/unicorn.rb</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#  volumes_from:</span>
+</span><span class='line'><span class="c1">#    - datastore</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">volumes</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">.:/usr/src/app</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">3000:3000</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">mysql</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">RAILS_ENV</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">development</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">MYSQL_ROOT_PASSWORD</span><span class="p-Indicator">:</span> <span class="s">&#39;pass&#39;</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">DATABASE_URL</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql2://root:pass@mysql:3306</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">SECRET_KEY_BASE</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">hogehoge</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Dockerfile</h2>
+
+<figure class='code'><figcaption><span>Dockerfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='dockerfile'><span class='line'><span class="k">FROM</span> rails:onbuild
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Dockerfiles/nginx/Dockerfile</h2>
+
+<figure class='code'><figcaption><span>Dockerfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='dockerfile'><span class='line'><span class="k">FROM</span> nginx:1.7.9
+</span><span class='line'>
+</span><span class='line'>COPY nginx.conf /etc/nginx/nginx.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Dockerfiles/nginx/nginx.conf</h2>
+
+<figure class='code'><figcaption><span>nginx.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>user  nginx<span class="p">;</span>
+</span><span class='line'>worker_processes  1<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>error_log  /var/log/nginx/error.log warn<span class="p">;</span>
+</span><span class='line'>pid        /var/run/nginx.pid<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>events <span class="o">{</span>
+</span><span class='line'>  worker_connections 1024<span class="p">;</span> <span class="c"># increase if you have lots of clients</span>
+</span><span class='line'>  accept_mutex off<span class="p">;</span> <span class="c"># &quot;on&quot; if nginx worker_processes &gt; 1</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>http <span class="o">{</span>
+</span><span class='line'>  include mime.types<span class="p">;</span>
+</span><span class='line'>  default_type application/octet-stream<span class="p">;</span>
+</span><span class='line'>  log_format  main  <span class="s1">&#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span>
+</span><span class='line'>                    <span class="s1">&#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span>
+</span><span class='line'>                    <span class="s1">&#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  access_log  /var/log/nginx/access.log  main<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  sendfile on<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  tcp_nopush on<span class="p">;</span> <span class="c"># off may be better for *some* Comet/long-poll stuff</span>
+</span><span class='line'>  tcp_nodelay off<span class="p">;</span> <span class="c"># on may be better for some Comet/long-poll stuff</span>
+</span><span class='line'>
+</span><span class='line'>  gzip on<span class="p">;</span>
+</span><span class='line'>  gzip_http_version 1.0<span class="p">;</span>
+</span><span class='line'>  gzip_proxied any<span class="p">;</span>
+</span><span class='line'>  gzip_min_length 500<span class="p">;</span>
+</span><span class='line'>  gzip_disable <span class="s2">&quot;MSIE [1-6]\.&quot;</span><span class="p">;</span>
+</span><span class='line'>  gzip_types text/plain text/html text/xml text/css
+</span><span class='line'>             text/comma-separated-values
+</span><span class='line'>             text/javascript application/x-javascript
+</span><span class='line'>             application/atom+xml<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  upstream app_server <span class="o">{</span>
+</span><span class='line'>    <span class="c"># for UNIX domain socket setups:</span>
+</span><span class='line'>    <span class="c"># server unix:/path/to/.unicorn.sock fail_timeout=0;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># for TCP setups, point these to your backend servers</span>
+</span><span class='line'>    <span class="c"># server 192.168.0.7:8080 fail_timeout=0;</span>
+</span><span class='line'>    server rails:3000 <span class="nv">fail_timeout</span><span class="o">=</span>0<span class="p">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  server <span class="o">{</span>
+</span><span class='line'>    listen       80<span class="p">;</span>
+</span><span class='line'>    server_name  localhost<span class="p">;</span>
+</span><span class='line'>    client_max_body_size 4G<span class="p">;</span>
+</span><span class='line'>    keepalive_timeout 5<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># path for static files</span>
+</span><span class='line'>    root /usr/your_app/home/system/public<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    try_files <span class="nv">$uri</span>/index.html <span class="nv">$uri</span>.html <span class="nv">$uri</span> @app<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    location @app <span class="o">{</span>
+</span><span class='line'>      proxy_set_header X-Forwarded-For <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span><span class='line'>      proxy_set_header Host <span class="nv">$http_host</span><span class="p">;</span>
+</span><span class='line'>      proxy_redirect off<span class="p">;</span>
+</span><span class='line'>      proxy_pass http://app_server<span class="p">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># Rails error pages</span>
+</span><span class='line'>    error_page <span class="m">500</span> <span class="m">502</span> <span class="m">503</span> <span class="m">504</span> /500.html<span class="p">;</span>
+</span><span class='line'>    <span class="nv">location</span> <span class="o">=</span> /500.html <span class="o">{</span>
+</span><span class='line'>      root /usr/your_app/home/system/public<span class="p">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Setup Tutorial</h1>
+
+<h2>Download Tools</h2>
+
+<h3>VirtualBox</h3>
+
+<p><a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></p>
+
+<p>please install version >= 5.x</p>
+
+<h3>Homebrew</h3>
+
+<p><a href="http://brew.sh/index_ja.html">http://brew.sh/index_ja.html</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>/usr/bin/ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Docker Tools</h3>
+
+<h4>Docker</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install docker
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Docker Machine</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install docker-machine
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Docker Compose</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install docker-compose
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Download Application</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> ~/path/to/workspace
+</span><span class='line'><span class="nv">$ </span>git clone git@github.com:your/App.git your_app
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>your_app
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Setup Docker Machine</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker-machine create --driver virtualbox dev
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>docker-machine ls
+</span><span class='line'>NAME   ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER    ERRORS
+</span><span class='line'>dev    -        virtualbox   Running   tcp://192.168.99.100:2376           v1.10.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">eval</span> <span class="s2">&quot;$(docker-machine env dev)&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;eval &quot;$(docker-machine env dev)&quot;&#39;</span> &gt;&gt; ~/.bashrc
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker-machine start dev
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>docker-machine ip dev
+</span><span class='line'>192.168.99.100
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Setup Application</h2>
+
+<h3>Build Docker Images and Start Containers</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># ~/path/to/workspace/your_app</span>
+</span><span class='line'><span class="nv">$ </span>docker-compose build
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>docker-compose up
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>please open another tab</p>
+
+<h3>Setup DB</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker-compose run web rake db:create
+</span><span class='line'><span class="nv">$ </span>docker-compose run web rake db:migrate
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Access Application</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker-machine ip dev
+</span><span class='line'>192.168.99.100
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>access to <code>192.168.99.100:3000</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Plenv で Perl を管理する]]></title>
@@ -2392,332 +2788,6 @@ primary key や、unique key といったレコードを一意に特定できる
 <ul>
 <li><a href="http://gruntjs.com/">Grunt</a></li>
 <li><a href="http://bower.io/">Bower</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerを使ってみる)]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/05/10/the-second-step-of-yeoman/"/>
-    <updated>2015-05-10T18:25:06+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/05/10/the-second-step-of-yeoman</id>
-    <content type="html"><![CDATA[<p>以前のエントリ <a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a> で <code>yo</code> を使い generator-angular-fullstack の雛形を作りました。</p>
-
-<p>今回はこのとき作った雛形を Grunt を使って実際に動かしてみたいと思います。</p>
-
-<p>Gruntがどんなものかはとりあえず使ってみてからと言うことで。</p>
-
-<h2>Grunt のインストール</h2>
-
-<p> <code>npm</code> でインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g grunt-cli
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストールされたことを確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt --version
-</span><span class='line'>grunt-cli v0.1.13
-</span><span class='line'>grunt v0.4.5
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>OK.</p>
-
-<h2>Grunt / Bower の実行</h2>
-
-<p>インストールできたら早速 Grunt を実行してみる</p>
-
-<p>今回は雛形作成時に生成された Gruntfile.js で規定されている serve タスクを実行する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt serve
-</span><span class='line'>Running <span class="s2">&quot;serve&quot;</span> task
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;clean:server&quot;</span> <span class="o">(</span>clean<span class="o">)</span> task
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;env:all&quot;</span> <span class="o">(</span>env<span class="o">)</span> task
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;injector:sass&quot;</span> <span class="o">(</span>injector<span class="o">)</span> task
-</span><span class='line'>Missing option <span class="sb">`</span>template<span class="sb">`</span>, using <span class="sb">`</span>dest<span class="sb">`</span> as template instead
-</span><span class='line'>Injecting scss files <span class="o">(</span><span class="m">4</span> files<span class="o">)</span>
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;concurrent:server&quot;</span> <span class="o">(</span>concurrent<span class="o">)</span> task
-</span><span class='line'>    Warning: Running <span class="s2">&quot;sass:server&quot;</span> <span class="o">(</span>sass<span class="o">)</span> task
-</span><span class='line'>    Warning:
-</span><span class='line'>    You need to have Ruby and Sass installed and in your PATH <span class="k">for</span> this task to work.
-</span><span class='line'>    More info: https://github.com/gruntjs/grunt-contrib-sass
-</span><span class='line'>     Use --force to <span class="k">continue</span>.
-</span><span class='line'>
-</span><span class='line'>    Aborted due to warnings.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>何やら怒られた</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>You need to have Ruby and Sass installed and in your PATH <span class="k">for</span> this task to work.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ということだそうなので Sass をインストールする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yum install rubygems
-</span><span class='line'><span class="nv">$ </span>gem install sass
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>もう一度トライ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt serve
-</span><span class='line'>Running <span class="s2">&quot;serve&quot;</span> task
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;clean:server&quot;</span> <span class="o">(</span>clean<span class="o">)</span> task
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;env:all&quot;</span> <span class="o">(</span>env<span class="o">)</span> task
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;injector:sass&quot;</span> <span class="o">(</span>injector<span class="o">)</span> task
-</span><span class='line'>Missing option <span class="sb">`</span>template<span class="sb">`</span>, using <span class="sb">`</span>dest<span class="sb">`</span> as template instead
-</span><span class='line'>Injecting scss files <span class="o">(</span><span class="m">4</span> files<span class="o">)</span>
-</span><span class='line'>&gt;&gt; Nothing changed
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;concurrent:server&quot;</span> <span class="o">(</span>concurrent<span class="o">)</span> task
-</span><span class='line'>    Warning: Error: File to import not found or unreadable: bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.
-</span><span class='line'>           Load paths:
-</span><span class='line'>             /home/sojiro/yeoman/angular_fullstack/client/bower_components
-</span><span class='line'>             /home/sojiro/yeoman/angular_fullstack/client/app
-</span><span class='line'>             /home/sojiro/yeoman/angular_fullstack/client/components
-</span><span class='line'>            on line <span class="m">4</span> of client/app/app.scss
-</span><span class='line'>      Use --trace <span class="k">for</span> backtrace. Use --force to <span class="k">continue</span>.
-</span><span class='line'>
-</span><span class='line'>        Aborted due to warnings.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>また怒られた</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Warning: Error: File to import not found or unreadable: bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回のエラーはよくわからなかったので少し調べると、 Yeoman 三種の神器の三つ目、 Bower が必要らしいのでインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g bower
-</span><span class='line'><span class="nv">$ </span>bower -v
-</span><span class='line'>1.4.1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>雛形作成時に bower.json が生成されているのでここに記述されているパッケージをインストール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bower install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>そして再度実行</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt serve
-</span><span class='line'>Running <span class="s2">&quot;serve&quot;</span> task
-</span><span class='line'>
-</span><span class='line'>...
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;open:server&quot;</span> <span class="o">(</span>open<span class="o">)</span> task
-</span><span class='line'>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
-</span><span class='line'>xdg-open: no method available <span class="k">for</span> opening <span class="s1">&#39;http://localhost:9000&#39;</span>
-</span><span class='line'> Use --force to <span class="k">continue</span>.
-</span><span class='line'>
-</span><span class='line'>Aborted due to warnings.
-</span><span class='line'>
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>また怒られる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>xdg-open は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
-
-<p>このコマンドが、指定されたオブジェクトを適切なアプリケーションで開くために mime タイプを取得するとき、 <code>xdg-mime</code> コマンドを使用するようである</p>
-
-<p>今回は <code>xdg-open URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
-
-<p>そもそもここで使っているサーバーはブラウザが入っていないリモートのサーバーなので、該当タスクをコメントアウトする。また、サーバーのURLもIPアドレスで指定するように設定ファイル(Gruntfile.js)を変更する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim Gruntfile.js
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">task</span><span class="p">.</span><span class="nx">run</span><span class="p">([</span>
-</span><span class='line'>  <span class="s1">&#39;clean:server&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;env:all&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;injector:sass&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;concurrent:server&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;injector&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;wiredep&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;autoprefixer&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;express:dev&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;wait&#39;</span><span class="p">,</span>
-</span><span class='line'><span class="c1">//      &#39;open&#39;,</span>
-</span><span class='line'>  <span class="s1">&#39;watch&#39;</span>
-</span><span class='line'><span class="p">]);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">open</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">server</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">//url: &#39;http://localhost:&lt;%= express.options.port %&gt;&#39;</span>
-</span><span class='line'>    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://xx.xxx.xxx.xxx:&lt;%= express.options.port %&gt;&#39;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">},</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>そしてまたまた実行</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>grunt serve
-</span><span class='line'>Running <span class="s2">&quot;serve&quot;</span> task
-</span><span class='line'>
-</span><span class='line'>...
-</span><span class='line'>
-</span><span class='line'>Running <span class="s2">&quot;watch&quot;</span> task
-</span><span class='line'>Waiting...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>動いた！！</p>
-
-<h2>雛形の動作確認</h2>
-
-<p>watch タスクまで問題なく進んだので早速ブラウザからアクセスしてみる</p>
-
-<p>上記で Gruntfile.js に設定したアドレスにアクセスする。ポートは 9000番。</p>
-
-<p>雛形アプリケーションのトップが表示された</p>
-
-<p><img src="http://sojiro14.github.io/images/angular_fullstack/top.png"></p>
-
-<p>Sign up 画面なども用意されている</p>
-
-<p><img src="http://sojiro14.github.io/images/angular_fullstack/sign_up.png"></p>
-
-<h2>つづく</h2>
-
-<p>今回は何も考えずに Grunt と（はからずも）Bower を使ってみた。</p>
-
-<p>それぞれがどのようなツールなのか次回はまとめてみたい。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="https://github.com/DaftMonk/generator-angular-fullstack/issues/710">Error sass when build mode product #710</a></li>
-<li><a href="http://zkohi.hatenablog.com/entry/2013/12/14/021639">yeoman, grunt, bowerで静的サイト構築（第三回）</a></li>
 </ul>
 
 ]]></content>

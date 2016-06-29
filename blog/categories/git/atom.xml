@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-06-30T04:10:38+09:00</updated>
+  <updated>2016-06-30T04:11:15+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -148,41 +148,73 @@ An error occurred while installing sqlite3 (1.3.10), and Bundler cannot continue
 </code></pre>
 
 <p>Gemfileを編集。内容は<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-bundler">Ruby on Rails #Bundler</a>を参照。
-&#8220;` bash
-$ bundle update
-&hellip;
-Building native extensions.  This could take a while&hellip;
-ERROR:  Error installing sqlite3:
-    ERROR: Failed to build gem native extension.</p>
-
-<pre><code>/home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
-</code></pre>
-
-<p>checking for sqlite3.h&hellip; no
-sqlite3.h is missing. Try &lsquo;port install sqlite3 +universal&rsquo;
-or &lsquo;yum install sqlite-devel&rsquo; and check your shared library search path (the
-location where your sqlite3 shared library is located).
-<strong><em> extconf.rb failed </em></strong>
-Could not create Makefile due to some reason, probably lack of necessary
-libraries and/or headers.  Check the mkmf.log file for more details.  You may
-need configuration options.
-&hellip;
-<code>
-またも失敗。よく見るとsqlite-develが足りていないらしい
-</code> bash
-$ sudo yum install sqlite-devel
-<code>
-sqlite-develをインストール後再度bundleによるgemのインストールを試みる
-</code> bash
-$ bundle update
-Installing sqlite3 1.3.8
-Installing turbolinks 1.1.1
-Installing uglifier 2.1.1
-Your bundle is updated!
-$ bundle install
-Your bundle is complete!
-Use <code>bundle show [gemname]</code> to see where a bundled gem is installed.
-&#8220;`
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
+</span><span class='line'><span class="p">&amp;</span>hellip<span class="p">;</span>
+</span><span class='line'>Building native extensions.  This could take a <span class="k">while</span><span class="p">&amp;</span>hellip<span class="p">;</span>
+</span><span class='line'>ERROR:  Error installing sqlite3:
+</span><span class='line'>    ERROR: Failed to build gem native extension.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;/home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;checking <span class="k">for</span> sqlite3.h<span class="p">&amp;</span>hellip<span class="p">;</span> no
+</span><span class='line'>sqlite3.h is missing. Try <span class="p">&amp;</span>lsquo<span class="p">;</span>port install sqlite3 +universal<span class="p">&amp;</span>rsquo<span class="p">;</span>
+</span><span class='line'>or <span class="p">&amp;</span>lsquo<span class="p">;</span>yum install sqlite-devel<span class="p">&amp;</span>rsquo<span class="p">;</span> and check your shared library search path <span class="o">(</span>the
+</span><span class='line'>location where your sqlite3 shared library is located<span class="o">)</span>.
+</span><span class='line'>&lt;strong&gt;&lt;em&gt; extconf.rb failed &lt;/em&gt;&lt;/strong&gt;
+</span><span class='line'>Could not create Makefile due to some reason, probably lack of necessary
+</span><span class='line'>libraries and/or headers.  Check the mkmf.log file <span class="k">for</span> more details.  You may
+</span><span class='line'>need configuration options.
+</span><span class='line'><span class="p">&amp;</span>hellip<span class="p">;</span>
+</span><span class='line'>&lt;code&gt;
+</span><span class='line'>またも失敗。よく見るとsqlite-develが足りていないらしい
+</span><span class='line'>&lt;/code&gt; bash
+</span><span class='line'><span class="nv">$ </span>sudo yum install sqlite-devel
+</span><span class='line'>&lt;code&gt;
+</span><span class='line'>sqlite-develをインストール後再度bundleによるgemのインストールを試みる
+</span><span class='line'>&lt;/code&gt; bash
+</span><span class='line'><span class="nv">$ </span>bundle update
+</span><span class='line'>Installing sqlite3 1.3.8
+</span><span class='line'>Installing turbolinks 1.1.1
+</span><span class='line'>Installing uglifier 2.1.1
+</span><span class='line'>Your bundle is updated!
+</span><span class='line'><span class="nv">$ </span>bundle install
+</span><span class='line'>Your bundle is <span class="nb">complete</span>!
+</span><span class='line'>Use &lt;code&gt;bundle show <span class="o">[</span>gemname<span class="o">]</span>&lt;/code&gt; to see where a bundled gem is installed.
+</span></code></pre></td></tr></table></div></figure>
 インストール成功。</p>
 
 <h2>サーバーの立ち上げ（rails server）</h2>
@@ -218,7 +250,7 @@ $ rails server
 
 <p>にブラウザでアクセスして以下の画面が見えればOK</p>
 
-<p>{% img /images/rails/rails_starting.png %}</p>
+<p><img src="/images/rails/rails_starting.png"></p>
 
 <h2>GitHubに上げておく</h2>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bower | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/bower/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-06-30T04:10:38+09:00</updated>
+  <updated>2016-06-30T04:11:15+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -278,11 +278,11 @@ Waiting...
 
 <p>雛形アプリケーションのトップが表示された</p>
 
-<p>{% img /images/angular_fullstack/top.png %}</p>
+<p><img src="/images/angular_fullstack/top.png"></p>
 
 <p>Sign up 画面なども用意されている</p>
 
-<p>{% img /images/angular_fullstack/sign_up.png %}</p>
+<p><img src="/images/angular_fullstack/sign_up.png"></p>
 
 <h2>つづく</h2>
 

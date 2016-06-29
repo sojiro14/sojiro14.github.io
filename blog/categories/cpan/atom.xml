@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cpan | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/cpan/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-06-30T04:10:38+09:00</updated>
+  <updated>2016-06-30T04:11:15+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -175,7 +175,7 @@ index 643c7bc..dae7daa 100644
 +++ b/Changes
 @@ -2,5 +2,7 @@ Revision history for Perl extension JSON-MergePatch
 
- {{$NEXT}}
+ 
 
 +0.01 2015-07-02T18:29:20Z
 +
@@ -362,11 +362,11 @@ Finished to create JSON::MergePatch
 
 <p>新たに Gravatar のアカウントを取得する場合は注意が必要なようである。 <code>@cpan.org</code> のメールアドレスが前項の PAUSE ID 取得の際に自分のメールアドレスへ転送されるよう設定してからでないと、メールアドレスの認証が取れず、 Gravatar のアカウント取得に失敗するようだ。</p>
 
-<p>{% img /images/cpan/gravatar.png %}</p>
+<p><img src="/images/cpan/gravatar.png"></p>
 
 <p>Gravatar の設定が済むと PAUSE アカウントに設定したアイコンが表示されるようになる</p>
 
-<p>{% img /images/cpan/sojiro.png %}</p>
+<p><img src="/images/cpan/sojiro.png"></p>
 
 <p>さて、アカウントは取得した。後はコードを書いて上げるだけ。</p>
 

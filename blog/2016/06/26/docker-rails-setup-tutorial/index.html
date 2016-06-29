@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>DockerでRails環境を構築した手順 - Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="とある経緯で Docker を使って Rails の環境をセットアップした手順です。 setting files docker-compose.yml docker-compose.yml1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-50182043-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">DockerでRails環境を構築した手順</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-06-26T03:45:48+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:45 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
+
+<h1>setting files</h1>
+
+<h2>docker-compose.yml</h2>
+
+<figure class='code'><figcaption><span>docker-compose.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># not use datastore container now</span>
+</span><span class='line'><span class="c1">#datastore:</span>
+</span><span class='line'><span class="c1">#  build: Dockerfiles/datastore</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">mysql</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql:5.6.26</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">MYSQL_ROOT_PASSWORD</span><span class="p-Indicator">:</span> <span class="s">&#39;pass&#39;</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;3306:3306&#39;</span>
+</span><span class='line'><span class="c1">#  volumes_from:</span>
+</span><span class='line'><span class="c1">#    - datastore</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">nginx</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Dockerfiles/nginx</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;8080:80&#39;</span>
+</span><span class='line'><span class="c1">#  volumes_from:</span>
+</span><span class='line'><span class="c1">#    - datastore</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">web</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">web</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">.</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">bundle exec unicorn -c config/unicorn.rb</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#  volumes_from:</span>
+</span><span class='line'><span class="c1">#    - datastore</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">volumes</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">.:/usr/src/app</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">3000:3000</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">mysql</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">RAILS_ENV</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">development</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">MYSQL_ROOT_PASSWORD</span><span class="p-Indicator">:</span> <span class="s">&#39;pass&#39;</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">DATABASE_URL</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql2://root:pass@mysql:3306</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">SECRET_KEY_BASE</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">hogehoge</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Dockerfile</h2>
+
+<figure class='code'><figcaption><span>Dockerfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='dockerfile'><span class='line'><span class="k">FROM</span> rails:onbuild
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Dockerfiles/nginx/Dockerfile</h2>
+
+<figure class='code'><figcaption><span>Dockerfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='dockerfile'><span class='line'><span class="k">FROM</span> nginx:1.7.9
+</span><span class='line'>
+</span><span class='line'>COPY nginx.conf /etc/nginx/nginx.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Dockerfiles/nginx/nginx.conf</h2>
+
+<figure class='code'><figcaption><span>nginx.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>user  nginx<span class="p">;</span>
+</span><span class='line'>worker_processes  1<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>error_log  /var/log/nginx/error.log warn<span class="p">;</span>
+</span><span class='line'>pid        /var/run/nginx.pid<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>events <span class="o">{</span>
+</span><span class='line'>  worker_connections 1024<span class="p">;</span> <span class="c"># increase if you have lots of clients</span>
+</span><span class='line'>  accept_mutex off<span class="p">;</span> <span class="c"># &quot;on&quot; if nginx worker_processes &gt; 1</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>http <span class="o">{</span>
+</span><span class='line'>  include mime.types<span class="p">;</span>
+</span><span class='line'>  default_type application/octet-stream<span class="p">;</span>
+</span><span class='line'>  log_format  main  <span class="s1">&#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span>
+</span><span class='line'>                    <span class="s1">&#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span>
+</span><span class='line'>                    <span class="s1">&#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  access_log  /var/log/nginx/access.log  main<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  sendfile on<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  tcp_nopush on<span class="p">;</span> <span class="c"># off may be better for *some* Comet/long-poll stuff</span>
+</span><span class='line'>  tcp_nodelay off<span class="p">;</span> <span class="c"># on may be better for some Comet/long-poll stuff</span>
+</span><span class='line'>
+</span><span class='line'>  gzip on<span class="p">;</span>
+</span><span class='line'>  gzip_http_version 1.0<span class="p">;</span>
+</span><span class='line'>  gzip_proxied any<span class="p">;</span>
+</span><span class='line'>  gzip_min_length 500<span class="p">;</span>
+</span><span class='line'>  gzip_disable <span class="s2">&quot;MSIE [1-6]\.&quot;</span><span class="p">;</span>
+</span><span class='line'>  gzip_types text/plain text/html text/xml text/css
+</span><span class='line'>             text/comma-separated-values
+</span><span class='line'>             text/javascript application/x-javascript
+</span><span class='line'>             application/atom+xml<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  upstream app_server <span class="o">{</span>
+</span><span class='line'>    <span class="c"># for UNIX domain socket setups:</span>
+</span><span class='line'>    <span class="c"># server unix:/path/to/.unicorn.sock fail_timeout=0;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># for TCP setups, point these to your backend servers</span>
+</span><span class='line'>    <span class="c"># server 192.168.0.7:8080 fail_timeout=0;</span>
+</span><span class='line'>    server rails:3000 <span class="nv">fail_timeout</span><span class="o">=</span>0<span class="p">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  server <span class="o">{</span>
+</span><span class='line'>    listen       80<span class="p">;</span>
+</span><span class='line'>    server_name  localhost<span class="p">;</span>
+</span><span class='line'>    client_max_body_size 4G<span class="p">;</span>
+</span><span class='line'>    keepalive_timeout 5<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># path for static files</span>
+</span><span class='line'>    root /usr/your_app/home/system/public<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    try_files <span class="nv">$uri</span>/index.html <span class="nv">$uri</span>.html <span class="nv">$uri</span> @app<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    location @app <span class="o">{</span>
+</span><span class='line'>      proxy_set_header X-Forwarded-For <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span><span class='line'>      proxy_set_header Host <span class="nv">$http_host</span><span class="p">;</span>
+</span><span class='line'>      proxy_redirect off<span class="p">;</span>
+</span><span class='line'>      proxy_pass http://app_server<span class="p">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># Rails error pages</span>
+</span><span class='line'>    error_page <span class="m">500</span> <span class="m">502</span> <span class="m">503</span> <span class="m">504</span> /500.html<span class="p">;</span>
+</span><span class='line'>    <span class="nv">location</span> <span class="o">=</span> /500.html <span class="o">{</span>
+</span><span class='line'>      root /usr/your_app/home/system/public<span class="p">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Setup Tutorial</h1>
+
+<h2>Download Tools</h2>
+
+<h3>VirtualBox</h3>
+
+<p><a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></p>
+
+<p>please install version >= 5.x</p>
+
+<h3>Homebrew</h3>
+
+<p><a href="http://brew.sh/index_ja.html">http://brew.sh/index_ja.html</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>/usr/bin/ruby -e <span class="s2">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Docker Tools</h3>
+
+<h4>Docker</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install docker
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Docker Machine</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install docker-machine
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Docker Compose</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install docker-compose
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Download Application</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> ~/path/to/workspace
+</span><span class='line'><span class="nv">$ </span>git clone git@github.com:your/App.git your_app
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>your_app
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Setup Docker Machine</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker-machine create --driver virtualbox dev
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>docker-machine ls
+</span><span class='line'>NAME   ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER    ERRORS
+</span><span class='line'>dev    -        virtualbox   Running   tcp://192.168.99.100:2376           v1.10.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">eval</span> <span class="s2">&quot;$(docker-machine env dev)&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;eval &quot;$(docker-machine env dev)&quot;&#39;</span> &gt;&gt; ~/.bashrc
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker-machine start dev
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>docker-machine ip dev
+</span><span class='line'>192.168.99.100
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Setup Application</h2>
+
+<h3>Build Docker Images and Start Containers</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># ~/path/to/workspace/your_app</span>
+</span><span class='line'><span class="nv">$ </span>docker-compose build
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>docker-compose up
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>please open another tab</p>
+
+<h3>Setup DB</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker-compose run web rake db:create
+</span><span class='line'><span class="nv">$ </span>docker-compose run web rake db:migrate
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Access Application</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>docker-machine ip dev
+</span><span class='line'>192.168.99.100
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>access to <code>192.168.99.100:3000</code></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-06-26T03:45:48+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:45 am</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/ruby-on-rails/'>ruby on rails</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial/" data-via="" data-counturl="http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/03/05/management-perl-versions-by-plenv/" title="Previous Post: plenv で perl を管理する">&laquo; plenv で perl を管理する</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

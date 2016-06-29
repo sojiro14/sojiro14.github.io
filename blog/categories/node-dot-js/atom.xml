@@ -4,7 +4,7 @@
   <title><![CDATA[Category: node.js | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/node-dot-js/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-06-30T04:10:38+09:00</updated>
+  <updated>2016-06-30T04:11:15+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -98,7 +98,7 @@ server listening...
 
 <p>Web Serverを起動したらブラウザで確認する</p>
 
-<p>{% img /images/nodejs/web_server/hello_world.png %}</p>
+<p><img src="/images/nodejs/web_server/hello_world.png"></p>
 
 <p>簡単なWeb Serverの完成</p>
 
@@ -123,15 +123,21 @@ server listening...
 <h2>Homebrewのインストール</h2>
 
 <p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>でも触れた通り、以下の方法でインストールを試みる。
-&#8220;` bash
-$ ruby -e &ldquo;$(curl -fsSL <a href="https://raw.github.com/mxcl/homebrew/go/install">https://raw.github.com/mxcl/homebrew/go/install</a>)&rdquo;
-Whoops, the Homebrew installer has moved! Please instead run:</p>
-
-<p>ruby -e &ldquo;$(curl -fsSL <a href="https://raw.githubusercontent.com/Homebrew/install/master/install">https://raw.githubusercontent.com/Homebrew/install/master/install</a>)&rdquo;</p>
-
-<p>Also, please ask wherever you got this link from to update it to the above.
-Thanks!
-&#8220;`
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.github.com/mxcl/homebrew/go/install&quot;</span>&gt;https://raw.github.com/mxcl/homebrew/go/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>Whoops, the Homebrew installer has moved! Please instead run:&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.githubusercontent.com/Homebrew/install/master/install&quot;</span>&gt;https://raw.githubusercontent.com/Homebrew/install/master/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Also, please ask wherever you got this link from to update it to the above.
+</span><span class='line'>Thanks!
+</span></code></pre></td></tr></table></div></figure>
 どうやらHomebrewのインストーラーの場所があれから変わったようで、以下のパスで再度実行。</p>
 
 <p>コマンドのレスポンスとして新しいパスをメッセージに残してくれるのはありがたい。
