@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby on Rails | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/ruby-on-rails/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-03-05T07:48:32+09:00</updated>
+  <updated>2016-06-30T04:01:38+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,238 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DockerでRails環境を構築した手順]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial/"/>
+    <updated>2016-06-26T03:45:48+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial</id>
+    <content type="html"><![CDATA[<p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
+
+<h1>setting files</h1>
+
+<h2>docker-compose.yml</h2>
+
+<pre><code class="docker-compose.yml"># not use datastore container now
+#datastore:
+#  build: Dockerfiles/datastore
+
+
+mysql:
+  image: mysql:5.6.26
+  environment:
+    MYSQL_ROOT_PASSWORD: 'pass'
+  ports:
+    - '3306:3306'
+#  volumes_from:
+#    - datastore
+
+nginx:
+  build: Dockerfiles/nginx
+  ports:
+    - '8080:80'
+#  volumes_from:
+#    - datastore
+  links:
+    - web
+
+web:
+  build: .
+
+  command: bundle exec unicorn -c config/unicorn.rb
+
+#  volumes_from:
+#    - datastore
+  volumes:
+    - .:/usr/src/app
+  ports:
+    - 3000:3000
+  links:
+    - mysql
+  environment:
+    RAILS_ENV: development
+    MYSQL_ROOT_PASSWORD: 'pass'
+    DATABASE_URL: mysql2://root:pass@mysql:3306
+    SECRET_KEY_BASE: hogehoge
+</code></pre>
+
+<h2>Dockerfile</h2>
+
+<pre><code class="Dockerfile">FROM rails:onbuild
+</code></pre>
+
+<h2>Dockerfiles/nginx/Dockerfile</h2>
+
+<pre><code class="Dockerfile">FROM nginx:1.7.9
+
+COPY nginx.conf /etc/nginx/nginx.conf
+</code></pre>
+
+<h2>Dockerfiles/nginx/nginx.conf</h2>
+
+<pre><code class="nginx.conf">user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+events {
+  worker_connections 1024; # increase if you have lots of clients
+  accept_mutex off; # "on" if nginx worker_processes &gt; 1
+}
+
+http {
+  include mime.types;
+  default_type application/octet-stream;
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+
+  access_log  /var/log/nginx/access.log  main;
+
+  sendfile on;
+
+  tcp_nopush on; # off may be better for *some* Comet/long-poll stuff
+  tcp_nodelay off; # on may be better for some Comet/long-poll stuff
+
+  gzip on;
+  gzip_http_version 1.0;
+  gzip_proxied any;
+  gzip_min_length 500;
+  gzip_disable "MSIE [1-6]\.";
+  gzip_types text/plain text/html text/xml text/css
+             text/comma-separated-values
+             text/javascript application/x-javascript
+             application/atom+xml;
+
+  upstream app_server {
+    # for UNIX domain socket setups:
+    # server unix:/path/to/.unicorn.sock fail_timeout=0;
+
+    # for TCP setups, point these to your backend servers
+    # server 192.168.0.7:8080 fail_timeout=0;
+    server rails:3000 fail_timeout=0;
+  }
+
+  server {
+    listen       80;
+    server_name  localhost;
+    client_max_body_size 4G;
+    keepalive_timeout 5;
+
+    # path for static files
+    root /usr/your_app/home/system/public;
+
+    try_files $uri/index.html $uri.html $uri @app;
+
+    location @app {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_pass http://app_server;
+    }
+
+    # Rails error pages
+    error_page 500 502 503 504 /500.html;
+    location = /500.html {
+      root /usr/your_app/home/system/public;
+    }
+  }
+}
+</code></pre>
+
+<h1>Setup Tutorial</h1>
+
+<h2>Download Tools</h2>
+
+<h3>VirtualBox</h3>
+
+<p><a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></p>
+
+<p>please install version >= 5.x</p>
+
+<h3>Homebrew</h3>
+
+<p><a href="http://brew.sh/index_ja.html">http://brew.sh/index_ja.html</a></p>
+
+<pre><code class="bash">$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></pre>
+
+<h3>Docker Tools</h3>
+
+<h4>Docker</h4>
+
+<pre><code class="bash">$ brew install docker
+</code></pre>
+
+<h4>Docker Machine</h4>
+
+<pre><code class="bash">$ brew install docker-machine
+</code></pre>
+
+<h4>Docker Compose</h4>
+
+<pre><code class="bash">$ brew install docker-compose
+</code></pre>
+
+<h2>Download Application</h2>
+
+<pre><code class="bash">$ cd ~/path/to/workspace
+$ git clone git@github.com:your/App.git your_app
+$ cd your_app
+</code></pre>
+
+<h2>Setup Docker Machine</h2>
+
+<pre><code class="bash">$ docker-machine create --driver virtualbox dev
+...
+
+$ docker-machine ls
+NAME   ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER    ERRORS
+dev    -        virtualbox   Running   tcp://192.168.99.100:2376           v1.10.0
+</code></pre>
+
+<pre><code class="bash">$ eval "$(docker-machine env dev)"
+
+$ echo 'eval "$(docker-machine env dev)"' &gt;&gt; ~/.bashrc
+</code></pre>
+
+<pre><code class="bash">$ docker-machine start dev
+...
+
+$ docker-machine ip dev
+192.168.99.100
+</code></pre>
+
+<h2>Setup Application</h2>
+
+<h3>Build Docker Images and Start Containers</h3>
+
+<pre><code class="bash"># ~/path/to/workspace/your_app
+$ docker-compose build
+...
+
+$ docker-compose up
+...
+</code></pre>
+
+<p>please open another tab</p>
+
+<h3>Setup DB</h3>
+
+<pre><code class="bash">$ docker-compose run web rake db:create
+$ docker-compose run web rake db:migrate
+</code></pre>
+
+<h2>Access Application</h2>
+
+<pre><code class="bash">$ docker-machine ip dev
+192.168.99.100
+</code></pre>
+
+<p>access to <code>192.168.99.100:3000</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails アプリを MySQL で作るときのメモ]]></title>
@@ -381,112 +613,6 @@ $ bundle exec rake db:migrate
 == 20141112174234 CreateMicroposts: migrated (0.0031s) ========================
 </code>
  <code>config/routes.rb</code> にmicropostsリソースの設定が追加された</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/"/>
-    <updated>2014-11-12T12:06:23+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku</id>
-    <content type="html"><![CDATA[<p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
-
-<h2>Herokuに必要なgemのインストール</h2>
-
-<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する
-<code>ruby
-group :production do
-  gem 'pg', '0.15.1'
-  gem 'rails_12factor', '0.0.2'
-end
-</code>
-production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
-これによりGemfile.lockが更新され、production環境に備えることができる。
-<code>bash
-$ bundle install --without production
-Your bundle is complete!
-Gems in the group production were not installed.
-Use `bundle show [gemname]` to see where a bundled gem is installed.
-</code>
-ここまでできたらgitにcommitしておく。
-<code>bash
-$ git commit -a -m "Update Gemfile.lock for Heroku"
-</code>
- <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
-
-<h2>herokuコマンドが使えるようにする</h2>
-
-<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
-
-<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
-
-<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
-今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
-
-<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
-
-<pre><code class="bash">$ wget -qO- https://toolbelt.heroku.com/install.sh | sh
-This script requires superuser access to install software.
-You will be prompted for your password by sudo.
-[sudo] password for sojiro: 
-Add the Heroku CLI to your PATH using:
-$ echo 'PATH="/usr/local/heroku/bin:$PATH"' &gt;&gt; ~/.profile
-Installation complete
-</code></pre>
-
-<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。
-<code>bash
-$ echo 'PATH="/usr/local/heroku/bin:$PATH"' &gt;&gt; ~/.bashrc
-$ source ~/.bashrc
-$ heroku version
-heroku-toolbelt/3.15.2 (x86_64-linux) ruby/2.0.0
-</code></p>
-
-<h2>Herokuのセットアップ</h2>
-
-<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。
-<code>bash
-$ heroku login
-Enter your Heroku credentials.
-Email: your.account@email.com
-Password (typing will be hidden):
-Your Heroku account does not have a public ssh key uploaded.
-Could not find an existing public key at ~/.ssh/id_rsa.pub
-Would you like to generate one? [Yn] Y
-Generating new SSH public key.
-Uploading SSH public key /home/user/.ssh/id_rsa.pub... done
-Authentication successful.
-</code>
-認証が完了したらHerokuのセットアップをする
-<code>bash
-$ heroku create
-Creating infinite-peak-4923... done, stack is cedar-14
-https://infinite-peak-4923.herokuapp.com/ | git@heroku.com:infinite-peak-4923.git
-Git remote heroku added
-</code>
-これでgitのremoteにherokuが追加される
-<code>bash
-$ git remote -v
-heroku  git@heroku.com:infinite-peak-4923.git (fetch)
-heroku  git@heroku.com:infinite-peak-4923.git (push)
-origin  https://github.com/sojiro14/first_app.git (fetch)
-origin  https://github.com/sojiro14/first_app.git (push)
-</code></p>
-
-<h2>Herokuへデプロイ</h2>
-
-<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了
-<code>bash
-$ git push heroku master
-</code></p>
-
-<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
-
-<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
 
 <h2>参照</h2>
 

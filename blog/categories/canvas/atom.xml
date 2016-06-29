@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Canvas | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/canvas/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-03-05T07:48:32+09:00</updated>
+  <updated>2016-06-30T04:01:38+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -129,73 +129,41 @@ ctx.fillStyle = 'rgb(255, 0, 0)';
 <h1>サンプル</h1>
 
 <p>赤い正方形を描いたり消したりする
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="ni">&amp;lt;</span>!DOCTYPE html&gt;
-</span><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;head&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">utf-8</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;title&gt;</span>Canvas Sample1<span class="nt">&lt;/title&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>            var ctx;<span class="nt">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>        function load() {
-</span><span class='line'>            var targetElement = document.getElementById(&#39;target&#39;);
-</span><span class='line'>            ctx = targetElement.getContext(&#39;2d&#39;);
-</span><span class='line'>            ctx.fillStyle = &#39;rgb(255, 0, 0)&#39;;
-</span><span class='line'>        }
-</span><span class='line'>
-</span><span class='line'>        function paint() {
-</span><span class='line'>            ctx.fillRect(80, 100, 40, 40);
-</span><span class='line'>        }
-</span><span class='line'>
-</span><span class='line'>        function erase() {
-</span><span class='line'>            ctx.clearRect(0, 0, 200, 400);
-</span><span class='line'>        }
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="ni">&amp;lt;</span>/script<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>/head<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>body onload=&quot;load()&quot;<span class="ni">&amp;gt;</span>
-</span><span class='line'>    <span class="ni">&amp;lt;</span>canvas id=&quot;target&quot; style=&quot;border: 5px solid gray&quot; width=&quot;200&quot; height=&quot;400&quot;<span class="ni">&amp;gt;&amp;lt;</span>/canvas<span class="ni">&amp;gt;</span>
-</span><span class='line'>    <span class="ni">&amp;lt;</span>input type=&quot;button&quot; value=&quot;Paint&quot; onclick=&quot;paint()&quot; /<span class="ni">&amp;gt;</span>
-</span><span class='line'>    <span class="ni">&amp;lt;</span>input type=&quot;button&quot; value=&quot;Erase&quot; onclick=&quot;erase()&quot; /<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>/body<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+&#8220;`html
+&lt;!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <title>Canvas Sample1</title>
+        <script type="text/javascript">
+            var ctx;</p>
+
+<pre><code>        function load() {
+            var targetElement = document.getElementById('target');
+            ctx = targetElement.getContext('2d');
+            ctx.fillStyle = 'rgb(255, 0, 0)';
+        }
+
+        function paint() {
+            ctx.fillRect(80, 100, 40, 40);
+        }
+
+        function erase() {
+            ctx.clearRect(0, 0, 200, 400);
+        }
+
+
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body onload="load()"&gt;
+    &lt;canvas id="target" style="border: 5px solid gray" width="200" height="400"&gt;&lt;/canvas&gt;
+    &lt;input type="button" value="Paint" onclick="paint()" /&gt;
+    &lt;input type="button" value="Erase" onclick="erase()" /&gt;
+&lt;/body&gt;
+</code></pre>
+
+<p></html>
+&#8220;`
 幅200px、高さ400pxのcanvasを用意し、そこに正方形を描くpaint関数とクリアするerase関数を定義した</p>
 
 <h2>参考資料</h2>

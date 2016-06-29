@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Perl | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/perl/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-03-05T07:48:32+09:00</updated>
+  <updated>2016-06-30T04:01:38+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -144,7 +144,7 @@ $ which cpanm
 <p> <code>minil</code> 様様と思いながら <code>minil release</code> コマンドを打つのだが、
 いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。</p>
 
-<h2> の下に書く</h2>
+<h2>{{$NEXT}} の下に書く</h2>
 
 <p>今回のリリースだとこうなった</p>
 
@@ -164,7 +164,7 @@ $ which cpanm
     - original version
 </code></pre>
 
-<p> <code></code> となっているところにバージョンやら日付やらが入る。</p>
+<p> <code>{{$NEXT}}</code> となっているところにバージョンやら日付やらが入る。</p>
 
 <h2>参照</h2>
 
@@ -334,7 +334,7 @@ index 643c7bc..dae7daa 100644
 +++ b/Changes
 @@ -2,5 +2,7 @@ Revision history for Perl extension JSON-MergePatch
 
- 
+ {{$NEXT}}
 
 +0.01 2015-07-02T18:29:20Z
 +
