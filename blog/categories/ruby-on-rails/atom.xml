@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby on Rails | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/ruby-on-rails/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-07-10T15:22:22+09:00</updated>
+  <updated>2016-07-10T22:48:41+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -18,7 +18,9 @@
     <link href="http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial/"/>
     <updated>2016-06-26T03:45:48+09:00</updated>
     <id>http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial</id>
-    <content type="html"><![CDATA[<p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
+    <content type="html"><![CDATA[<p>2016/07/10 修正: <code>docker-compose.yml</code> と <code>nginx.conf</code> の一部を修正しました</p>
+
+<p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
 
 <h1>setting files</h1>
 
@@ -43,7 +45,7 @@ mysql:
 nginx:
   build: Dockerfiles/nginx
   ports:
-    - '8080:80'
+    - '80:80'
 #  volumes_from:
 #    - datastore
   links:
@@ -59,7 +61,7 @@ web:
   volumes:
     - .:/usr/src/app
   ports:
-    - 3000:3000
+    - '3000:3000'
   links:
     - mysql
   environment:
@@ -124,7 +126,7 @@ http {
 
     # for TCP setups, point these to your backend servers
     # server 192.168.0.7:8080 fail_timeout=0;
-    server rails:3000 fail_timeout=0;
+    server web:3000 fail_timeout=0;
   }
 
   server {

@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-07-10T15:22:22+09:00</updated>
+  <updated>2016-07-10T22:48:41+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -74,7 +74,9 @@
     <link href="http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial/"/>
     <updated>2016-06-26T03:45:48+09:00</updated>
     <id>http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial</id>
-    <content type="html"><![CDATA[<p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
+    <content type="html"><![CDATA[<p>2016/07/10 修正: <code>docker-compose.yml</code> と <code>nginx.conf</code> の一部を修正しました</p>
+
+<p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
 
 <h1>setting files</h1>
 
@@ -140,7 +142,7 @@
 </span><span class='line'><span class="l-Scalar-Plain">nginx</span><span class="p-Indicator">:</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Dockerfiles/nginx</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;8080:80&#39;</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;80:80&#39;</span>
 </span><span class='line'><span class="c1">#  volumes_from:</span>
 </span><span class='line'><span class="c1">#    - datastore</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
@@ -156,7 +158,7 @@
 </span><span class='line'>  <span class="l-Scalar-Plain">volumes</span><span class="p-Indicator">:</span>
 </span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">.:/usr/src/app</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">3000:3000</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;3000:3000&#39;</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
 </span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">mysql</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
@@ -297,7 +299,7 @@
 </span><span class='line'>
 </span><span class='line'>    <span class="c"># for TCP setups, point these to your backend servers</span>
 </span><span class='line'>    <span class="c"># server 192.168.0.7:8080 fail_timeout=0;</span>
-</span><span class='line'>    server rails:3000 <span class="nv">fail_timeout</span><span class="o">=</span>0<span class="p">;</span>
+</span><span class='line'>    server web:3000 <span class="nv">fail_timeout</span><span class="o">=</span>0<span class="p">;</span>
 </span><span class='line'>  <span class="o">}</span>
 </span><span class='line'>
 </span><span class='line'>  server <span class="o">{</span>

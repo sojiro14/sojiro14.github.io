@@ -9,22 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="とある経緯で Docker を使って Rails の環境をセットアップした手順です。 setting files まずは用意した file から。 docker-compose.yml docker-compose.yml1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16 &hellip;">
+  <meta name="description" content="2016/07/10 修正: docker-compose.yml と nginx.conf の一部を修正しました とある経緯で Docker を使って Rails の環境をセットアップした手順です。 setting files まずは用意した file から。 docker-compose. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -128,7 +113,9 @@
   </header>
 
 
-<div class="entry-content"><p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
+<div class="entry-content"><p>2016/07/10 修正: <code>docker-compose.yml</code> と <code>nginx.conf</code> の一部を修正しました</p>
+
+<p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
 
 <h1>setting files</h1>
 
@@ -194,7 +181,7 @@
 </span><span class='line'><span class="l-Scalar-Plain">nginx</span><span class="p-Indicator">:</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Dockerfiles/nginx</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;8080:80&#39;</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;80:80&#39;</span>
 </span><span class='line'><span class="c1">#  volumes_from:</span>
 </span><span class='line'><span class="c1">#    - datastore</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
@@ -210,7 +197,7 @@
 </span><span class='line'>  <span class="l-Scalar-Plain">volumes</span><span class="p-Indicator">:</span>
 </span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">.:/usr/src/app</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">3000:3000</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&#39;3000:3000&#39;</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
 </span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">mysql</span>
 </span><span class='line'>  <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
@@ -351,7 +338,7 @@
 </span><span class='line'>
 </span><span class='line'>    <span class="c"># for TCP setups, point these to your backend servers</span>
 </span><span class='line'>    <span class="c"># server 192.168.0.7:8080 fail_timeout=0;</span>
-</span><span class='line'>    server rails:3000 <span class="nv">fail_timeout</span><span class="o">=</span>0<span class="p">;</span>
+</span><span class='line'>    server web:3000 <span class="nv">fail_timeout</span><span class="o">=</span>0<span class="p">;</span>
 </span><span class='line'>  <span class="o">}</span>
 </span><span class='line'>
 </span><span class='line'>  server <span class="o">{</span>
