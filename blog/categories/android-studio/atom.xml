@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Android Studio | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/android-studio/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2016-07-10T15:16:03+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/"/>
+    <updated>2016-07-07T08:27:00+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae</id>
+    <content type="html"><![CDATA[<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちらの記事</a>を参考にGAE for JavaアプリケーションをAndroid Studio + Gradleでセットアップし、サンプルアプリケーションを開発してみました。</p>
+
+<p>早速GAEにdeployしてみようと、メニューバーの <code>Build</code> から <code>Deploy Module to App Engine...</code> を選択してdeployを実行&hellip;ところがタスクが走らずうんともすんとも言わないので調べてみました。</p>
+
+<h2>結論</h2>
+
+<p>以下の設定を <code>app.iml</code> ファイルに追記する</p>
+
+<pre><code class="xml">&lt;facet type="android-gradle" name="Android-Gradle"&gt;
+  &lt;configuration&gt;
+    &lt;option name="GRADLE_PROJECT_PATH" value=":app" /&gt;
+  &lt;/configuration&gt;
+&lt;/facet&gt;
+&lt;facet type="java-gradle" name="Java-Gradle"&gt;
+  &lt;configuration&gt;
+     &lt;option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" /&gt;
+     &lt;option name="BUILDABLE" value="true" /&gt;
+  &lt;/configuration&gt;
+&lt;/facet&gt;
+</code></pre>
+
+<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちら</a>は少々特殊な方法でmoduleを作成しているのでFacetの設定が不十分となってしまった模様。</p>
+
+<h2>Facetとは</h2>
+
+<p>FacetはIntelliJ IDEAに用意された機能で、使用するフレームワークや言語に合わせたFacetを設定することでIntelliJ IDEAが必要なコンポーネントのダウンロードや各種補完機能の設定などを行ってくれるもの。</p>
+
+<p>Android StudioはIntelliJ IDEAをベースとして開発されたIDEなのでFacetの機能を継承している。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちらの記事</a></li>
+<li><a href="https://www.jetbrains.com/help/idea/2016.1/facet.html">Facet</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

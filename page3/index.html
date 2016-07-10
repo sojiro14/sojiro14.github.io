@@ -9,7 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="以前のエントリ 初めてのYeoman (Yoを使った雛形作成) で yo を使い generator-angular-fullstack の雛形を作りました。 今回はこのとき作った雛形を Grunt を使って実際に動かしてみたいと思います。 &hellip;">
+  <meta name="description" content="初めてのYeoman というタイトルでこれまで2つのエントリを投稿しました。 初めてのYeoman (Yoを使った雛形作成)
+初めてのYeoman (Grunt/Bowerを使ってみる) ここであらためて Grunt と Bower について書いておきます。 特に技術的なことはないです。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +92,104 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/11/the-third-step-of-yeoman/">初めてのYeoman (Grunt/Bowerとは)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-11T23:51:11+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:51 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>初めてのYeoman というタイトルでこれまで2つのエントリを投稿しました。</p>
+
+<ul>
+<li><a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a></li>
+<li><a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a></li>
+</ul>
+
+
+<p>ここであらためて Grunt と Bower について書いておきます。</p>
+
+<p>特に技術的なことはないです。</p>
+
+<h2>Grunt とは</h2>
+
+<blockquote><p>The JavaScript Task Runner</p></blockquote>
+
+<p>と公式サイトに書いてある。一言で言うと自動化、とも。</p>
+
+<p>要するに予め決められたタスクをその通りに実行してくれるツールである。
+（似たようなツールとして make や rake を使ったことがある）</p>
+
+<p>そして js 界隈で話題のツールやプラグイン、フレームワークがどんどん移り変わって行くのと同様に Grunt も gulp にとって変わられると話題になっている。</p>
+
+<p>しかしこれは自分でやりたいことを自動化したい場合の話であって、何か自分のやりたいことを他の人がやっていたら素直にその人の作ったタスクを使わせてもらえば良いわけである。</p>
+
+<p>（そういう意味で他の人が作った設定に多少手を加えられるほどの理解はあると嬉しいかもしれないが、それは必要になったときで良い）</p>
+
+<p>つまり Grunt でも gulp でも、自分がやりたいことを他の人が既にやっていればそれに乗っかれば良いし、他の人がまだやっていなければ、その時点で自分が一番書きやすい方法をつかって自動化すれば良い。</p>
+
+<p>問題は自分にやりたいこと（自動化したいこと）があるかどうかであって、自分が自分以外の何者でもない以上、それはあるはずで、それに気づいてないとか、考え続けられないから僕はまだまだ三流以下ということなんですね。</p>
+
+<h2>Bower とは</h2>
+
+<p>フロントエンドのパッケージマネージャーで</p>
+
+<ul>
+<li>cpan(perl)</li>
+<li>gem(ruby)</li>
+<li>Node.js(npm)</li>
+</ul>
+
+
+<p>みたいなものだと理解している</p>
+
+<p>使い方も対して変わらないですね</p>
+
+<h2>Yeoman</h2>
+
+<p>ここまで Yeoman を見てきて Yeoman の要は yo のように思える</p>
+
+<p>使う側の立場では雛形(generator)を選んで yo を実行したらやりたいことは既に決まっている</p>
+
+<p>作る側としては最終的にどんな雛形を作るかが問題である</p>
+
+<p>ここで雛形のルール（設定）を Grunt で規定し、フロントエンドを Bower で規定することをルールとしたら雛形もまとめやすいよね、ということか</p>
+
+<h2>最後に</h2>
+
+<p>なんだか雑なエントリになってしまった。。。</p>
+
+<p>まずは Yeoman の恩恵をもっと受けまくってみます</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://gruntjs.com/">Grunt</a></li>
+<li><a href="http://bower.io/">Bower</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1606,53 +1705,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/">Github PagesとOctopressで作ったブログに独自ドメインを設定する</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-01-30T00:14:23+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:14 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>本ブログをリニューアルしたついでに新しくドメインを取ってこのブログに適用してみた。</p>
-
-<p>Github PagesとOctopressを使ったブログへの独自ドメイン設定のメモとして残しておく。</p>
-
-<h2>やるべきこと</h2>
-
-<p>今回は <code>blog.sojiro.me</code> というサブドメインを使うことにしたので、やるべき手順は以下の2つのみ。</p>
-
-<ul>
-<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
-<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page4">&larr; Older</a>
@@ -1675,6 +1727,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/">Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/06/26/docker-rails-setup-tutorial/">DockerでRails環境を構築した手順</a>
       </li>
     
@@ -1688,10 +1744,6 @@
     
       <li class="post">
         <a href="/blog/2016/02/21/how-to-write-changes-with-minil/">minil を使った Changes ファイルの更新</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/14/the-second-step-of-chef/">Chef のリモート実行</a>
       </li>
     
   </ul>

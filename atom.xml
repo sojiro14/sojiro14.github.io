@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-06-30T04:19:14+09:00</updated>
+  <updated>2016-07-10T15:16:03+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/"/>
+    <updated>2016-07-07T08:27:00+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae</id>
+    <content type="html"><![CDATA[<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちらの記事</a>を参考にGAE for JavaアプリケーションをAndroid Studio + Gradleでセットアップし、サンプルアプリケーションを開発してみました。</p>
+
+<p>早速GAEにdeployしてみようと、メニューバーの <code>Build</code> から <code>Deploy Module to App Engine...</code> を選択してdeployを実行&hellip;ところがタスクが走らずうんともすんとも言わないので調べてみました。</p>
+
+<h2>結論</h2>
+
+<p>以下の設定を <code>app.iml</code> ファイルに追記する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;facet</span> <span class="na">type=</span><span class="s">&quot;android-gradle&quot;</span> <span class="na">name=</span><span class="s">&quot;Android-Gradle&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;option</span> <span class="na">name=</span><span class="s">&quot;GRADLE_PROJECT_PATH&quot;</span> <span class="na">value=</span><span class="s">&quot;:app&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'><span class="nt">&lt;/facet&gt;</span>
+</span><span class='line'><span class="nt">&lt;facet</span> <span class="na">type=</span><span class="s">&quot;java-gradle&quot;</span> <span class="na">name=</span><span class="s">&quot;Java-Gradle&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;option</span> <span class="na">name=</span><span class="s">&quot;BUILD_FOLDER_PATH&quot;</span> <span class="na">value=</span><span class="s">&quot;$MODULE_DIR$/build&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;option</span> <span class="na">name=</span><span class="s">&quot;BUILDABLE&quot;</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'><span class="nt">&lt;/facet&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちら</a>は少々特殊な方法でmoduleを作成しているのでFacetの設定が不十分となってしまった模様。</p>
+
+<h2>Facetとは</h2>
+
+<p>FacetはIntelliJ IDEAに用意された機能で、使用するフレームワークや言語に合わせたFacetを設定することでIntelliJ IDEAが必要なコンポーネントのダウンロードや各種補完機能の設定などを行ってくれるもの。</p>
+
+<p>Android StudioはIntelliJ IDEAをベースとして開発されたIDEなのでFacetの機能を継承している。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちらの記事</a></li>
+<li><a href="https://www.jetbrains.com/help/idea/2016.1/facet.html">Facet</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[DockerでRails環境を構築した手順]]></title>
@@ -2713,83 +2769,6 @@ primary key や、unique key といったレコードを一意に特定できる
 
 <ul>
 <li><a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerとは)]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/05/11/the-third-step-of-yeoman/"/>
-    <updated>2015-05-11T23:51:11+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/05/11/the-third-step-of-yeoman</id>
-    <content type="html"><![CDATA[<p>初めてのYeoman というタイトルでこれまで2つのエントリを投稿しました。</p>
-
-<ul>
-<li><a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a></li>
-<li><a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a></li>
-</ul>
-
-
-<p>ここであらためて Grunt と Bower について書いておきます。</p>
-
-<p>特に技術的なことはないです。</p>
-
-<h2>Grunt とは</h2>
-
-<blockquote><p>The JavaScript Task Runner</p></blockquote>
-
-<p>と公式サイトに書いてある。一言で言うと自動化、とも。</p>
-
-<p>要するに予め決められたタスクをその通りに実行してくれるツールである。
-（似たようなツールとして make や rake を使ったことがある）</p>
-
-<p>そして js 界隈で話題のツールやプラグイン、フレームワークがどんどん移り変わって行くのと同様に Grunt も gulp にとって変わられると話題になっている。</p>
-
-<p>しかしこれは自分でやりたいことを自動化したい場合の話であって、何か自分のやりたいことを他の人がやっていたら素直にその人の作ったタスクを使わせてもらえば良いわけである。</p>
-
-<p>（そういう意味で他の人が作った設定に多少手を加えられるほどの理解はあると嬉しいかもしれないが、それは必要になったときで良い）</p>
-
-<p>つまり Grunt でも gulp でも、自分がやりたいことを他の人が既にやっていればそれに乗っかれば良いし、他の人がまだやっていなければ、その時点で自分が一番書きやすい方法をつかって自動化すれば良い。</p>
-
-<p>問題は自分にやりたいこと（自動化したいこと）があるかどうかであって、自分が自分以外の何者でもない以上、それはあるはずで、それに気づいてないとか、考え続けられないから僕はまだまだ三流以下ということなんですね。</p>
-
-<h2>Bower とは</h2>
-
-<p>フロントエンドのパッケージマネージャーで</p>
-
-<ul>
-<li>cpan(perl)</li>
-<li>gem(ruby)</li>
-<li>Node.js(npm)</li>
-</ul>
-
-
-<p>みたいなものだと理解している</p>
-
-<p>使い方も対して変わらないですね</p>
-
-<h2>Yeoman</h2>
-
-<p>ここまで Yeoman を見てきて Yeoman の要は yo のように思える</p>
-
-<p>使う側の立場では雛形(generator)を選んで yo を実行したらやりたいことは既に決まっている</p>
-
-<p>作る側としては最終的にどんな雛形を作るかが問題である</p>
-
-<p>ここで雛形のルール（設定）を Grunt で規定し、フロントエンドを Bower で規定することをルールとしたら雛形もまとめやすいよね、ということか</p>
-
-<h2>最後に</h2>
-
-<p>なんだか雑なエントリになってしまった。。。</p>
-
-<p>まずは Yeoman の恩恵をもっと受けまくってみます</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://gruntjs.com/">Grunt</a></li>
-<li><a href="http://bower.io/">Bower</a></li>
 </ul>
 
 ]]></content>
