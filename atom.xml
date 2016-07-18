@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-07-18T22:58:10+09:00</updated>
+  <updated>2016-07-18T23:00:56+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -120,8 +120,8 @@
 <li>文字を16bitの数値で表す <code>char</code> 型</li>
 </ul>
 </li>
-<li>文字リテラルはchar型の数値</li>
-<li>Stringオブジェクトは文字（ <code>char</code> 型）の配列</li>
+<li>文字リテラルは <code>char</code> 型の数値</li>
+<li><code>String</code> オブジェクトは文字（ <code>char</code> 型）の配列</li>
 </ul>
 
 
