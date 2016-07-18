@@ -9,7 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="こちらの記事を参考にGAE for JavaアプリケーションをAndroid Studio + Gradleでセットアップし、サンプルアプリケーションを開発してみました。 早速GAEにdeployしてみようと、メニューバーの Build から Deploy Module to App Engine &hellip;">
+  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ 文字列 &ldquo;（ダブルクォート）で囲んで文字数リテラル String クラス 文字列リテラルから String オブジェクトが自動生成
+配列のように1文字ごとにindexが振られる StringBuilder クラス &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +92,181 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ Chapter 2 文字と文字列</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-07-12T16:17:33+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>4:17 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>文字列</h2>
+
+<p>&ldquo;（ダブルクォート）で囲んで文字数リテラル</p>
+
+<h3>String クラス</h3>
+
+<ul>
+<li>文字列リテラルから <code>String</code> オブジェクトが自動生成</li>
+<li>配列のように1文字ごとにindexが振られる</li>
+</ul>
+
+
+<h3>StringBuilder クラス</h3>
+
+<ul>
+<li>オブジェクトに対して破壊的</li>
+<li><code>String</code> オブジェクトは read only</li>
+</ul>
+
+
+<h3>文字列の結合</h3>
+
+<ul>
+<li><code>+=</code> と <code>StringBuilder</code> の関係</li>
+<li><code>join</code> メソッド</li>
+</ul>
+
+
+<h3>文字列の比較</h3>
+
+<ul>
+<li><code>==</code> 演算子じゃなくて <code>equals</code> メソッド
+
+<ul>
+<li><code>==</code> 比較は同一のオブジェクトへの参照かどうかの比較</li>
+</ul>
+</li>
+<li>同じ文字列リテラルは同じ <code>String</code> オブジェクト</li>
+<li>ただし <code>String</code> と <code>StringBuilder</code> では文字列の内容が同じでも違うオブジェクト
+
+<ul>
+<li>そんなときは <code>contentEquals</code> メソッド</li>
+</ul>
+</li>
+<li><code>StringBuilder</code> 同士の文字列の内容比較もできないので、 <code>toString</code> で <code>String</code> に変換してから <code>contentEquals</code> 使うこと</li>
+</ul>
+
+
+<h3>文字列と数値の変換</h3>
+
+<h4>数値から文字列への変換</h4>
+
+<p><code>valueOf</code> メソッド</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span>
+</span><span class='line'><span class="c1">// s: &quot;255&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>toString</code> メソッドで10進数以外に直接変換する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="mi">255</span><span class="o">,</span> <span class="mi">16</span><span class="o">);</span>
+</span><span class='line'><span class="c1">// s: &quot;ff&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>文字列から数値への変換</h3>
+
+<p><code>parseInt</code> メソッド</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="s">&quot;255&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="c1">// i: 255</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>基数を与えて10進数以外の処理</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseint</span><span class="o">(</span><span class="s">&quot;ff&quot;</span><span class="o">,</span> <span class="mi">16</span><span class="o">);</span>
+</span><span class='line'><span class="c1">// i: 255</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>文字</h2>
+
+<ul>
+<li>&lsquo;（シングルクォート）で囲んで文字リテラル</li>
+<li>Javaの世界ではUTF-16
+
+<ul>
+<li>文字を16bitの数値で表す <code>char</code> 型</li>
+</ul>
+</li>
+<li>文字リテラルはchar型の数値</li>
+<li>Stringオブジェクトは文字（ <code>char</code> 型）の配列</li>
+</ul>
+
+
+<h2>バイト</h2>
+
+<ul>
+<li>歴史的に文字とバイトは同一視されがち</li>
+<li>Javaではバイトを文字と区別する</li>
+<li>8bit長の <code>byte</code> 型</li>
+<li>バイト列は <code>byte</code> 型の配列</li>
+</ul>
+
+
+<h3>バイト列と文字列の変換</h3>
+
+<h4>バイト列から文字列への変換</h4>
+
+<p><code>byte</code> の配列を渡して <code>String</code> オブジェクトを生成</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[]{</span><span class="mh">0x61</span><span class="o">,</span> <span class="mh">0x62</span><span class="o">,</span> <span class="mh">0x63</span><span class="o">};</span>
+</span><span class='line'><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">String</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+</span><span class='line'><span class="c1">// s: abc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>文字列からバイト列への変換</h4>
+
+<p><code>getBytes</code> メソッドを使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;abc&quot;</span><span class="o">;</span>
+</span><span class='line'><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">getBytes</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1654,98 +1830,6 @@ primary key や、unique key といったレコードを一意に特定できる
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/21/rails-new-with-mysql/">Rails アプリを MySQL で作るときのメモ</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-09-21T22:34:43+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>10:34 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Rails 4.0.5 のアプリを MySQL で立てるときのメモ</p>
-
-<h3>rails new にオプションをつける</h3>
-
-<p>オプションを付けずに <code>rails new</code> すると SQLite で立てられてしまうので、以下のようにする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails new app_name -d mysql
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>mysql2 のバージョンを指定</h3>
-
-<p>2015/09/21 時点の mysql2 は rails 上での実行時にバグを含んでいるようなのでバージョン指定する。</p>
-
-<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;mysql2&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 0.3.20&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>mysql のパスワード設定</h3>
-
-<p> <code>config/database.yml</code> に mysql のパスワードを設定する。環境変数の指定は以下のようにする。</p>
-
-<figure class='code'><figcaption><span>config/database.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql2</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">encoding</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">utf8</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_name_development</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">pool</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;%= ENV[&#39;MYSQLPASS&#39;] %&gt;</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">socket</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/var/lib/mysql/mysql.sock</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>database の作成</h3>
-
-<p>最後に database を作って完了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake db:create
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://qiita.com/shizuma/items/0f9660d5d46a0012eb9e">Rails mysql2でrake db:createがエラー問題</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -1766,6 +1850,10 @@ primary key や、unique key といったレコードを一意に特定できる
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ chapter 2 文字と文字列</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/">Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet</a>
       </li>
     
@@ -1779,10 +1867,6 @@ primary key や、unique key といったレコードを一意に特定できる
     
       <li class="post">
         <a href="/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv で ruby を管理する</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/21/how-to-write-changes-with-minil/">minil を使った Changes ファイルの更新</a>
       </li>
     
   </ul>

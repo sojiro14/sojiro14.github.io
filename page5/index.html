@@ -9,10 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="railsには scaffold という単純なリソースを一気に生成するコマンドが存在する。
-今回はこのコマンドを使ってみる。 Usersリソースの生成 今回は scaffold コマンドを使ってリソースを生成する。
-ここでは以下の要素をもつUsersリソースを生成する。 id int
-name &hellip;">
+  <meta name="description" content="Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ- で scaffold コマンドを使ったリソースの生成を行ったが、このコマンドでは決められた形式でのリソースの生成にしか対応できないため、手動で自由にリソースを作成してみる。 rails generate &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,6 +91,68 @@ name &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources/">Ruby on Railsで初めてアプリを作ってみる #4 -リソースの生成-</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-27T16:32:38+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:32 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/">Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-</a> で <code>scaffold</code> コマンドを使ったリソースの生成を行ったが、このコマンドでは決められた形式でのリソースの生成にしか対応できないため、手動で自由にリソースを作成してみる。</p>
+
+<h2>rails generate model</h2>
+
+<p>まずはモデルを作成する。railsの規約に従って、モデルは単数系、最初の文字を大文字で始める。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate model Stock title:string
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドで <code>generate</code> は <code>g</code> と省略できる。また、要素の属性はデフォルトが <code>string</code> なので、 <code>string</code> も省略することができる。</p>
+
+<p>省略したコマンドが以下。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails g model Stock title
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドでmodelに加えてmigrateファイルが生成されるのでDBをmigrateする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -1420,120 +1479,6 @@ name &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/25/howto-install-ag-in-amazon-linux-ami/">Amazon Linux AMIにagをインストールした手順</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-25T23:38:16+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:38 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>AWSでWebサーバーを借りた。このサーバーに<code>ag</code>をインストールした際の手順。</p>
-
-<h2>agとは</h2>
-
-<p>ソースコードから特定のwordを検索する際に使うコマンド<code>grep</code>がより賢く改良されたのが<code>ack</code>コマンド。</p>
-
-<p>この<code>ack</code>をさらに改良し、検索を高速化させたのが<code>ag</code>コマンド（正式名称:The Silver Searcher）である。</p>
-
-<h2>Amazon Linux AMIへのインストール</h2>
-
-<p>MacにはHomebrewを使って<code>brew install the_silver_searcher</code>とするだけで簡単に入れることができた。</p>
-
-<p>AWSで借りたサーバーはAmazon Linux AMIという独自のイメージだったが、<code>yum</code>が使えるのでCentOSと同じ以下の手順で入れることができた。</p>
-
-<h3>ディレクトリの作成とソースのダウンロード</h3>
-
-<p>ソースをダウンロード、インストールするディレクトリを作成し、gitから<code>ag</code>のソースを持ってくる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir -p <span class="nv">$HOME</span>/local/source
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source
-</span><span class='line'><span class="nv">$ </span>git clone https://github.com/ggreer/the_silver_searcher
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>ソースをmakeするための準備</h3>
-
-<p>対象のサーバーはまっさらな状態でコンパイラなどもなかったため、それぞれインストールする。</p>
-
-<p>前述の通りAmazon Linux AMIではyumを使うことができる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo su -
-</span><span class='line'>yum -y groupinstall <span class="s2">&quot;Development Tools&quot;</span>
-</span><span class='line'>yum -y install pcre-devel xz-devel
-</span><span class='line'><span class="nb">exit</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>インストール</h3>
-
-<p>コンパイルしてインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/local/source/the_silver_searcher
-</span><span class='line'><span class="nv">$ </span>./build.sh
-</span><span class='line'><span class="nv">$ </span>sudo make install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>パスを通す</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span>
-</span><span class='line'><span class="nv">$ </span>vim .bashrc
-</span><span class='line'><span class="nv">$ </span>cat .bashrc
-</span><span class='line'>...
-</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/local/bin:<span class="nv">$PATH</span>
-</span><span class='line'>...
-</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bashrc
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで<code>ag</code>が使えるようになった</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="https://github.com/ggreer/the_silver_searcher">the_silver_searcher</a></li>
-<li><a href="http://qiita.com/sifue/items/55d0c5c11a0571af3b8e">grepやackよりも速いコード検索ツールのagをローカルビルドインストールする</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page6">&larr; Older</a>
@@ -1556,6 +1501,10 @@ name &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ chapter 2 文字と文字列</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/">Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet</a>
       </li>
     
@@ -1569,10 +1518,6 @@ name &hellip;">
     
       <li class="post">
         <a href="/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv で ruby を管理する</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/21/how-to-write-changes-with-minil/">minil を使った Changes ファイルの更新</a>
       </li>
     
   </ul>

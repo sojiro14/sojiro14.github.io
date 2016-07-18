@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="本ブログをリニューアルしたついでに新しくドメインを取ってこのブログに適用してみた。 Github PagesとOctopressを使ったブログへの独自ドメイン設定のメモとして残しておく。 やるべきこと 今回は blog.sojiro.me というサブドメインを使うことにしたので、 &hellip;">
+  <meta name="description" content="今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。 「もっと見る」の場所を指定する 記事の内容としてトップページで表示させる範囲が決まったら、その直後に「もっと見る」リンクを設置します。 設置方法は以下のコメントを記事内の「もっと見る」 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,71 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/30/add-excerpt-link-on-octopress-pages/">Octopressのページに「もっと見る」を設定する方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-30T20:12:17+09:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:12 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。</p>
+
+<h2>「もっと見る」の場所を指定する</h2>
+
+<p>記事の内容としてトップページで表示させる範囲が決まったら、その直後に「もっと見る」リンクを設置します。</p>
+
+<p>設置方法は以下のコメントを記事内の「もっと見る」リンクを設置する箇所に記述するだけです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'> <span class="c">&lt;!-- more --&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>「もっと見る」以降の記事内容はトップページ上では省略されます。</p>
+
+<p>「もっと見る」リンクは個別記事ページにリンクしています。</p>
+
+<h2>リンクの文言を変更する</h2>
+
+<p>上記で設定したリンクはデフォルトでは「Read on →」と表示されます。</p>
+
+<p>リンクの文言は <code>_config.yml</code> ファイルの項目 <code>excerpt_link</code> で管理されています。</p>
+
+<p>従って以下のように設定することでリンクの文言が「もっと見る」となります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>excerpt_link: &quot;もっと見る&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/04/30/add-excerpt-link-on-octopress-pages/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -605,68 +670,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources/">Ruby on Railsで初めてアプリを作ってみる #4 -リソースの生成-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-27T16:32:38+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:32 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/">Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-</a> で <code>scaffold</code> コマンドを使ったリソースの生成を行ったが、このコマンドでは決められた形式でのリソースの生成にしか対応できないため、手動で自由にリソースを作成してみる。</p>
-
-<h2>rails generate model</h2>
-
-<p>まずはモデルを作成する。railsの規約に従って、モデルは単数系、最初の文字を大文字で始める。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate model Stock title:string
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドで <code>generate</code> は <code>g</code> と省略できる。また、要素の属性はデフォルトが <code>string</code> なので、 <code>string</code> も省略することができる。</p>
-
-<p>省略したコマンドが以下。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails g model Stock title
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドでmodelに加えてmigrateファイルが生成されるのでDBをmigrateする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page5">&larr; Older</a>
@@ -689,6 +692,10 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ chapter 2 文字と文字列</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/">Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet</a>
       </li>
     
@@ -702,10 +709,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
     
       <li class="post">
         <a href="/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv で ruby を管理する</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/21/how-to-write-changes-with-minil/">minil を使った Changes ファイルの更新</a>
       </li>
     
   </ul>

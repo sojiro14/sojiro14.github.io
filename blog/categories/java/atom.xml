@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-07-10T22:48:41+09:00</updated>
+  <updated>2016-07-18T22:58:10+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,140 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 2 文字と文字列]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/07/12/study-of-perfect-java-chapter-2/"/>
+    <updated>2016-07-12T16:17:33+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/07/12/study-of-perfect-java-chapter-2</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>文字列</h2>
+
+<p>&ldquo;（ダブルクォート）で囲んで文字数リテラル</p>
+
+<h3>String クラス</h3>
+
+<ul>
+<li>文字列リテラルから <code>String</code> オブジェクトが自動生成</li>
+<li>配列のように1文字ごとにindexが振られる</li>
+</ul>
+
+
+<h3>StringBuilder クラス</h3>
+
+<ul>
+<li>オブジェクトに対して破壊的</li>
+<li><code>String</code> オブジェクトは read only</li>
+</ul>
+
+
+<h3>文字列の結合</h3>
+
+<ul>
+<li><code>+=</code> と <code>StringBuilder</code> の関係</li>
+<li><code>join</code> メソッド</li>
+</ul>
+
+
+<h3>文字列の比較</h3>
+
+<ul>
+<li><code>==</code> 演算子じゃなくて <code>equals</code> メソッド
+
+<ul>
+<li><code>==</code> 比較は同一のオブジェクトへの参照かどうかの比較</li>
+</ul>
+</li>
+<li>同じ文字列リテラルは同じ <code>String</code> オブジェクト</li>
+<li>ただし <code>String</code> と <code>StringBuilder</code> では文字列の内容が同じでも違うオブジェクト
+
+<ul>
+<li>そんなときは <code>contentEquals</code> メソッド</li>
+</ul>
+</li>
+<li><code>StringBuilder</code> 同士の文字列の内容比較もできないので、 <code>toString</code> で <code>String</code> に変換してから <code>contentEquals</code> 使うこと</li>
+</ul>
+
+
+<h3>文字列と数値の変換</h3>
+
+<h4>数値から文字列への変換</h4>
+
+<p><code>valueOf</code> メソッド
+<code>java
+String s = String.valueOf(255);
+// s: "255"
+</code></p>
+
+<p><code>toString</code> メソッドで10進数以外に直接変換する
+<code>java
+String s = Integer.toString(255, 16);
+// s: "ff"
+</code></p>
+
+<h3>文字列から数値への変換</h3>
+
+<p><code>parseInt</code> メソッド
+<code>java
+int i = Integer.parseInt("255");
+// i: 255
+</code>
+基数を与えて10進数以外の処理
+<code>java
+int i = Integer.parseint("ff", 16);
+// i: 255
+</code></p>
+
+<h2>文字</h2>
+
+<ul>
+<li>&lsquo;（シングルクォート）で囲んで文字リテラル</li>
+<li>Javaの世界ではUTF-16
+
+<ul>
+<li>文字を16bitの数値で表す <code>char</code> 型</li>
+</ul>
+</li>
+<li>文字リテラルはchar型の数値</li>
+<li>Stringオブジェクトは文字（ <code>char</code> 型）の配列</li>
+</ul>
+
+
+<h2>バイト</h2>
+
+<ul>
+<li>歴史的に文字とバイトは同一視されがち</li>
+<li>Javaではバイトを文字と区別する</li>
+<li>8bit長の <code>byte</code> 型</li>
+<li>バイト列は <code>byte</code> 型の配列</li>
+</ul>
+
+
+<h3>バイト列と文字列の変換</h3>
+
+<h4>バイト列から文字列への変換</h4>
+
+<p><code>byte</code> の配列を渡して <code>String</code> オブジェクトを生成
+<code>java
+byte[] bytes = new byte[]{0x61, 0x62, 0x63};
+String s = new String(bytes);
+// s: abc
+</code></p>
+
+<h4>文字列からバイト列への変換</h4>
+
+<p><code>getBytes</code> メソッドを使う
+<code>java
+String s = "abc";
+byte[] bytes = s.getBytes();
+</code></p>
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet]]></title>
