@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-07-22T08:47:54+09:00</updated>
+  <updated>2016-07-22T08:50:16+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -214,7 +214,7 @@
 <li>大きな正の整数の和における桁あふれ</li>
 <li>小さな負の整数の差における桁あふれ</li>
 <li>絶対値の大きな整数同士の積の桁あふれ</li>
-<li>尚の結果は切り捨て</li>
+<li>商の結果は切り捨て</li>
 <li>0 による割り算は <code>ArithmeticException</code></li>
 </ul>
 
