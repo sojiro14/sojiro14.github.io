@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>パーフェクトJava読書メモ Chapter 3 数値① - Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ 整数型 以下の5種類 name bit length min max byte 8 -128 127 char 16 0 65535 short 16 -32768 32767 int 32 -2147483648 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2016/07/17/study-of-perfect-java-chapter-3">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-50182043-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">パーフェクトJava読書メモ Chapter 3 数値①</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-07-17T17:36:05+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>5:36 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>整数型</h2>
+
+<p>以下の5種類</p>
+
+<table>
+<thead>
+<tr>
+<th> name   </th>
+<th> bit length </th>
+<th>  min  </th>
+<th>  max  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>byte</code>  </td>
+<td> 8         </td>
+<td> -128  </td>
+<td>  127  </td>
+</tr>
+<tr>
+<td> <code>char</code>  </td>
+<td> 16        </td>
+<td> 0     </td>
+<td> 65535 </td>
+</tr>
+<tr>
+<td> <code>short</code> </td>
+<td> 16        </td>
+<td> -32768 </td>
+<td> 32767 </td>
+</tr>
+<tr>
+<td> <code>int</code>   </td>
+<td> 32        </td>
+<td> -2147483648 </td>
+<td> 2147483647 </td>
+</tr>
+<tr>
+<td> <code>long</code>  </td>
+<td> 64        </td>
+<td> -9223372036854775808 </td>
+<td> 9223372036854775807 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>bit値</h3>
+
+<p>符号あり整数で最上位ビットが1の値は負の値となる</p>
+
+<h4>4bit長の符号なし整数</h4>
+
+<table>
+<thead>
+<tr>
+<th> type </th>
+<th> value </th>
+<th> bit </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> min  </td>
+<td> 0     </td>
+<td> 0000 </td>
+</tr>
+<tr>
+<td> max  </td>
+<td> 15    </td>
+<td> 1111 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h4>4bit長の符号あり整数</h4>
+
+<table>
+<thead>
+<tr>
+<th> type      </th>
+<th> value </th>
+<th> bit </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> min bit   </td>
+<td> 0     </td>
+<td> 0000 </td>
+</tr>
+<tr>
+<td> max value </td>
+<td> 7     </td>
+<td> 0111 </td>
+</tr>
+<tr>
+<td> min value </td>
+<td> -8    </td>
+<td> 1000 </td>
+</tr>
+<tr>
+<td> max bit   </td>
+<td> -1    </td>
+<td> 1111 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>桁あふれ</h2>
+
+<p>整数の加算はbit値を進める処理であり、</p>
+
+<p>整数の減算はbit値を戻す処理である</p>
+
+<p>したがってbitの境界値をまたいで整数の加算減算を行うと予期しない結果となる場合がある</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">Interger</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">;</span>
+</span><span class='line'><span class="c1">// i: 2147483647</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">i</span><span class="o">++</span>
+</span><span class='line'><span class="c1">// i: -2147483648</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>整数リテラル</h2>
+
+<ul>
+<li><code>L</code> または <code>l</code> で終わる整数リテラルの型は <code>long</code> 型</li>
+<li>それ以外の整数リテラルは <code>int</code> 型</li>
+<li><code>int</code> 型リテラル値を <code>byte</code> 、 <code>char</code> 、 <code>short</code> の型の変数に代入する場合、値が代入する先の型の範囲内であれば自動的に型が変換されて代入される
+
+<ul>
+<li>代入する先の型の範囲を超えている場合はコンパイルエラーとなる</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>基数</h3>
+
+<ul>
+<li><code>0b</code> から始めると 2 進数</li>
+<li><code>0</code> から始めると 8 進数</li>
+<li><code>0x</code> から始めると 16 進数</li>
+</ul>
+
+
+<h2>整数の演算</h2>
+
+<h3>四則演算</h3>
+
+<table>
+<thead>
+<tr>
+<th> 演算子 </th>
+<th> 演算 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> +     </td>
+<td> 和   </td>
+</tr>
+<tr>
+<td> -     </td>
+<td> 差   </td>
+</tr>
+<tr>
+<td> *     </td>
+<td> 積   </td>
+</tr>
+<tr>
+<td> /     </td>
+<td> 商   </td>
+</tr>
+</tbody>
+</table>
+
+
+<h4>注意点</h4>
+
+<ul>
+<li>大きな正の整数の和における桁あふれ</li>
+<li>小さな負の整数の差における桁あふれ</li>
+<li>絶対値の大きな整数同士の積の桁あふれ</li>
+<li>尚の結果は切り捨て</li>
+<li>0 による割り算は <code>ArithmeticException</code></li>
+</ul>
+
+
+<h3>剰余</h3>
+
+<ul>
+<li>剰余演算子は <code>%</code></li>
+<li>0 による剰余演算は <code>ArithmeticException</code></li>
+</ul>
+
+
+<h3>符号反転</h3>
+
+<p>単項演算子 <code>-</code> は通常単純に符号を反転させる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+</span><span class='line'><span class="c1">// -n: -10</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>しかしここにも桁あふれの問題があるので注意</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2147483648</span><span class="o">;</span>
+</span><span class='line'><span class="c1">// -n: -2147483648</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.15.4">仕様書</a>によると</p>
+
+<blockquote><p>-x equals (~x)+1</p></blockquote>
+
+<ul>
+<li><code>~</code> は bit 反転演算子</li>
+<li>-2147483648 は bit に変換すると 100&hellip;0（0 が 31 個つづく）</li>
+<li>これを反転させると 011&hellip;1（1 が 31 個つづく）となり、これは 2147483647 を表す</li>
+<li>2147483647 + 1 は桁あふれが起こり、 -2147483648 となる</li>
+</ul>
+
+
+<h3>インクリメント・デクリメント</h3>
+
+<ul>
+<li><code>++</code> でインクリメント</li>
+<li><code>--</code> でデクリメント</li>
+</ul>
+
+
+<h2>キャスト</h2>
+
+<p><code>()</code> 付きで型を書くことで強制的に型変換する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'><span class="kt">short</span> <span class="n">si</span> <span class="o">=</span> <span class="o">(</span><span class="kt">short</span><span class="o">)</span><span class="n">i</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>代入先の型に収まらないとあふれたbitが切り捨てられる</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">short</span> <span class="n">si</span> <span class="o">=</span> <span class="o">(</span><span class="kt">short</span><span class="o">)</span><span class="mi">65536</span><span class="o">;</span>
+</span><span class='line'><span class="c1">// si: 0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>65536 は bit に変換すると 100&hellip;0 （0 が 16 個つづく）</li>
+<li><code>short</code> 型は 16 bit なので先頭の 1 があふれる</li>
+</ul>
+
+
+<h2>ブーリアン（真偽値）</h2>
+
+<p>ブーリアン型が取りうる値は <code>true</code> か <code>false</code> のみ</p>
+
+<p>※ ド・モルガンの法則の説明等</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></li>
+<li><a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.15.4">15.15.4. Unary Minus Operator -</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-07-17T17:36:05+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>5:36 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2016/07/17/study-of-perfect-java-chapter-3/" data-via="" data-counturl="http://sojiro14.github.io/blog/2016/07/17/study-of-perfect-java-chapter-3/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/07/12/study-of-perfect-java-chapter-2/" title="Previous Post: パーフェクトJava読書メモ chapter 2 文字と文字列">&laquo; パーフェクトJava読書メモ chapter 2 文字と文字列</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2016/07/17/study-of-perfect-java-chapter-3/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2016/07/17/study-of-perfect-java-chapter-3/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

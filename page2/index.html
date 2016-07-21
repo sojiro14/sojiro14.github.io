@@ -9,8 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Rails 4.0.5 のアプリを MySQL で立てるときのメモ rails new にオプションをつける オプションを付けずに rails new すると SQLite で立てられてしまうので、以下のようにする。 1
-$ rails new app_name -d mysql mysql2 &hellip;">
+  <meta name="description" content="MySQL でよく使う InnoDB のロックについて研修時代に書いたメモ。 種類 レコードロック: インデックスレコードの ロック
+ギャップロック: インデックスレコード間にあるギャップのロック、先頭のインデックスレコードの前や末尾のインデックスレコードの後にあるギャップのロック、のいずれか &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +92,103 @@ $ rails new app_name -d mysql mysql2 &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/25/kinds-of-locks-of-innodb/">InnoDBにおけるロックの種類</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-25T23:02:53+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:02 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>MySQL でよく使う InnoDB のロックについて研修時代に書いたメモ。</p>
+
+<h2>種類</h2>
+
+<ul>
+<li>レコードロック: <strong>インデックスレコードの</strong> ロック</li>
+<li>ギャップロック: インデックスレコード間にあるギャップのロック、先頭のインデックスレコードの前や末尾のインデックスレコードの後にあるギャップのロック、のいずれか</li>
+<li>ネクストキーロック: インデックスレコードに対するレコードロックと、そのインデックスレコードの前、または後ろにあるギャップに対するギャップロックとを組み合わせたもの</li>
+</ul>
+
+
+<h2>InnoDBの行ロック（レコードロック）</h2>
+
+<p>InnoDBは行ロックができる、とよく言いますが、
+正確には <strong>インデックスレコード</strong> にロックをかけているので、
+primary key や、unique key といったレコードを一意に特定できるインデックスを使用せずにロックをかけるとテーブルロックの様な挙動を示します。（実際には隠しクラスタインデックスが生成、使用される。）</p>
+
+<h2>ギャップロック、ネクストキーロック</h2>
+
+<p>ギャップロック、ネクストキーロックは</p>
+
+<ul>
+<li>範囲を指定して（複数のレコードにまたがって）ロックを獲得しようとしたとき</li>
+<li>存在しないレコードに対してロックを獲得しようとしたとき</li>
+</ul>
+
+
+<p>のみ起こりうる。</p>
+
+<p>また、 <strong>ギャップロックは常に共有ロックと同じ挙動</strong> を示す</p>
+
+<h2>例</h2>
+
+<p>前提：id(primary key)が10, 20, 30のレコードが入っているテーブル</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">from</span> <span class="k">table</span> <span class="k">where</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">15</span> <span class="k">for</span> <span class="k">update</span><span class="p">;</span>    <span class="o">#</span><span class="n">id</span> <span class="mi">11</span><span class="o">~</span><span class="mi">19</span><span class="err">にギャップロック</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">from</span> <span class="k">table</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&lt;</span> <span class="mi">15</span> <span class="k">for</span> <span class="k">update</span><span class="p">;</span>    <span class="o">#</span><span class="n">id</span> <span class="o">~</span><span class="mi">20</span><span class="err">にネクストキーロック</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">from</span> <span class="k">table</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="k">for</span> <span class="k">update</span><span class="p">;</span>    <span class="o">#</span><span class="n">id</span> <span class="o">~</span><span class="mi">20</span><span class="err">にネクストキーロック</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">from</span> <span class="k">table</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&lt;=</span> <span class="mi">20</span> <span class="k">for</span> <span class="k">update</span><span class="p">;</span>   <span class="o">#</span><span class="n">id</span> <span class="o">~</span><span class="mi">30</span><span class="err">にネクストキーロック</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">from</span> <span class="k">table</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&gt;</span> <span class="mi">15</span> <span class="k">for</span> <span class="k">update</span><span class="p">;</span>    <span class="o">#</span><span class="n">id</span> <span class="mi">11</span><span class="o">~</span><span class="err">にギャップロック</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">from</span> <span class="k">table</span> <span class="k">where</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">35</span> <span class="k">for</span> <span class="k">update</span><span class="p">;</span>    <span class="o">#</span><span class="n">id</span> <span class="mi">31</span><span class="o">~</span><span class="err">にギャップロック</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4873116384/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4873116384&amp;linkCode=as2&amp;tag=sojiro14-22">実践ハイパフォーマンスMySQL 第3版</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1178,282 +1275,6 @@ $ rails new app_name -d mysql mysql2 &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/13/start-up-a-web-camera-via-web/">Webからデバイスのカメラを起動する</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-13T18:58:45+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:58 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Web からデバイスのカメラを起動してみたいと思いたち、少し調べて見たことのメモ</p>
-
-<h2>準備</h2>
-
-<p>以前のエントリ <a href="http://blog.sojiro.me/blog/2015/01/07/making-a-web-server-with-node-dot-js/">Node.jsを使ってWeb Serverを作ってみました</a> で立てたサーバーで実験してみます</p>
-
-<h2>ベースとなるコード</h2>
-
-<p>このコードに手を入れていきます</p>
-
-<figure class='code'><figcaption><span>web.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/html&#39;</span><span class="p">});</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;&lt;title&gt;Hello World&lt;/title&gt;&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="o">****</span><span class="p">,</span> <span class="s1">&#39;xxx.xx.x.xxx&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;server listening...&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>コードの全体像</h2>
-
-<p>最終的なコードはこちら。かなり手抜きしてます</p>
-
-<p><a href="http://python-gazo.blog.jp/html5/javascript/webcamera">こちら</a> を参考にさせていただきました</p>
-
-<figure class='code'><figcaption><span>web_camera.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">_html</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="cm">/*</span>
-</span><span class='line'><span class="cm">&lt;!doctype html&gt;</span>
-</span><span class='line'><span class="cm">&lt;html&gt;</span>
-</span><span class='line'><span class="cm">&lt;head&gt;</span>
-</span><span class='line'><span class="cm">  &lt;title&gt;Web Camera&lt;/title&gt;</span>
-</span><span class='line'><span class="cm">  &lt;script type=&quot;text/javascript&quot;&gt;</span>
-</span><span class='line'><span class="cm">function capCamera(){</span>
-</span><span class='line'><span class="cm">  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || window.navigator.mozGetUserMedia;</span>
-</span><span class='line'><span class="cm">    window.URL = window.URL || window.webkitURL;</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">  var video = document.getElementById(&quot;camera&quot;);</span>
-</span><span class='line'><span class="cm">  var localStream = null;</span>
-</span><span class='line'><span class="cm">  navigator.getUserMedia({video: true, audio: false},</span>
-</span><span class='line'><span class="cm">  function(stream) {</span>
-</span><span class='line'><span class="cm">    console.log(stream);</span>
-</span><span class='line'><span class="cm">    video.src = window.URL.createObjectURL(stream);</span>
-</span><span class='line'><span class="cm">  },</span>
-</span><span class='line'><span class="cm">  function(err) {</span>
-</span><span class='line'><span class="cm">    console.log(err);</span>
-</span><span class='line'><span class="cm">  }</span>
-</span><span class='line'><span class="cm">  );</span>
-</span><span class='line'><span class="cm">} </span>
-</span><span class='line'><span class="cm">  &lt;/script&gt;</span>
-</span><span class='line'><span class="cm">&lt;/head&gt;</span>
-</span><span class='line'><span class="cm">&lt;body&gt;</span>
-</span><span class='line'><span class="cm">   &lt;input type=&quot;button&quot;  value=&quot;Web Camera&quot; onClick=&quot;capCamera()&quot;&gt;</span>
-</span><span class='line'><span class="cm">   &lt;br&gt;</span>
-</span><span class='line'><span class="cm">   &lt;video id=&quot;camera&quot; width=&quot;640&quot; height=&quot;480&quot; autoplay=&quot;1&quot; &gt;&lt;/video&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">&lt;/body&gt;</span>
-</span><span class='line'><span class="cm">&lt;/html&gt;</span>
-</span><span class='line'><span class="cm">*/</span><span class="p">}).</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(\n)/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/html&#39;</span><span class="p">});</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">_html</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="o">****</span><span class="p">,</span> <span class="s1">&#39;xxx.xx.x.xxx&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;server listening...&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>HTML 部分</h2>
-
-<p>HTML の部分をみてみます</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;body&gt;</span>
-</span><span class='line'>   <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span>  <span class="na">value=</span><span class="s">&quot;Web Camera&quot;</span> <span class="na">onClick=</span><span class="s">&quot;capCamera()&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>   <span class="nt">&lt;br&gt;</span>
-</span><span class='line'>   <span class="nt">&lt;video</span> <span class="na">id=</span><span class="s">&quot;camera&quot;</span> <span class="na">width=</span><span class="s">&quot;640&quot;</span> <span class="na">height=</span><span class="s">&quot;480&quot;</span> <span class="na">autoplay=</span><span class="s">&quot;1&quot;</span> <span class="nt">&gt;&lt;/video&gt;</span>
-</span><span class='line'><span class="nt">&lt;/body&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>構成はボタンと、カメラからの映像をキャプチャする範囲の2つだけ</p>
-
-<p>ボタンには <code>capCamera()</code> という関数が紐づけられています</p>
-
-<h2>JavaScript 部分</h2>
-
-<p>次に JavaScript の部分をみてみます</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">capCamera</span><span class="p">(){</span>
-</span><span class='line'>  <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span> <span class="o">=</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span> <span class="o">||</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">webkitGetUserMedia</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">mozGetUserMedia</span><span class="p">;</span>
-</span><span class='line'>    <span class="nb">window</span><span class="p">.</span><span class="nx">URL</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">URL</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">webkitURL</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">video</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;camera&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">localStream</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span><span class="p">({</span><span class="nx">video</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">audio</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span>
-</span><span class='line'>  <span class="kd">function</span><span class="p">(</span><span class="nx">stream</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">stream</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">video</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nx">createObjectURL</span><span class="p">(</span><span class="nx">stream</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここで <code>navigator</code> インターフェースの <code>getUserMedia()</code> メソッドを使用しているのがわかります</p>
-
-<h3>getUserMedia の構文</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span> <span class="p">(</span> <span class="nx">constraints</span><span class="p">,</span> <span class="nx">successCallback</span><span class="p">,</span> <span class="nx">errorCallback</span> <span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<table>
-<thead>
-<tr>
-<th>引数           </th>
-<th>必須 / オプショナル            </th>
-<th> 説明                                                                                 </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>constraints    </td>
-<td>必須                           </td>
-<td> successCallback に渡されるLocalMediaStream オブジェクトがサポートするメディアタイプ。</td>
-</tr>
-<tr>
-<td>successCallback</td>
-<td>必須                           </td>
-<td> LocalMediaStream オブジェクトが取得できた場合、呼び出されるコールバック関数。        </td>
-</tr>
-<tr>
-<td>errorCallback  </td>
-<td>オプショナル (Firefox では必須)</td>
-<td> 呼び出しが失敗した際に実行されるコールバック関数。最近の Firefox では必須となっています。省略された場合、 NS_ERROR_XPC_NOT_ENOUGH_ARGS error がスローされます。</td>
-</tr>
-</tbody>
-</table>
-
-
-<h3>constraints</h3>
-
-<p>video, audio の二つの属性に対して真偽値を指定する</p>
-
-<h3>successcallback</h3>
-
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_API#LocalMediaStream">LocalMediaStream</a> が引数として渡されるので <code>window.URL.createObjectURL()</code> メソッドにそのまま渡してオブジェクトの URL を取得する</p>
-
-<p>このように取得したビデオストリームの URL を <code>video</code> の DOM に渡すことで <code>video</code> 領域にビデオを表示します</p>
-
-<h2>JavaScript 内のヒアドキュメント</h2>
-
-<p>今回は横着して <code>web_camera.js</code> の中に HTML をすべてヒアドキュメントで記述しました JavaScript 内のヒアドキュメントに関してはちょっとしたテクニックがあるようなのでそれはまた次の機会に書こうと思います。</p>
-
-<p>Web からデバイスのカメラを操作できるというのはとても面白いのですが、今回扱ったメソッドはまだまだ一部のブラウザでしかサポートされていないので、特にモバイルで使えるようになったらもっと面白くなるのに、という感想をもってこのエントリを終わります。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="https://developer.mozilla.org/ja/docs/Web/API/Navigator/getUserMedia">Navigator.getUserMedia</a></li>
-<li><a href="http://python-gazo.blog.jp/html5/javascript/webcamera">WebRTCでカメラの起動とキャプチャ</a></li>
-<li><a href="http://qiita.com/ampersand/items/c6c773ba7ae9115856d0">SafariでもエラーにならないJavascriptのヒアドキュメントの書き方</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page3">&larr; Older</a>
@@ -1476,6 +1297,10 @@ $ rails new app_name -d mysql mysql2 &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/17/study-of-perfect-java-chapter-3/">パーフェクトJava読書メモ chapter 3 数値①</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ chapter 2 文字と文字列</a>
       </li>
     
@@ -1489,10 +1314,6 @@ $ rails new app_name -d mysql mysql2 &hellip;">
     
       <li class="post">
         <a href="/blog/2016/03/05/management-perl-versions-by-plenv/">plenv で perl を管理する</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv で ruby を管理する</a>
       </li>
     
   </ul>

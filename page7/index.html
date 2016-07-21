@@ -9,10 +9,13 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="①HUBOTを動かすために必要な諸々のインストール 準備として以下をインストールする node.js（サーバー）
-npm（パッケージ管理コマンド）
-Redis（KVS） 上記をインストールするためにHomebrewのインストールから始める 1
-$ ruby -e &quot;$(curl - &hellip;">
+  <meta name="description" content="①Octopress のインストール octopressリポジトリをクローン 1
+2
+$ cd git/
+$ git clone git://github.com/imathis/octopress.git octopress Bundlerを使って必要なパッケージをインストール 1
+2
+3
+$ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,6 +97,387 @@ $ ruby -e &quot;$(curl - &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress/">Github PagesとOctopressを使ったブログの作成</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-04-26T17:05:36+09:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:05 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>①Octopress のインストール</h2>
+
+<h3>octopressリポジトリをクローン</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/
+</span><span class='line'><span class="nv">$ </span>git clone git://github.com/imathis/octopress.git octopress
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Bundlerを使って必要なパッケージをインストール</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/
+</span><span class='line'><span class="nv">$ </span>sudo gem install bundler
+</span><span class='line'><span class="nv">$ </span>sudo bundle install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>bundle installがエラーになる</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo bundle install
+</span><span class='line'>Fetching gem metadata from https://rubygems.org/.......
+</span><span class='line'>Fetching additional metadata from https://rubygems.org/..
+</span><span class='line'>Using rake 0.9.2.2
+</span><span class='line'>
+</span><span class='line'>Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension.
+</span><span class='line'>
+</span><span class='line'>    /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby extconf.rb
+</span><span class='line'>checking <span class="k">for</span> main<span class="o">()</span> in -lc... yes
+</span><span class='line'>creating Makefile
+</span><span class='line'>
+</span><span class='line'>make <span class="s2">&quot;DESTDIR=&quot;</span>
+</span><span class='line'>compiling redcloth_attributes.c
+</span><span class='line'>compiling redcloth_inline.c
+</span><span class='line'>compiling redcloth_scan.c
+</span><span class='line'>linking shared-object redcloth_scan.bundle
+</span><span class='line'>clang: error: unknown argument: <span class="s1">&#39;-multiply_definedsuppress&#39;</span> <span class="o">[</span>-Wunused-command-line-argument-hard-error-in-future<span class="o">]</span>
+</span><span class='line'>clang: note: this will be a hard error <span class="o">(</span>cannot be downgraded to a warning<span class="o">)</span> in the future
+</span><span class='line'>make: *** <span class="o">[</span>redcloth_scan.bundle<span class="o">]</span> Error 1
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Gem files will remain installed in /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9 <span class="k">for</span> inspection.
+</span><span class='line'>Results logged to /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9/ext/redcloth_scan/gem_make.out
+</span><span class='line'>An error occurred <span class="k">while</span> installing RedCloth <span class="o">(</span>4.2.9<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
+</span><span class='line'>Make sure that <span class="sb">`</span>gem install RedCloth -v <span class="s1">&#39;4.2.9&#39;</span><span class="sb">`</span> succeeds before bundling.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Xcodeのアップデートでコンパイラが更新されたことが原因のよう</p>
+
+<h3>オプションをつけてやり直し</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo <span class="nv">ARCHFLAGS</span><span class="o">=</span>-Wno-error<span class="o">=</span>unused-command-line-argument-hard-error-in-future bundle install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>ビルドツール、rakeをインストール</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>②GitHubにリポジトリを作成</h2>
+
+<ul>
+<li>[username].github.io</li>
+</ul>
+
+
+<p>という名前でリポジトリを作る。今回は</p>
+
+<ul>
+<li>sojiro14.github.io</li>
+</ul>
+
+
+<h2>③Octopressでのデプロイ</h2>
+
+<h3>デプロイ設定する</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake setup_github_pages
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>途中でリポジトリのurlを聞かれるので入力。今回は</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git@github.com:sojiro14/sojiro14.github.io.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>を入力した</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake setup_github_pages
+</span><span class='line'>Enter the <span class="nb">read</span>/write url <span class="k">for</span> your repository
+</span><span class='line'><span class="o">(</span>For example, <span class="s1">&#39;git@github.com:your_username/your_username.github.io.git)</span>
+</span><span class='line'><span class="s1">           or &#39;</span>https://github.com/your_username/your_username.github.io<span class="s1">&#39;)</span>
+</span><span class='line'><span class="s1">Repository url: git@github.com:sojiro14/sojiro14.github.io.git</span>
+</span><span class='line'><span class="s1">Added remote git@github.com:sojiro14/sojiro14.github.io.git as origin</span>
+</span><span class='line'><span class="s1">Set origin as default remote</span>
+</span><span class='line'><span class="s1">Master branch renamed to &#39;</span><span class="nb">source</span><span class="err">&#39;</span> <span class="k">for</span> committing your blog <span class="nb">source </span>files
+</span><span class='line'>
+</span><span class='line'>・・・・（略）
+</span><span class='line'>
+</span><span class='line'> <span class="m">1</span> file changed, <span class="m">1</span> insertion<span class="o">(</span>+<span class="o">)</span>
+</span><span class='line'> create mode <span class="m">100644</span> index.html
+</span><span class='line'><span class="nb">cd</span> -
+</span><span class='line'>
+</span><span class='line'>---
+</span><span class='line'><span class="c">## Now you can deploy to git@github.com:sojiro14/sojiro14.github.io.git with `rake deploy` ##</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>ページの作成</h3>
+
+<p>必要ファイルを作成</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate
+</span><span class='line'><span class="c">## Generating Site with Jekyll</span>
+</span><span class='line'>directory <span class="nb">source</span>/stylesheets/
+</span><span class='line'>   create <span class="nb">source</span>/stylesheets/screen.css
+</span><span class='line'>Configuration from /Your/Octopress/Directory/git/octopress/_config.yml
+</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
+</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>deploy</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
+</span><span class='line'><span class="c">## Deploying branch to Github Pages </span>
+</span><span class='line'><span class="c">## Pulling any updates from Github Pages </span>
+</span><span class='line'><span class="nb">cd </span>_deploy
+</span><span class='line'>
+</span><span class='line'>・・・・（略）
+</span><span class='line'>
+</span><span class='line'><span class="c">## Github Pages deploy complete</span>
+</span><span class='line'><span class="nb">cd</span> -
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>deployの確認</h3>
+
+<p>実際にページにアクセスして確認する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>http://sojiro14.github.io
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>確認できればok。反映には少々(5分ほど)時間がかかる。</p>
+
+<h2>④Octopressの初期設定を変更</h2>
+
+<h3>_config.ymlの編集</h3>
+
+<p>_config.ymlファイルにてブログのタイトル、サブタイトル、筆者などを設定できる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim _config.yml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>例えばタイトル、サブタイトルは以下のように設定</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Sojiro&#39;s Blog</span>
+</span><span class='line'><span class="l-Scalar-Plain">subtitle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">This is nothing much.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>設定したらdeploy。Task: gen_deployを使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake gen_deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>もう一度ページにアクセスしてタイトルなどが変更されているのを確認できればok</p>
+
+<h2>⑤記事の投稿</h2>
+
+<h2>記事を書く</h2>
+
+<p>new_postの後には記事のタイトルを指定。英数字のみ使用可</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake new_post<span class="o">[</span><span class="s2">&quot;IRC-bot by HUBOT&quot;</span><span class="o">]</span>
+</span><span class='line'>mkdir -p <span class="nb">source</span>/_posts
+</span><span class='line'>Creating new post: <span class="nb">source</span>/_posts/2014-04-19-irc-bot-by-hubot.markdown
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>source/_posts/2014-04-19-irc-bot-by-hubot.markdownというファイルが生成されるのでそこに内容をマークダウンで記述</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim <span class="nb">source</span>/_posts/2014-04-19-irc-bot-by-hubot.markdown
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>---
+</span><span class='line'>layout: post
+</span><span class='line'>title: <span class="s2">&quot;IRC-bot by HUBOT&quot;</span>
+</span><span class='line'>date: 2014-04-19 21:05:49 +0900
+</span><span class='line'>comments: <span class="nb">true</span>
+</span><span class='line'>categories:
+</span><span class='line'>---
+</span><span class='line'>ここ以下に内容をマークダウンで書いていく
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>記事をデプロイ</h3>
+
+<p>記事を書いたらデプロイする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake gen_deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>記事が投稿されていることを確認できればok</p>
+
+<h2>⑥Google Analyticsを導入する</h2>
+
+<h3>Google AnalyticsのトラッキングIDを取得する</h3>
+
+<p><a href="http://www.google.com/intl/ja_jp/analytics/">Google Analyticsのサイト</a>からアカウントを作成し、</p>
+
+<ul>
+<li>username.github.io</li>
+</ul>
+
+
+<p>のトラッキングIDを取得する</p>
+
+<h3>取得したトラッキングIDを設定</h3>
+
+<p>_config.ymlにトラッキングIDを設定する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim _config.yml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>場所はこちら</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># Google Analytics</span>
+</span><span class='line'><span class="l-Scalar-Plain">google_analytics_tracking_id</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">XX-12345678-9</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>設定が終わったらデプロイ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake gen_deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Google Analyticsのサイト上でトラッキングできていることを確認できればok</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://www.rubylife.jp/rails/ini/index2.html">Bundlerを使ったGemパッケージの管理</a></li>
+<li><a href="http://qiita.com/yonesuke/items/26ed04f3f15e269c3ed9">Octopress インストールがうまくいかなかったのでメモ</a></li>
+<li><a href="http://d.hatena.ne.jp/unageanu/20100829/1283069269">Rakeの基本的な使い方まとめ</a></li>
+<li><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a></li>
+<li><a href="http://morizyun.github.io/blog/octopress-gitpage-minimum-install-guide/">OctopressでGitHub無料ブログ構築。sourceをBitbucket管理。簡単ガイド！</a></li>
+<li><a href="http://qiita.com/syui/items/07365ed24eef63602233">GitHub Pages + Octopress カスタマイズ</a></li>
+<li><a href="http://qiita.com/fakestarbaby/items/14785a63e064bb1306b9">OctopressでGoogleアナリティクスを使おう！</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -386,6 +770,10 @@ $ ruby -e &quot;$(curl - &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/17/study-of-perfect-java-chapter-3/">パーフェクトJava読書メモ chapter 3 数値①</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ chapter 2 文字と文字列</a>
       </li>
     
@@ -399,10 +787,6 @@ $ ruby -e &quot;$(curl - &hellip;">
     
       <li class="post">
         <a href="/blog/2016/03/05/management-perl-versions-by-plenv/">plenv で perl を管理する</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv で ruby を管理する</a>
       </li>
     
   </ul>
