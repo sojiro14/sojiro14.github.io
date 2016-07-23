@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-07-22T08:50:16+09:00</updated>
+  <updated>2016-07-24T02:19:55+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,491 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 4 変数とオブジェクト]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/07/18/study-of-perfect-java-chapter-4/"/>
+    <updated>2016-07-18T20:13:40+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/07/18/study-of-perfect-java-chapter-4</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>変数とオブジェクト</h2>
+
+<ul>
+<li>Javaの変数は以下の二つに分類される
+
+<ul>
+<li>基本型変数</li>
+<li>参照型変数</li>
+</ul>
+</li>
+<li>オブジェクトはある体系にそってデータを表すモノであり、名前を持たない</li>
+</ul>
+
+
+<h2>変数</h2>
+
+<h3>参照型変数</h3>
+
+<ul>
+<li>C言語のポインタ型変数の値がメモリ上のアドレス値そのものであるのに対し、Javaの参照型変数の値はオブジェクトの位置情報を指し示す抽象的な「何か」である</li>
+<li>参照型変数は名前を持ち、オブジェクトを参照することで扱いやすく橋渡しする</li>
+<li>参照型変数自体に型があり以下の3種類、これは参照しているオブジェクトの型とは別
+
+<ul>
+<li>クラス型</li>
+<li>配列型</li>
+<li>インターフェース型</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>基本型変数</h3>
+
+<ul>
+<li>基本型変数は値をそのまま保持する</li>
+<li>基本型の種類は以下の8つ
+
+<ul>
+<li><code>boolean</code></li>
+<li><code>byte</code></li>
+<li><code>char</code></li>
+<li><code>short</code></li>
+<li><code>int</code></li>
+<li><code>long</code></li>
+<li><code>float</code></li>
+<li><code>double</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>変数の宣言</h3>
+
+<ul>
+<li>変数を使うには最初に変数を宣言する</li>
+<li>変数宣言は最初に変数の型を書き、続けて変数名を書く</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">StringBuilder</span> <span class="n">sb</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>基本型変数の宣言時も型名を変数名の前に書く</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>同じスコープで同名の変数は宣言できない</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">method</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="c1">// コンパイルエラー</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>変数の初期化</h3>
+
+<ul>
+<li>変数は宣言時に初期化できる</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>初期化しない場合の変数のデフォルト値は変数の型と種類に依存する</li>
+</ul>
+
+
+<h3>変数の修飾子</h3>
+
+<ul>
+<li>変数の宣言時に修飾子を付けることができる</li>
+<li>変数に使える修飾子は以下
+
+<ul>
+<li><code>private</code></li>
+<li><code>protected</code></li>
+<li><code>public</code></li>
+<li><code>transient</code></li>
+<li><code>final</code></li>
+<li><code>static</code></li>
+<li><code>volatile</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>オブジェクト</h2>
+
+<h3>オブジェクトの生成</h3>
+
+<ul>
+<li><code>new</code> の後にクラス名を書き、 <code>()</code> で引数を指定する</li>
+<li>引数の定義はクラスごとに決まっている</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;012&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>参照型変数への代入</h3>
+
+<ul>
+<li>生成したオブジェクトは参照型変数へ参照を渡して扱う</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>あくまで変数が扱っているのはオブジェクトへの参照なので、以下の例では2つの変数は同じオブジェクトへの参照を持つ</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">();</span>
+</span><span class='line'><span class="n">StringBuilder</span> <span class="n">sb2</span> <span class="o">=</span> <span class="n">sb</span><span class="o">;</span>
+</span><span class='line'><span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;012&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">sb2</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;345&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="c1">// sb: &quot;0123445&quot;</span>
+</span><span class='line'><span class="c1">// sb2: &quot;012345&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>基本型変数への代入</h3>
+
+<ul>
+<li>基本型変数へ代入されるのはオブジェクトの参照ではなく値そのもの</li>
+<li>値そのものをコピーして代入する</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">42</span><span class="o">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">K</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'><span class="c1">// i: 42</span>
+</span><span class='line'><span class="c1">// j: 43</span>
+</span><span class='line'><span class="c1">// k: 42</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>null参照</h3>
+
+<ul>
+<li><code>null</code> は「何も参照していない」ということを表す</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>nullチェック</h4>
+
+<ul>
+<li>参照先がなく、 <code>null</code> を持つ参照型変数にたいする演算は <code>NullPointerException</code></li>
+<li><code>Object</code> クラスに <code>null</code> をチェックするためのメソッドがある</li>
+</ul>
+
+
+<table>
+<thead>
+<tr>
+<th> method </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>equals</code> </td>
+<td> 引数のどちらかが <code>null</code> でも使える比較 </td>
+</tr>
+<tr>
+<td> <code>toString</code> </td>
+<td> <code>null</code> の場合の文字列を指定可能 </td>
+</tr>
+<tr>
+<td> <code>isNull</code> </td>
+<td> 引数が <code>null</code> のとき真 </td>
+</tr>
+<tr>
+<td> <code>notNull</code> </td>
+<td> 引数が <code>null</code> でないとき真 </td>
+</tr>
+<tr>
+<td> <code>requireNonNull</code> </td>
+<td> 引数が <code>null</code> だと即座に <code>NullPointerException</code> </td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Optional型</h3>
+
+<ul>
+<li><code>Optional</code> 型は任意のオブジェクトをくるんで <code>null</code> かもしれない状態を表現する</li>
+<li>基本型変数のための <code>Optional</code> 型として以下の 3 つがある
+
+<ul>
+<li><code>OptionalInt</code></li>
+<li><code>OptionalLong</code></li>
+<li><code>OptionalDouble</code></li>
+</ul>
+</li>
+<li><code>Optional</code> オブジェクトは <code>of</code> または <code>ofNullable</code> メソッドを使って任意のオブジェクトから生成できる</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">StringBuilder</span> <span class="n">sb</span><span class="o">;</span>
+</span><span class='line'><span class="n">Optional</span><span class="o">&lt;</span><span class="n">StringBuilder</span><span class="o">&gt;</span> <span class="n">osb</span> <span class="o">=</span> <span class="n">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span>
+</span><span class='line'><span class="c1">// or</span>
+</span><span class='line'><span class="c1">// Oprional&lt;StringBuilder&gt; osb = Optional.ofNullable(sb);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><code>get</code> メソッドで <code>Optional</code> オブジェクトでくるんだオブジェクトを取得</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Optional</span><span class="o">&lt;</span><span class="n">StringBuilder</span><span class="o">&gt;</span> <span class="n">osb</span><span class="o">;</span>
+</span><span class='line'><span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="n">osb</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>くるんだオブジェクトが <code>null</code> でなければそのまま呼び出し、 <code>null</code> であれば引数のオブジェクトを返す例</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="n">osb</span><span class="o">.</span><span class="na">orElse</span><span class="o">(</span><span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;none&quot;</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>変数を介さないオブジェクトの操作</h3>
+
+<ul>
+<li>変数に参照を格納しなくてもオブジェクトを操作できる</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;012&quot;</span><span class="o">).</span><span class="na">length</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>文字列リテラルでも</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="s">&quot;abc&quot;</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>ドット演算子でメソッド呼び出しをつなげることをメソッドチェインという</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">();</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;012&quot;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;345&quot;</span><span class="o">).</span><span class="na">length</span><span class="o">();</span>
+</span><span class='line'><span class="c1">// len: 6</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>変数と型</h2>
+
+<ul>
+<li>オブジェクトの型はクラスで定義されている</li>
+<li>変数の型とオブジェクトの型が一致もしくはオブジェクトの型が変数の型の下位型であるとき変数にオブジェクトの参照を代入可能</li>
+<li>変数が参照するオブジェクトに対して行える操作は変数の型できまる</li>
+<li>下位型のオブジェクトは上位型の持つメソッドを持つことが保証されている
+
+<ul>
+<li>ただし実態が同一とは限らない</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>変数の詳細</h2>
+
+<h3>変数の種類</h3>
+
+<table>
+<thead>
+<tr>
+<th> type </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> ローカル変数 </td>
+<td> メソッドもしくはコンストラクタ内で宣言される。メソッドやコンストラクタが終わると消滅。 </td>
+</tr>
+<tr>
+<td> パラメータ変数 </td>
+<td> メソッドもしくはコンストラクタに引数として渡る。メソッドやコンストラクタが終わると消滅。 </td>
+</tr>
+<tr>
+<td> インスタンスフィールド変数 </td>
+<td> クラスの構成要素 </td>
+</tr>
+<tr>
+<td> クラスフィールド変数 </td>
+<td> クラスの構成要素 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>変数のデフォルト値</h3>
+
+<table>
+<thead>
+<tr>
+<th> type </th>
+<th> default value </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 参照型 </td>
+<td> <code>null</code>      </td>
+</tr>
+<tr>
+<td> <code>boolean</code> </td>
+<td> <code>false</code>  </td>
+</tr>
+<tr>
+<td> <code>char</code> </td>
+<td> &ldquo;¥u0000&rdquo;    </td>
+</tr>
+<tr>
+<td> <code>byte</code>, <code>short</code>, <code>int</code>, <code>Long</code> </td>
+<td> 0 </td>
+</tr>
+<tr>
+<td> <code>float</code>, <code>double</code> </td>
+<td> +0.0 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>変数のスコープ</h3>
+
+<h4>ローカル変数</h4>
+
+<ul>
+<li>変数を宣言した行からメソッドもしくはコンストラクタが終わるまで</li>
+</ul>
+
+
+<h4>ブロックスコープ</h4>
+
+<ul>
+<li><code>{}</code> で囲ったブロックに閉じたスコープ</li>
+<li>変数を宣言した行からブロックが終わるまで</li>
+</ul>
+
+
+<h4>シャドーイング</h4>
+
+<ul>
+<li>同一のスコープ内で同じ変数を2度以上宣言</li>
+</ul>
+
+
+<h4>パラメータ変数のスコープ</h4>
+
+<ul>
+<li>メソッド及びコンストラクタの中</li>
+</ul>
+
+
+<h4>フィールド変数のスコープ</h4>
+
+<ul>
+<li>フィールド変数のスコープはクラス内</li>
+<li>宣言した行の位置は無関係</li>
+</ul>
+
+
+<h2>オブジェクトの寿命</h2>
+
+<p>オブジェクトへの参照が外れる条件
+* ローカル変数及びパラメータ変数のスコープが外れたとき
+* オブジェクトが消滅したとき
+* クラスが消滅し、クラスフィールド変数の参照が外れたとき
+* 変数に別のオブジェクトの参照もしくは <code>null</code> が再代入されたとき
+* 変数を介さない操作がされていた場合、式の評価が終わったとき</p>
+
+<h2>final変数と不変オブジェクト</h2>
+
+<ul>
+<li><code>final</code> 修飾子を指定した変数を final 変数と呼ぶ</li>
+<li>final 変数は再代入不可</li>
+<li><code>final</code> 修飾子が禁止するのは変数自体の値の変更であって、変数が参照するオブジェクト自体の変更ではない</li>
+</ul>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 3 数値①]]></title>
@@ -2651,82 +3136,6 @@ primary key や、unique key といったレコードを一意に特定できる
 <ul>
 <li><a href="https://github.com/brandur/json_schema">validate-schema</a></li>
 <li><a href="https://www.npmjs.com/package/jsonlint">jsonlint</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PAUSE ID の取得]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/05/17/get-pause-id/"/>
-    <updated>2015-05-17T23:23:14+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/05/17/get-pause-id</id>
-    <content type="html"><![CDATA[<p>いま私は日本の Perl シーンにおける名立たるプログラマの方々の元で仕事させていただくという大変ありがたい立場にいるのですが、常々</p>
-
-<p><strong> OSS に対する活動が成長の大きな糧になるからチャレンジすべし </strong></p>
-
-<p>とアドバイスを受けています。</p>
-
-<p>ところが初めてその言葉を受けてから既に1年以上経とうというのに何もしていない。これは本当にいかんと思ってとにかく CAPN に貢献してみようと。</p>
-
-<p>そこで調べてみると PAUSE ID なるものが必要なようなので取得までの過程をここへメモします</p>
-
-<h2>PAUSE ID の取得</h2>
-
-<p>PAUSE は The Perl Authors Upload Server の略称で、ここから CPAN へのアップなどするよう</p>
-
-<p><a href="http://pause.perl.org/pause/query?ACTION=request_id">ここ</a> から登録を開始する</p>
-
-<p>各項目に入力してアカウント申請を行う</p>
-
-<p>full name の欄はそれっぽい名前じゃないとはじかれるが、後から変えられる</p>
-
-<p>申請を行うと、しばらくしてアカウント発行の通知が登録したメールアドレスに届く</p>
-
-<p>この通知は人によって届くまでの時間にばらつきがあるようだが、今回は申請したその日のうちに来た</p>
-
-<p>通知にはパスワード変更ページへのリンクと暫定のパスワードが記載されているので、登録した ID と暫定パスワードで Basic 認証を突破してパスワードを設定する</p>
-
-<p>アカウントが発行されると Edit Account Info というメニューへアクセスできるようになる</p>
-
-<p>ここに</p>
-
-<blockquote><p>The email address [id]@cpan.org should be configured to forward mail to &hellip;</p></blockquote>
-
-<p>という項目があるので、 <code>[id]@cpan.org</code> へのメールを受け取るメールアドレスを設定する</p>
-
-<p>ここで設定しておかないと後々 <code>[id]@cpan.org</code> に対するメールが受け取れず不便を被るので要設定とのこと</p>
-
-<h2>Gravatar の設定</h2>
-
-<p>Gravatar は Email アカウントにアイコンを紐づけて様々なサービスで使えるようにするサービスで、 GitHub などでも使われている</p>
-
-<p><a href="https://ja.gravatar.com/">https://ja.gravatar.com/</a></p>
-
-<p>Gravatar に PAUSE ID に紐づいたアドレスでアイコンを設定することで CPAN のアカウントへアイコンを設定することができる</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[id]@cpan.org  # 設定するメールアドレス</span></code></pre></td></tr></table></div></figure>
-
-
-<p>既に Gravatar のアカウントがある場合は「メールアドレスの追加」から上記アドレスを追加すればよい</p>
-
-<p>新たに Gravatar のアカウントを取得する場合は注意が必要なようである。 <code>@cpan.org</code> のメールアドレスが前項の PAUSE ID 取得の際に自分のメールアドレスへ転送されるよう設定してからでないと、メールアドレスの認証が取れず、 Gravatar のアカウント取得に失敗するようだ。</p>
-
-<p><img src="http://sojiro14.github.io/images/cpan/gravatar.png"></p>
-
-<p>Gravatar の設定が済むと PAUSE アカウントに設定したアイコンが表示されるようになる</p>
-
-<p><img src="http://sojiro14.github.io/images/cpan/sojiro.png"></p>
-
-<p>さて、アカウントは取得した。後はコードを書いて上げるだけ。</p>
-
-<p>やるしかないのです。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://blog.livedoor.jp/sasata299/archives/51284970.html">こんな僕が CPAN Author （一応） になるまで。</a></li>
 </ul>
 
 ]]></content>

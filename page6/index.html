@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="YAPC::Asia 2014のLTに登壇させていただいた。その際、サクッとオシャレなプレゼンテーションを作ることができるということでreveal.jsを使って作ったのでメモ。 実際のプレゼンテーション（一部の画像を削除したもの） reveal.jsとは &hellip;">
+  <meta name="description" content="コンポーネント間のやり取りにはステートフル/ステートレスという考え方がある。FTPではステートフルなやり取りが、HTTPではステートレスなやり取りが採用されいるが、それぞれの特徴についてまとめてみる。 セッション状態（アプリケーション状態） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,93 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/13/stateful-and-stateless/">ステートフル ステートレスとはどういうことか</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-09-13T18:00:03+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>6:00 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>コンポーネント間のやり取りにはステートフル/ステートレスという考え方がある。FTPではステートフルなやり取りが、HTTPではステートレスなやり取りが採用されいるが、それぞれの特徴についてまとめてみる。</p>
+
+<h2>セッション状態（アプリケーション状態）</h2>
+
+<p>システムにログインしてからログアウトするまでの一連の操作をセッションと呼ぶ。その一連の操作の中のそれぞれの状態をセッション状態と呼ぶ。</p>
+
+<h2>ステートフル</h2>
+
+<p>ステートフルなやり取りではサーバーはクライアントのセッション状態を保持している。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>やり取りが完結に済む</li>
+<li>それによりネットワークの帯域を節約できる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>クライアントの状態を都度把握しておかなければいけないのでクライアントが増えると負荷も増える</li>
+<li>サーバーを複数台設置する場合にはそれぞれのサーバー間でクライアントの状態を同期しなければいけない</li>
+<li>これらの理由によりスケールアウトには向かない</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>ステートレス</h2>
+
+<p>ステートレスなやり取りではサーバーはクライアントのセッション情報を保持しない。</p>
+
+<ul>
+<li>メリット
+
+<ul>
+<li>クライアントのリクエストは状態に依存せず、常にリソースに対する操作に必要十分な情報となる</li>
+<li>よってサーバーが増えてもそのままのリクエストでいつも同じリソースに対する操作ができる</li>
+<li>このためスケールアウトに向いている</li>
+<li>また処理がクライアントの状態に依らないので処理がシンプルになる</li>
+</ul>
+</li>
+<li>デメリット
+
+<ul>
+<li>やり取りが冗長になりがちである</li>
+<li>またリソースへの操作が必要になる度にそのやり取りを繰り返す必要がある</li>
+<li>これによりネットワークの帯域を消費し、処理も遅くなる</li>
+<li>サーバーが状態を保持していないのでエラーが起きたときのハンドリングが複雑になりがちである</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774142042/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4774142042&amp;linkCode=as2&amp;tag=sojiro14-22">Webを支える技術 -HTTP、URI、HTML、そしてREST (WEB+DB PRESS plus)</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1795,173 +1882,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/03/changing-octopress-theme/">Octopressのテーマを変える</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-05-03T17:37:29+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>5:37 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Octopressのテーマを変更する</p>
-
-<ul>
-<li><a href="http://octopress.org/docs/theme/">Octopressの公式ドキュメント</a></li>
-</ul>
-
-
-<p>今回は既に作られ、公開されているテーマを拝借する</p>
-
-<h2>好みのテーマを探す</h2>
-
-<p><a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">3rd Party Octopress Themes</a>にテーマリストが公開されている。ここから使いたいテーマを探す。</p>
-
-<p><a href="http://opthemes.com/">Octopress Themes</a>にPreviewが見やすくまとめられている</p>
-
-<p>今回使用するテーマ</p>
-
-<ul>
-<li><a href="https://github.com/lucaslew/whitespace">Whitespace</a></li>
-</ul>
-
-
-<h2>テーマのインストール</h2>
-
-<h3>テーマをダウンロード</h3>
-
-<p>テーマ毎にclone元とclone先のpathを指定する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/octopress
-</span><span class='line'><span class="nv">$ </span>git clone GIT_URL .themes/THEME_NAME
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマ: Whitespaceの場合</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone git://github.com/lucaslew/whitespace.git .themes/whitespace
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>テーマをインストール</h3>
-
-<p>テーマを指定して <code>rake install</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;THEME_NAME&#39;</span><span class="o">]</span>
-</span><span class='line'><span class="nv">$ </span>rake generate
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマ: Whitespaceの場合</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;whitespace&#39;</span><span class="o">]</span>
-</span><span class='line'>A theme is already installed, proceeding will overwrite existing files. Are you sure? <span class="o">[</span>y/n<span class="o">]</span> y
-</span><span class='line'><span class="c">## Copying whitespace theme into ./source and ./sass</span>
-</span><span class='line'>mkdir -p <span class="nb">source</span>
-</span><span class='line'>cp -r .themes/whitespace/source/. <span class="nb">source</span>
-</span><span class='line'>mkdir -p sass
-</span><span class='line'>cp -r .themes/whitespace/sass/. sass
-</span><span class='line'>mkdir -p <span class="nb">source</span>/_posts
-</span><span class='line'>mkdir -p public
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマを上書きするか？と聞かれたので <code>y</code> で答える</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate
-</span><span class='line'><span class="c">## Generating Site with Jekyll</span>
-</span><span class='line'>overwrite <span class="nb">source</span>/stylesheets/screen.css
-</span><span class='line'>Configuration from /Users/user.name/git/octopress/_config.yml
-</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
-</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>デプロイ</h2>
-
-<p>テーマをインストールしたらデプロイ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ページにアクセスしてテーマが変更されていることを確認できればok</p>
-
-<h2>テーマがアップデートされたら</h2>
-
-<p>テーマが開発者によってアップデートされたら手元のファイルもアップデートする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/.themes/THEME_NAME
-</span><span class='line'><span class="nv">$ </span>git pull
-</span><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;THEME_NAME&#39;</span><span class="o">]</span>
-</span><span class='line'><span class="nv">$ </span>rake generate
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>テーマ: Whitespaceの場合</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/.themes/whitespace
-</span><span class='line'><span class="nv">$ </span>git pull
-</span><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;whitespace&#39;</span><span class="o">]</span>
-</span><span class='line'><span class="nv">$ </span>rake generate
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>デプロイしてアップデート完了</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page7">&larr; Older</a>
@@ -1984,6 +1904,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/18/study-of-perfect-java-chapter-4/">パーフェクトJava読書メモ chapter 4 変数とオブジェクト</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/17/study-of-perfect-java-chapter-3/">パーフェクトJava読書メモ chapter 3 数値①</a>
       </li>
     
@@ -1997,10 +1921,6 @@
     
       <li class="post">
         <a href="/blog/2016/06/26/docker-rails-setup-tutorial/">DockerでRails環境を構築した手順</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/05/management-perl-versions-by-plenv/">plenv で perl を管理する</a>
       </li>
     
   </ul>
