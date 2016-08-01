@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="いま私は日本の Perl シーンにおける名立たるプログラマの方々の元で仕事させていただくという大変ありがたい立場にいるのですが、常々 OSS に対する活動が成長の大きな糧になるからチャレンジすべし とアドバイスを受けています。 &hellip;">
+  <meta name="description" content="JSON Schema を勉強中であります。 その名の通り JSON でリソースそのものやリソースの操作まで表現できる面白いツールだと思います。 しかし、 JSON Schema は往々にして複雑になりがちで、書く量が多くなると typo も増えてきます。 そこで今回は JSON Schema &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,6 +112,150 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/18/validate-json-schema/">JSON Schema のバリデーション</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-18T23:41:47+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:41 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>JSON Schema を勉強中であります。</p>
+
+<p>その名の通り JSON でリソースそのものやリソースの操作まで表現できる面白いツールだと思います。</p>
+
+<p>しかし、 JSON Schema は往々にして複雑になりがちで、書く量が多くなると typo も増えてきます。</p>
+
+<p>そこで今回は JSON Schema のバリデーションに使えるツールをメモ程度に書いておきます。</p>
+
+<h2>validate-schema コマンド</h2>
+
+<p>まずは <code>validate-schema</code> コマンドから。簡単なバリデーションをしてくれる。</p>
+
+<p>gem の json_schema パッケージに入っているのでインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install json_schema
+</span><span class='line'>Password:
+</span><span class='line'>Fetching: json_schema-0.6.0.gem <span class="o">(</span>100%<span class="o">)</span>
+</span><span class='line'>Successfully installed json_schema-0.6.0
+</span><span class='line'>...
+</span><span class='line'><span class="m">1</span> gem installed
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールできたらオプションに <code>-d</code> をつけて実行</p>
+
+<p>これがバリデーションに通った例</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>validate-schema -d json_schema/directory/test.json
+</span><span class='line'>json_schema/directory/test.json is valid.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>バリデーションに落ちるとこうなる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>validate-schema -d json_schema/directory/test.json
+</span><span class='line'>json_schema/directory/test.json: Invalid JSON. Try to validate using <span class="sb">`</span>jsonlint<span class="sb">`</span>.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>なんと別のツールを使って確かめろということなので、以下につづく。</p>
+
+<h2>jsonlint コマンド</h2>
+
+<p>さて、 validate-schema に jsonlint を使え、と言われたので早速インストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install jsonlint -g
+</span><span class='line'>npm http GET https://registry.npmjs.org/jsonlint
+</span><span class='line'>npm http <span class="m">200</span> https://registry.npmjs.org/jsonlint
+</span><span class='line'>...
+</span><span class='line'>/usr/local/bin/jsonlint -&gt; /usr/local/lib/node_modules/jsonlint/lib/cli.js
+</span><span class='line'>jsonlint@1.6.2 /usr/local/lib/node_modules/jsonlint
+</span><span class='line'>├── nomnom@1.8.1 <span class="o">(</span>underscore@1.6.0, chalk@0.4.0<span class="o">)</span>
+</span><span class='line'>└── JSV@4.0.2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールが完了したら早速チェック</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>jsonlint json_schema/directory/test.json
+</span><span class='line'><span class="o">[</span>Error: Parse error on line 20:
+</span><span class='line'>...<span class="err">&quot;</span><span class="o">]</span>,                <span class="o">}</span>            <span class="o">}</span>,
+</span><span class='line'>----------------------^
+</span><span class='line'>Expecting <span class="s1">&#39;STRING&#39;</span>, got <span class="s1">&#39;}&#39;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今度はバリデーションに落ちる理由と場所を示してくれるのですぐに修正できる</p>
+
+<p>だいたいバリデーションに落ちるときは <code>,</code> のつけ過ぎが多い</p>
+
+<p>これらのツールで無駄にハマる時間をなくしたいものです。</p>
+
+<h2>validate-schema コマンド（再）</h2>
+
+<p>今回は JSON Schema 単体のチェックだったので <code>validate-schema</code> コマンドが使い勝手悪く見えるので補足</p>
+
+<p>もともとは、ある JSON データが JSON Schema に則っているかのバリデーションをするツールである</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>validate-schema json_schema/check.json test.json
+</span><span class='line'>test.json#/emotion: failed schema <span class="c">#/properties/emotion: embarrassment is not a member of [&quot;pleasure&quot;, &quot;anger&quot;, &quot;sadness&quot;, &quot;enjoyment&quot;].</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/brandur/json_schema">validate-schema</a></li>
+<li><a href="https://www.npmjs.com/package/jsonlint">jsonlint</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1620,221 +1764,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/05/hubot-create-is-now-old/">&#8216;Hubot &#8211;create&#8217; は古い</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-05T17:50:15+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:50 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>このブログで過去に何度かHubotについて書いたときに、新しいbotを作るときのコマンドは <code>hubot --create bot_name</code> だったのですが、このコマンドが非推奨になったようなのでメモ。</p>
-
-<h2>hubot &ndash;create が使えない</h2>
-
-<p>新しいbotを作ろうとして <code>hubot --create</code> コマンドを打つと以下のように怒られた</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>hubot --create test_bot
-</span><span class='line'><span class="s1">&#39;hubot --create&#39;</span> is deprecated. Use the yeoman generator instead:
-</span><span class='line'>    npm install -g yo generator-hubot
-</span><span class='line'>    mkdir -p test_bot
-</span><span class='line'>    yo hubot
-</span><span class='line'>See https://github.com/github/hubot/blob/master/docs/README.md <span class="k">for</span> more details on getting started.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ところがseeとなっているREADMEファイルは存在しない模様&hellip;</p>
-
-<h2>yo と generator-hubot とは何か</h2>
-
-<p>よくわからないが <code>yo</code> と <code>generator-hubot</code> をインストールしろと言われているのはわかるので調べてみる</p>
-
-<h3>yo と generator-xxx</h3>
-
-<p>yoはYeomanというGoole社が開発した統合開発ツール群に属するツールの一つで、「雛形作成ツール」であるらしい</p>
-
-<p>そしてその雛形は &ldquo;generator-xxx&rdquo; という形でさまざま用意されており、そのHubot版が <code>generator-hubot</code> と言う訳である</p>
-
-<p>つまり上記エラーメッセージは</p>
-
-<ul>
-<li>雛形作成ツールである <code>yo</code> と、Hubotの雛形である <code>generator-hubot</code> をインストールし</li>
-<li>新規ディレクトリ上で <code>yo</code> を実行してHubotの雛形を作るべし</li>
-</ul>
-
-
-<p>ということのようである</p>
-
-<h2>yo と generator-hubot のインストール</h2>
-
-<p>指定された通り以下のようにインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g yo generator-hubot
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>（余談：私の場合はNode.jsのインストールされたpathとnpmのrootが違っていたため少々上手くいかなかった。エラーメッセージは素直によく読むべきだ。。。）</p>
-
-<h2>yo の実行</h2>
-
-<p>インストールが成功したら、新しいbotのディレクトリを作ってそこで <code>yo</code> を実行する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir test_bot
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>test_bot
-</span><span class='line'><span class="nv">$ </span>yo hubot  <span class="c"># これは generator-hubot の雛形を作る、という意味</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>yo hubot</code> を実行するとHubotのAAが表示され、いくつかのやり取りが立ち上がる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>yo hubot
-</span><span class='line'>                     _____________________________
-</span><span class='line'>                    /                             <span class="se">\ </span>
-</span><span class='line'>   //<span class="se">\ </span>             <span class="p">|</span>      Extracting input <span class="k">for</span>    <span class="p">|</span>
-</span><span class='line'>  ////<span class="se">\ </span>   _____    <span class="p">|</span>   self-replication process   <span class="p">|</span>
-</span><span class='line'> //////<span class="se">\ </span> /_____<span class="se">\ </span>  <span class="se">\ </span>                            /
-</span><span class='line'> <span class="o">=======</span> <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
-</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
-</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
-</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
-</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
-</span><span class='line'>         <span class="se">\ </span>     /   +---+
-</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
-</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
-</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
-</span><span class='line'>
-</span><span class='line'>? Owner: sojiro
-</span><span class='line'>? Bot name: slack-test-bot
-</span><span class='line'>? Description: Slack Bot <span class="nb">test</span>
-</span><span class='line'>? Bot adapter: <span class="o">(</span>campfire<span class="o">)</span> slack
-</span><span class='line'>? Bot adapter: slack
-</span><span class='line'>   create bin/hubot
-</span><span class='line'>   create bin/hubot.cmd
-</span><span class='line'>   create Procfile
-</span><span class='line'>   create README.md
-</span><span class='line'>   create external-scripts.json
-</span><span class='line'>   create hubot-scripts.json
-</span><span class='line'>   create .gitignore
-</span><span class='line'>   create package.json
-</span><span class='line'>   create scripts/example.coffee
-</span><span class='line'>   create .editorconfig
-</span><span class='line'>                     _____________________________
-</span><span class='line'> _____              /                             <span class="se">\ </span>
-</span><span class='line'> <span class="se">\ </span>   <span class="se">\ </span>            <span class="p">|</span>   Self-replication process   <span class="p">|</span>
-</span><span class='line'> <span class="p">|</span>    <span class="p">|</span>    _____    <span class="p">|</span>          complete...         <span class="p">|</span>
-</span><span class='line'> <span class="p">|</span>__<span class="se">\\</span><span class="p">|</span>   /_____<span class="se">\ </span>  <span class="se">\ </span>    Good luck with that.    /
-</span><span class='line'>   <span class="p">|</span>//+  <span class="p">|</span><span class="o">[</span>^_/<span class="se">\_</span><span class="o">]</span><span class="p">|</span>   /----------------------------
-</span><span class='line'>  <span class="p">|</span>   <span class="p">|</span> _<span class="p">|</span>___@@__<span class="p">|</span>__
-</span><span class='line'>  +<span class="o">===</span>+/  ///     <span class="se">\_\ </span>
-</span><span class='line'>   <span class="p">|</span> <span class="p">|</span>_<span class="se">\ </span>/// HUBOT/<span class="se">\\</span>
-</span><span class='line'>   <span class="p">|</span>___/<span class="se">\/</span>/      /  <span class="se">\\</span>
-</span><span class='line'>         <span class="se">\ </span>     /   +---+
-</span><span class='line'>          <span class="se">\_</span>___/    <span class="p">|</span>   <span class="p">|</span>
-</span><span class='line'>           <span class="p">|</span> //<span class="p">|</span>    +<span class="o">===</span>+
-</span><span class='line'>            <span class="se">\/</span>/      <span class="p">|</span>xx<span class="p">|</span>
-</span><span class='line'>...
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>各項目それぞれデフォルト値が設定されており、なにも入力せずEnterを押していくとその通りになる</p>
-
-<p>今回はSlack用のbotだったので Bot adapter: の欄で <code>slack</code> と入力した</p>
-
-<p>他にも用途に合わせてadapterが用意されているようである</p>
-
-<p>この <code>yo</code> 実行により、Hubotの雛形が作成され、 <code>hubot --create</code> と同様にセットアップが完了する</p>
-
-<p>なおかつadapterを予め設定できる分、セットアップが楽になっている</p>
-
-<h2>最後に</h2>
-
-<p>今回はHubotに絡んで偶発的に <code>yo</code> を知りましたが、かなり便利そうなのでYeoman含めて今後も使ってみたいところです</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://yosuke-furukawa.hatenablog.com/entry/2013/07/04/085814">Yeoman入門(第一部、yoを使う)</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page4">&larr; Older</a>
@@ -1856,6 +1785,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/20/study-of-perfect-java-chapter-5/">パーフェクトJava読書メモ chapter 5 クラス</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/18/study-of-perfect-java-chapter-4/">パーフェクトJava読書メモ chapter 4 変数とオブジェクト</a>
       </li>
     
@@ -1869,10 +1802,6 @@
     
       <li class="post">
         <a href="/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/">Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/06/26/docker-rails-setup-tutorial/">DockerでRails環境を構築した手順</a>
       </li>
     
   </ul>
