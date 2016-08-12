@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ オブジェクトの生成 Javaのオブジェクト生成方法は以下の5つ procedure description new 式 基本的な生成手段 String リテラル及び結合演算式 文字列固有の手段 オートボクシング 数値クラス固有の手段 &hellip;">
+  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ コレクションフレームワーク &mdash;&ndash; Hash Table Array Tree Linked List Hash Table + Linked List set HashSet &mdash; TreeSet & &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,6 +112,464 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/07/21/study-of-perfect-java-chapter-6/">パーフェクトJava読書メモ Chapter 6 コレクションと配列</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-07-21T03:27:46+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>3:27 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>コレクションフレームワーク</h2>
+
+<table>
+<thead>
+<tr>
+<th> &mdash;&ndash; </th>
+<th> Hash Table </th>
+<th> Array      </th>
+<th> Tree    </th>
+<th> Linked List </th>
+<th> Hash Table + Linked List </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> set   </td>
+<td> HashSet    </td>
+<td> &mdash;        </td>
+<td> TreeSet </td>
+<td> &mdash;         </td>
+<td> LinkedHashSet            </td>
+</tr>
+<tr>
+<td> list  </td>
+<td> &mdash;        </td>
+<td> ArrayList  </td>
+<td> &mdash;     </td>
+<td> LinkedList  </td>
+<td> &mdash;                      </td>
+</tr>
+<tr>
+<td> deque </td>
+<td> &mdash;        </td>
+<td> ArrayDeque </td>
+<td> &mdash;     </td>
+<td> LinkedList  </td>
+<td> &mdash;                      </td>
+</tr>
+<tr>
+<td> map   </td>
+<td> HashMap    </td>
+<td> &mdash;        </td>
+<td> TreeMap </td>
+<td> &mdash;         </td>
+<td> LinkedHashMap            </td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>コレクション型オブジェクトの生成</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">コレクションのインターフェース型</span><span class="o">&lt;</span><span class="n">要素の型</span><span class="o">&gt;</span> <span class="n">変数</span> <span class="o">=</span> <span class="k">new</span> <span class="n">コレクションのインターフェースを実装した具象クラス</span><span class="o">&lt;&gt;([</span><span class="n">コンストラクタの引数</span><span class="o">]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>上記例で <code>ArrayList&lt;&gt;</code> は <code>ArrayList&lt;String&gt;</code> の略</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">List</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>要素の型に基本型は指定できない</li>
+</ul>
+
+
+<h2>リスト</h2>
+
+<h3>リストの具象クラス</h3>
+
+<ul>
+<li>ArrayList</li>
+<li>LinkedList</li>
+</ul>
+
+
+<h3>ArrayList</h3>
+
+<ul>
+<li>良い点
+
+<ul>
+<li>インデックスを指定して要素を読み出す速度が速い[get]</li>
+<li>インデックスを指定して要素を書き換える速度が速い[set]</li>
+<li>先頭から順にすべての要素をなめる処理が速い</li>
+</ul>
+</li>
+<li>悪い点
+
+<ul>
+<li>要素の挿入が遅いことがある[add]
+
+<ul>
+<li>先頭に近い位置への挿入は遅い</li>
+<li>末尾に近い位置への挿入は速いときもあるが遅いときもある</li>
+</ul>
+</li>
+<li>要素の削除が遅いことがある[remove]
+
+<ul>
+<li>先頭に近い位置の削除ほど遅い</li>
+<li>末尾に近い位置の削除ほど速い</li>
+<li>最末尾の削除は高速</li>
+</ul>
+</li>
+<li>条件に合致した要素の検索があまり速くない[contains, indexOf, lastIndexOf]</li>
+</ul>
+</li>
+<li>要素の順序をもつので、順序が入れ替わる要素が多くなる処理は遅い</li>
+<li>連続したメモリの確保ができない場合、末尾への挿入は遅くなる</li>
+</ul>
+
+
+<h3>LinkedList</h3>
+
+<ul>
+<li>良い点
+
+<ul>
+<li>要素の挿入が速い[add]</li>
+<li>要素の削除が速い[remove]</li>
+</ul>
+</li>
+<li>悪い点
+
+<ul>
+<li>インデックスを指定して要素を読み出す速度はあまり速くない[get]</li>
+<li>インデックスを指定して要素を書き換える速度はあまり速くない[set]</li>
+<li>条件に合致した要素を検索する処理の速度はあまり速くない[contains, indexOf, lastIndexOf]</li>
+</ul>
+</li>
+<li>要素にたどり着くまでリンクをたどるのでリストの真ん中に近い要素ほどアクセスに時間がかかる</li>
+</ul>
+
+
+<h2>マップ</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+</span><span class='line'><span class="n">Map</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeMap</span><span class="o">&lt;&gt;();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Map インターフェースはキーと値の両方の型を <code>&lt;&gt;</code> の中に指定する</li>
+<li>List インターフェース同様 <code>&lt;&gt;</code> に指定できるのは参照型のみ</li>
+</ul>
+
+
+<h3>マップの具象クラス</h3>
+
+<ul>
+<li>HashMap</li>
+<li>LinkedHashMap</li>
+<li>TreeMap</li>
+</ul>
+
+
+<h3>HashMap</h3>
+
+<h4>HashMapの内部動作</h4>
+
+<ul>
+<li>HashMap は内部に配列を確保する。これをハッシュ表と呼ぶ。</li>
+<li>ハッシュ表の初期サイズは HashMap のコンストラクタで指定する。</li>
+<li>キーと値のペアを HashMap に追加[put]すると HashMap は内部でキーをハッシュ関数に通す。</li>
+<li>ハッシュ関数の出力がハッシュ表のインデックスになる。</li>
+<li>得られたインデックスの要素としてキーと値のペアを格納する。</li>
+</ul>
+
+
+<h3>LinkedHashMap</h3>
+
+<h4>LinkedHashMapの内部動作</h4>
+
+<ul>
+<li>HashMap を拡張継承している</li>
+<li>ハッシュ表に加えて、 LinkedList と同じリンクリストを内部に保持する</li>
+<li>要素を追加すると内部でハッシュ表とリンクリストの両方に要素を追加する</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">LinkedHashMap</span><span class="o">(</span><span class="kt">int</span> <span class="n">initialCapacity</span><span class="o">,</span> <span class="kt">float</span> <span class="n">loadFactor</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">accessOrder</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>上記コンストラクタの <code>accessOrder</code> に <code>true</code> を指定するとリンクリストの順序が要素にアクセスした順になる</li>
+</ul>
+
+
+<h3>TreeMap</h3>
+
+<p>二分探索木の一種である赤黒木と呼ばれるアルゴリズムによるツリー構造で要素をもつ</p>
+
+<h4>NavigableMap</h4>
+
+<p>TreeMap がキーの順序をもつことを利用したインターフェース</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">NavigableMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeMap</span><span class="o">&lt;&gt;();</span>
+</span><span class='line'>        <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;kanayama&quot;</span><span class="o">,</span> <span class="s">&quot;one&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;kawai&quot;</span><span class="o">,</span> <span class="s">&quot;four&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;kushibiki&quot;</span><span class="o">,</span> <span class="s">&quot;five&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">=</span> <span class="n">map</span><span class="o">.</span><span class="na">ceilingEntry</span><span class="o">(</span><span class="s">&quot;kana&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">entry</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;: &quot;</span> <span class="o">+</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>  <span class="c1">// &quot;kanayama: one&quot;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>セット</h2>
+
+<ul>
+<li>セットは数学の集合の概念</li>
+<li>要素の重複を許さない</li>
+<li>Set インターフェースを実装した具象クラスは以下の3つ
+
+<ul>
+<li>HashSet</li>
+<li>LinkedHashSet</li>
+<li>TreeSet</li>
+</ul>
+</li>
+<li>要素の重複を許さない点が Map のキーの性質と重なるため、具象クラスも Map と重なる</li>
+</ul>
+
+
+<h2>スタック、キュー、デック</h2>
+
+<ul>
+<li>スタック: 最新要素から常に取り出し</li>
+<li>キュー: 最古要素から常に取り出し</li>
+<li>デック: 上記どちらにも対応</li>
+<li>スタック構造は Deque クラス（Stack クラスは古い）</li>
+<li>キュー構造は Queue クラス</li>
+</ul>
+
+
+<h2>イテレータ</h2>
+
+<h3>拡張for構文</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">要素型</span> <span class="n">ループ変数</span> <span class="o">:</span> <span class="n">コレクション変数</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">forループが回るたびにループ変数が要素オブジェクトを順に参照</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>イテレータ</h3>
+
+<ul>
+<li>イテレーションを抽象化したオブジェクト</li>
+<li>Iterator インターフェースは以下のメソッドをもつ
+
+<ul>
+<li><code>boolean</code> <code>hasNext();</code></li>
+<li><code>E</code> <code>next();</code></li>
+<li><code>void</code> <code>remove();</code></li>
+</ul>
+</li>
+<li>ListIterator インターフェースは Iterator を継承している</li>
+<li>ListIterator は上記に加えて以下の以下のメソッドをもつ
+
+<ul>
+<li><code>boolean</code> <code>hasPrevious();</code></li>
+<li><code>E</code> <code>previous();</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>例</h3>
+
+<p>セットに対するイテレーション</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// Set&lt;Integer&gt; set</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">Integer</span> <span class="n">n</span> <span class="o">:</span> <span class="n">set</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">sum</span> <span class="o">+=</span> <span class="n">n</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="n">set</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();</span> <span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Integer</span> <span class="n">n</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">sum</span> <span class="o">+=</span> <span class="n">n</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>マップに対するイテレーション</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// Map&lt;String, String&gt; map</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 拡張 for でキーを繰り返す</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">key</span> <span class="o">:</span> <span class="n">map</span><span class="o">.</span><span class="na">keySet</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// イテレータで値を繰り返す</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">Iterator</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="n">map</span><span class="o">.</span><span class="na">values</span><span class="o">().</span><span class="na">iterator</span><span class="o">();</span> <span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();</span> <span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">val</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">val</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 拡張 for でキーと値を繰り返す</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">map</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">());</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>リストを逆順になめる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// List&lt;Integer&gt; list</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">ListIterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">listIterator</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="n">it</span><span class="o">.</span><span class="na">hasPrevious</span><span class="o">();</span> <span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Integer</span> <span class="n">i</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">previous</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>配列</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="mi">3</span><span class="o">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span> <span class="o">=</span> <span class="o">{</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span> <span class="o">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>多次元配列の初期化</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">StringBuilder</span><span class="o">[][][]</span> <span class="n">arr</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="o">{</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;000&quot;</span><span class="o">),</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;001&quot;</span><span class="o">)</span> <span class="o">},</span>
+</span><span class='line'>        <span class="o">{</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;010&quot;</span><span class="o">),</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;011&quot;</span><span class="o">)</span> <span class="o">},</span>
+</span><span class='line'>    <span class="o">},</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="o">{</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;100&quot;</span><span class="o">),</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;101&quot;</span><span class="o">)</span> <span class="o">},</span>
+</span><span class='line'>        <span class="o">{</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;110&quot;</span><span class="o">),</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="s">&quot;111&quot;</span><span class="o">)</span> <span class="o">},</span>
+</span><span class='line'>    <span class="o">},</span>
+</span><span class='line'><span class="o">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -879,10 +1337,7 @@
 
 <h2>参照</h2>
 
-<ul>
-<li><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></li>
-</ul>
-
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
 </div>
   
   
@@ -2862,248 +3317,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/14/the-second-step-of-chef/">Chef のリモート実行</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-11-14T23:08:53+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:08 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://blog.sojiro.me/blog/2015/11/01/the-first-step-of-chef/">前回</a> 対象サーバで直接 Chef を実行してみました。</p>
-
-<p>今回は手元からリモートのサーバに対して Chef を実行する仕組みを試してみます。</p>
-
-<h2>knife-solo のインストール</h2>
-
-<p>手元のクックブックをリモートのサーバに転送して <code>chef-solo</code> コマンドを実行するまでの一連の作業を実行できる <code>knife-solo</code> コマンドをインストールする</p>
-
-<p> <code>knife-solo</code> コマンドは gem でインストールできる。手元の Mac OS でインストール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem install knife-solo
-</span><span class='line'>...
-</span><span class='line'>Thanks <span class="k">for</span> installing knife-solo!
-</span><span class='line'>...
-</span><span class='line'><span class="m">36</span> gems installed
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Berkshelf のインストール</h2>
-
-<p>クックブックの依存関係を管理する <code>Berkshelf</code> というツールもこのタイミングでインストールする。これは <code>knife-solo</code> が他の gem のインストール状況によってデフォルトのオプションが変わるため</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem install berkshelf
-</span><span class='line'>...
-</span><span class='line'><span class="m">25</span> gems installed
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>ローカルにリポジトリを作る</h2>
-
-<p>まずはローカルにリポジトリを作る</p>
-
-<p>Vagrantfile があるディレクトリで以下のコマンドを実行して作成する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo init .
-</span><span class='line'>/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/specification.rb:2007:in <span class="sb">`</span>raise_if_conflicts<span class="err">&#39;</span>: Unable to activate rspec-3.0.0, because rspec-core-3.4.0 conflicts with rspec-core <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span>, rspec-expectations-3.4.0 conflicts with rspec-expectations <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span>, rspec-mocks-3.4.0 conflicts with rspec-mocks <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span> <span class="o">(</span>Gem::LoadError<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>エラーが発生した</p>
-
-<p>rspec と rspec-core のバージョンが合っていなかったので rspec を update する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem update rspec
-</span><span class='line'>...
-</span><span class='line'>Gems updated: rspec rspec-collection_matchers
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>再度リポジトリの作成を実行</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo init .
-</span><span class='line'>WARNING: No knife configuration file found
-</span><span class='line'>Creating kitchen...
-</span><span class='line'>Creating knife.rb in kitchen...
-</span><span class='line'>Creating cupboards...
-</span><span class='line'>Setting up Berkshelf...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで実行ディレクトリ内に様々な雛形ディレクトリ、ファイルが作成された</p>
-
-<h2>リモートのサーバに Chef Solo をインストールする</h2>
-
-<p>今回リモートサーバとして想定する Vagrant の環境に対して SSH の設定を以下のようにしておく</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh-config --host testhost &gt;&gt; ~/.ssh/config
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以下のコマンドで Chef Solo をリモートサーバに対してインストール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo bootstrap testhost
-</span><span class='line'>Bootstrapping Chef...
-</span><span class='line'>...
-</span><span class='line'>Thank you <span class="k">for</span> installing Chef!
-</span><span class='line'>...
-</span><span class='line'>Chef Client finished, 0/0 resources updated in <span class="m">06</span> seconds
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回は前回 Chef Solo をインストールした環境に対して打ったので最終的な結果は <code>0/0 resources updated</code> になっている</p>
-
-<h2>クックブックの作成</h2>
-
-<p>ローカルにクックブックを作成する。今回は git をインストールするためのクックブックを作る</p>
-
-<p>自作のクックブックは site-cookbooks 以下に置くことが慣例になっているので出力先に site-cookbooks を指定している</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife cookbook create git -o site-cookbooks
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで site-cookbooks 以下に git クックブックの雛形が出来上がる</p>
-
-<h2>レシピの編集</h2>
-
-<p>レシピの雛形 <code>site-cookbooks/git/recipes/default.rb</code> を編集していく</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim site-cookbooks/git/recipes/default.rb
-</span><span class='line'><span class="nv">$ </span>cat site-cookbooks/git/recipes/default.rb
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Cookbook Name:: git</span>
-</span><span class='line'><span class="c"># Recipe:: default</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Copyright 2015, YOUR_COMPANY_NAME</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># All rights reserved - Do Not Redistribute</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'>package <span class="s2">&quot;git&quot;</span> <span class="k">do</span>
-</span><span class='line'>    action :install
-</span><span class='line'>end
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Node オブジェクトの編集</h2>
-
-<p>Chef で管理する Node （サーバ）の状態を記述し、それぞれの Node に対してどのクックブックが適用されるかを設定する Node オブジェクトを編集する</p>
-
-<p>Node オブジェクトは <code>knife solo bootstrap testhost</code> 実行時に <code>nodes/testhost.json</code> として作成されている</p>
-
-<p>今回はここに先ほど作成した git クックブックの適用を記述する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim nodes/testhost.json
-</span><span class='line'><span class="nv">$ </span>cat nodes/testhost.json
-</span><span class='line'><span class="o">{</span>
-</span><span class='line'>  <span class="s2">&quot;run_list&quot;</span>: <span class="o">[</span>
-</span><span class='line'>    <span class="s2">&quot;recipe[git]&quot;</span>
-</span><span class='line'>  <span class="o">]</span>,
-</span><span class='line'>  <span class="s2">&quot;automatic&quot;</span>: <span class="o">{</span>
-</span><span class='line'>    <span class="s2">&quot;ipaddress&quot;</span>: <span class="s2">&quot;testhost&quot;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>クックブックの実行</h2>
-
-<p>準備が整ったのでいよいよクックブックをリモートサーバに対して実行する</p>
-
-<p>以下のコマンドで実行</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo cook testhost
-</span><span class='line'>Running Chef on testhost...
-</span><span class='line'>...
-</span><span class='line'>Chef Client finished, 0/1 resources updated in <span class="m">07</span> seconds
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これも同じく前回の環境ですでに git をインストール済みなので <code>0/1 resources updated</code> として正常に実行された</p>
-
-<p>これでリモートへの Chef 実行完了！</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -3123,6 +3336,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/21/study-of-perfect-java-chapter-6/">パーフェクトJava読書メモ chapter 6 コレクションと配列</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/20/study-of-perfect-java-chapter-5/">パーフェクトJava読書メモ chapter 5 クラス</a>
       </li>
     
@@ -3136,10 +3353,6 @@
     
       <li class="post">
         <a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ chapter 2 文字と文字列</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/">Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet</a>
       </li>
     
   </ul>

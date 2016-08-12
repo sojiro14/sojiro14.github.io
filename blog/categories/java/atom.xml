@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-08-02T04:08:44+09:00</updated>
+  <updated>2016-08-12T20:19:57+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,362 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 6 コレクションと配列]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/07/21/study-of-perfect-java-chapter-6/"/>
+    <updated>2016-07-21T03:27:46+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/07/21/study-of-perfect-java-chapter-6</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>コレクションフレームワーク</h2>
+
+<table>
+<thead>
+<tr>
+<th> &mdash;&ndash; </th>
+<th> Hash Table </th>
+<th> Array      </th>
+<th> Tree    </th>
+<th> Linked List </th>
+<th> Hash Table + Linked List </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> set   </td>
+<td> HashSet    </td>
+<td> &mdash;        </td>
+<td> TreeSet </td>
+<td> &mdash;         </td>
+<td> LinkedHashSet            </td>
+</tr>
+<tr>
+<td> list  </td>
+<td> &mdash;        </td>
+<td> ArrayList  </td>
+<td> &mdash;     </td>
+<td> LinkedList  </td>
+<td> &mdash;                      </td>
+</tr>
+<tr>
+<td> deque </td>
+<td> &mdash;        </td>
+<td> ArrayDeque </td>
+<td> &mdash;     </td>
+<td> LinkedList  </td>
+<td> &mdash;                      </td>
+</tr>
+<tr>
+<td> map   </td>
+<td> HashMap    </td>
+<td> &mdash;        </td>
+<td> TreeMap </td>
+<td> &mdash;         </td>
+<td> LinkedHashMap            </td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>コレクション型オブジェクトの生成</h3>
+
+<pre><code class="java">コレクションのインターフェース型&lt;要素の型&gt; 変数 = new コレクションのインターフェースを実装した具象クラス&lt;&gt;([コンストラクタの引数]);
+</code></pre>
+
+<pre><code class="java">List&lt;String&gt; list = new ArrayList&lt;&gt;();
+</code></pre>
+
+<ul>
+<li>上記例で <code>ArrayList&lt;&gt;</code> は <code>ArrayList&lt;String&gt;</code> の略</li>
+</ul>
+
+
+<pre><code class="java">List&lt;int&gt; list = new ArrayList&lt;&gt;();
+</code></pre>
+
+<ul>
+<li>要素の型に基本型は指定できない</li>
+</ul>
+
+
+<h2>リスト</h2>
+
+<h3>リストの具象クラス</h3>
+
+<ul>
+<li>ArrayList</li>
+<li>LinkedList</li>
+</ul>
+
+
+<h3>ArrayList</h3>
+
+<ul>
+<li>良い点
+
+<ul>
+<li>インデックスを指定して要素を読み出す速度が速い[get]</li>
+<li>インデックスを指定して要素を書き換える速度が速い[set]</li>
+<li>先頭から順にすべての要素をなめる処理が速い</li>
+</ul>
+</li>
+<li>悪い点
+
+<ul>
+<li>要素の挿入が遅いことがある[add]
+
+<ul>
+<li>先頭に近い位置への挿入は遅い</li>
+<li>末尾に近い位置への挿入は速いときもあるが遅いときもある</li>
+</ul>
+</li>
+<li>要素の削除が遅いことがある[remove]
+
+<ul>
+<li>先頭に近い位置の削除ほど遅い</li>
+<li>末尾に近い位置の削除ほど速い</li>
+<li>最末尾の削除は高速</li>
+</ul>
+</li>
+<li>条件に合致した要素の検索があまり速くない[contains, indexOf, lastIndexOf]</li>
+</ul>
+</li>
+<li>要素の順序をもつので、順序が入れ替わる要素が多くなる処理は遅い</li>
+<li>連続したメモリの確保ができない場合、末尾への挿入は遅くなる</li>
+</ul>
+
+
+<h3>LinkedList</h3>
+
+<ul>
+<li>良い点
+
+<ul>
+<li>要素の挿入が速い[add]</li>
+<li>要素の削除が速い[remove]</li>
+</ul>
+</li>
+<li>悪い点
+
+<ul>
+<li>インデックスを指定して要素を読み出す速度はあまり速くない[get]</li>
+<li>インデックスを指定して要素を書き換える速度はあまり速くない[set]</li>
+<li>条件に合致した要素を検索する処理の速度はあまり速くない[contains, indexOf, lastIndexOf]</li>
+</ul>
+</li>
+<li>要素にたどり着くまでリンクをたどるのでリストの真ん中に近い要素ほどアクセスに時間がかかる</li>
+</ul>
+
+
+<h2>マップ</h2>
+
+<pre><code class="java">Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+Map&lt;Integer, List&lt;String&gt;&gt; map = new TreeMap&lt;&gt;();
+</code></pre>
+
+<ul>
+<li>Map インターフェースはキーと値の両方の型を <code>&lt;&gt;</code> の中に指定する</li>
+<li>List インターフェース同様 <code>&lt;&gt;</code> に指定できるのは参照型のみ</li>
+</ul>
+
+
+<h3>マップの具象クラス</h3>
+
+<ul>
+<li>HashMap</li>
+<li>LinkedHashMap</li>
+<li>TreeMap</li>
+</ul>
+
+
+<h3>HashMap</h3>
+
+<h4>HashMapの内部動作</h4>
+
+<ul>
+<li>HashMap は内部に配列を確保する。これをハッシュ表と呼ぶ。</li>
+<li>ハッシュ表の初期サイズは HashMap のコンストラクタで指定する。</li>
+<li>キーと値のペアを HashMap に追加[put]すると HashMap は内部でキーをハッシュ関数に通す。</li>
+<li>ハッシュ関数の出力がハッシュ表のインデックスになる。</li>
+<li>得られたインデックスの要素としてキーと値のペアを格納する。</li>
+</ul>
+
+
+<h3>LinkedHashMap</h3>
+
+<h4>LinkedHashMapの内部動作</h4>
+
+<ul>
+<li>HashMap を拡張継承している</li>
+<li>ハッシュ表に加えて、 LinkedList と同じリンクリストを内部に保持する</li>
+<li>要素を追加すると内部でハッシュ表とリンクリストの両方に要素を追加する</li>
+</ul>
+
+
+<pre><code class="java">LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder)
+</code></pre>
+
+<ul>
+<li>上記コンストラクタの <code>accessOrder</code> に <code>true</code> を指定するとリンクリストの順序が要素にアクセスした順になる</li>
+</ul>
+
+
+<h3>TreeMap</h3>
+
+<p>二分探索木の一種である赤黒木と呼ばれるアルゴリズムによるツリー構造で要素をもつ</p>
+
+<h4>NavigableMap</h4>
+
+<p>TreeMap がキーの順序をもつことを利用したインターフェース</p>
+
+<pre><code class="java">public class Sample {
+    public static void main(String... args) {
+        NavigableMap&lt;String, String&gt; map = new TreeMap&lt;&gt;();
+        map.put("kanayama", "one");
+        map.put("kawai", "four");
+        map.put("kushibiki", "five");
+
+        Map.Entry&lt;String, String&gt; entry = map.ceilingEntry("kana");
+        if (entry != null) {
+            entry.getKey() + ": " + entry.getValue();  // "kanayama: one"
+        }
+    }
+}
+</code></pre>
+
+<h2>セット</h2>
+
+<ul>
+<li>セットは数学の集合の概念</li>
+<li>要素の重複を許さない</li>
+<li>Set インターフェースを実装した具象クラスは以下の3つ
+
+<ul>
+<li>HashSet</li>
+<li>LinkedHashSet</li>
+<li>TreeSet</li>
+</ul>
+</li>
+<li>要素の重複を許さない点が Map のキーの性質と重なるため、具象クラスも Map と重なる</li>
+</ul>
+
+
+<h2>スタック、キュー、デック</h2>
+
+<ul>
+<li>スタック: 最新要素から常に取り出し</li>
+<li>キュー: 最古要素から常に取り出し</li>
+<li>デック: 上記どちらにも対応</li>
+<li>スタック構造は Deque クラス（Stack クラスは古い）</li>
+<li>キュー構造は Queue クラス</li>
+</ul>
+
+
+<h2>イテレータ</h2>
+
+<h3>拡張for構文</h3>
+
+<pre><code class="java">for (要素型 ループ変数 : コレクション変数) {
+    forループが回るたびにループ変数が要素オブジェクトを順に参照
+}
+</code></pre>
+
+<h3>イテレータ</h3>
+
+<ul>
+<li>イテレーションを抽象化したオブジェクト</li>
+<li>Iterator インターフェースは以下のメソッドをもつ
+
+<ul>
+<li><code>boolean</code> <code>hasNext();</code></li>
+<li><code>E</code> <code>next();</code></li>
+<li><code>void</code> <code>remove();</code></li>
+</ul>
+</li>
+<li>ListIterator インターフェースは Iterator を継承している</li>
+<li>ListIterator は上記に加えて以下の以下のメソッドをもつ
+
+<ul>
+<li><code>boolean</code> <code>hasPrevious();</code></li>
+<li><code>E</code> <code>previous();</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>例</h3>
+
+<p>セットに対するイテレーション</p>
+
+<pre><code class="java">// Set&lt;Integer&gt; set
+for (Integer n : set) {
+    sum += n;
+}
+
+for (Iterator&lt;Integer&gt; it = set.iterator(); it.hasNext(); ) {
+    Integer n = it.next();
+    sum += n;
+}
+</code></pre>
+
+<p>マップに対するイテレーション</p>
+
+<pre><code class="java">// Map&lt;String, String&gt; map
+
+// 拡張 for でキーを繰り返す
+for (String key : map.keySet()) {
+    System.out.println(key);
+}
+
+// イテレータで値を繰り返す
+for (Iterator&lt;String&gt; it = map.values().iterator(); it.hasNext(); ) {
+    String val = it.next();
+    System.out.println(val);
+}
+
+// 拡張 for でキーと値を繰り返す
+for (Map.Entry&lt;String, String&gt; entry : map.entrySet()) {
+    System.out.println(entry.getKey());
+    System.out.println(entry.getValue());
+}
+</code></pre>
+
+<p>リストを逆順になめる</p>
+
+<pre><code class="java">// List&lt;Integer&gt; list
+for (ListIterator&lt;Integer&gt; it = list.listIterator(list.size()); it.hasPrevious(); ) {
+    Integer i = it.previous();
+    System.out.println(i);
+}
+</code></pre>
+
+<h2>配列</h2>
+
+<pre><code class="java">int[] arr = new int[3];
+
+int[] arr = { 0, 1, 2 };
+</code></pre>
+
+<h3>多次元配列の初期化</h3>
+
+<pre><code class="java">StringBuilder[][][] arr = {
+    {
+        { new StringBuilder("000"), new StringBuilder("001") },
+        { new StringBuilder("010"), new StringBuilder("011") },
+    },
+    {
+        { new StringBuilder("100"), new StringBuilder("101") },
+        { new StringBuilder("110"), new StringBuilder("111") },
+    },
+};
+</code></pre>
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 5 クラス]]></title>
@@ -673,10 +1029,7 @@ Class SubSample extends Sample {
 
 <h2>参照</h2>
 
-<ul>
-<li><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></li>
-</ul>
-
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
 ]]></content>
   </entry>
   
@@ -1496,50 +1849,6 @@ byte[] bytes = s.getBytes();
 <h2>参照</h2>
 
 <p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet]]></title>
-    <link href="http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/"/>
-    <updated>2016-07-07T08:27:00+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae</id>
-    <content type="html"><![CDATA[<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちらの記事</a>を参考にGAE for JavaアプリケーションをAndroid Studio + Gradleでセットアップし、サンプルアプリケーションを開発してみました。</p>
-
-<p>早速GAEにdeployしてみようと、メニューバーの <code>Build</code> から <code>Deploy Module to App Engine...</code> を選択してdeployを実行&hellip;ところがタスクが走らずうんともすんとも言わないので調べてみました。</p>
-
-<h2>結論</h2>
-
-<p>以下の設定を <code>app.iml</code> ファイルに追記する</p>
-
-<pre><code class="xml">&lt;facet type="android-gradle" name="Android-Gradle"&gt;
-  &lt;configuration&gt;
-    &lt;option name="GRADLE_PROJECT_PATH" value=":app" /&gt;
-  &lt;/configuration&gt;
-&lt;/facet&gt;
-&lt;facet type="java-gradle" name="Java-Gradle"&gt;
-  &lt;configuration&gt;
-     &lt;option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" /&gt;
-     &lt;option name="BUILDABLE" value="true" /&gt;
-  &lt;/configuration&gt;
-&lt;/facet&gt;
-</code></pre>
-
-<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちら</a>は少々特殊な方法でmoduleを作成しているのでFacetの設定が不十分となってしまった模様。</p>
-
-<h2>Facetとは</h2>
-
-<p>FacetはIntelliJ IDEAに用意された機能で、使用するフレームワークや言語に合わせたFacetを設定することでIntelliJ IDEAが必要なコンポーネントのダウンロードや各種補完機能の設定などを行ってくれるもの。</p>
-
-<p>Android StudioはIntelliJ IDEAをベースとして開発されたIDEなのでFacetの機能を継承している。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">GoogleAppEngine for Java を AndroidStudio + Gradleで開発環境を作る</a></li>
-<li><a href="https://www.jetbrains.com/help/idea/2016.1/facet.html">Facet</a></li>
-</ul>
-
 ]]></content>
   </entry>
   
