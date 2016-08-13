@@ -9,9 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="前回 ‘Hubot –create’ は古い というエントリでYeomanを試してみたいと宣言したので試してみます。 Yeoman は以下の3要素で構成されているそうな yo: 雛形作成ツール
-Grunt: タスクランナー
-Bower: フロントエンドパッケージマネージャ 今回は前回に引き続き &hellip;">
+  <meta name="description" content="半年以上前のある夜、大先輩エンジニアの方に隠れ家的なオシャレな大人のBarに連れて行っていただきました。 その日はそれまでに既に結構飲んでいまして、本当に恥ずかしながらそこでお話した内容のほとんどは覚えていないのですが、一つだけ鮮明に覚えているのは、 「トークン」ってなに？ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -114,6 +112,95 @@ Bower: フロントエンドパッケージマネージャ 今回は前回に引
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/07/what-is-token/">「トークン」とはなにか</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-07T23:57:03+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:57 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>半年以上前のある夜、大先輩エンジニアの方に隠れ家的なオシャレな大人のBarに連れて行っていただきました。</p>
+
+<p>その日はそれまでに既に結構飲んでいまして、本当に恥ずかしながらそこでお話した内容のほとんどは覚えていないのですが、一つだけ鮮明に覚えているのは、</p>
+
+<p><strong> 「トークン」ってなに？ </strong></p>
+
+<p>と私に説明を求められたことです。なにかを答えはしたのですが、かなり曖昧な答えになっていたと思います。</p>
+
+<p>さらに最悪なのは、その後その大先輩が語られた内容を覚えていないことです。これは最悪です。次の日に「トークンって結局なんでしたっけ？」などとも聞けないのでそれ以来いろいろ考えてきたことを書きます。</p>
+
+<h2>トークンとはなにか</h2>
+
+<p>Webの開発をしているとしばしばトークンというものが登場します</p>
+
+<ul>
+<li>Access Token</li>
+<li>ID Token</li>
+<li>JWT(JSON Web Token)</li>
+<li>etc&hellip;</li>
+</ul>
+
+
+<p>このトークンとはなにか、という話です</p>
+
+<p>そもそもトークンなんて日本語はないのだから、トークンはトークン、という感じなのですが、あえて日本語にすると</p>
+
+<p><strong> 「証」（しょう） </strong></p>
+
+<p>という漢字一文字が合うのかな、と思います。</p>
+
+<ul>
+<li>通行証</li>
+<li>身分証</li>
+<li>免許証</li>
+<li>etc&hellip;</li>
+</ul>
+
+
+<h2>トークンの性質</h2>
+
+<p>これらに共通するのは</p>
+
+<ul>
+<li>誰かが発行し</li>
+<li>何かが書いてある</li>
+</ul>
+
+
+<p>ということではないでしょうか</p>
+
+<p>特に「何かが書いてある」、という部分は様々な内容を持ち得ます</p>
+
+<ul>
+<li>通行証には、ある場所を通ること、ある場所に到達することを許可する旨が書かれています</li>
+<li>身分証には、それを持っている人が誰なのか、それを示す内容が書かれています</li>
+<li>免許証には、誰に何をすることを許可するのかが書かれています</li>
+</ul>
+
+
+<p>このように考えると「トークン」という言葉がしっくりくるのでは、と現在思っております。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1230,52 +1317,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/26/tab-and-space-on-vim/">VimにおけるTABとスペースの扱いについて</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-12-26T10:52:26+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:52 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Vimでは <code>&lt;TAB&gt;</code> やインデントについてその挙動を設定することができる。いくつか設定方法があるが、これまでこれらに関する <code>.vimrc</code> の設定は何も考えずにただコピペしていたので記述を見直してみた。</p>
-
-<h2>tabstop</h2>
-
-<p> <code>tabstop</code> で <code>&lt;TAB&gt;</code> にいくつのスペースを設定するか決めることができる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">set</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで <code>&lt;TAB&gt;</code> に半角4つ分が設定される。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/12/26/tab-and-space-on-vim/">もっと見る</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page5">&larr; Older</a>
@@ -1297,6 +1338,10 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/21/study-of-perfect-java-chapter-6/">パーフェクトJava読書メモ chapter 6 コレクションと配列</a>
       </li>
     
@@ -1310,10 +1355,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
     
       <li class="post">
         <a href="/blog/2016/07/17/study-of-perfect-java-chapter-3/">パーフェクトJava読書メモ chapter 3 数値①</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ chapter 2 文字と文字列</a>
       </li>
     
   </ul>

@@ -9,7 +9,9 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ コレクションフレームワーク &mdash;&ndash; Hash Table Array Tree Linked List Hash Table + Linked List set HashSet &mdash; TreeSet & &hellip;">
+  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ クラスとインターフェースの違い インターフェースは雛形としての役割を持たない
+インターフェースは実体化できず、型定義に特化している
+インターフェースの継承の目的は多様性のみ（クラスの拡張継承には実装コードの共有という側面もある） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,6 +114,259 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ Chapter 7 インターフェース</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-07-24T02:29:32+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>2:29 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>クラスとインターフェースの違い</h2>
+
+<ul>
+<li>インターフェースは雛形としての役割を持たない</li>
+<li>インターフェースは実体化できず、型定義に特化している</li>
+<li>インターフェースの継承の目的は多様性のみ（クラスの拡張継承には実装コードの共有という側面もある）</li>
+</ul>
+
+
+<h2>インターフェース宣言</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">[</span><span class="n">修飾子</span><span class="o">]</span> <span class="kd">interface</span> <span class="nc">インターフェース名</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">メンバ宣言</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>インターフェースの修飾子</h3>
+
+<table>
+<thead>
+<tr>
+<th> modifier </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>public</code> </td>
+<td> グローバルにアクセス可（書かないとパッケージ内に限定） </td>
+</tr>
+<tr>
+<td> <code>abstract</code> </td>
+<td> インターフェースは暗黙的に abstract なので書かなくても同じ </td>
+</tr>
+<tr>
+<td> <code>strictfp</code> </td>
+<td> インターフェース内に記述した浮動小数点演算を厳密に評価 </td>
+</tr>
+<tr>
+<td> アノテーション </td>
+<td> 省略 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>インターフェースのメンバ</h3>
+
+<ul>
+<li>抽象メソッド（実装なし）</li>
+<li>default メソッド</li>
+<li>static メソッド</li>
+<li>定数フィールド</li>
+<li>static なネストしたクラス</li>
+<li>static なネストしたインターフェース</li>
+</ul>
+
+
+<h3>メソッド宣言</h3>
+
+<table>
+<thead>
+<tr>
+<th> modifier </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>public</code> </td>
+<td> 暗黙的に public なので書かなくても同じ</td>
+</tr>
+<tr>
+<td> <code>default</code> </td>
+<td> デフォルトメソッド </td>
+</tr>
+<tr>
+<td> <code>static</code> </td>
+<td> static メソッド </td>
+</tr>
+<tr>
+<td> <code>abstract</code> </td>
+<td> 暗黙的に abstract なので書かなくても同じ </td>
+</tr>
+</tbody>
+</table>
+
+
+<ul>
+<li><code>default</code> メソッドはインスタンスメソッド</li>
+<li>インターフェースを継承した具象クラスのインスタンスメソッドになる</li>
+<li>フィールド変数は暗黙的に <code>public</code> <code>static</code> <code>final</code></li>
+</ul>
+
+
+<h2>インターフェースと実装クラス</h2>
+
+<h3>インターフェース継承</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">[</span><span class="n">修飾子</span><span class="o">]</span> <span class="kd">class</span> <span class="nc">クラス名</span> <span class="kd">implements</span> <span class="n">インターフェース名</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">クラス本体</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>複数のインターフェースを同時に継承することができる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">[</span><span class="n">修飾子</span><span class="o">]</span> <span class="kd">class</span> <span class="nc">クラス名</span> <span class="kd">implements</span> <span class="n">インターフェース名</span><span class="o">,</span> <span class="n">インターフェース名</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">クラス本体</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>クラスの拡張継承とインターフェースの継承を同時にできる</li>
+<li>このとき <code>implements</code> は <code>extends</code> より後に書く</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">[</span><span class="n">修飾子</span><span class="o">]</span> <span class="kd">class</span> <span class="nc">クラス名</span> <span class="kd">extends</span> <span class="n">親クラス名</span> <span class="kd">implements</span> <span class="n">インターフェース名</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">クラス本体</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>インターフェースを継承したクラスはインターフェースの抽象メソッドをすべてオーバーライドする必要がある</li>
+<li>インターフェースから継承したメソッドのアクセス制御は <code>public</code> 修飾子がないとコンパイルエラー</li>
+<li>メソッドのオーバーライドはクラスの拡張継承と同様に行う</li>
+</ul>
+
+
+<h3>ネストしたインターフェース</h3>
+
+<ul>
+<li>クラス内のネストしたインターフェース
+
+<ul>
+<li><code>public</code> <code>protected</code> 無指定 <code>private</code> のいずれかを指定する</li>
+</ul>
+</li>
+<li>インターフェース内のネストしたインターフェース
+
+<ul>
+<li>常に <code>public</code></li>
+</ul>
+</li>
+<li>インターフェース内のネストしたクラス
+
+<ul>
+<li>常に <code>public</code> かつ <code>static</code></li>
+</ul>
+</li>
+<li>ネストして宣言されたインターフェースは常に <code>static</code></li>
+</ul>
+
+
+<h3>インターフェース自体の拡張継承</h3>
+
+<ul>
+<li>インターフェースも拡張継承できる</li>
+<li>インターフェースは複数の親インターフェースを指定可能</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">interface</span> <span class="nc">Parent</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">print</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">interface</span> <span class="nc">Child</span> <span class="kd">extends</span> <span class="n">Parent</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// void print() を継承</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">interface</span> <span class="nc">Father</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">print</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">interface</span> <span class="nc">Mother</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">exec</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">interface</span> <span class="nc">Child2</span> <span class="kd">extends</span> <span class="n">Father</span><span class="o">,</span> <span class="n">Mother</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// void print(), void exec() を継承</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -727,7 +982,7 @@
 </tr>
 <tr>
 <td> <code>strictfp</code> </td>
-<td> クラス内に記述した浮動小数点遠山を厳密に評価 </td>
+<td> クラス内に記述した浮動小数点演算を厳密に評価 </td>
 </tr>
 <tr>
 <td> アノテーション </td>
@@ -3244,79 +3499,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/02/21/how-to-write-changes-with-minil/">Minil を使った Changes ファイルの更新</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-02-21T01:24:33+09:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>1:24 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>CPAN モジュールの bug fix を行ったので修正版をリリース。</p>
-
-<p> <code>minil</code> 様様と思いながら <code>minil release</code> コマンドを打つのだが、
-いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。</p>
-
-<h2>{{$NEXT}} の下に書く</h2>
-
-<p>今回のリリースだとこうなった</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Revision history for Perl extension JSON-MergePatch
-</span><span class='line'>
-</span><span class='line'>{\{$NEXT}}
-</span><span class='line'>
-</span><span class='line'>    - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
-</span><span class='line'>    - refactoring
-</span><span class='line'>
-</span><span class='line'>0.02 2015-09-13T09:08:20Z
-</span><span class='line'>
-</span><span class='line'>    - use JSON::MaybeXS and fix keys arg
-</span><span class='line'>
-</span><span class='line'>0.01 2015-07-02T18:29:20Z
-</span><span class='line'>
-</span><span class='line'>    - original version</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>{{$NEXT}}</code> となっているところにバージョンやら日付やらが入る。</p>
-
-<h2>参照</h2>
-
-<p><a href="http://perldoc.jp/docs/modules/Minilla-v0.6.4/lib/Minilla/Tutorial.pod#Make32a32new32build">Minilla チュートリアルドキュメント</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -3336,6 +3518,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/21/study-of-perfect-java-chapter-6/">パーフェクトJava読書メモ chapter 6 コレクションと配列</a>
       </li>
     
@@ -3349,10 +3535,6 @@
     
       <li class="post">
         <a href="/blog/2016/07/17/study-of-perfect-java-chapter-3/">パーフェクトJava読書メモ chapter 3 数値①</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ chapter 2 文字と文字列</a>
       </li>
     
   </ul>
