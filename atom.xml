@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-08-19T05:48:26+09:00</updated>
+  <updated>2016-08-19T05:50:40+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -224,6 +224,8 @@
 </span><span class='line'>A: 1, 2
 </span><span class='line'>B: null
 </span><span class='line'>C: 'this', 'that', 'theOther'</span></code></pre></td></tr></table></div></figure>
+
+
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
