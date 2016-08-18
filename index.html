@@ -9,9 +9,10 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ クラスとインターフェースの違い インターフェースは雛形としての役割を持たない
-インターフェースは実体化できず、型定義に特化している
-インターフェースの継承の目的は多様性のみ（クラスの拡張継承には実装コードの共有という側面もある） &hellip;">
+  <meta name="description" content="GAE の Datastore についてざっくり Overview スキーマのないオブジェクトデータベース
+オートスケーリング
+ディスクへの書き込み時に自動で暗号化、読み出し時に自動で復号
+計画的ダウンタイムなし Concept Cloud Datastore Relational &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -114,6 +115,276 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastoreについて</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-08-07T04:34:09+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>4:34 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>GAE の Datastore についてざっくり</p>
+
+<h2>Overview</h2>
+
+<ul>
+<li>スキーマのないオブジェクトデータベース</li>
+<li>オートスケーリング</li>
+<li>ディスクへの書き込み時に自動で暗号化、読み出し時に自動で復号</li>
+<li>計画的ダウンタイムなし</li>
+</ul>
+
+
+<table>
+<thead>
+<tr>
+<th> Concept                   </th>
+<th> Cloud Datastore </th>
+<th> Relational database </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> オブジェクトが所属するカテゴリ </td>
+<td> Kind            </td>
+<td> Table               </td>
+</tr>
+<tr>
+<td> オブジェクト                </td>
+<td> Entity          </td>
+<td> Row                 </td>
+</tr>
+<tr>
+<td> オブジェクトがもつデータ      </td>
+<td> Property        </td>
+<td> Field               </td>
+</tr>
+<tr>
+<td> オブジェクトを特定する ID     </td>
+<td> Key             </td>
+<td> Primary key         </td>
+</tr>
+</tbody>
+</table>
+
+
+<ul>
+<li>同一 kind の entity でも違う property を持ちうる</li>
+<li>それぞれの entity は同名の property でも型の違うデータを持ちうる</li>
+</ul>
+
+
+<h3>Other storages</h3>
+
+<ul>
+<li>複数の table の join や 複数のカラムに対する不等号比較など、すべての SQL 操作が必要なら Google Cloud SQL</li>
+<li>ACID transaction を必要としないスキーマレスなデータを扱うなら Google Bigtable</li>
+<li>オンラインで分析されるデータを扱うなら Google BigQuery</li>
+<li>画像や動画などの変更がない大きなデータを扱うなら Google Cloud Storage</li>
+</ul>
+
+
+<h2>Entities</h2>
+
+<ul>
+<li>ひとつの entity は1つ以上の property をもつ</li>
+<li>property は1つ以上の値を取りうる</li>
+</ul>
+
+
+<h2>Keys</h2>
+
+<ul>
+<li>key は entity を特定する</li>
+<li>key は以下を含む
+
+<ul>
+<li>entity の kind</li>
+<li>以下のいずれかの識別子
+
+<ul>
+<li>文字列の key name</li>
+<li>数値の ID</li>
+</ul>
+</li>
+<li>ancestor path (optional)</li>
+</ul>
+</li>
+<li>識別子は entity が生成されたタイミングで設定される</li>
+<li>一度設定された識別子は変更されない</li>
+<li>識別子は以下の2つの方法で設定できる
+
+<ul>
+<li>アプリケーションで特定の key name を設定する</li>
+<li>Datastore が自動で発行する数値の ID を使う</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Ancestor paths</h2>
+
+<ul>
+<li>Datastore はファイルシステムのディレクトリ構成に似た階層構造をもつ</li>
+<li>entity 作成時に parent entity を指定することができる</li>
+<li>parent entity が指定されない entity は root entity と呼ぶ</li>
+<li>一度親子関係ができた entity はその関係が変更されることはない</li>
+<li>同じ parent をもつ2つの entity に対して Datastore は同一の ID を払い出すことはない</li>
+<li>同様に2つの root entity に対して同一の ID を払い出すこともない</li>
+<li>parent や parent の更に parent を ancestor と呼ぶ</li>
+<li>逆に children や children の更に children を descendant と呼ぶ</li>
+<li>root entity とその descendant は同一の entity group に属する</li>
+<li>ancestor path は root entity からたどって該当の entity に到達するまでの親子関係で構成される</li>
+</ul>
+
+
+<h2>Transactions and entity groups</h2>
+
+<ul>
+<li>entity に対する create, update, delete はトランザクションで管理される</li>
+<li>トランザクションにはこれらの複数の操作が内包される</li>
+<li>トランザクションは一貫性の担保のため、そこに含まれる操作をひとまとまりとして適用する、あるいはいずれかの操作が失敗するとすべての操作を適用しない</li>
+<li>commit を試みてエラーが返ってきたとしても、トランザクションが失敗したとは限らない
+
+<ul>
+<li><code>DatastoreTimeoutException</code> や <code>DatastoreFailureException</code> といったエラーが返ってきたとしても、 commit は成功している可能性がある</li>
+<li>このため、 Datastore は可能な限り同一のトランザクションを複数回適用しても最終的な結果が変わらないように設計すべきである</li>
+</ul>
+</li>
+<li>entity group とトランザクションの関係
+
+<ul>
+<li>1つのトランザクションで扱うデータは 25 の entity group 内に収まっていなければならない</li>
+<li>トランザクション内でクエリを発行する場合には正しいデータにマッチする ancestor filter を指定できるように entity group 内のデータを設計する必要がある</li>
+<li>広域に渡って各 entity group をレプリケーションするために、1つの entity group ごとに1秒あたりの書き込みスループットの上限値が定められている</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Understanding write costs</h2>
+
+<ul>
+<li>発生する書き込み
+
+<ul>
+<li>entity 自身</li>
+<li><code>EntitiesByKind</code> という index</li>
+<li>1つの property value ごとに <code>EntitiesByProperty</code> と <code>EntitiesByPropertyDesc</code> の各 index</li>
+</ul>
+</li>
+</ul>
+
+
+<p>以下のような entity を考える</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Key: 'Foo:1' (kind = 'Foo', id = 1, no parent)
+</span><span class='line'>A: 1, 2
+</span><span class='line'>B: null
+</span><span class='line'>C: 'this', 'that', 'theOther'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このとき発生する書き込み</p>
+
+<ul>
+<li>1: entity 自身</li>
+<li>1: <code>EntitiesByKind</code> index</li>
+<li>4: A property の2つの値にそれぞれ2つの index</li>
+<li>2: B property の値に2つの index （null でも必要）</li>
+<li>6: C property の3つの値にそれぞれ2つの index</li>
+</ul>
+
+
+<p>よって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 = 14</p>
+
+<p>上記の entity に複合 index を追加することを考える</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Kind: 'Foo'
+</span><span class='line'>A ▲, B ▼, C ▼</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このとき、各 property の値の組み合わせ分の書き込みが発生する</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(1, null, 'this') (1, null, 'that') (1, null, 'theOther')
+</span><span class='line'>(2, null, 'this') (2, null, 'that') (2, null, 'theOther')</span></code></pre></td></tr></table></div></figure>
+
+
+<p>したがって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 + 6 = 20</p>
+
+<p>次にこれまでと同様に ancestor が存在する以下のような entity を考える</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Key: 'GreatGrandpa:1/Grandpa:1/Dad:1/Foo:1' (kind = 'Foo', id = 1, parent = 'GreatGrandpa:1/Grandpa:1/Dad:1')
+</span><span class='line'>A: 1, 2
+</span><span class='line'>B: null
+</span><span class='line'>C: 'this', 'that', 'theOther'</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Kind: 'Foo'
+</span><span class='line'>A ▲, B ▼, C ▼
+</span><span class='line'>Ancestor: True</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このとき各 property の値と各 ancestor 及び自身の entity の組み合わせ分の書き込みを必要とする</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(1, null, 'this', 'GreatGrandpa') (1, null, 'this', 'Grandpa') (1, null, 'this', 'Dad') (1, null, 'this', 'Foo')
+</span><span class='line'>(1, null, 'that', 'GreatGrandpa') (1, null, 'that', 'Grandpa') (1, null, 'that', 'Dad') (1, null, 'that', 'Foo')
+</span><span class='line'>(1, null, 'theOther', 'GreatGrandpa') (1, null, 'theOther', 'Grandpa') (1, null, 'theOther', 'Dad') (1, null, 'theOther', 'Foo')
+</span><span class='line'>(2, null, 'this', 'GreatGrandpa') (2, null, 'this', 'Grandpa') (2, null, 'this', 'Dad') (2, null, 'this', 'Foo')
+</span><span class='line'>(2, null, 'that', 'GreatGrandpa') (2, null, 'that', 'Grandpa') (2, null, 'that', 'Dad') (2, null, 'that', 'Foo')
+</span><span class='line'>(2, null, 'theOther', 'GreatGrandpa') (2, null, 'theOther', 'Grandpa') (2, null, 'theOther', 'Dad') (2, null, 'theOther', 'Foo')</span></code></pre></td></tr></table></div></figure>
+
+
+<p>したがって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 + 24 = 38</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://cloud.google.com/appengine/docs/java/datastore/">Cloud Datastore Overview</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/datastore/entities">Entities, Properties, and Keys</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -3301,204 +3572,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/05/management-ruby-versions-by-rbenv/">Rbenv で Ruby を管理する</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-05T06:22:42+09:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:22 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby をバージョンごと、あるいはプロジェクトごとに管理するためのツールである rbenv の導入手順メモ</p>
-
-<h2>rbenv をインストールする</h2>
-
-<h3>homebrew の update</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew update
-</span><span class='line'>Updated Homebrew from b369c25 to c0fae05.
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>rbenv と ruby-build のインストール</h3>
-
-<p> <code>rbenv</code> と同時に <code>ruby-build</code> もインストールする</p>
-
-<p> <code>ruby-build</code> は <code>rbenv</code> のプラグインで <code>rbenv install</code> コマンドを提供する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install rbenv ruby-build
-</span><span class='line'><span class="o">==</span>&gt; Installing dependencies <span class="k">for</span> rbenv: autoconf, pkg-config, openssl, ruby-build
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>rbenv init</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;eval &quot;$(rbenv init -)&quot;&#39;</span> &gt;&gt; ~/.bash_profile
-</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bash_profile
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>rbenv init -</code> でやっていることは以下の通り</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv init -
-</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Your/Home/Directory/.rbenv/shims:${PATH}&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">RBENV_SHELL</span><span class="o">=</span>bash
-</span><span class='line'><span class="nb">source</span> <span class="s1">&#39;/usr/local/Cellar/rbenv/1.0.0/libexec/../completions/rbenv.bash&#39;</span>
-</span><span class='line'><span class="nb">command </span>rbenv rehash 2&gt;/dev/null
-</span><span class='line'>rbenv<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nb">local command</span>
-</span><span class='line'><span class="nb">  command</span><span class="o">=</span><span class="s2">&quot;$1&quot;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$#&quot;</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span><span class='line'>    <span class="nb">shift</span>
-</span><span class='line'><span class="nb">  </span><span class="k">fi</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">case</span> <span class="s2">&quot;$command&quot;</span> in
-</span><span class='line'>  rehash<span class="p">|</span>shell<span class="o">)</span>
-</span><span class='line'>    <span class="nb">eval</span> <span class="s2">&quot;$(rbenv &quot;</span>sh-<span class="nv">$command</span><span class="s2">&quot; &quot;</span><span class="nv">$@</span><span class="s2">&quot;)&quot;</span><span class="p">;;</span>
-</span><span class='line'>  *<span class="o">)</span>
-</span><span class='line'>    <span class="nb">command </span>rbenv <span class="s2">&quot;$command&quot;</span> <span class="s2">&quot;$@&quot;</span><span class="p">;;</span>
-</span><span class='line'>  <span class="k">esac</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>ruby のインストール</h2>
-
-<p>インストールできる ruby のバージョンを確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv install -l
-</span><span class='line'>Available versions:
-</span><span class='line'>  1.8.6-p383
-</span><span class='line'>  1.8.6-p420
-</span><span class='line'>  1.8.7-p249
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>バージョン <code>2.2.0</code> をインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv install 2.2.0
-</span><span class='line'>Downloading ruby-2.2.0.tar.bz2...
-</span><span class='line'>-&gt; https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.0.tar.bz2
-</span><span class='line'>Installing ruby-2.2.0...
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストールされたバージョンを確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv versions
-</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.rbenv/version<span class="o">)</span>
-</span><span class='line'>  2.2.0
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>使用する ruby を設定</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv global 2.2.0
-</span><span class='line'><span class="nv">$ </span>rbenv versions
-</span><span class='line'>  system
-</span><span class='line'>* 2.2.0 <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.rbenv/version<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ブログを管理しているディレクトリは system ruby にしておく</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/blog/
-</span><span class='line'><span class="nv">$ </span>rbenv <span class="nb">local </span>system
-</span><span class='line'><span class="nv">$ </span>rbenv versions
-</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/git/blog/.ruby-version<span class="o">)</span>
-</span><span class='line'>  2.2.0
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span>
-</span><span class='line'><span class="nv">$ </span>rbenv versions
-</span><span class='line'>  system
-</span><span class='line'>* 2.2.0 <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.rbenv/version<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="https://github.com/rbenv/rbenv">rbenv</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -3518,6 +3591,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastoreについて</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
       </li>
     
@@ -3531,10 +3608,6 @@
     
       <li class="post">
         <a href="/blog/2016/07/18/study-of-perfect-java-chapter-4/">パーフェクトJava読書メモ chapter 4 変数とオブジェクト</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/17/study-of-perfect-java-chapter-3/">パーフェクトJava読書メモ chapter 3 数値①</a>
       </li>
     
   </ul>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Gae | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/gae/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2016-08-19T05:48:26+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GAE Datastoreについて]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/08/07/about-gae-datastore/"/>
+    <updated>2016-08-07T04:34:09+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/08/07/about-gae-datastore</id>
+    <content type="html"><![CDATA[<p>GAE の Datastore についてざっくり</p>
+
+<h2>Overview</h2>
+
+<ul>
+<li>スキーマのないオブジェクトデータベース</li>
+<li>オートスケーリング</li>
+<li>ディスクへの書き込み時に自動で暗号化、読み出し時に自動で復号</li>
+<li>計画的ダウンタイムなし</li>
+</ul>
+
+
+<table>
+<thead>
+<tr>
+<th> Concept                   </th>
+<th> Cloud Datastore </th>
+<th> Relational database </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> オブジェクトが所属するカテゴリ </td>
+<td> Kind            </td>
+<td> Table               </td>
+</tr>
+<tr>
+<td> オブジェクト                </td>
+<td> Entity          </td>
+<td> Row                 </td>
+</tr>
+<tr>
+<td> オブジェクトがもつデータ      </td>
+<td> Property        </td>
+<td> Field               </td>
+</tr>
+<tr>
+<td> オブジェクトを特定する ID     </td>
+<td> Key             </td>
+<td> Primary key         </td>
+</tr>
+</tbody>
+</table>
+
+
+<ul>
+<li>同一 kind の entity でも違う property を持ちうる</li>
+<li>それぞれの entity は同名の property でも型の違うデータを持ちうる</li>
+</ul>
+
+
+<h3>Other storages</h3>
+
+<ul>
+<li>複数の table の join や 複数のカラムに対する不等号比較など、すべての SQL 操作が必要なら Google Cloud SQL</li>
+<li>ACID transaction を必要としないスキーマレスなデータを扱うなら Google Bigtable</li>
+<li>オンラインで分析されるデータを扱うなら Google BigQuery</li>
+<li>画像や動画などの変更がない大きなデータを扱うなら Google Cloud Storage</li>
+</ul>
+
+
+<h2>Entities</h2>
+
+<ul>
+<li>ひとつの entity は1つ以上の property をもつ</li>
+<li>property は1つ以上の値を取りうる</li>
+</ul>
+
+
+<h2>Keys</h2>
+
+<ul>
+<li>key は entity を特定する</li>
+<li>key は以下を含む
+
+<ul>
+<li>entity の kind</li>
+<li>以下のいずれかの識別子
+
+<ul>
+<li>文字列の key name</li>
+<li>数値の ID</li>
+</ul>
+</li>
+<li>ancestor path (optional)</li>
+</ul>
+</li>
+<li>識別子は entity が生成されたタイミングで設定される</li>
+<li>一度設定された識別子は変更されない</li>
+<li>識別子は以下の2つの方法で設定できる
+
+<ul>
+<li>アプリケーションで特定の key name を設定する</li>
+<li>Datastore が自動で発行する数値の ID を使う</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Ancestor paths</h2>
+
+<ul>
+<li>Datastore はファイルシステムのディレクトリ構成に似た階層構造をもつ</li>
+<li>entity 作成時に parent entity を指定することができる</li>
+<li>parent entity が指定されない entity は root entity と呼ぶ</li>
+<li>一度親子関係ができた entity はその関係が変更されることはない</li>
+<li>同じ parent をもつ2つの entity に対して Datastore は同一の ID を払い出すことはない</li>
+<li>同様に2つの root entity に対して同一の ID を払い出すこともない</li>
+<li>parent や parent の更に parent を ancestor と呼ぶ</li>
+<li>逆に children や children の更に children を descendant と呼ぶ</li>
+<li>root entity とその descendant は同一の entity group に属する</li>
+<li>ancestor path は root entity からたどって該当の entity に到達するまでの親子関係で構成される</li>
+</ul>
+
+
+<h2>Transactions and entity groups</h2>
+
+<ul>
+<li>entity に対する create, update, delete はトランザクションで管理される</li>
+<li>トランザクションにはこれらの複数の操作が内包される</li>
+<li>トランザクションは一貫性の担保のため、そこに含まれる操作をひとまとまりとして適用する、あるいはいずれかの操作が失敗するとすべての操作を適用しない</li>
+<li>commit を試みてエラーが返ってきたとしても、トランザクションが失敗したとは限らない
+
+<ul>
+<li><code>DatastoreTimeoutException</code> や <code>DatastoreFailureException</code> といったエラーが返ってきたとしても、 commit は成功している可能性がある</li>
+<li>このため、 Datastore は可能な限り同一のトランザクションを複数回適用しても最終的な結果が変わらないように設計すべきである</li>
+</ul>
+</li>
+<li>entity group とトランザクションの関係
+
+<ul>
+<li>1つのトランザクションで扱うデータは 25 の entity group 内に収まっていなければならない</li>
+<li>トランザクション内でクエリを発行する場合には正しいデータにマッチする ancestor filter を指定できるように entity group 内のデータを設計する必要がある</li>
+<li>広域に渡って各 entity group をレプリケーションするために、1つの entity group ごとに1秒あたりの書き込みスループットの上限値が定められている</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Understanding write costs</h2>
+
+<ul>
+<li>発生する書き込み
+
+<ul>
+<li>entity 自身</li>
+<li><code>EntitiesByKind</code> という index</li>
+<li>1つの property value ごとに <code>EntitiesByProperty</code> と <code>EntitiesByPropertyDesc</code> の各 index</li>
+</ul>
+</li>
+</ul>
+
+
+<p>以下のような entity を考える</p>
+
+<pre><code>Key: 'Foo:1' (kind = 'Foo', id = 1, no parent)
+A: 1, 2
+B: null
+C: 'this', 'that', 'theOther'
+</code></pre>
+
+<p>このとき発生する書き込み</p>
+
+<ul>
+<li>1: entity 自身</li>
+<li>1: <code>EntitiesByKind</code> index</li>
+<li>4: A property の2つの値にそれぞれ2つの index</li>
+<li>2: B property の値に2つの index （null でも必要）</li>
+<li>6: C property の3つの値にそれぞれ2つの index</li>
+</ul>
+
+
+<p>よって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 = 14</p>
+
+<p>上記の entity に複合 index を追加することを考える</p>
+
+<pre><code>Kind: 'Foo'
+A ▲, B ▼, C ▼
+</code></pre>
+
+<p>このとき、各 property の値の組み合わせ分の書き込みが発生する</p>
+
+<pre><code>(1, null, 'this') (1, null, 'that') (1, null, 'theOther')
+(2, null, 'this') (2, null, 'that') (2, null, 'theOther')
+</code></pre>
+
+<p>したがって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 + 6 = 20</p>
+
+<p>次にこれまでと同様に ancestor が存在する以下のような entity を考える</p>
+
+<pre><code>Key: 'GreatGrandpa:1/Grandpa:1/Dad:1/Foo:1' (kind = 'Foo', id = 1, parent = 'GreatGrandpa:1/Grandpa:1/Dad:1')
+A: 1, 2
+B: null
+C: 'this', 'that', 'theOther'
+</code></pre>
+
+<pre><code>Kind: 'Foo'
+A ▲, B ▼, C ▼
+Ancestor: True
+</code></pre>
+
+<p>このとき各 property の値と各 ancestor 及び自身の entity の組み合わせ分の書き込みを必要とする</p>
+
+<pre><code>(1, null, 'this', 'GreatGrandpa') (1, null, 'this', 'Grandpa') (1, null, 'this', 'Dad') (1, null, 'this', 'Foo')
+(1, null, 'that', 'GreatGrandpa') (1, null, 'that', 'Grandpa') (1, null, 'that', 'Dad') (1, null, 'that', 'Foo')
+(1, null, 'theOther', 'GreatGrandpa') (1, null, 'theOther', 'Grandpa') (1, null, 'theOther', 'Dad') (1, null, 'theOther', 'Foo')
+(2, null, 'this', 'GreatGrandpa') (2, null, 'this', 'Grandpa') (2, null, 'this', 'Dad') (2, null, 'this', 'Foo')
+(2, null, 'that', 'GreatGrandpa') (2, null, 'that', 'Grandpa') (2, null, 'that', 'Dad') (2, null, 'that', 'Foo')
+(2, null, 'theOther', 'GreatGrandpa') (2, null, 'theOther', 'Grandpa') (2, null, 'theOther', 'Dad') (2, null, 'theOther', 'Foo')
+</code></pre>
+
+<p>したがって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 + 24 = 38</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://cloud.google.com/appengine/docs/java/datastore/">Cloud Datastore Overview</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/datastore/entities">Entities, Properties, and Keys</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/"/>
+    <updated>2016-07-07T08:27:00+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae</id>
+    <content type="html"><![CDATA[<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちらの記事</a>を参考にGAE for JavaアプリケーションをAndroid Studio + Gradleでセットアップし、サンプルアプリケーションを開発してみました。</p>
+
+<p>早速GAEにdeployしてみようと、メニューバーの <code>Build</code> から <code>Deploy Module to App Engine...</code> を選択してdeployを実行&hellip;ところがタスクが走らずうんともすんとも言わないので調べてみました。</p>
+
+<h2>結論</h2>
+
+<p>以下の設定を <code>app.iml</code> ファイルに追記する</p>
+
+<pre><code class="xml">&lt;facet type="android-gradle" name="Android-Gradle"&gt;
+  &lt;configuration&gt;
+    &lt;option name="GRADLE_PROJECT_PATH" value=":app" /&gt;
+  &lt;/configuration&gt;
+&lt;/facet&gt;
+&lt;facet type="java-gradle" name="Java-Gradle"&gt;
+  &lt;configuration&gt;
+     &lt;option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" /&gt;
+     &lt;option name="BUILDABLE" value="true" /&gt;
+  &lt;/configuration&gt;
+&lt;/facet&gt;
+</code></pre>
+
+<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちら</a>は少々特殊な方法でmoduleを作成しているのでFacetの設定が不十分となってしまった模様。</p>
+
+<h2>Facetとは</h2>
+
+<p>FacetはIntelliJ IDEAに用意された機能で、使用するフレームワークや言語に合わせたFacetを設定することでIntelliJ IDEAが必要なコンポーネントのダウンロードや各種補完機能の設定などを行ってくれるもの。</p>
+
+<p>Android StudioはIntelliJ IDEAをベースとして開発されたIDEなのでFacetの機能を継承している。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">GoogleAppEngine for Java を AndroidStudio + Gradleで開発環境を作る</a></li>
+<li><a href="https://www.jetbrains.com/help/idea/2016.1/facet.html">Facet</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

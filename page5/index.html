@@ -9,7 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Vimでは &lt;TAB&gt; やインデントについてその挙動を設定することができる。いくつか設定方法があるが、これまでこれらに関する .vimrc の設定は何も考えずにただコピペしていたので記述を見直してみた。 tabstop tabstop で &lt;TAB&gt; &hellip;">
+  <meta name="description" content="AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順 YUMの設定 パッケージ管理システムであるYUMにmongoDB用の設定を追加する 1
+$ sudo vim /etc/yum.repos.d/mongodb.repo /etc/yum.repos.d/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,6 +113,65 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">AWSのLinuxにMongoDBをインストール</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-30T13:32:15+09:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:32 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順</p>
+
+<h2>YUMの設定</h2>
+
+<p>パッケージ管理システムであるYUMにmongoDB用の設定を追加する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo vim /etc/yum.repos.d/mongodb.repo
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>/etc/yum.repos.d/mongodb.repo </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>mongodb<span class="o">]</span>
+</span><span class='line'><span class="nv">name</span><span class="o">=</span>MongoDB Repository
+</span><span class='line'><span class="nv">baseurl</span><span class="o">=</span>http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
+</span><span class='line'><span class="nv">gpgcheck</span><span class="o">=</span>0
+</span><span class='line'><span class="nv">enabled</span><span class="o">=</span>1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでYUMにmongoDBのリポジトリが追加される</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/30/installing-mongodb-on-linux-aws/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -979,120 +1039,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/05/installing-ruby-on-rails-on-linux/">LinuxにRuby on Railsをインストールする</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-05T03:58:11+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:58 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby on Railsを使ってみたいと思い、AWSにインストールした手順。</p>
-
-<h2>Ruby version 2.0.0 を RVMを使ってインストール</h2>
-
-<p><a href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a>を参照</p>
-
-<h2>gemsetの作成</h2>
-
-<blockquote><p>Rubyをインストールしたら、Railsのアプリケーションを実行するために必要な他のソフトウェア向けにシステムを構成する必要があります。通常、これはgemのインストールに関連します。gemとは自己完結型のRubyコードのパッケージです。バージョン番号の異なるgem同士がコンフリクトすることがあるため、一連のgemを自己完結的にまとめたgemsetというものを作成してバージョンを使い分けるのが便利です。
-（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
-
-<p>以下のコマンドでgemsetを作成する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm use 2.0.0@railstutorial_rails_4_0 --create --default
-</span></code></pre></td></tr></table></div></figure>
-
-
-<blockquote><p>上のコマンドを実行すると、Ruby 2.0.0に関連付けられたrailstutorial_rails_4_0というgemsetを作成し (&ndash;create)、その場でgemsetを有効にし (use)、gemsetをデフォルトに設定 (&ndash;default) します。これにより、ターミナルウィンドウを開いたときに2.0.0@railstutorial_rails_4_0というRubyとgemsetの組み合わせが常に選択されるようになります。
-（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
-
-<h2>RubyGemsのインストール</h2>
-
-<p>AWSには始めからgemがインストールされていて、PATHは以下。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
-</span><span class='line'>/usr/bin/gem
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>RVMでRubyをインストールするとPATHが上書きされる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which gem
-</span><span class='line'>~/.rvm/rubies/ruby-2.0.0-p594/bin/gem
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回はチュートリアルに合わせてgemのバージョンを更新する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem update --system 2.0.3
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>gemの設定ファイルである <code>.gemrc</code> に自動生成されるドキュメントである <code>ri</code> と <code>rdoc</code> の自動生成を抑制する設定をする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim .gemrc
-</span><span class='line'><span class="nv">$ </span>cat .gemrc
-</span><span class='line'>install: --no-rdoc --no-ri
-</span><span class='line'>update:  --no-rdoc --no-ri
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Railsをインストールする</h2>
-
-<p>いよいよRailsをインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install rails --version 4.0.5
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストール完了。
-以下のコマンドで確認する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails -v
-</span><span class='line'>Rails 4.0.5
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Railsがインストールされたことを確認できた</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page6">&larr; Older</a>
@@ -1114,6 +1060,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastoreについて</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
       </li>
     
@@ -1127,10 +1077,6 @@
     
       <li class="post">
         <a href="/blog/2016/07/18/study-of-perfect-java-chapter-4/">パーフェクトJava読書メモ chapter 4 変数とオブジェクト</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/17/study-of-perfect-java-chapter-3/">パーフェクトJava読書メモ chapter 3 数値①</a>
       </li>
     
   </ul>

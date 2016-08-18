@@ -9,9 +9,14 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Canvasとは ブラウザ上に図形を描画するためのHTML5の仕様の一つ
-プラグインを使わずにJavaScriptベースで図形を描画することができる。
-アニメーションメソッドはないので動きをつけるためには1コマずつ描画し直す必要がある &hellip;">
+  <meta name="description" content="Redisで扱えるデータ型 String
+List
+Set
+Sorted Set
+Hash String 文字列型 文字列や数値など、Keyに対して1つに定まる値。 値のset 1
+2
+set [key_name] [value] # 1つのkey-valueをsetする
+mset [ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -114,6 +119,477 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/27/rediss-data-type-and-usage/">Redisに用意されたデータ型とその扱い</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-27T00:47:21+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:47 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Redisで扱えるデータ型</h2>
+
+<ul>
+<li>String</li>
+<li>List</li>
+<li>Set</li>
+<li>Sorted Set</li>
+<li>Hash</li>
+</ul>
+
+
+<h2>String</h2>
+
+<p>文字列型</p>
+
+<p>文字列や数値など、Keyに対して1つに定まる値。</p>
+
+<h3>値のset</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">set</span> <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>value<span class="o">]</span>  <span class="c"># 1つのkey-valueをsetする</span>
+</span><span class='line'>mset <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>value_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span> <span class="o">[</span>value_2<span class="o">]</span>  <span class="c"># key-valueの組を複数setする</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値のget</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>get <span class="o">[</span>key_name<span class="o">]</span>  <span class="c"># 1つのkeyに対するvalueをgetする</span>
+</span><span class='line'>mget <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span> <span class="o">[</span>key_name_3<span class="o">]</span>  <span class="c"># 複数のkeyに対するvalueをgetする</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; <span class="nb">set </span>name Steven
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; get name
+</span><span class='line'><span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>redis&gt; mset number <span class="m">8</span> color red
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; mget name number color
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;8&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;red&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>List</h2>
+
+<p>リスト型</p>
+
+<p>順番をもった値の集合。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rpush <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># リストの末尾に値を追加</span>
+</span><span class='line'>lpush <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># リストの先頭に値を追加</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rpop <span class="o">[</span>key_name<span class="o">]</span>  <span class="c"># リストの末尾の値を削除</span>
+</span><span class='line'>lpop <span class="o">[</span>key_name<span class="o">]</span>  <span class="c"># リストの先頭の値を削除</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>範囲を指定して値を取得</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>lrange <span class="o">[</span>key_name<span class="o">]</span> <span class="m">0</span> <span class="m">3</span>   <span class="c"># 1番目から4番目まで値を取得</span>
+</span><span class='line'>lrange <span class="o">[</span>key_name<span class="o">]</span> <span class="m">0</span> -1  <span class="c"># 1番目から最後（最後から1番目）までの値を取得</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>位置を指定して値を取得</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>lindex <span class="o">[</span>key_name<span class="o">]</span> <span class="m">2</span>   <span class="c"># 3番目の値を取得</span>
+</span><span class='line'>lindex <span class="o">[</span>key_name<span class="o">]</span> -1  <span class="c"># 最後の値を取得</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>要素の数を取得</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>llen <span class="o">[</span>key<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; rpush player Steven
+</span><span class='line'>redis&gt; rpush player Michael James
+</span><span class='line'>redis&gt; lrange player <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;James&quot;</span>
+</span><span class='line'>redis&gt; lrange player <span class="m">0</span> 1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>redis&gt; lindex player 1
+</span><span class='line'><span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>redis&gt; lindex player -1
+</span><span class='line'><span class="s2">&quot;James&quot;</span>
+</span><span class='line'>redis&gt; rpop player
+</span><span class='line'><span class="s2">&quot;James&quot;</span>
+</span><span class='line'>redis&gt; lrange player <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>redis&gt; llen player
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Set</h2>
+
+<p>セット型</p>
+
+<p>順不同の値の集合。値の重複を許さない。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sadd <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># keyに対応するセットに指定した値を追加</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>srem <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># keyに対応するセットから指定した値を削除</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の参照</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>smembers <span class="o">[</span>key_name<span class="o">]</span>  <span class="c"># keyに対応するセットの値を取得</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>和集合の取得</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sunion <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span>  <span class="c"># key1に対応するセットとkey2に対応するセットの値の集合を取得</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>差集合の取得</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sdiff <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span>  <span class="c"># key1に対応するセットとkey2に対応するセットの値の差分の集合を取得</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>積集合の取得</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sinter <span class="o">[</span>key_name_1<span class="o">]</span> <span class="o">[</span>key_name_2<span class="o">]</span>  <span class="c"># key1に対応するセットとkey2に対応するセットの値の重複部分の集合を取得</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; sadd reds Steven
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>redis&gt; sadd reds Steve
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; sadd reds Michael
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;Steve&quot;</span>
+</span><span class='line'>redis&gt; srem reds Michael
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; smembers reds
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Steve&quot;</span>
+</span><span class='line'>redis&gt; sadd three_lions Steven Michael
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 2
+</span><span class='line'>redis&gt; smembers three_lions
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>redis&gt; sunion reds three_lions
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;Steve&quot;</span>
+</span><span class='line'>redis&gt; sdiff reds three_lions
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steve&quot;</span>
+</span><span class='line'>redis&gt; sdiff three_lions reds  <span class="c"># sdiffの後のkeyの順番により結果が違うことに注意</span>
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Michael&quot;</span>
+</span><span class='line'>redis&gt; sinter reds three_lions
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;Steven&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sorted Set</h2>
+
+<p>ソート済みセット型</p>
+
+<p>セット型と同様の特徴に加えて個々の値がスコアを持つ。</p>
+
+<h3>値の追加</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>zadd <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>score<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># keyに対応するセットにスコア付きで値を追加</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の削除</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>zrem <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># keyに対応するセットから指定した値を削除</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の取得</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>zrange <span class="o">[</span>key_name<span class="o">]</span> <span class="m">0</span> <span class="m">3</span>     <span class="c"># keyに対応するセットからスコアの低い順に1番目から4番目の値を取得</span>
+</span><span class='line'>zrevrange <span class="o">[</span>key_name<span class="o">]</span> <span class="m">0</span> <span class="m">3</span>  <span class="c"># keyに対応するセットからスコアの高い順に1番目から4番目の値を取得</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値の順位を取得</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>zrank <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>     <span class="c"># 指定した値の、keyに対応するセット中のランクを取得（スコアの低い順）</span>
+</span><span class='line'>zrevrank <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>member<span class="o">]</span>  <span class="c"># 指定した値の、keyに対応するセット中のランクを取得（スコアの高い順）</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; zadd fifa <span class="m">1</span> germany
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; zrange fifa <span class="m">0</span> 0
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;germany&quot;</span>
+</span><span class='line'>redis&gt; zadd fifa <span class="m">2</span> argentina
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; zadd fifa <span class="m">3</span> holland <span class="m">4</span> colombia <span class="m">45</span> japan
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 3
+</span><span class='line'>redis&gt; zrange fifa <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;germany&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;argentina&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;holland&quot;</span>
+</span><span class='line'>4<span class="o">)</span> <span class="s2">&quot;colombia&quot;</span>
+</span><span class='line'>5<span class="o">)</span> <span class="s2">&quot;japan&quot;</span>
+</span><span class='line'>redis&gt; zrevrange fifa <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;japan&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;colombia&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;holland&quot;</span>
+</span><span class='line'>4<span class="o">)</span> <span class="s2">&quot;argentina&quot;</span>
+</span><span class='line'>5<span class="o">)</span> <span class="s2">&quot;germany&quot;</span>
+</span><span class='line'>redis&gt; zrank fifa japan
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> <span class="m">4</span>                      <span class="c"># 0番目から数えた値が返るので注意</span>
+</span><span class='line'>redis&gt; zrevrank fifa argentina
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> <span class="m">3</span>                      <span class="c"># 0番目から数えた値が返るので注意</span>
+</span><span class='line'>redis&gt; zrem fifa japan
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; zrange fifa <span class="m">0</span> -1
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;germany&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;argentina&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;holland&quot;</span>
+</span><span class='line'>4<span class="o">)</span> <span class="s2">&quot;colombia&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Hash</h2>
+
+<p>ハッシュ型</p>
+
+<p>field（valueについた名前）とvalueを1セットとする値の集合（ハッシュ）。</p>
+
+<h3>値のset</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>hset <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>field<span class="o">]</span> <span class="o">[</span>value<span class="o">]</span>  <span class="c"># keyにfieldとvalueのハッシュをset</span>
+</span><span class='line'>hmset <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>field_1<span class="o">]</span> <span class="o">[</span>value_1<span class="o">]</span> <span class="o">[</span>field_2<span class="o">]</span> <span class="o">[</span>value_2<span class="o">]</span>  <span class="c"># keyにハッシュのfieldとvalueを複数セット</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>値のget</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>hget <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>field<span class="o">]</span>               <span class="c"># keyに対応するハッシュから指定したfieldのvalueを取得</span>
+</span><span class='line'>hmget <span class="o">[</span>key_name<span class="o">]</span> <span class="o">[</span>field_1<span class="o">]</span> <span class="o">[</span>field_2<span class="o">]</span>  <span class="c"># keyに対応するハッシュから指定した複数のfieldのvalueを取得</span>
+</span><span class='line'>hkeys <span class="o">[</span>key_name<span class="o">]</span>                      <span class="c"># keyに対応するハッシュのすべてのfieldを取得</span>
+</span><span class='line'>hvals <span class="o">[</span>key_name<span class="o">]</span>                      <span class="c"># keyに対応するハッシュのすべてのvalueを取得</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用例</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>redis&gt; hset steven position mf
+</span><span class='line'><span class="o">(</span>integer<span class="o">)</span> 1
+</span><span class='line'>redis&gt; hget steven position
+</span><span class='line'><span class="s2">&quot;mf&quot;</span>
+</span><span class='line'>redis&gt; hmset steven nationality england club reds
+</span><span class='line'>OK
+</span><span class='line'>redis&gt; hmget steven club position
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;reds&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;mf&quot;</span>
+</span><span class='line'>redis&gt; hkeys steven
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;position&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;nationality&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;club&quot;</span>
+</span><span class='line'>redis&gt; hvals steven
+</span><span class='line'>1<span class="o">)</span> <span class="s2">&quot;mf&quot;</span>
+</span><span class='line'>2<span class="o">)</span> <span class="s2">&quot;england&quot;</span>
+</span><span class='line'>3<span class="o">)</span> <span class="s2">&quot;reds&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1523,6 +1999,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastoreについて</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
       </li>
     
@@ -1536,10 +2016,6 @@
     
       <li class="post">
         <a href="/blog/2016/07/18/study-of-perfect-java-chapter-4/">パーフェクトJava読書メモ chapter 4 変数とオブジェクト</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/17/study-of-perfect-java-chapter-3/">パーフェクトJava読書メモ chapter 3 数値①</a>
       </li>
     
   </ul>
