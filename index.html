@@ -9,10 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="GAE の Datastore についてざっくり Overview スキーマのないオブジェクトデータベース
-オートスケーリング
-ディスクへの書き込み時に自動で暗号化、読み出し時に自動で復号
-計画的ダウンタイムなし Concept Cloud Datastore Relational &hellip;">
+  <meta name="description" content="GAE の Task Queue についてざっくり。 具体的な実装に関しては別エントリに書こうと思います。 Overview アプリケーションの処理（task）を Task Queue API に渡す（queue）ことでユーザーからのリクエスト外で非同期に処理させることができる
+task &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -121,7 +119,160 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastoreについて</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/08/10/about-gae-task-queue/">GAE Task Queue について</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-08-10T21:29:29+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:29 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>GAE の Task Queue についてざっくり。</p>
+
+<p>具体的な実装に関しては別エントリに書こうと思います。</p>
+
+<h2>Overview</h2>
+
+<ul>
+<li>アプリケーションの処理（task）を Task Queue API に渡す（queue）ことでユーザーからのリクエスト外で非同期に処理させることができる</li>
+<li>task はスケーラブルな GAE の Worker モジュールによってバックグラウンドで処理される</li>
+</ul>
+
+
+<p>Task Queue には以下の2つのタイプがある</p>
+
+<h3>Push queues</h3>
+
+<ul>
+<li>Queue を処理する間隔をあらかじめスケジュールすることができる</li>
+<li>Queue は GAE のモジュールへのリクエストとして処理される</li>
+<li>task の処理には期限がある
+
+<ul>
+<li>自動的にスケーリングするモジュールで処理するものは 10 分以内</li>
+<li>そうでないモジュールで処理するものは 24 時間以内</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Pull queues</h3>
+
+<ul>
+<li>GAE は queue を処理せず、外部の Worker が queue を取得（lease）して処理する</li>
+<li>外部の Worker で、どのような間隔で queue を処理するか管理する必要がある</li>
+<li>lease のタイミングで外部 Worker に対して queue の処理期限が渡される</li>
+<li>期限内に queue の処理が完了するか、 queue が削除されない場合は同一 queue に対する他の Worker プロセスからの lease を許可する</li>
+</ul>
+
+
+<p>queue の処理は非同期で行われるので task を作成したアプリケーションは処理の結果を知ることができないが、処理に失敗した場合は自動でリトライ処理が走る</p>
+
+<h2>Use cases</h2>
+
+<h3>Push queues</h3>
+
+<ul>
+<li>SNS メッセージアプリケーションでユーザーがメッセージを送るたびにフォロワーの更新を非同期で行う</li>
+<li>キャンペーン広告の送信をあらかじめスケジュールしておいて決められた時間に送る</li>
+</ul>
+
+
+<h3>Pull queues</h3>
+
+<ul>
+<li>バッチジョブに効果がある</li>
+<li>task に tag をつけることで外部 worker が lease する時に同じ tag がつく task をまとめて処理することができる</li>
+<li>実装例としては複数のゲームのリーダーボードが典型的
+
+<ul>
+<li>ハイスコアの更新があるたびに game id を tag として、 score と user 名を enqueue する</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Push queue</h2>
+
+<ul>
+<li>Push queue は GAE の Worker モジュールに HTTP リクエストで task を渡す</li>
+<li>このリクエストは一定の間隔で実行され、失敗すると新たなリクエストをもってリトライされる</li>
+<li>タスクの種類ごとにハンドラを書く必要がある</li>
+<li>1つのモジュールに各種類ごとのハンドラを用意することができる</li>
+<li>task の種類ごとに別々のモジュールを使うこともできる</li>
+</ul>
+
+
+<h3>Working with push queues</h3>
+
+<ul>
+<li>task を作って push queue に enqueue するプログラムを書く</li>
+<li>task リクエストを受け取って GAE モジュールに渡すハンドラを書く</li>
+<li>quota を気にする必要がある</li>
+</ul>
+
+
+<h2>Pull queue</h2>
+
+<ul>
+<li>Pull queue を使うことで独自のシステムから GAE の task を処理することができる</li>
+<li>ここでいう独自のシステムには GAE で構成されたシステムも含まれる</li>
+<li>GAE アプリケーションからは <code>com.google.appengine.api.taskqueue</code> パッケージを使って task を処理できる</li>
+<li>その他のアプリケーションからは Task Queue REST API を使う</li>
+<li>Push queue では GAE がやってくれる以下の処理を自前で用意する必要がある</li>
+<li>アプリケーション側で worker スケールの管理をする</li>
+<li>アプリケーション側で処理の終わった task を削除する</li>
+<li>Pull queue は <code>queue.xml</code> という設定ファイルが必要</li>
+</ul>
+
+
+<h3>Pull queue による task 処理の流れ</h3>
+
+<ol>
+<li>アプリケーションが task を lease する</li>
+<li>GAE が task データを返す</li>
+<li>アプリケーションが task を処理する
+
+<ol>
+<li>もし lease の期限以内に処理を完了できなかった場合は再度 lease できる</li>
+<li>retry できる最大の回数はあらかじめ設定できる</li>
+<li>この回数を超えると GAE が task を削除する</li>
+</ol>
+</li>
+<li>アプリケーションは task への処理が完了したら必ずその task を削除する</li>
+</ol>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://cloud.google.com/appengine/docs/java/taskqueue/">Task Queue Overview</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/taskqueue/push/">Push Queues in Java</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/taskqueue/overview-pull">Using Pull Queues in Java</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastore について</a></h1>
     
     
       <p class="meta">
@@ -3369,211 +3520,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/05/management-perl-versions-by-plenv/">Plenv で Perl を管理する</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-05T07:14:26+09:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>7:14 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Perl をバージョンごと、あるいはプロジェクトごとに管理するためのツールである plenv の導入手順メモ</p>
-
-<h2>plenv をインストールする</h2>
-
-<h3>homebrew の update</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew update
-</span><span class='line'>Updated Homebrew from c0fae05 to bfe20af.
-</span><span class='line'>No changes to formulae.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>先ほど <a href="http://blog.sojiro.me/blog/2016/03/05/management-ruby-versions-by-rbenv/">rbenv をインストールする手順</a> で同じことをやったばかりなので更新なし</p>
-
-<h3>plenv と perl-build のインストール</h3>
-
-<p>これも <a href="http://blog.sojiro.me/blog/2016/03/05/management-ruby-versions-by-rbenv/">どこか</a> で見たような手順</p>
-
-<p><code>perl-build</code> は <code>plenv</code> のプラグイン</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install plenv perl-build
-</span><span class='line'><span class="o">==</span>&gt; Downloading https://github.com/tokuhirom/plenv/archive/2.2.0.tar.gz
-</span><span class='line'><span class="o">==</span>&gt; Downloading from https://codeload.github.com/tokuhirom/plenv/tar.gz/2.2.0
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>plenv init</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;eval &quot;$(plenv init -)&quot;&#39;</span> &gt;&gt; ~/.bash_profile
-</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bash_profile
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>plenv init -</code> でやっていることは以下の通り</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv init -
-</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Your/Home/Directory/.plenv/shims:${PATH}&quot;</span>
-</span><span class='line'><span class="nb">export </span><span class="nv">PLENV_SHELL</span><span class="o">=</span>bash
-</span><span class='line'><span class="nb">source</span> <span class="s1">&#39;/usr/local/Cellar/plenv/2.2.0/libexec/../completions/plenv.bash&#39;</span>
-</span><span class='line'>
-</span><span class='line'>plenv<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nb">local command</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">  command</span><span class="o">=</span><span class="s2">&quot;$1&quot;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$#&quot;</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span><span class='line'>    <span class="nb">shift</span>
-</span><span class='line'><span class="nb">  </span><span class="k">fi</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">case</span> <span class="s2">&quot;$command&quot;</span> in
-</span><span class='line'>  rehash<span class="p">|</span>shell<span class="o">)</span>
-</span><span class='line'>    <span class="nb">eval</span> <span class="s2">&quot;`plenv &quot;</span>sh-<span class="nv">$command</span><span class="s2">&quot; &quot;</span><span class="nv">$@</span><span class="s2">&quot;`&quot;</span><span class="p">;;</span>
-</span><span class='line'>  *<span class="o">)</span>
-</span><span class='line'>    <span class="nb">command </span>plenv <span class="s2">&quot;$command&quot;</span> <span class="s2">&quot;$@&quot;</span><span class="p">;;</span>
-</span><span class='line'>  <span class="k">esac</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>perl のインストール</h2>
-
-<p>インストールできる perl のバージョンを確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv install -l
-</span><span class='line'>Available versions:
-</span><span class='line'> 5.6.0
-</span><span class='line'> 5.6.1-TRIAL1
-</span><span class='line'> 5.6.1-TRIAL2
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>最新の安定版であるバージョン <code>5.22.1</code> をインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv install 5.22.1
-</span><span class='line'>Installing 5.22.1 as 5.22.1
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストールされたバージョンを確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv versions
-</span><span class='line'>* system <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.plenv/version<span class="o">)</span>
-</span><span class='line'>  5.22.1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>使用する perl を設定</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv global 5.22.1
-</span><span class='line'><span class="nv">$ </span>plenv versions
-</span><span class='line'>  system
-</span><span class='line'>* 5.22.1 <span class="o">(</span><span class="nb">set </span>by /My/Home/Directory/.plenv/version<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>perl に cpanm をインストールする</h2>
-
-<p>現在使用している perl に <code>cpanm</code> をインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>plenv install-cpanm
-</span><span class='line'>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-</span><span class='line'>                                 Dload  Upload   Total   Spent    Left  Speed
-</span><span class='line'><span class="m">100</span>   <span class="m">314</span>    <span class="m">0</span>   <span class="m">314</span>    <span class="m">0</span>     <span class="m">0</span>   <span class="m">2078</span>      <span class="m">0</span> --:--:-- --:--:-- --:--:--  2079
-</span><span class='line'><span class="m">100</span>  296k  <span class="m">100</span>  296k    <span class="m">0</span>     <span class="m">0</span>   367k      <span class="m">0</span> --:--:-- --:--:-- --:--:-- 2135k
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>cpanm</code> のパスが変わっていることを確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>which cpanm
-</span><span class='line'>/My/Home/Directory/.plenv/shims/cpanm
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="https://github.com/tokuhirom/plenv">plenv</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -3593,7 +3539,11 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastoreについて</a>
+        <a href="/blog/2016/08/10/about-gae-task-queue/">GAE Task Queue について</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastore について</a>
       </li>
     
       <li class="post">
@@ -3606,10 +3556,6 @@
     
       <li class="post">
         <a href="/blog/2016/07/20/study-of-perfect-java-chapter-5/">パーフェクトJava読書メモ chapter 5 クラス</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/18/study-of-perfect-java-chapter-4/">パーフェクトJava読書メモ chapter 4 変数とオブジェクト</a>
       </li>
     
   </ul>
