@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Task Queue | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/task-queue/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-08-24T03:08:05+09:00</updated>
+  <updated>2016-08-24T03:14:01+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -35,8 +35,8 @@
 <h3>Push queues</h3>
 
 <ul>
-<li>Queue を処理する間隔をあらかじめスケジュールすることができる</li>
-<li>Queue は GAE のモジュールへのリクエストとして処理される</li>
+<li>queue を処理する間隔をあらかじめスケジュールすることができる</li>
+<li>queue は GAE のモジュールへのリクエストとして処理される</li>
 <li>task の処理には期限がある
 
 <ul>
