@@ -66,13 +66,13 @@ default_asides: [custom/asides/about.html, custom/asides/recent_posts.html]
 # ----------------------- #
 
 # Github repositories
-github_user:
+github_user: sojiro14
 github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user:
+twitter_user: sojiro14
 twitter_tweet_button: true
 
 # Google +1
