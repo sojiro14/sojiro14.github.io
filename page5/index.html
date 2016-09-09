@@ -9,9 +9,12 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="NoSQLの流れを汲むMongoDBを初めて使ってみるにあたり、基本的な操作をまとめてみる。 基本的な用語 データベース(database)
-コレクション(collection)
-ドキュメント(document) データベース MySQLなどのRDBMSにおけるデータベース、 &hellip;">
+  <meta name="description" content="Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。 今回使うNode.jsのバージョン 1
+2
+$ node -v
+v0.10.32 Web Serverオブジェクトの準備 Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている 1
+2
+var &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -114,6 +117,63 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/07/making-a-web-server-with-node-dot-js/">Node.jsを使ってWeb Serverを作ってみました</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-07T00:55:25+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:55 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。</p>
+
+<p>今回使うNode.jsのバージョン</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
+</span><span class='line'>v0.10.32
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Web Serverオブジェクトの準備</h2>
+
+<p>Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nodeの <code>http</code> モジュールを読み込んだ後、 <code>createServer()</code> メソッドでWeb Serverオブジェクトを取得できる</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/01/07/making-a-web-server-with-node-dot-js/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -710,187 +770,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/">Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-12T12:06:23+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:06 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
-
-<h2>Herokuに必要なgemのインストール</h2>
-
-<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span><span class="p">,</span> <span class="s1">&#39;0.15.1&#39;</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rails_12factor&#39;</span><span class="p">,</span> <span class="s1">&#39;0.0.2&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
-これによりGemfile.lockが更新され、production環境に備えることができる。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install --without production
-</span><span class='line'>Your bundle is <span class="nb">complete</span>!
-</span><span class='line'>Gems in the group production were not installed.
-</span><span class='line'>Use <span class="sb">`</span>bundle show <span class="o">[</span>gemname<span class="o">]</span><span class="sb">`</span> to see where a bundled gem is installed.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ここまでできたらgitにcommitしておく。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git commit -a -m <span class="s2">&quot;Update Gemfile.lock for Heroku&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
-
-<h2>herokuコマンドが使えるようにする</h2>
-
-<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
-
-<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
-
-<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
-今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
-
-<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>wget -qO- https://toolbelt.heroku.com/install.sh <span class="p">|</span> sh
-</span><span class='line'>This script requires superuser access to install software.
-</span><span class='line'>You will be prompted <span class="k">for</span> your password by sudo.
-</span><span class='line'><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> sojiro:
-</span><span class='line'>Add the Heroku CLI to your PATH using:
-</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.profile
-</span><span class='line'>Installation <span class="nb">complete</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;PATH=&quot;/usr/local/heroku/bin:$PATH&quot;&#39;</span> &gt;&gt; ~/.bashrc
-</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bashrc
-</span><span class='line'><span class="nv">$ </span>heroku version
-</span><span class='line'>heroku-toolbelt/3.15.2 <span class="o">(</span>x86_64-linux<span class="o">)</span> ruby/2.0.0
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuのセットアップ</h2>
-
-<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku login
-</span><span class='line'>Enter your Heroku credentials.
-</span><span class='line'>Email: your.account@email.com
-</span><span class='line'>Password <span class="o">(</span>typing will be hidden<span class="o">)</span>:
-</span><span class='line'>Your Heroku account does not have a public ssh key uploaded.
-</span><span class='line'>Could not find an existing public key at ~/.ssh/id_rsa.pub
-</span><span class='line'>Would you like to generate one? <span class="o">[</span>Yn<span class="o">]</span> Y
-</span><span class='line'>Generating new SSH public key.
-</span><span class='line'>Uploading SSH public key /home/user/.ssh/id_rsa.pub... <span class="k">done</span>
-</span><span class='line'>Authentication successful.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>認証が完了したらHerokuのセットアップをする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>heroku create
-</span><span class='line'>Creating infinite-peak-4923... <span class="k">done</span>, stack is cedar-14
-</span><span class='line'>https://infinite-peak-4923.herokuapp.com/ <span class="p">|</span> git@heroku.com:infinite-peak-4923.git
-</span><span class='line'>Git remote heroku added
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでgitのremoteにherokuが追加される</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote -v
-</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>fetch<span class="o">)</span>
-</span><span class='line'>heroku  git@heroku.com:infinite-peak-4923.git <span class="o">(</span>push<span class="o">)</span>
-</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>fetch<span class="o">)</span>
-</span><span class='line'>origin  https://github.com/sojiro14/first_app.git <span class="o">(</span>push<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Herokuへデプロイ</h2>
-
-<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git push heroku master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
-
-<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page6">&larr; Older</a>
@@ -912,6 +791,10 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ chapter 9 文、式、演算子</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/10/about-gae-task-queue/">GAE Task Queue について</a>
       </li>
     
@@ -925,10 +808,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
     
       <li class="post">
         <a href="/blog/2016/07/21/study-of-perfect-java-chapter-6/">パーフェクトJava読書メモ chapter 6 コレクションと配列</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/20/study-of-perfect-java-chapter-5/">パーフェクトJava読書メモ chapter 5 クラス</a>
       </li>
     
   </ul>

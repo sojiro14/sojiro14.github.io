@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-08-24T03:14:01+09:00</updated>
+  <updated>2016-09-10T01:55:27+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 9 文、式、演算子]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/08/24/study-of-perfect-java-chapter-9/"/>
+    <updated>2016-08-24T03:19:11+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/08/24/study-of-perfect-java-chapter-9</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h3>Java の文法と文</h3>
+
+<p>Java で扱う文は以下の4種類</p>
+
+<ul>
+<li>制御文</li>
+<li>ブロック文</li>
+<li>宣言文</li>
+<li>式文</li>
+</ul>
+
+
+<p>宣言文と式文は終端にセミコロン必要</p>
+
+<h3>Java の演算子と式</h3>
+
+<ul>
+<li>&amp;&amp;、 ||、 ? : （三項演算子）を除くすべての演算子は演算前にすべてのオペランドを評価する</li>
+<li>オペランドは左のものから評価する</li>
+<li>メソッド及びコンストラクタ呼び出し式では引数を左から評価する</li>
+</ul>
+
+
+<h3>数値の演算</h3>
+
+<h4>インクリメント/デクリメント演算の前置後置</h4>
+
+<p>前置演算は評価値が演算後の値、後置演算は評価値が演算前の値</p>
+
+<pre><code class="java">int n = 10;
+int m = ++n;
+// m: 11, n: 11
+int n = 10;
+int m = n++;
+// m: 10, n: 11
+</code></pre>
+
+<pre><code class="java">int n = 0;
+while (++n &lt; 10) {
+    // ループが回る回数は 9 回
+}
+</code></pre>
+
+<h3>論理演算</h3>
+
+<h4>遅延評価</h4>
+
+<p>&amp;&amp;、|| は遅延評価を行う</p>
+
+<ul>
+<li>&amp;&amp; は左辺の評価値が偽であれば右辺の評価値に関係なく結果が偽になるため右辺を評価しない</li>
+<li>|| は左辺の評価値が真であれば右辺の評価値に関係なく結果が真になるため右辺の評価をしない</li>
+</ul>
+
+
+<p>これらの演算子の右辺に副作用のある式を書くと、左辺の評価値により実行さるか否かが変わってくるので注意</p>
+
+<h3>その他の演算</h3>
+
+<h4>instanceof 演算子</h4>
+
+<p>ダウンキャストを安全に行えるかを事前にチェックする</p>
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 7 インターフェース]]></title>
@@ -1630,287 +1706,6 @@ int len = sb.append("012").append("345").length();
 <h2>参照</h2>
 
 <p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 3 数値①]]></title>
-    <link href="http://sojiro14.github.io/blog/2016/07/17/study-of-perfect-java-chapter-3/"/>
-    <updated>2016-07-17T17:36:05+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2016/07/17/study-of-perfect-java-chapter-3</id>
-    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
-
-<h2>整数型</h2>
-
-<p>以下の5種類</p>
-
-<table>
-<thead>
-<tr>
-<th> name   </th>
-<th> bit length </th>
-<th>  min  </th>
-<th>  max  </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <code>byte</code>  </td>
-<td> 8         </td>
-<td> -128  </td>
-<td>  127  </td>
-</tr>
-<tr>
-<td> <code>char</code>  </td>
-<td> 16        </td>
-<td> 0     </td>
-<td> 65535 </td>
-</tr>
-<tr>
-<td> <code>short</code> </td>
-<td> 16        </td>
-<td> -32768 </td>
-<td> 32767 </td>
-</tr>
-<tr>
-<td> <code>int</code>   </td>
-<td> 32        </td>
-<td> -2147483648 </td>
-<td> 2147483647 </td>
-</tr>
-<tr>
-<td> <code>long</code>  </td>
-<td> 64        </td>
-<td> -9223372036854775808 </td>
-<td> 9223372036854775807 </td>
-</tr>
-</tbody>
-</table>
-
-
-<h3>bit値</h3>
-
-<p>符号あり整数で最上位ビットが1の値は負の値となる</p>
-
-<h4>4bit長の符号なし整数</h4>
-
-<table>
-<thead>
-<tr>
-<th> type </th>
-<th> value </th>
-<th> bit </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> min  </td>
-<td> 0     </td>
-<td> 0000 </td>
-</tr>
-<tr>
-<td> max  </td>
-<td> 15    </td>
-<td> 1111 </td>
-</tr>
-</tbody>
-</table>
-
-
-<h4>4bit長の符号あり整数</h4>
-
-<table>
-<thead>
-<tr>
-<th> type      </th>
-<th> value </th>
-<th> bit </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> min bit   </td>
-<td> 0     </td>
-<td> 0000 </td>
-</tr>
-<tr>
-<td> max value </td>
-<td> 7     </td>
-<td> 0111 </td>
-</tr>
-<tr>
-<td> min value </td>
-<td> -8    </td>
-<td> 1000 </td>
-</tr>
-<tr>
-<td> max bit   </td>
-<td> -1    </td>
-<td> 1111 </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>桁あふれ</h2>
-
-<p>整数の加算はbit値を進める処理であり、</p>
-
-<p>整数の減算はbit値を戻す処理である</p>
-
-<p>したがってbitの境界値をまたいで整数の加算減算を行うと予期しない結果となる場合がある
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">Interger</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">;</span>
-</span><span class='line'><span class="c1">// i: 2147483647&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">i</span><span class="o">++</span>
-</span><span class='line'><span class="c1">// i: -2147483648</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<h2>整数リテラル</h2>
-
-<ul>
-<li><code>L</code> または <code>l</code> で終わる整数リテラルの型は <code>long</code> 型</li>
-<li>それ以外の整数リテラルは <code>int</code> 型</li>
-<li><code>int</code> 型リテラル値を <code>byte</code> 、 <code>char</code> 、 <code>short</code> の型の変数に代入する場合、値が代入する先の型の範囲内であれば自動的に型が変換されて代入される
-
-<ul>
-<li>代入する先の型の範囲を超えている場合はコンパイルエラーとなる</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>基数</h3>
-
-<ul>
-<li><code>0b</code> から始めると 2 進数</li>
-<li><code>0</code> から始めると 8 進数</li>
-<li><code>0x</code> から始めると 16 進数</li>
-</ul>
-
-
-<h2>整数の演算</h2>
-
-<h3>四則演算</h3>
-
-<table>
-<thead>
-<tr>
-<th> 演算子 </th>
-<th> 演算 </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> +     </td>
-<td> 和   </td>
-</tr>
-<tr>
-<td> -     </td>
-<td> 差   </td>
-</tr>
-<tr>
-<td> *     </td>
-<td> 積   </td>
-</tr>
-<tr>
-<td> /     </td>
-<td> 商   </td>
-</tr>
-</tbody>
-</table>
-
-
-<h4>注意点</h4>
-
-<ul>
-<li>大きな正の整数の和における桁あふれ</li>
-<li>小さな負の整数の差における桁あふれ</li>
-<li>絶対値の大きな整数同士の積の桁あふれ</li>
-<li>商の結果は切り捨て</li>
-<li>0 による割り算は <code>ArithmeticException</code></li>
-</ul>
-
-
-<h3>剰余</h3>
-
-<ul>
-<li>剰余演算子は <code>%</code></li>
-<li>0 による剰余演算は <code>ArithmeticException</code></li>
-</ul>
-
-
-<h3>符号反転</h3>
-
-<p>単項演算子 <code>-</code> は通常単純に符号を反転させる
-<code>java
-int n = 10;
-// -n: -10
-</code></p>
-
-<p>しかしここにも桁あふれの問題があるので注意
-<code>java
-int n = -2147483648;
-// -n: -2147483648
-</code>
-<a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.15.4">仕様書</a>によると</p>
-
-<blockquote><p>-x equals (~x)+1</p></blockquote>
-
-<ul>
-<li><code>~</code> は bit 反転演算子</li>
-<li>-2147483648 は bit に変換すると 100&hellip;0（0 が 31 個つづく）</li>
-<li>これを反転させると 011&hellip;1（1 が 31 個つづく）となり、これは 2147483647 を表す</li>
-<li>2147483647 + 1 は桁あふれが起こり、 -2147483648 となる</li>
-</ul>
-
-
-<h3>インクリメント・デクリメント</h3>
-
-<ul>
-<li><code>++</code> でインクリメント</li>
-<li><code>--</code> でデクリメント</li>
-</ul>
-
-
-<h2>キャスト</h2>
-
-<p><code>()</code> 付きで型を書くことで強制的に型変換する
-<code>java
-int i = 1;
-short si = (short)i;
-</code></p>
-
-<h3>代入先の型に収まらないとあふれたbitが切り捨てられる</h3>
-
-<pre><code class="java">short si = (short)65536;
-// si: 0
-</code></pre>
-
-<ul>
-<li>65536 は bit に変換すると 100&hellip;0 （0 が 16 個つづく）</li>
-<li><code>short</code> 型は 16 bit なので先頭の 1 があふれる</li>
-</ul>
-
-
-<h2>ブーリアン（真偽値）</h2>
-
-<p>ブーリアン型が取りうる値は <code>true</code> か <code>false</code> のみ</p>
-
-<p>※ ド・モルガンの法則の説明等</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></li>
-<li><a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.15.4">15.15.4. Unary Minus Operator -</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

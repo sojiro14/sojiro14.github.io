@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-08-24T03:14:01+09:00</updated>
+  <updated>2016-09-10T01:55:27+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,94 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 9 文、式、演算子]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/08/24/study-of-perfect-java-chapter-9/"/>
+    <updated>2016-08-24T03:19:11+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/08/24/study-of-perfect-java-chapter-9</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h3>Java の文法と文</h3>
+
+<p>Java で扱う文は以下の4種類</p>
+
+<ul>
+<li>制御文</li>
+<li>ブロック文</li>
+<li>宣言文</li>
+<li>式文</li>
+</ul>
+
+
+<p>宣言文と式文は終端にセミコロン必要</p>
+
+<h3>Java の演算子と式</h3>
+
+<ul>
+<li>&amp;&amp;、 ||、 ? : （三項演算子）を除くすべての演算子は演算前にすべてのオペランドを評価する</li>
+<li>オペランドは左のものから評価する</li>
+<li>メソッド及びコンストラクタ呼び出し式では引数を左から評価する</li>
+</ul>
+
+
+<h3>数値の演算</h3>
+
+<h4>インクリメント/デクリメント演算の前置後置</h4>
+
+<p>前置演算は評価値が演算後の値、後置演算は評価値が演算前の値</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="o">++</span><span class="n">n</span><span class="o">;</span>
+</span><span class='line'><span class="c1">// m: 11, n: 11</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">n</span><span class="o">++;</span>
+</span><span class='line'><span class="c1">// m: 10, n: 11</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="k">while</span> <span class="o">(++</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// ループが回る回数は 9 回</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>論理演算</h3>
+
+<h4>遅延評価</h4>
+
+<p>&amp;&amp;、|| は遅延評価を行う</p>
+
+<ul>
+<li>&amp;&amp; は左辺の評価値が偽であれば右辺の評価値に関係なく結果が偽になるため右辺を評価しない</li>
+<li>|| は左辺の評価値が真であれば右辺の評価値に関係なく結果が真になるため右辺の評価をしない</li>
+</ul>
+
+
+<p>これらの演算子の右辺に副作用のある式を書くと、左辺の評価値により実行さるか否かが変わってくるので注意</p>
+
+<h3>その他の演算</h3>
+
+<h4>instanceof 演算子</h4>
+
+<p>ダウンキャストを安全に行えるかを事前にチェックする</p>
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[GAE Task Queue について]]></title>
@@ -4243,63 +4331,6 @@ primary key や、unique key といったレコードを一意に特定できる
 <li><code>vagrant ssh</code> して手動でコマンドを実行すると意図した結果になる</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Sed コマンドで置換]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command/"/>
-    <updated>2015-09-15T01:58:45+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command</id>
-    <content type="html"><![CDATA[<p>ファイルの中身を置換する必要があったので <code>sed</code> コマンドを使った。</p>
-
-<h3>使うオプション</h3>
-
-<p>今回使うのは</p>
-
-<ul>
-<li>変換処理の条件式を指定するための <code>e</code> オプション</li>
-<li>変換してそのままファイルを上書きする <code>i</code> オプション</li>
-</ul>
-
-
-<h3>やってみる</h3>
-
-<p>今回はこんな感じ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sed -ie <span class="s1">&#39;条件式&#39;</span> ファイル名
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat <span class="nb">test</span>
-</span><span class='line'>testtesttest
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ </span>sed -ie <span class="s1">&#39;s/test/hoge/g&#39;</span> <span class="nb">test</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ </span>cat <span class="nb">test</span>
-</span><span class='line'>hogehogehoge
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ </span>ls
-</span><span class='line'><span class="nb">test </span>teste
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>指定したファイルは条件に沿って置換されているが、オリジナルの内容を持ったファイルも生成されている</p>
-
-<p>オリジナルの内容を持ったファイルは使う sed コマンド（OS）によって元のファイル名に &lsquo;e&rsquo; が付いたり &lsquo;-e&rsquo; が付いたりする</p>
 ]]></content>
   </entry>
   
