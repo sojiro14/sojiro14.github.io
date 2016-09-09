@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-09-10T01:57:20+09:00</updated>
+  <updated>2016-09-10T02:00:06+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -37,7 +37,7 @@
 <h2>Java の演算子と式</h2>
 
 <ul>
-<li>&amp;&amp;、 ||、 ? : （三項演算子）を除くすべての演算子は演算前にすべてのオペランドを評価する</li>
+<li><code>&amp;&amp;</code> 、 <code>||</code> 、 <code>?</code> <code>:</code> （三項演算子）を除くすべての演算子は演算前にすべてのオペランドを評価する</li>
 <li>オペランドは左のものから評価する</li>
 <li>メソッド及びコンストラクタ呼び出し式では引数を左から評価する</li>
 </ul>
@@ -79,11 +79,11 @@
 
 <h3>遅延評価</h3>
 
-<p>&amp;&amp;、|| は遅延評価を行う</p>
+<p><code>&amp;&amp;</code> 、<code>||</code> は遅延評価を行う</p>
 
 <ul>
-<li>&amp;&amp; は左辺の評価値が偽であれば右辺の評価値に関係なく結果が偽になるため右辺を評価しない</li>
-<li>|| は左辺の評価値が真であれば右辺の評価値に関係なく結果が真になるため右辺の評価をしない</li>
+<li><code>&amp;&amp;</code> は左辺の評価値が偽であれば右辺の評価値に関係なく結果が偽になるため右辺を評価しない</li>
+<li><code>||</code> は左辺の評価値が真であれば右辺の評価値に関係なく結果が真になるため右辺の評価をしない</li>
 </ul>
 
 
