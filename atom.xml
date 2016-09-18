@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-09-10T02:00:06+09:00</updated>
+  <updated>2016-09-18T22:55:49+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,199 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 10 Javaプログラムの実行と制御構文]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/08/31/study-of-perfect-java-chapter-10/"/>
+    <updated>2016-08-31T03:40:04+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/08/31/study-of-perfect-java-chapter-10</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>条件分岐</h2>
+
+<h3>if-else文</h3>
+
+<p>インデントの取り方に関係なく <code>else</code> は最も近い（直近の） <code>if</code> にかかる</p>
+
+<h3>switch-case文</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">switch</span><span class="o">(</span><span class="n">式</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="k">case</span> <span class="nl">定数1:</span>
+</span><span class='line'>    <span class="mi">0</span><span class="n">個以上の文</span>
+</span><span class='line'><span class="k">case</span> <span class="nl">定数N:</span>
+</span><span class='line'>    <span class="mi">0</span><span class="n">個以上の文</span>
+</span><span class='line'><span class="k">default</span><span class="o">:</span>
+</span><span class='line'>    <span class="mi">0</span><span class="n">個以上の文</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>式の評価値は以下</p>
+
+<ul>
+<li>int 型</li>
+<li>int 型に暗黙に型変換される型
+
+<ul>
+<li>char</li>
+<li>byte</li>
+<li>short</li>
+</ul>
+</li>
+<li>数値ラッパークラス
+
+<ul>
+<li>Integer</li>
+<li>Character</li>
+<li>Byte</li>
+<li>Short</li>
+</ul>
+</li>
+<li>enum 型</li>
+<li>String 型</li>
+</ul>
+
+
+<p>式が <code>null</code> になると <code>NullPointerException</code> が発生する</p>
+
+<p><code>break;</code> 文がない限り処理を続ける</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="k">switch</span> <span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;default&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="k">default</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>繰り返し</h2>
+
+<h3>for文</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">初期化式</span><span class="o">;</span> <span class="n">条件式</span><span class="o">;</span> <span class="n">更新式</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">文</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>条件式は評価値が <code>boolean</code> もしくは <code>Boolean</code></p>
+
+<p>初期化式と更新式は複数の式を <code>,</code> で区切って書ける</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">);</span> <span class="n">i</span><span class="o">++,</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span> 
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>異なる型の宣言と初期化を並べるとエラー</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="kt">byte</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">);</span> <span class="n">i</span><span class="o">++,</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span> 
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>for文の外に出して回避</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'><span class="kt">byte</span> <span class="n">j</span><span class="o">;</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">);</span> <span class="n">i</span><span class="o">++,</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span> 
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ジャンプ</h2>
+
+<h3>break文</h3>
+
+<ul>
+<li>ループを抜ける</li>
+<li>ループがネストしている場合、抜けるのは内側のループのみ</li>
+</ul>
+
+
+<h3>continue文</h3>
+
+<ul>
+<li>ループ内の文をスキップしてループの条件式の評価に戻る</li>
+</ul>
+
+
+<h3>ラベル</h3>
+
+<ul>
+<li>繰り返しにラベルをつける</li>
+<li>break文、continue文にラベルを渡すことでどの繰り返しを対象にするか定める</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">target_loop:</span>
+</span><span class='line'><span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">break</span> <span class="n">target_loop</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>外側の while ループに <code>target_loop</code> というラベルがつく</li>
+<li><code>break target_loop</code> で外側の while ループを抜ける</li>
+<li>（ <code>continue</code> の場合は対象のループ内の文をスキップして条件式の評価に戻る）</li>
+</ul>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 9 文、式、演算子]]></title>
@@ -4280,55 +4473,6 @@ primary key や、unique key といったレコードを一意に特定できる
 
 <ul>
 <li><a href="http://qiita.com/shizuma/items/0f9660d5d46a0012eb9e">Rails mysql2でrake db:createがエラー問題</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Vagrant Provisioning の謎]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/09/17/mystery-of-vagrant-provisioning/"/>
-    <updated>2015-09-17T05:21:08+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/09/17/mystery-of-vagrant-provisioning</id>
-    <content type="html"><![CDATA[<p>Vagrant で立てた CentOS の仮想環境にちょっとした環境構築をしようと、provision ファイルを作って <code>vagrant provision</code> で実行しようとしたところ RVM のインストールから先が上手くいかなかった。</p>
-
-<p>（ <code>vagrant provision</code> に関しては <a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">過去のエントリ</a> に記載があります）</p>
-
-<p>provision ファイルの該当箇所は以下</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># ruby and rails</span>
-</span><span class='line'>curl -L https://get.rvm.io <span class="p">|</span> bash -s
-</span><span class='line'><span class="nb">source</span> ~/.profile
-</span><span class='line'>
-</span><span class='line'>rvm requirements
-</span><span class='line'>rvm install 2.0.0 --with-openssl-dir<span class="o">=</span><span class="nv">$HOME</span>/.rvm/usr
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上記コマンドのうち、</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -L https://get.rvm.io <span class="p">|</span> bash -s
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>だけが実行できているが、このコマンドの結果も意図したものとなっていない。
-それ以降のコマンドは失敗する。</p>
-
-<p>まだ原因は良くわかっていない。</p>
-
-<ul>
-<li>RVM のインストール自体はできている</li>
-<li>どのユーザー（vagrant? root?）で実行されているのか分からない</li>
-<li>vagrant ユーザーに対しては <code>rvm</code> コマンドの path が通っているが、root ユーザーには通っていない</li>
-<li>provision 実行のログ的には root で実行しているように見える</li>
-<li><code>vagrant ssh</code> して手動でコマンドを実行すると意図した結果になる</li>
 </ul>
 
 ]]></content>

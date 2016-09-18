@@ -9,12 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。 今回使うNode.jsのバージョン 1
-2
-$ node -v
-v0.10.32 Web Serverオブジェクトの準備 Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている 1
-2
-var &hellip;">
+  <meta name="description" content="本ブログをリニューアルしたついでに新しくドメインを取ってこのブログに適用してみた。 Github PagesとOctopressを使ったブログへの独自ドメイン設定のメモとして残しておく。 やるべきこと 今回は blog.sojiro.me というサブドメインを使うことにしたので、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -117,6 +112,53 @@ var &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/">Github PagesとOctopressで作ったブログに独自ドメインを設定する</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-30T00:14:23+09:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:14 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>本ブログをリニューアルしたついでに新しくドメインを取ってこのブログに適用してみた。</p>
+
+<p>Github PagesとOctopressを使ったブログへの独自ドメイン設定のメモとして残しておく。</p>
+
+<h2>やるべきこと</h2>
+
+<p>今回は <code>blog.sojiro.me</code> というサブドメインを使うことにしたので、やるべき手順は以下の2つのみ。</p>
+
+<ul>
+<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
+<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/">もっと見る</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -646,130 +688,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/">Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-16T23:59:05+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:59 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>railsには <code>scaffold</code> という単純なリソースを一気に生成するコマンドが存在する。
-今回はこのコマンドを使ってみる。</p>
-
-<h2>Usersリソースの生成</h2>
-
-<p>今回は <code>scaffold</code> コマンドを使ってリソースを生成する。
-ここでは以下の要素をもつUsersリソースを生成する。</p>
-
-<ul>
-<li>id int</li>
-<li>name string</li>
-<li>email string</li>
-</ul>
-
-
-<p> <code>rails generate</code> スクリプトに <code>scaffold</code> コマンドを指定し、リソースの単数系と要素の情報を渡す</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate scaffold User name:string email:string
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>id要素はRailsが主キーとしてデフォルトで設定する</p>
-
-<h2>DBにusersのセットアップを行う</h2>
-
-<p> <code>rake</code> コマンドを使ってDBをmigrate（更新）する。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
-</span><span class='line'><span class="o">==</span> <span class="m">20141111170736</span> CreateUsers: <span class="nv">migrating</span> <span class="o">======================================</span>
-</span><span class='line'>-- create_table<span class="o">(</span>:users<span class="o">)</span>
-</span><span class='line'>   -&gt; 0.0012s
-</span><span class='line'><span class="o">==</span> <span class="m">20141111170736</span> CreateUsers: migrated <span class="o">(</span>0.0014s<span class="o">)</span> <span class="o">=============================</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>出力から <code>users</code> テーブルが作られたことがわかる</p>
-
-<h2>ブラウザで確認</h2>
-
-<p> <code>rails server</code> コマンドの短縮版である <code>rails s</code> を使って3000番portにアプリを立ち上げる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails s
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
-
-<p>にブラウザでアクセスすると <code>#1 railsのセットアップ</code> で見たデフォルトのRailsページが表示される</p>
-
-<p>次に以下のエンドポイントにアクセスしてみる</p>
-
-<p><a href="http://xx.xxx.xxx.xxx:3000/users">http://xx.xxx.xxx.xxx:3000/users</a></p>
-
-<p>すると既にUser一覧ページができあがっているのがわかる。この他に</p>
-
-<ul>
-<li>新規ユーザーを作成するページ</li>
-<li>特定のidのユーザー情報を表示するページ</li>
-<li>特定のidのユーザー情報を編集するページ</li>
-</ul>
-
-
-<p>が作られている。</p>
-
-<h2>Micropostsリソースの生成</h2>
-
-<p>Usersリソースと同様に <code>scaffold</code> コマンドと <code>rake</code> の <code>migrate</code> タスクで生成する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails generate scaffold Micropost content:string user_id:integer
-</span><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rake db:migrate
-</span><span class='line'><span class="o">==</span> <span class="m">20141112174234</span> CreateMicroposts: <span class="nv">migrating</span> <span class="o">=================================</span>
-</span><span class='line'>-- create_table<span class="o">(</span>:microposts<span class="o">)</span>
-</span><span class='line'>   -&gt; 0.0029s
-</span><span class='line'><span class="o">==</span> <span class="m">20141112174234</span> CreateMicroposts: migrated <span class="o">(</span>0.0031s<span class="o">)</span> <span class="o">========================</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>config/routes.rb</code> にmicropostsリソースの設定が追加された</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page6">&larr; Older</a>
@@ -791,6 +709,10 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ chapter 9 文、式、演算子</a>
       </li>
     
@@ -804,10 +726,6 @@ MongoDBはスキーマレスなので、テーブルのように厳格なスキ�
     
       <li class="post">
         <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/21/study-of-perfect-java-chapter-6/">パーフェクトJava読書メモ chapter 6 コレクションと配列</a>
       </li>
     
   </ul>

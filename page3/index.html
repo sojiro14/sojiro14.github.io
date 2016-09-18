@@ -9,9 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="ファイルの中身を置換する必要があったので sed コマンドを使った。 使うオプション 今回使うのは 変換処理の条件式を指定するための e オプション
-変換してそのままファイルを上書きする i オプション やってみる 今回はこんな感じ 1
-sed -ie &#39;条件式&#39; ファイル名 1 &hellip;">
+  <meta name="description" content="Vagrant で立てた CentOS の仮想環境にちょっとした環境構築をしようと、provision ファイルを作って vagrant provision で実行しようとしたところ RVM のインストールから先が上手くいかなかった。 （ vagrant provision に関しては &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -114,6 +112,76 @@ sed -ie &#39;条件式&#39; ファイル名 1 &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/17/mystery-of-vagrant-provisioning/">Vagrant Provisioning の謎</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-17T05:21:08+09:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:21 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Vagrant で立てた CentOS の仮想環境にちょっとした環境構築をしようと、provision ファイルを作って <code>vagrant provision</code> で実行しようとしたところ RVM のインストールから先が上手くいかなかった。</p>
+
+<p>（ <code>vagrant provision</code> に関しては <a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">過去のエントリ</a> に記載があります）</p>
+
+<p>provision ファイルの該当箇所は以下</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># ruby and rails</span>
+</span><span class='line'>curl -L https://get.rvm.io <span class="p">|</span> bash -s
+</span><span class='line'><span class="nb">source</span> ~/.profile
+</span><span class='line'>
+</span><span class='line'>rvm requirements
+</span><span class='line'>rvm install 2.0.0 --with-openssl-dir<span class="o">=</span><span class="nv">$HOME</span>/.rvm/usr
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上記コマンドのうち、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -L https://get.rvm.io <span class="p">|</span> bash -s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>だけが実行できているが、このコマンドの結果も意図したものとなっていない。
+それ以降のコマンドは失敗する。</p>
+
+<p>まだ原因は良くわかっていない。</p>
+
+<ul>
+<li>RVM のインストール自体はできている</li>
+<li>どのユーザー（vagrant? root?）で実行されているのか分からない</li>
+<li>vagrant ユーザーに対しては <code>rvm</code> コマンドの path が通っているが、root ユーザーには通っていない</li>
+<li>provision 実行のログ的には root で実行しているように見える</li>
+<li><code>vagrant ssh</code> して手動でコマンドを実行すると意図した結果になる</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1574,104 +1642,6 @@ sed -ie &#39;条件式&#39; ファイル名 1 &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/11/the-third-step-of-yeoman/">初めてのYeoman (Grunt/Bowerとは)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-11T23:51:11+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:51 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>初めてのYeoman というタイトルでこれまで2つのエントリを投稿しました。</p>
-
-<ul>
-<li><a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a></li>
-<li><a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a></li>
-</ul>
-
-
-<p>ここであらためて Grunt と Bower について書いておきます。</p>
-
-<p>特に技術的なことはないです。</p>
-
-<h2>Grunt とは</h2>
-
-<blockquote><p>The JavaScript Task Runner</p></blockquote>
-
-<p>と公式サイトに書いてある。一言で言うと自動化、とも。</p>
-
-<p>要するに予め決められたタスクをその通りに実行してくれるツールである。
-（似たようなツールとして make や rake を使ったことがある）</p>
-
-<p>そして js 界隈で話題のツールやプラグイン、フレームワークがどんどん移り変わって行くのと同様に Grunt も gulp にとって変わられると話題になっている。</p>
-
-<p>しかしこれは自分でやりたいことを自動化したい場合の話であって、何か自分のやりたいことを他の人がやっていたら素直にその人の作ったタスクを使わせてもらえば良いわけである。</p>
-
-<p>（そういう意味で他の人が作った設定に多少手を加えられるほどの理解はあると嬉しいかもしれないが、それは必要になったときで良い）</p>
-
-<p>つまり Grunt でも gulp でも、自分がやりたいことを他の人が既にやっていればそれに乗っかれば良いし、他の人がまだやっていなければ、その時点で自分が一番書きやすい方法をつかって自動化すれば良い。</p>
-
-<p>問題は自分にやりたいこと（自動化したいこと）があるかどうかであって、自分が自分以外の何者でもない以上、それはあるはずで、それに気づいてないとか、考え続けられないから僕はまだまだ三流以下ということなんですね。</p>
-
-<h2>Bower とは</h2>
-
-<p>フロントエンドのパッケージマネージャーで</p>
-
-<ul>
-<li>cpan(perl)</li>
-<li>gem(ruby)</li>
-<li>Node.js(npm)</li>
-</ul>
-
-
-<p>みたいなものだと理解している</p>
-
-<p>使い方も対して変わらないですね</p>
-
-<h2>Yeoman</h2>
-
-<p>ここまで Yeoman を見てきて Yeoman の要は yo のように思える</p>
-
-<p>使う側の立場では雛形(generator)を選んで yo を実行したらやりたいことは既に決まっている</p>
-
-<p>作る側としては最終的にどんな雛形を作るかが問題である</p>
-
-<p>ここで雛形のルール（設定）を Grunt で規定し、フロントエンドを Bower で規定することをルールとしたら雛形もまとめやすいよね、ということか</p>
-
-<h2>最後に</h2>
-
-<p>なんだか雑なエントリになってしまった。。。</p>
-
-<p>まずは Yeoman の恩恵をもっと受けまくってみます</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://gruntjs.com/">Grunt</a></li>
-<li><a href="http://bower.io/">Bower</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page4">&larr; Older</a>
@@ -1693,6 +1663,10 @@ sed -ie &#39;条件式&#39; ファイル名 1 &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ chapter 9 文、式、演算子</a>
       </li>
     
@@ -1706,10 +1680,6 @@ sed -ie &#39;条件式&#39; ファイル名 1 &hellip;">
     
       <li class="post">
         <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/21/study-of-perfect-java-chapter-6/">パーフェクトJava読書メモ chapter 6 コレクションと配列</a>
       </li>
     
   </ul>

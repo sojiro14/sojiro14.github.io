@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://sojiro14.github.io/blog/2016/08/31/study-of-perfect-java-chapter-10/</loc>
+<lastmod>2016-08-31T03:40:04+09:00</lastmod>
+</url>
+<url>
 <loc>http://sojiro14.github.io/blog/2016/08/24/study-of-perfect-java-chapter-9/</loc>
 <lastmod>2016-08-24T03:19:11+09:00</lastmod>
 </url>
@@ -422,5 +426,23 @@
 </url>
 <url>
 <loc>http://sojiro14.github.io/blog/categories/task-queue/</loc>
+</url>
+<url>
+<loc>http://sojiro14.github.io/page2/</loc>
+</url>
+<url>
+<loc>http://sojiro14.github.io/page3/</loc>
+</url>
+<url>
+<loc>http://sojiro14.github.io/page4/</loc>
+</url>
+<url>
+<loc>http://sojiro14.github.io/page5/</loc>
+</url>
+<url>
+<loc>http://sojiro14.github.io/page6/</loc>
+</url>
+<url>
+<loc>http://sojiro14.github.io/page7/</loc>
 </url>
 </urlset>

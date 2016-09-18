@@ -9,8 +9,8 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="ブログにコメント欄を追加したい 本ブログにコメント欄を追加しようと思い立った。 DISQUSというコミュニケーションサービスが好評のようなので導入してみる。 DISQUSを使うための準備
-OctopressでのDISQUS導入方法 DISQUSを使うための準備 DISQUSのアカウントを作成する &hellip;">
+  <meta name="description" content="AWSでサーバーを借りて複数人で共同開発することになった。
+それに伴い、借りたサーバーに各々がアクセスできるようユーザーの設定をした際の手順メモ。 AWSでWEBサーバーを借りる AWSのWebサーバーレンタルサービスはEC2と呼ばれる。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -113,6 +113,170 @@ OctopressでのDISQUS導入方法 DISQUSを使うための準備 DISQUSのアカ
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/22/add-users-on-aws-instance/">AWSに複数のユーザーを設定した手順</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-22T00:58:55+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:58 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>AWSでサーバーを借りて複数人で共同開発することになった。
+それに伴い、借りたサーバーに各々がアクセスできるようユーザーの設定をした際の手順メモ。</p>
+
+<h2>AWSでWEBサーバーを借りる</h2>
+
+<p>AWSのWebサーバーレンタルサービスはEC2と呼ばれる。
+サーバーをレンタルするには様々あるサービス群からEC2を選択し、<code>Launch Instance</code> ボタンを押してInstanceの立ち上げを開始する。</p>
+
+<ul>
+<li>AMI(Amazon Machine Image)の選択
+
+<ul>
+<li>借りるマシンの種類を選ぶ。用途によって様々な種類がある（WordPressが既に設定されているものなど）</li>
+</ul>
+</li>
+<li>Instance Typeの選択
+
+<ul>
+<li>マシンのスペックを選ぶ。メモリやストレージのサイズなど</li>
+</ul>
+</li>
+<li>Instanceの詳細設定</li>
+<li>Storageの設定</li>
+<li>Instanceへのtag付け</li>
+<li>Security Groupの選択
+
+<ul>
+<li>アクセスを許可するプロトコルやIPなどを指定してその設定をグループとして扱う</li>
+</ul>
+</li>
+</ul>
+
+
+<p>上記のほとんどの設定は後から変更できる。AMIの選択がしっかりできれば問題なさそう。</p>
+
+<p>最後まで完了すると秘密鍵(hogehoge.pem)が発行される。これは絶対になくしてはいけない。</p>
+
+<h2>立ち上げたInstanceに複数ユーザーを設定する</h2>
+
+<p>立ち上げたInstanceにアクセスする。
+今回はWebサーバーとして立ち上げるのでSecurity GroupにはHTTPとSSHでのアクセスを許可するよう設定しておく。</p>
+
+<h3>秘密鍵でアクセスする</h3>
+
+<p>まずはInstance立ち上げ時に発行された秘密鍵でアクセスする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">600</span> hogehoge.pem  <span class="c"># 秘密鍵の権限を設定（厳しすぎても甘過ぎても使えない）</span>
+</span><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>ssh -i hogehoge.pem ec2-user@xx.xx.xx.xxx  <span class="c"># ec2-userでログイン</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>ダウンロード直後の秘密鍵は権限が適切ではない可能性がある。その場合は600に設定する。</li>
+<li><code>ssh</code>の<code>-i</code>オプションを使って秘密鍵を指定してログイン（秘密鍵を指定しないと~/.ssh/id_rsaが使われる）
+
+<ul>
+<li>最初は初期設定されているec2-userというユーザーでログインする</li>
+<li>コマンドはEC2のメニューバーからInstancesページに行き、Instanceを選択してページ上部の<code>Connect</code>ボタンを押すと表示される</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>ユーザーの作成</h3>
+
+<p>Instanceにログインできたら早速ユーザーを作成していく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>ec2-user@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>sudo su -  <span class="c"># rootユーザーになる</span>
+</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> adduser sojiro  <span class="c"># ユーザー(sojiro)を作成</span>
+</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> passwd sojiro   <span class="c"># sojiroにパスワードを設定</span>
+</span><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> vim /etc/sudoers  <span class="c"># sojiroに権限を設定</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ユーザーを作り、ユーザーに権限を付与する。今回は大雑把にrootと同じことができる権限を付与。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> cat /etc/sudors
+</span><span class='line'>...
+</span><span class='line'>root    <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL
+</span><span class='line'>sojiro  <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>公開鍵の登録</h3>
+
+<p>作成したユーザーにlocalからアクセスするための公開鍵を設定する。
+（鍵のペアはlocalで予め<code>ssh-keygen -t rsa</code>で作成しておく）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>root@ip-hogehoge ~<span class="o">]</span> su sojiro
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge root<span class="o">]</span><span class="nv">$ </span><span class="nb">cd</span>  <span class="c"># sojiroのホームディレクトリに移動</span>
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>mkdir .ssh
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>vim .ssh/authorized_keys  <span class="c"># 公開鍵を置く（今回はlocalのid_rsa.pubをコピペした）</span>
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">700</span> .ssh
+</span><span class='line'><span class="o">[</span>sojiro@ip-hogehoge ~<span class="o">]</span><span class="nv">$ </span>chmod <span class="m">600</span> .ssh/authorized_keys
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>公開鍵を置くファイルの名前は<code>.ssh</code>ディレクトリ配下の<code>authorized_keys</code>と決まっている</li>
+<li><code>.ssh</code>ディレクトリと<code>authorized_keys</code>の権限にも気をつける</li>
+</ul>
+
+
+<h3>作成したユーザーでInstanceにログインできることを確認</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>sojiro@local ~<span class="o">]</span><span class="nv">$ </span>ssh sojiro@xx.xx.xx.xxx  <span class="c"># ログインできればOK</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>localのrsa鍵でログインできることを確認できれば完了。</p>
+
+<p>この操作で必要なユーザーを適宜作成する。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://d.hatena.ne.jp/torazuka/20110420/ssh">新規に作成した鍵でEC2インスタンスにSSH接続する</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2154,6 +2318,10 @@ OctopressでのDISQUS導入方法 DISQUSを使うための準備 DISQUSのアカ
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ chapter 9 文、式、演算子</a>
       </li>
     
@@ -2167,10 +2335,6 @@ OctopressでのDISQUS導入方法 DISQUSを使うための準備 DISQUSのアカ
     
       <li class="post">
         <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/21/study-of-perfect-java-chapter-6/">パーフェクトJava読書メモ chapter 6 コレクションと配列</a>
       </li>
     
   </ul>

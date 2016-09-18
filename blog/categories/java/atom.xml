@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-09-10T02:00:06+09:00</updated>
+  <updated>2016-09-18T22:55:49+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,154 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 10 Javaプログラムの実行と制御構文]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/08/31/study-of-perfect-java-chapter-10/"/>
+    <updated>2016-08-31T03:40:04+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/08/31/study-of-perfect-java-chapter-10</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>条件分岐</h2>
+
+<h3>if-else文</h3>
+
+<p>インデントの取り方に関係なく <code>else</code> は最も近い（直近の） <code>if</code> にかかる</p>
+
+<h3>switch-case文</h3>
+
+<pre><code class="java">switch(式) {
+case 定数1:
+    0個以上の文
+case 定数N:
+    0個以上の文
+default:
+    0個以上の文
+}
+</code></pre>
+
+<p>式の評価値は以下</p>
+
+<ul>
+<li>int 型</li>
+<li>int 型に暗黙に型変換される型
+
+<ul>
+<li>char</li>
+<li>byte</li>
+<li>short</li>
+</ul>
+</li>
+<li>数値ラッパークラス
+
+<ul>
+<li>Integer</li>
+<li>Character</li>
+<li>Byte</li>
+<li>Short</li>
+</ul>
+</li>
+<li>enum 型</li>
+<li>String 型</li>
+</ul>
+
+
+<p>式が <code>null</code> になると <code>NullPointerException</code> が発生する</p>
+
+<p><code>break;</code> 文がない限り処理を続ける</p>
+
+<pre><code class="java">int i = 0;
+switch (i) {
+    case 0:
+        System.out.println(0);
+    case 1:
+        System.out.println(1);
+    default:
+        System.out.println("default");
+}
+</code></pre>
+
+<pre><code class="java">0
+1
+default
+</code></pre>
+
+<h2>繰り返し</h2>
+
+<h3>for文</h3>
+
+<pre><code class="java">for (初期化式; 条件式; 更新式) {
+    文
+}
+</code></pre>
+
+<p>条件式は評価値が <code>boolean</code> もしくは <code>Boolean</code></p>
+
+<p>初期化式と更新式は複数の式を <code>,</code> で区切って書ける</p>
+
+<pre><code class="java">for (int i = 0, j = 0; (i &lt; 10 &amp;&amp; j &lt; 10); i++, j++) { 
+}
+</code></pre>
+
+<p>異なる型の宣言と初期化を並べるとエラー</p>
+
+<pre><code class="java">for (int i = 0, byte j = 0; (i &lt; 10 &amp;&amp; j &lt; 10); i++, j++) { 
+}
+</code></pre>
+
+<p>for文の外に出して回避</p>
+
+<pre><code class="java">int i;
+byte j;
+for (i = 0, j = 0; (i &lt; 10 &amp;&amp; j &lt; 10); i++, j++) { 
+}
+</code></pre>
+
+<h2>ジャンプ</h2>
+
+<h3>break文</h3>
+
+<ul>
+<li>ループを抜ける</li>
+<li>ループがネストしている場合、抜けるのは内側のループのみ</li>
+</ul>
+
+
+<h3>continue文</h3>
+
+<ul>
+<li>ループ内の文をスキップしてループの条件式の評価に戻る</li>
+</ul>
+
+
+<h3>ラベル</h3>
+
+<ul>
+<li>繰り返しにラベルをつける</li>
+<li>break文、continue文にラベルを渡すことでどの繰り返しを対象にするか定める</li>
+</ul>
+
+
+<pre><code class="java">target_loop:
+while (true) {
+    while (true) {
+        break target_loop;
+    }
+}
+</code></pre>
+
+<ul>
+<li>外側の while ループに <code>target_loop</code> というラベルがつく</li>
+<li><code>break target_loop</code> で外側の while ループを抜ける</li>
+<li>（ <code>continue</code> の場合は対象のループ内の文をスキップして条件式の評価に戻る）</li>
+</ul>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 9 文、式、演算子]]></title>
@@ -1296,410 +1444,6 @@ Class SubSample extends Sample {
 <li>オブジェクト作成が1つだけ</li>
 </ul>
 </li>
-</ul>
-
-
-<h2>参照</h2>
-
-<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 4 変数とオブジェクト]]></title>
-    <link href="http://sojiro14.github.io/blog/2016/07/18/study-of-perfect-java-chapter-4/"/>
-    <updated>2016-07-18T20:13:40+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2016/07/18/study-of-perfect-java-chapter-4</id>
-    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
-
-<h2>変数とオブジェクト</h2>
-
-<ul>
-<li>Javaの変数は以下の二つに分類される
-
-<ul>
-<li>基本型変数</li>
-<li>参照型変数</li>
-</ul>
-</li>
-<li>オブジェクトはある体系にそってデータを表すモノであり、名前を持たない</li>
-</ul>
-
-
-<h2>変数</h2>
-
-<h3>参照型変数</h3>
-
-<ul>
-<li>C言語のポインタ型変数の値がメモリ上のアドレス値そのものであるのに対し、Javaの参照型変数の値はオブジェクトの位置情報を指し示す抽象的な「何か」である</li>
-<li>参照型変数は名前を持ち、オブジェクトを参照することで扱いやすく橋渡しする</li>
-<li>参照型変数自体に型があり以下の3種類、これは参照しているオブジェクトの型とは別
-
-<ul>
-<li>クラス型</li>
-<li>配列型</li>
-<li>インターフェース型</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>基本型変数</h3>
-
-<ul>
-<li>基本型変数は値をそのまま保持する</li>
-<li>基本型の種類は以下の8つ
-
-<ul>
-<li><code>boolean</code></li>
-<li><code>byte</code></li>
-<li><code>char</code></li>
-<li><code>short</code></li>
-<li><code>int</code></li>
-<li><code>long</code></li>
-<li><code>float</code></li>
-<li><code>double</code></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>変数の宣言</h3>
-
-<ul>
-<li>変数を使うには最初に変数を宣言する</li>
-<li>変数宣言は最初に変数の型を書き、続けて変数名を書く
-<code>java
-StringBuilder sb;
-</code></li>
-<li>基本型変数の宣言時も型名を変数名の前に書く
-<code>java
-int i;
-</code></li>
-<li>同じスコープで同名の変数は宣言できない
-<code>java
-void method(int i) {
-  int i;
-}
-// コンパイルエラー
-</code></li>
-</ul>
-
-
-<h3>変数の初期化</h3>
-
-<ul>
-<li>変数は宣言時に初期化できる
-<code>java
-int i = 1;
-</code></li>
-<li>初期化しない場合の変数のデフォルト値は変数の型と種類に依存する</li>
-</ul>
-
-
-<h3>変数の修飾子</h3>
-
-<ul>
-<li>変数の宣言時に修飾子を付けることができる</li>
-<li>変数に使える修飾子は以下
-
-<ul>
-<li><code>private</code></li>
-<li><code>protected</code></li>
-<li><code>public</code></li>
-<li><code>transient</code></li>
-<li><code>final</code></li>
-<li><code>static</code></li>
-<li><code>volatile</code></li>
-</ul>
-</li>
-</ul>
-
-
-<h2>オブジェクト</h2>
-
-<h3>オブジェクトの生成</h3>
-
-<ul>
-<li><code>new</code> の後にクラス名を書き、 <code>()</code> で引数を指定する</li>
-<li>引数の定義はクラスごとに決まっている
-<code>java
-new StringBuilder("012");
-</code></li>
-</ul>
-
-
-<h3>参照型変数への代入</h3>
-
-<ul>
-<li>生成したオブジェクトは参照型変数へ参照を渡して扱う
-<code>java
-StringBuilder sb = new StringBuilder();
-</code></li>
-<li>あくまで変数が扱っているのはオブジェクトへの参照なので、以下の例では2つの変数は同じオブジェクトへの参照を持つ
-<code>java
-StringBuilder sb = new StringBuilder();
-StringBuilder sb2 = sb;
-sb.append("012");
-sb2.append("345");
-// sb: "0123445"
-// sb2: "012345"
-</code></li>
-</ul>
-
-
-<h3>基本型変数への代入</h3>
-
-<ul>
-<li>基本型変数へ代入されるのはオブジェクトの参照ではなく値そのもの</li>
-<li>値そのものをコピーして代入する
-<code>java
-int i = 42;
-int j = i + 1;
-int K = i;
-// i: 42
-// j: 43
-// k: 42
-</code></li>
-</ul>
-
-
-<h3>null参照</h3>
-
-<ul>
-<li><code>null</code> は「何も参照していない」ということを表す
-<code>java
-StringBuilder sb = null;
-</code></li>
-</ul>
-
-
-<h4>nullチェック</h4>
-
-<ul>
-<li>参照先がなく、 <code>null</code> を持つ参照型変数にたいする演算は <code>NullPointerException</code></li>
-<li><code>Object</code> クラスに <code>null</code> をチェックするためのメソッドがある</li>
-</ul>
-
-
-<table>
-<thead>
-<tr>
-<th> method </th>
-<th> description </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <code>equals</code> </td>
-<td> 引数のどちらかが <code>null</code> でも使える比較 </td>
-</tr>
-<tr>
-<td> <code>toString</code> </td>
-<td> <code>null</code> の場合の文字列を指定可能 </td>
-</tr>
-<tr>
-<td> <code>isNull</code> </td>
-<td> 引数が <code>null</code> のとき真 </td>
-</tr>
-<tr>
-<td> <code>notNull</code> </td>
-<td> 引数が <code>null</code> でないとき真 </td>
-</tr>
-<tr>
-<td> <code>requireNonNull</code> </td>
-<td> 引数が <code>null</code> だと即座に <code>NullPointerException</code> </td>
-</tr>
-</tbody>
-</table>
-
-
-<h3>Optional型</h3>
-
-<ul>
-<li><code>Optional</code> 型は任意のオブジェクトをくるんで <code>null</code> かもしれない状態を表現する</li>
-<li>基本型変数のための <code>Optional</code> 型として以下の 3 つがある
-
-<ul>
-<li><code>OptionalInt</code></li>
-<li><code>OptionalLong</code></li>
-<li><code>OptionalDouble</code></li>
-</ul>
-</li>
-<li><code>Optional</code> オブジェクトは <code>of</code> または <code>ofNullable</code> メソッドを使って任意のオブジェクトから生成できる
-<code>java
-StringBuilder sb;
-Optional&lt;StringBuilder&gt; osb = Optional.of(sb);
-// or
-// Oprional&lt;StringBuilder&gt; osb = Optional.ofNullable(sb);
-</code></li>
-<li><code>get</code> メソッドで <code>Optional</code> オブジェクトでくるんだオブジェクトを取得
-<code>java
-Optional&lt;StringBuilder&gt; osb;
-StringBuilder sb = osb.get();
-</code></li>
-<li>くるんだオブジェクトが <code>null</code> でなければそのまま呼び出し、 <code>null</code> であれば引数のオブジェクトを返す例
-<code>java
-StringBuilder sb = osb.orElse(new StringBuilder("none"));
-</code></li>
-</ul>
-
-
-<h3>変数を介さないオブジェクトの操作</h3>
-
-<ul>
-<li>変数に参照を格納しなくてもオブジェクトを操作できる
-<code>java
-int len = new StringBuilder("012").length();
-</code></li>
-<li>文字列リテラルでも
-<code>java
-int len = "abc".length();
-</code></li>
-<li>ドット演算子でメソッド呼び出しをつなげることをメソッドチェインという
-<code>java
-StringBuilder sb = new StringBuilder();
-int len = sb.append("012").append("345").length();
-// len: 6
-</code></li>
-</ul>
-
-
-<h2>変数と型</h2>
-
-<ul>
-<li>オブジェクトの型はクラスで定義されている</li>
-<li>変数の型とオブジェクトの型が一致もしくはオブジェクトの型が変数の型の下位型であるとき変数にオブジェクトの参照を代入可能</li>
-<li>変数が参照するオブジェクトに対して行える操作は変数の型できまる</li>
-<li>下位型のオブジェクトは上位型の持つメソッドを持つことが保証されている
-
-<ul>
-<li>ただし実態が同一とは限らない</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>変数の詳細</h2>
-
-<h3>変数の種類</h3>
-
-<table>
-<thead>
-<tr>
-<th> type </th>
-<th> description </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> ローカル変数 </td>
-<td> メソッドもしくはコンストラクタ内で宣言される。メソッドやコンストラクタが終わると消滅。 </td>
-</tr>
-<tr>
-<td> パラメータ変数 </td>
-<td> メソッドもしくはコンストラクタに引数として渡る。メソッドやコンストラクタが終わると消滅。 </td>
-</tr>
-<tr>
-<td> インスタンスフィールド変数 </td>
-<td> クラスの構成要素 </td>
-</tr>
-<tr>
-<td> クラスフィールド変数 </td>
-<td> クラスの構成要素 </td>
-</tr>
-</tbody>
-</table>
-
-
-<h3>変数のデフォルト値</h3>
-
-<table>
-<thead>
-<tr>
-<th> type </th>
-<th> default value </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> 参照型 </td>
-<td> <code>null</code>      </td>
-</tr>
-<tr>
-<td> <code>boolean</code> </td>
-<td> <code>false</code>  </td>
-</tr>
-<tr>
-<td> <code>char</code> </td>
-<td> &ldquo;¥u0000&rdquo;    </td>
-</tr>
-<tr>
-<td> <code>byte</code>, <code>short</code>, <code>int</code>, <code>Long</code> </td>
-<td> 0 </td>
-</tr>
-<tr>
-<td> <code>float</code>, <code>double</code> </td>
-<td> +0.0 </td>
-</tr>
-</tbody>
-</table>
-
-
-<h3>変数のスコープ</h3>
-
-<h4>ローカル変数</h4>
-
-<ul>
-<li>変数を宣言した行からメソッドもしくはコンストラクタが終わるまで</li>
-</ul>
-
-
-<h4>ブロックスコープ</h4>
-
-<ul>
-<li><code>{}</code> で囲ったブロックに閉じたスコープ</li>
-<li>変数を宣言した行からブロックが終わるまで</li>
-</ul>
-
-
-<h4>シャドーイング</h4>
-
-<ul>
-<li>同一のスコープ内で同じ変数を2度以上宣言</li>
-</ul>
-
-
-<h4>パラメータ変数のスコープ</h4>
-
-<ul>
-<li>メソッド及びコンストラクタの中</li>
-</ul>
-
-
-<h4>フィールド変数のスコープ</h4>
-
-<ul>
-<li>フィールド変数のスコープはクラス内</li>
-<li>宣言した行の位置は無関係</li>
-</ul>
-
-
-<h2>オブジェクトの寿命</h2>
-
-<p>オブジェクトへの参照が外れる条件
-* ローカル変数及びパラメータ変数のスコープが外れたとき
-* オブジェクトが消滅したとき
-* クラスが消滅し、クラスフィールド変数の参照が外れたとき
-* 変数に別のオブジェクトの参照もしくは <code>null</code> が再代入されたとき
-* 変数を介さない操作がされていた場合、式の評価が終わったとき</p>
-
-<h2>final変数と不変オブジェクト</h2>
-
-<ul>
-<li><code>final</code> 修飾子を指定した変数を final 変数と呼ぶ</li>
-<li>final 変数は再代入不可</li>
-<li><code>final</code> 修飾子が禁止するのは変数自体の値の変更であって、変数が参照するオブジェクト自体の変更ではない</li>
 </ul>
 
 

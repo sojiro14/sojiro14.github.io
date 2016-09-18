@@ -9,10 +9,17 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ Java の文法と文 Java で扱う文は以下の4種類 制御文
-ブロック文
-宣言文
-式文 宣言文と式文は終端にセミコロン必要 Java の演算子と式 &amp;&amp; 、 || 、 ? : （三項演算子） &hellip;">
+  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ 条件分岐 if-else文 インデントの取り方に関係なく else は最も近い（直近の） if にかかる switch-case文 1
+2
+3
+4
+5
+6
+7
+8
+switch(式) {
+case 定数1: 0個以上の文
+case &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -115,6 +122,220 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ Chapter 10 Javaプログラムの実行と制御構文</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-08-31T03:40:04+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>3:40 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>条件分岐</h2>
+
+<h3>if-else文</h3>
+
+<p>インデントの取り方に関係なく <code>else</code> は最も近い（直近の） <code>if</code> にかかる</p>
+
+<h3>switch-case文</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">switch</span><span class="o">(</span><span class="n">式</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="k">case</span> <span class="nl">定数1:</span>
+</span><span class='line'>    <span class="mi">0</span><span class="n">個以上の文</span>
+</span><span class='line'><span class="k">case</span> <span class="nl">定数N:</span>
+</span><span class='line'>    <span class="mi">0</span><span class="n">個以上の文</span>
+</span><span class='line'><span class="k">default</span><span class="o">:</span>
+</span><span class='line'>    <span class="mi">0</span><span class="n">個以上の文</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>式の評価値は以下</p>
+
+<ul>
+<li>int 型</li>
+<li>int 型に暗黙に型変換される型
+
+<ul>
+<li>char</li>
+<li>byte</li>
+<li>short</li>
+</ul>
+</li>
+<li>数値ラッパークラス
+
+<ul>
+<li>Integer</li>
+<li>Character</li>
+<li>Byte</li>
+<li>Short</li>
+</ul>
+</li>
+<li>enum 型</li>
+<li>String 型</li>
+</ul>
+
+
+<p>式が <code>null</code> になると <code>NullPointerException</code> が発生する</p>
+
+<p><code>break;</code> 文がない限り処理を続ける</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="k">switch</span> <span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;default&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="k">default</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>繰り返し</h2>
+
+<h3>for文</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">初期化式</span><span class="o">;</span> <span class="n">条件式</span><span class="o">;</span> <span class="n">更新式</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">文</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>条件式は評価値が <code>boolean</code> もしくは <code>Boolean</code></p>
+
+<p>初期化式と更新式は複数の式を <code>,</code> で区切って書ける</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">);</span> <span class="n">i</span><span class="o">++,</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span> 
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>異なる型の宣言と初期化を並べるとエラー</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="kt">byte</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">);</span> <span class="n">i</span><span class="o">++,</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span> 
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>for文の外に出して回避</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'><span class="kt">byte</span> <span class="n">j</span><span class="o">;</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">);</span> <span class="n">i</span><span class="o">++,</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span> 
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ジャンプ</h2>
+
+<h3>break文</h3>
+
+<ul>
+<li>ループを抜ける</li>
+<li>ループがネストしている場合、抜けるのは内側のループのみ</li>
+</ul>
+
+
+<h3>continue文</h3>
+
+<ul>
+<li>ループ内の文をスキップしてループの条件式の評価に戻る</li>
+</ul>
+
+
+<h3>ラベル</h3>
+
+<ul>
+<li>繰り返しにラベルをつける</li>
+<li>break文、continue文にラベルを渡すことでどの繰り返しを対象にするか定める</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">target_loop:</span>
+</span><span class='line'><span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">break</span> <span class="n">target_loop</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>外側の while ループに <code>target_loop</code> というラベルがつく</li>
+<li><code>break target_loop</code> で外側の while ループを抜ける</li>
+<li>（ <code>continue</code> の場合は対象のループ内の文をスキップして条件式の評価に戻る）</li>
+</ul>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -3133,83 +3354,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/">Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-07-07T08:27:00+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:27 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちらの記事</a>を参考にGAE for JavaアプリケーションをAndroid Studio + Gradleでセットアップし、サンプルアプリケーションを開発してみました。</p>
-
-<p>早速GAEにdeployしてみようと、メニューバーの <code>Build</code> から <code>Deploy Module to App Engine...</code> を選択してdeployを実行&hellip;ところがタスクが走らずうんともすんとも言わないので調べてみました。</p>
-
-<h2>結論</h2>
-
-<p>以下の設定を <code>app.iml</code> ファイルに追記する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;facet</span> <span class="na">type=</span><span class="s">&quot;android-gradle&quot;</span> <span class="na">name=</span><span class="s">&quot;Android-Gradle&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;configuration&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;option</span> <span class="na">name=</span><span class="s">&quot;GRADLE_PROJECT_PATH&quot;</span> <span class="na">value=</span><span class="s">&quot;:app&quot;</span> <span class="nt">/&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/configuration&gt;</span>
-</span><span class='line'><span class="nt">&lt;/facet&gt;</span>
-</span><span class='line'><span class="nt">&lt;facet</span> <span class="na">type=</span><span class="s">&quot;java-gradle&quot;</span> <span class="na">name=</span><span class="s">&quot;Java-Gradle&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;configuration&gt;</span>
-</span><span class='line'>     <span class="nt">&lt;option</span> <span class="na">name=</span><span class="s">&quot;BUILD_FOLDER_PATH&quot;</span> <span class="na">value=</span><span class="s">&quot;$MODULE_DIR$/build&quot;</span> <span class="nt">/&gt;</span>
-</span><span class='line'>     <span class="nt">&lt;option</span> <span class="na">name=</span><span class="s">&quot;BUILDABLE&quot;</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span> <span class="nt">/&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/configuration&gt;</span>
-</span><span class='line'><span class="nt">&lt;/facet&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちら</a>は少々特殊な方法でmoduleを作成しているのでFacetの設定が不十分となってしまった模様。</p>
-
-<h2>Facetとは</h2>
-
-<p>FacetはIntelliJ IDEAに用意された機能で、使用するフレームワークや言語に合わせたFacetを設定することでIntelliJ IDEAが必要なコンポーネントのダウンロードや各種補完機能の設定などを行ってくれるもの。</p>
-
-<p>Android StudioはIntelliJ IDEAをベースとして開発されたIDEなのでFacetの機能を継承している。</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">GoogleAppEngine for Java を AndroidStudio + Gradleで開発環境を作る</a></li>
-<li><a href="https://www.jetbrains.com/help/idea/2016.1/facet.html">Facet</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -3229,6 +3373,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ chapter 9 文、式、演算子</a>
       </li>
     
@@ -3242,10 +3390,6 @@
     
       <li class="post">
         <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/07/21/study-of-perfect-java-chapter-6/">パーフェクトJava読書メモ chapter 6 コレクションと配列</a>
       </li>
     
   </ul>
