@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android Studio | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/android-studio/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-09-18T22:55:49+09:00</updated>
+  <updated>2017-06-16T02:35:46+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Could Not Open the Requested Socket エラーが出たら]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/"/>
+    <updated>2017-06-16T02:28:06+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio</id>
+    <content type="html"><![CDATA[<p>Android Studio で GAE に乗せるアプリを開発しているとき、ローカルで立ち上げようとすると以下のようなエラーが出た</p>
+
+<pre><code>Could not open the requested socket: Address already in use
+Try overriding --address and/or --port.
+</code></pre>
+
+<p>どうやら以前立ち上げた際のプロセスが生き残っていて邪魔しているらしい</p>
+
+<h3>以下のように対応した</h3>
+
+<p>Android Studio のメニューから <code>Run</code> → <code>Edit Configurations...</code> とたどり、対象 module が使っている port を確認</p>
+
+<p>ポートを指定してプロセスを確認、そして <code>kill</code></p>
+
+<pre><code class="bash">$ lsof -i:8080
+COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+java    74792  sojiro   48u  IPv6 0xXXXXXXXXXXXXXXXX      0t0  TCP *:http-alt (LISTEN)
+</code></pre>
+
+<pre><code class="bash">$ kill -9 74792
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet]]></title>

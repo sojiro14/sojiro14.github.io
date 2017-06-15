@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2016-09-18T22:55:49+09:00</updated>
+  <updated>2017-06-16T02:35:46+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Could Not Open the Requested Socket エラーが出たら]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/"/>
+    <updated>2017-06-16T02:28:06+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio</id>
+    <content type="html"><![CDATA[<p>Android Studio で GAE に乗せるアプリを開発しているとき、ローカルで立ち上げようとすると以下のようなエラーが出た</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Could not open the requested socket: Address already in use
+</span><span class='line'>Try overriding --address and/or --port.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>どうやら以前立ち上げた際のプロセスが生き残っていて邪魔しているらしい</p>
+
+<h3>以下のように対応した</h3>
+
+<p>Android Studio のメニューから <code>Run</code> → <code>Edit Configurations...</code> とたどり、対象 module が使っている port を確認</p>
+
+<p>ポートを指定してプロセスを確認、そして <code>kill</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>lsof -i:8080
+</span><span class='line'>COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+</span><span class='line'>java    <span class="m">74792</span>  sojiro   48u  IPv6 0xXXXXXXXXXXXXXXXX      0t0  TCP *:http-alt <span class="o">(</span>LISTEN<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">kill</span> -9 74792
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 10 Javaプログラムの実行と制御構文]]></title>
@@ -4404,77 +4443,6 @@ primary key や、unique key といったレコードを一意に特定できる
 <h2>参照</h2>
 
 <p><a href="http://www.amazon.co.jp/gp/product/4873116384/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4873116384&amp;linkCode=as2&amp;tag=sojiro14-22">実践ハイパフォーマンスMySQL 第3版</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails アプリを MySQL で作るときのメモ]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/09/21/rails-new-with-mysql/"/>
-    <updated>2015-09-21T22:34:43+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/09/21/rails-new-with-mysql</id>
-    <content type="html"><![CDATA[<p>Rails 4.0.5 のアプリを MySQL で立てるときのメモ</p>
-
-<h3>rails new にオプションをつける</h3>
-
-<p>オプションを付けずに <code>rails new</code> すると SQLite で立てられてしまうので、以下のようにする。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails new app_name -d mysql
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>mysql2 のバージョンを指定</h3>
-
-<p>2015/09/21 時点の mysql2 は rails 上での実行時にバグを含んでいるようなのでバージョン指定する。</p>
-
-<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;mysql2&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 0.3.20&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>mysql のパスワード設定</h3>
-
-<p> <code>config/database.yml</code> に mysql のパスワードを設定する。環境変数の指定は以下のようにする。</p>
-
-<figure class='code'><figcaption><span>config/database.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql2</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">encoding</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">utf8</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">app_name_development</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">pool</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;%= ENV[&#39;MYSQLPASS&#39;] %&gt;</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">socket</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/var/lib/mysql/mysql.sock</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>database の作成</h3>
-
-<p>最後に database を作って完了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake db:create
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://qiita.com/shizuma/items/0f9660d5d46a0012eb9e">Rails mysql2でrake db:createがエラー問題</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

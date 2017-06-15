@@ -9,17 +9,10 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ 条件分岐 if-else文 インデントの取り方に関係なく else は最も近い（直近の） if にかかる switch-case文 1
+  <meta name="description" content="Android Studio で GAE に乗せるアプリを開発しているとき、ローカルで立ち上げようとすると以下のようなエラーが出た 1
 2
-3
-4
-5
-6
-7
-8
-switch(式) {
-case 定数1: 0個以上の文
-case &hellip;">
+Could not open the requested socket: Address already in use
+Try overriding -- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -122,6 +115,66 @@ case &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/">Could Not Open the Requested Socket エラーが出たら</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-06-16T02:28:06+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>2:28 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Android Studio で GAE に乗せるアプリを開発しているとき、ローカルで立ち上げようとすると以下のようなエラーが出た</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Could not open the requested socket: Address already in use
+</span><span class='line'>Try overriding --address and/or --port.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>どうやら以前立ち上げた際のプロセスが生き残っていて邪魔しているらしい</p>
+
+<h3>以下のように対応した</h3>
+
+<p>Android Studio のメニューから <code>Run</code> → <code>Edit Configurations...</code> とたどり、対象 module が使っている port を確認</p>
+
+<p>ポートを指定してプロセスを確認、そして <code>kill</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>lsof -i:8080
+</span><span class='line'>COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+</span><span class='line'>java    <span class="m">74792</span>  sojiro   48u  IPv6 0xXXXXXXXXXXXXXXXX      0t0  TCP *:http-alt <span class="o">(</span>LISTEN<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">kill</span> -9 74792
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -3179,181 +3232,6 @@ case &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/07/12/study-of-perfect-java-chapter-2/">パーフェクトJava読書メモ Chapter 2 文字と文字列</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-07-12T16:17:33+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>4:17 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
-
-<h2>文字列</h2>
-
-<p>&ldquo;（ダブルクォート）で囲んで文字数リテラル</p>
-
-<h3>String クラス</h3>
-
-<ul>
-<li>文字列リテラルから <code>String</code> オブジェクトが自動生成</li>
-<li>配列のように1文字ごとにindexが振られる</li>
-</ul>
-
-
-<h3>StringBuilder クラス</h3>
-
-<ul>
-<li>オブジェクトに対して破壊的</li>
-<li><code>String</code> オブジェクトは read only</li>
-</ul>
-
-
-<h3>文字列の結合</h3>
-
-<ul>
-<li><code>+=</code> と <code>StringBuilder</code> の関係</li>
-<li><code>join</code> メソッド</li>
-</ul>
-
-
-<h3>文字列の比較</h3>
-
-<ul>
-<li><code>==</code> 演算子じゃなくて <code>equals</code> メソッド
-
-<ul>
-<li><code>==</code> 比較は同一のオブジェクトへの参照かどうかの比較</li>
-</ul>
-</li>
-<li>同じ文字列リテラルは同じ <code>String</code> オブジェクト</li>
-<li>ただし <code>String</code> と <code>StringBuilder</code> では文字列の内容が同じでも違うオブジェクト
-
-<ul>
-<li>そんなときは <code>contentEquals</code> メソッド</li>
-</ul>
-</li>
-<li><code>StringBuilder</code> 同士の文字列の内容比較もできないので、 <code>toString</code> で <code>String</code> に変換してから <code>contentEquals</code> 使うこと</li>
-</ul>
-
-
-<h3>文字列と数値の変換</h3>
-
-<h4>数値から文字列への変換</h4>
-
-<p><code>valueOf</code> メソッド</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span>
-</span><span class='line'><span class="c1">// s: &quot;255&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>toString</code> メソッドで10進数以外に直接変換する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="mi">255</span><span class="o">,</span> <span class="mi">16</span><span class="o">);</span>
-</span><span class='line'><span class="c1">// s: &quot;ff&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>文字列から数値への変換</h3>
-
-<p><code>parseInt</code> メソッド</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="s">&quot;255&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="c1">// i: 255</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>基数を与えて10進数以外の処理</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseint</span><span class="o">(</span><span class="s">&quot;ff&quot;</span><span class="o">,</span> <span class="mi">16</span><span class="o">);</span>
-</span><span class='line'><span class="c1">// i: 255</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>文字</h2>
-
-<ul>
-<li>&lsquo;（シングルクォート）で囲んで文字リテラル</li>
-<li>Javaの世界ではUTF-16
-
-<ul>
-<li>文字を16bitの数値で表す <code>char</code> 型</li>
-</ul>
-</li>
-<li>文字リテラルは <code>char</code> 型の数値</li>
-<li><code>String</code> オブジェクトは文字（ <code>char</code> 型）の配列</li>
-</ul>
-
-
-<h2>バイト</h2>
-
-<ul>
-<li>歴史的に文字とバイトは同一視されがち</li>
-<li>Javaではバイトを文字と区別する</li>
-<li>8bit長の <code>byte</code> 型</li>
-<li>バイト列は <code>byte</code> 型の配列</li>
-</ul>
-
-
-<h3>バイト列と文字列の変換</h3>
-
-<h4>バイト列から文字列への変換</h4>
-
-<p><code>byte</code> の配列を渡して <code>String</code> オブジェクトを生成</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[]{</span><span class="mh">0x61</span><span class="o">,</span> <span class="mh">0x62</span><span class="o">,</span> <span class="mh">0x63</span><span class="o">};</span>
-</span><span class='line'><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">String</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
-</span><span class='line'><span class="c1">// s: abc</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>文字列からバイト列への変換</h4>
-
-<p><code>getBytes</code> メソッドを使う</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;abc&quot;</span><span class="o">;</span>
-</span><span class='line'><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">getBytes</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page2">&larr; Older</a>
@@ -3373,6 +3251,10 @@ case &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/">Could not open the requested socket エラーが出たら</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文</a>
       </li>
     
@@ -3388,10 +3270,6 @@ case &hellip;">
         <a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastore について</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/07/24/study-of-perfect-java-chapter-7/">パーフェクトJava読書メモ chapter 7 インターフェース</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -3401,7 +3279,7 @@ case &hellip;">
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - Sojiro -
+  Copyright &copy; 2017 - Sojiro -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
 </p>
 
