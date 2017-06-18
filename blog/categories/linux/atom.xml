@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2017-06-18T14:00:09+09:00</updated>
+  <updated>2017-06-19T00:32:31+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Unix Timeの扱い]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/18/unix-time-handling/"/>
+    <updated>2017-06-18T14:07:59+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/18/unix-time-handling</id>
+    <content type="html"><![CDATA[<p>Unix time を日付及び時刻に変換したいこと、日付及び時刻を Unix time に変換したいことがある。</p>
+
+<h3>Unix time からの変換</h3>
+
+<pre><code>$ date -r 616388399
+1989年 7月14日 金曜日 11時59分59秒 JST
+</code></pre>
+
+<h3>日付からの変換</h3>
+
+<pre><code>$ date -jf '%Y-%m-%d %H:%M:%S' '1989-07-14 11:59:59' +%s
+616388399
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ファイルの内容を直接クリップボードに出力する]]></title>
@@ -252,105 +273,6 @@ $ xdg-open test/
 
 <ul>
 <li><a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[AWSのLinuxにMongoDBをインストール]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/12/30/installing-mongodb-on-linux-aws/"/>
-    <updated>2014-12-30T13:32:15+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/12/30/installing-mongodb-on-linux-aws</id>
-    <content type="html"><![CDATA[<p>AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順</p>
-
-<h2>YUMの設定</h2>
-
-<p>パッケージ管理システムであるYUMにmongoDB用の設定を追加する
-<code>bash
-$ sudo vim /etc/yum.repos.d/mongodb.repo
-</code>
-<code>bash /etc/yum.repos.d/mongodb.repo
-[mongodb]
-name=MongoDB Repository
-baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
-gpgcheck=0
-enabled=1
-</code>
-これでYUMにmongoDBのリポジトリが追加される</p>
-
-<!-- more -->
-
-
-<h2>mongoDBのインストール</h2>
-
-<p>今回は何も考えず最新のバージョンをインストールするので以下のコマンドで実行する
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install mongodb-org
-</span><span class='line'>読み込んだプラグイン:priorities, update-motd, upgrade-helper&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;<span class="p">&amp;</span>hellip<span class="p">;</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt; Package                                                  アーキテクチャー                             バージョン                                       リポジトリー                                   容量&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;インストール中:
-</span><span class='line'> mongodb-org                                              x86_64                                       2.6.6-1                                          mongodb                                       4.9 k
-</span><span class='line'>依存性関連でのインストールをします:
-</span><span class='line'> mongodb-org-mongos                                       x86_64                                       2.6.6-1                                          mongodb                                       6.8 M
-</span><span class='line'> mongodb-org-server                                       x86_64                                       2.6.6-1                                          mongodb                                       9.0 M
-</span><span class='line'> mongodb-org-shell                                        x86_64                                       2.6.6-1                                          mongodb                                       4.3 M
-</span><span class='line'> mongodb-org-tools                                        x86_64                                       2.6.6-1                                          mongodb                                        <span class="m">90</span> M&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;トランザクションの要約&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;インストール  <span class="m">1</span> パッケージ <span class="o">(</span>+4 個の依存関係のパッケージ<span class="o">)</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;総ダウンロード容量: <span class="m">110</span> M
-</span><span class='line'>インストール容量: <span class="m">277</span> M
-</span><span class='line'>Is this ok <span class="o">[</span>y/d/N<span class="o">]</span>: y
-</span><span class='line'>Downloading packages:
-</span><span class='line'><span class="p">&amp;</span>hellip<span class="p">;</span>
-</span><span class='line'>完了しました!
-</span></code></pre></td></tr></table></div></figure></p>
-
-<h2>確認</h2>
-
-<pre><code class="bash">$ mongo --version
-MongoDB shell version: 2.6.6
-</code></pre>
-
-<p>インストール完了</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat-centos-or-fedora-linux/">Install MongoDB on Red Hat Enterprise, CentOS, Fedora, or Amazon Linux</a></li>
-<li><a href="http://qiita.com/nownabe/items/123a8fd04ff5252b3036">CentOS6.5にMongoDBをインストールする</a></li>
-<li><a href="http://qiita.com/ykyk1218/items/1c1824e77fb8af78bcf5">MongoDBをLinuxにインストール</a></li>
 </ul>
 
 ]]></content>

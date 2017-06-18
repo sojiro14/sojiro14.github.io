@@ -9,13 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="①Octopress のインストール octopressリポジトリをクローン 1
-2
-$ cd git/
-$ git clone git://github.com/imathis/octopress.git octopress Bundlerを使って必要なパッケージをインストール 1
-2
-3
-$ &hellip;">
+  <meta name="description" content="Octopressのテーマを変更する Octopressの公式ドキュメント 今回は既に作られ、公開されているテーマを拝借する 好みのテーマを探す 3rd Party Octopress Themesにテーマリストが公開されている。ここから使いたいテーマを探す。 Octopress &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -118,6 +112,173 @@ $ &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/03/changing-octopress-theme/">Octopressのテーマを変える</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-03T17:37:29+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>5:37 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Octopressのテーマを変更する</p>
+
+<ul>
+<li><a href="http://octopress.org/docs/theme/">Octopressの公式ドキュメント</a></li>
+</ul>
+
+
+<p>今回は既に作られ、公開されているテーマを拝借する</p>
+
+<h2>好みのテーマを探す</h2>
+
+<p><a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">3rd Party Octopress Themes</a>にテーマリストが公開されている。ここから使いたいテーマを探す。</p>
+
+<p><a href="http://opthemes.com/">Octopress Themes</a>にPreviewが見やすくまとめられている</p>
+
+<p>今回使用するテーマ</p>
+
+<ul>
+<li><a href="https://github.com/lucaslew/whitespace">Whitespace</a></li>
+</ul>
+
+
+<h2>テーマのインストール</h2>
+
+<h3>テーマをダウンロード</h3>
+
+<p>テーマ毎にclone元とclone先のpathを指定する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>git/octopress
+</span><span class='line'><span class="nv">$ </span>git clone GIT_URL .themes/THEME_NAME
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>テーマ: Whitespaceの場合</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone git://github.com/lucaslew/whitespace.git .themes/whitespace
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>テーマをインストール</h3>
+
+<p>テーマを指定して <code>rake install</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;THEME_NAME&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="nv">$ </span>rake generate
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>テーマ: Whitespaceの場合</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;whitespace&#39;</span><span class="o">]</span>
+</span><span class='line'>A theme is already installed, proceeding will overwrite existing files. Are you sure? <span class="o">[</span>y/n<span class="o">]</span> y
+</span><span class='line'><span class="c">## Copying whitespace theme into ./source and ./sass</span>
+</span><span class='line'>mkdir -p <span class="nb">source</span>
+</span><span class='line'>cp -r .themes/whitespace/source/. <span class="nb">source</span>
+</span><span class='line'>mkdir -p sass
+</span><span class='line'>cp -r .themes/whitespace/sass/. sass
+</span><span class='line'>mkdir -p <span class="nb">source</span>/_posts
+</span><span class='line'>mkdir -p public
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>テーマを上書きするか？と聞かれたので <code>y</code> で答える</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate
+</span><span class='line'><span class="c">## Generating Site with Jekyll</span>
+</span><span class='line'>overwrite <span class="nb">source</span>/stylesheets/screen.css
+</span><span class='line'>Configuration from /Users/user.name/git/octopress/_config.yml
+</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
+</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>デプロイ</h2>
+
+<p>テーマをインストールしたらデプロイ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ページにアクセスしてテーマが変更されていることを確認できればok</p>
+
+<h2>テーマがアップデートされたら</h2>
+
+<p>テーマが開発者によってアップデートされたら手元のファイルもアップデートする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/.themes/THEME_NAME
+</span><span class='line'><span class="nv">$ </span>git pull
+</span><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;THEME_NAME&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="nv">$ </span>rake generate
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>テーマ: Whitespaceの場合</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>octopress/.themes/whitespace
+</span><span class='line'><span class="nv">$ </span>git pull
+</span><span class='line'><span class="nv">$ </span>rake install<span class="o">[</span><span class="s1">&#39;whitespace&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="nv">$ </span>rake generate
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>デプロイしてアップデート完了</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -790,6 +951,10 @@ $ &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/06/18/unix-time-handling/">Unix timeの扱い</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/06/17/copy-output-to-clipboard/">ファイルの内容を直接クリップボードに出力する</a>
       </li>
     
@@ -803,10 +968,6 @@ $ &hellip;">
     
       <li class="post">
         <a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ chapter 9 文、式、演算子</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/08/10/about-gae-task-queue/">GAE Task Queue について</a>
       </li>
     
   </ul>

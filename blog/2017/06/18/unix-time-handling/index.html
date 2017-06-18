@@ -5,11 +5,16 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Slack - Sojiro&#8217;s Blog</title>
+  <title>Unix Timeの扱い - Sojiro&#8217;s Blog</title>
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Category: slack">
+  <meta name="description" content="Unix time を日付及び時刻に変換したいこと、日付及び時刻を Unix time に変換したいことがある。 Unix time からの変換 1
+2
+$ date -r 616388399
+1989年 7月14日 金曜日 11時59分59秒 JST 日付からの変換 1
+2
+$ date -jf &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +23,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sojiro14.github.io/blog/categories/slack">
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2017/06/18/unix-time-handling">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
@@ -111,76 +116,111 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Slack</h1>
+    
+      
+        <h1 class="entry-title">Unix Timeの扱い</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-06-18T14:07:59+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>2:07 pm</span></time>
+        
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>Unix time を日付及び時刻に変換したいこと、日付及び時刻を Unix time に変換したいことがある。</p>
 
-  
-  <h2>2014</h2>
+<h3>Unix time からの変換</h3>
 
-<article>
-  
-<h1><a href="/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a></h1>
-<time datetime="2014-12-15T03:02:30+09:00" pubdate><span class='month'>Dec</span> <span class='day'>15</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/hubot/'>hubot</a>, <a class='category' href='/blog/categories/slack/'>slack</a></span>
-</footer>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ date -r 616388399
+</span><span class='line'>1989年 7月14日 金曜日 11時59分59秒 JST</span></code></pre></td></tr></table></div></figure>
 
 
-</article>
+<h3>日付からの変換</h3>
 
-</div>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ date -jf '%Y-%m-%d %H:%M:%S' '1989-07-14 11:59:59' +%s
+</span><span class='line'>616388399</span></code></pre></td></tr></table></div></figure>
 
-  
-</article>
 
 
 </div>
 
-<aside class="sidebar">
-  
-    <section>
-  <h1>About Me</h1>
-  <p>A little something about me.</p>
-</section>
-<section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2017/06/18/unix-time-handling/">Unix timeの扱い</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/06/17/copy-output-to-clipboard/">ファイルの内容を直接クリップボードに出力する</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/">Could not open the requested socket エラーが出たら</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ chapter 9 文、式、演算子</a>
-      </li>
-    
-  </ul>
-</section>
 
+  <footer>
+    <p class="meta">
+      
   
-</aside>
 
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2017-06-18T14:07:59+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>2:07 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2017/06/18/unix-time-handling/" data-via="sojiro14" data-counturl="http://sojiro14.github.io/blog/2017/06/18/unix-time-handling/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2017/06/17/copy-output-to-clipboard/" title="Previous Post: ファイルの内容を直接クリップボードに出力する">&laquo; ファイルの内容を直接クリップボードに出力する</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
 
     </div>
   </div>
@@ -196,7 +236,10 @@
       var disqus_shortname = 'sojirosblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2017/06/18/unix-time-handling/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2017/06/18/unix-time-handling/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
