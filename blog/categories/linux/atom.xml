@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2017-06-16T02:35:46+09:00</updated>
+  <updated>2017-06-18T14:00:09+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,25 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ファイルの内容を直接クリップボードに出力する]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/17/copy-output-to-clipboard/"/>
+    <updated>2017-06-17T08:21:23+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/17/copy-output-to-clipboard</id>
+    <content type="html"><![CDATA[<p>ファイルの内容を直接クリップボードにコピーしたり、クリップボードからファイルにペーストしたいことがある。</p>
+
+<h3>クリップボードにコピー</h3>
+
+<pre><code class="bash">$ cat ~/Desktop/memo.text | pbcopy
+</code></pre>
+
+<h3>クリップボードからペースト</h3>
+
+<pre><code class="bash">$ pbpaste &gt; ~/Documents/memo.text
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sed コマンドで置換]]></title>
@@ -334,74 +353,6 @@ MongoDB shell version: 2.6.6
 <li><a href="http://qiita.com/ykyk1218/items/1c1824e77fb8af78bcf5">MongoDBをLinuxにインストール</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[LinuxにRuby on Railsをインストールする]]></title>
-    <link href="http://sojiro14.github.io/blog/2014/11/05/installing-ruby-on-rails-on-linux/"/>
-    <updated>2014-11-05T03:58:11+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2014/11/05/installing-ruby-on-rails-on-linux</id>
-    <content type="html"><![CDATA[<p>Ruby on Railsを使ってみたいと思い、AWSにインストールした手順。</p>
-
-<h2>Ruby version 2.0.0 を RVMを使ってインストール</h2>
-
-<p><a href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a>を参照</p>
-
-<h2>gemsetの作成</h2>
-
-<blockquote><p>Rubyをインストールしたら、Railsのアプリケーションを実行するために必要な他のソフトウェア向けにシステムを構成する必要があります。通常、これはgemのインストールに関連します。gemとは自己完結型のRubyコードのパッケージです。バージョン番号の異なるgem同士がコンフリクトすることがあるため、一連のgemを自己完結的にまとめたgemsetというものを作成してバージョンを使い分けるのが便利です。
-（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
-
-<p>以下のコマンドでgemsetを作成する。
-<code>bash
-$ rvm use 2.0.0@railstutorial_rails_4_0 --create --default
-</code></p>
-
-<blockquote><p>上のコマンドを実行すると、Ruby 2.0.0に関連付けられたrailstutorial_rails_4_0というgemsetを作成し (&ndash;create)、その場でgemsetを有効にし (use)、gemsetをデフォルトに設定 (&ndash;default) します。これにより、ターミナルウィンドウを開いたときに2.0.0@railstutorial_rails_4_0というRubyとgemsetの組み合わせが常に選択されるようになります。
-（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
-
-<h2>RubyGemsのインストール</h2>
-
-<p>AWSには始めからgemがインストールされていて、PATHは以下。
-<code>bash
-$ which gem
-/usr/bin/gem
-</code>
-RVMでRubyをインストールするとPATHが上書きされる。
-<code>bash
-$ which gem
-~/.rvm/rubies/ruby-2.0.0-p594/bin/gem
-</code>
-今回はチュートリアルに合わせてgemのバージョンを更新する
-<code>bash
-$ gem update --system 2.0.3
-</code>
-gemの設定ファイルである <code>.gemrc</code> に自動生成されるドキュメントである <code>ri</code> と <code>rdoc</code> の自動生成を抑制する設定をする
-<code>bash
-$ vim .gemrc
-$ cat .gemrc
-install: --no-rdoc --no-ri
-update:  --no-rdoc --no-ri
-</code></p>
-
-<h2>Railsをインストールする</h2>
-
-<p>いよいよRailsをインストールする
-<code>bash
-$ gem install rails --version 4.0.5
-</code>
-インストール完了。
-以下のコマンドで確認する
-<code>bash
-$ rails -v
-Rails 4.0.5
-</code>
-Railsがインストールされたことを確認できた</p>
-
-<h2>参照</h2>
-
-<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
 ]]></content>
   </entry>
   
