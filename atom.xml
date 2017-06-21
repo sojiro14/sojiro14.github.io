@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2017-06-19T00:32:31+09:00</updated>
+  <updated>2017-06-22T02:37:35+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,145 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[WordPress on GAE]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/19/wordpress-on-gae/"/>
+    <updated>2017-06-19T00:34:42+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/19/wordpress-on-gae</id>
+    <content type="html"><![CDATA[<h2>GCP の事前準備</h2>
+
+<p>以下の準備が事前に必要。ここでは割愛。
+* GCP アカウントの作成
+* GCP プロジェクトの作成
+* 課金の有効化
+* GCS(Google Cloud Storage)に default bucket を作成
+    * default bucket: <code>YOUR_PROJECT_NAME.appspot.com</code>
+* Google Cloud SDK のインストール
+    * <a href="https://cloud.google.com/sdk/">https://cloud.google.com/sdk/</a></p>
+
+<h2>Composer のインストール</h2>
+
+<p>Composer は PHP のパッケージ管理ツール</p>
+
+<blockquote><p>Composer is strongly inspired by node&rsquo;s npm and ruby&rsquo;s bundler.</p></blockquote>
+
+<p>node の npm、ruby の bundler に強く影響を受けているようだ。</p>
+
+<h3>手順</h3>
+
+<p>PHP がインストールされていることを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php -v
+</span><span class='line'>PHP 5.5.38 <span class="o">(</span>cli<span class="o">)</span> <span class="o">(</span>built: Aug <span class="m">21</span> <span class="m">2016</span> 21:48:49<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://getcomposer.org/download/">こちら</a> の手順通り Composer をインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php -r <span class="s2">&quot;copy(&#39;https://getcomposer.org/installer&#39;, &#39;composer-setup.php&#39;);&quot;</span>
+</span><span class='line'><span class="nv">$ </span>php -r <span class="s2">&quot;if (hash_file(&#39;SHA384&#39;, &#39;composer-setup.php&#39;) === &#39;669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410&#39;) { echo &#39;Installer verified&#39;; } else { echo &#39;Installer corrupt&#39;; unlink(&#39;composer-setup.php&#39;); } echo PHP_EOL;&quot;</span>
+</span><span class='line'><span class="nv">$ </span>php composer-setup.php
+</span><span class='line'><span class="nv">$ </span>php -r <span class="s2">&quot;unlink(&#39;composer-setup.php&#39;);&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>グローバルに呼び出せるようにしておく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mv composer.phar /usr/local/bin/composer
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>GCS へのアクセス権限変更</h2>
+
+<p>作成したプロジェクトでログイン</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gcloud auth login
+</span><span class='line'><span class="nv">$ </span>gcloud config <span class="nb">set </span>project YOUR_PROJECT_NAME
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GCS のアクセス権更新</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gsutil defacl ch -u AllUsers:R gs://YOUR_PROJECT_NAME.appspot.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>DB の setup</h2>
+
+<p>Cloud SQL を使うので GCP の SQL メニューへ
+* <code>wp</code> という名前で MySQL のインスタンスを立てる
+    * このとき第2世代を選択可
+    * 日本向けがメインであればリージョンは <code>asia-northeast1</code>
+    * マシンタイプは安さ重視なら <code>db-f1-micro</code> とする （このタイプで 30円/日 という印象）
+    * 他の設定はお好みで&hellip;
+* 立てたインスタンスに <code>wp</code> という名前のデータベースを作る
+* <code>wp</code> というユーザーを作る
+    * アクセス制御 → ユーザー → ユーザーアカウントを作成、とたどる</p>
+
+<h2>WordPress の setup</h2>
+
+<p>ローカルに WordPress 構築に必要な素材を用意する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone https://github.com/GoogleCloudPlatform/php-docs-samples.git
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>php-docs-samples/appengine/wordpress/
+</span><span class='line'><span class="nv">$ </span>composer install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>setup の開始</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php wordpress-helper.php setup
+</span><span class='line'><span class="c"># ここでいろいろインタラクティブに聞かれるので答える</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>※ リージョンを聞かれるが、 <code>asia-northeast1</code> がない場合は適当に答えておく</p>
+
+<h3>DB_HOST 設定を変更</h3>
+
+<p>上記手順で WordPress setup 時に適切なリージョンが指定できなかった場合には自分で一部設定を変更する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>YOUR_PROJECT_NAME/
+</span><span class='line'>vim wordpress/wp-config.php
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>/** Production login info */</code> 以下の <code>DB_HOST</code> を適切なリージョンを用いて変更する</p>
+
+<h2>Deploy</h2>
+
+<p>GAE インスタンスに WordPress を deploy する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gcloud app deploy --promote --stop-previous-version app.yaml cron.yaml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最初はかなり多くのファイルを GCS にあげるのでそこそこ時間がかかる</p>
+
+<h2>参照</h2>
+
+<p><a href="https://github.com/GoogleCloudPlatform/php-docs-samples/tree/master/appengine/wordpress">https://github.com/GoogleCloudPlatform/php-docs-samples/tree/master/appengine/wordpress</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Unix Timeの扱い]]></title>
@@ -4210,170 +4349,6 @@
 <li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[初めてのChef]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/11/01/the-first-step-of-chef/"/>
-    <updated>2015-11-01T02:17:51+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/11/01/the-first-step-of-chef</id>
-    <content type="html"><![CDATA[<p>Chef を使ってみます。
-Vagrant で環境をつくっておいてそこで色々試してみます。</p>
-
-<p>今回はゲスト側でクックブック、レシピを作って実行してみます。</p>
-
-<h2>Chef のインストール</h2>
-
-<p> <code>vagrant ssh</code> で Vagrant の環境に入って Chef をインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -L https://www.opscode.com/chef/install.sh <span class="p">|</span> sudo bash
-</span><span class='line'>...
-</span><span class='line'>Thank you <span class="k">for</span> installing Chef!
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Chef Solo がインストールされているか確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>chef-solo -v
-</span><span class='line'>Chef: 12.5.1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>クックブックを作る</h2>
-
-<p>Chef をインストールすると <code>knife</code> というコマンドもインストールされる。
-この <code>knife</code> コマンドを使ってクックブックを作る</p>
-
-<p>今回は git をインストールするための git クックブックを作る</p>
-
-<p>コマンドは以下のように指定する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>knife cookbooks create <span class="o">[</span>クックブック名<span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回は出力先を指定する <code>-o</code> オプションを指定</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo knife cookbook create git -o /var/chef/cookbooks
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドで git という名前のクックブックが作成され、 <code>/var/chef/cookbooks/git/recipes/default.rb</code> にレシピの雛形が作られる</p>
-
-<h2>レシピの編集</h2>
-
-<p>レシピの雛形に git をインストールするレシピを書く</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo vi /var/chef/cookbooks/git/recipes/default.rb
-</span><span class='line'><span class="nv">$ </span>cat /var/chef/cookbooks/git/recipes/default.rb
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Cookbook Name:: git</span>
-</span><span class='line'><span class="c"># Recipe:: default</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Copyright 2015, YOUR_COMPANY_NAME</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># All rights reserved - Do Not Redistribute</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'>
-</span><span class='line'>package <span class="s2">&quot;git&quot;</span> <span class="k">do</span>
-</span><span class='line'>  action :install
-</span><span class='line'>end
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>クックブックの実行</h2>
-
-<p>作成したクックブックを実行する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo chef-solo -o git
-</span><span class='line'>...
-</span><span class='line'>Compiling Cookbooks...
-</span><span class='line'>Converging <span class="m">1</span> resources
-</span><span class='line'>Recipe: git::default
-</span><span class='line'>  * yum_package<span class="o">[</span>git<span class="o">]</span> action install
-</span><span class='line'>    - install version 1.7.1-3.el6_4.1 of package git
-</span><span class='line'>
-</span><span class='line'>Running handlers:
-</span><span class='line'>Running handlers <span class="nb">complete</span>
-</span><span class='line'>Chef Client finished, 1/1 resources updated in <span class="m">38</span> seconds
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>git がインストールされたか確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git --version
-</span><span class='line'>git version 1.7.1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Chef の特徴</h2>
-
-<h3>OS の違いを吸収してくれる</h3>
-
-<p>上記 git の例ではこちらで指定していないにも関わらず、実行した環境が CentOS であることを解釈して yum パッケージでインストールが行われた</p>
-
-<p>実行された環境の OS 毎の違いを吸収してくれる</p>
-
-<h3>冪等性が担保されている</h3>
-
-<p>先ほどのクックブックをもう一度実行してみる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo chef-solo -o git
-</span><span class='line'>...
-</span><span class='line'>Chef Client finished, 0/1 resources updated in <span class="m">07</span> seconds
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回は何もせずに正常に終了したことが分かる</p>
-
-<p>Chef ではクックブックを何度実行しても、クックブックに規定された状態になる冪等性が担保されている</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
-</ul>
-
-
-<p>余談: Chef に関する記事は web 上にも色々ありますが、 Chef は用途によって様々なツール、使い方があり、基本的な用語や概念などを理解できていないと思わぬところでハマってしまいがちです。 <a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a> は Chef に関して体系的に理解できるので最初にサラッと読んでしまうのが近道だと感じました。</p>
 ]]></content>
   </entry>
   

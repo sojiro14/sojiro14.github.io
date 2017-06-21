@@ -9,8 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ 変数とオブジェクト Javaの変数は以下の二つに分類される 基本型変数
-参照型変数 オブジェクトはある体系にそってデータを表すモノであり、名前を持たない 変数 参照型変数 &hellip;">
+  <meta name="description" content="Javaを使うために改訂2版 パーフェクトJavaを読んだメモ オブジェクトの生成 Javaのオブジェクト生成方法は以下の5つ procedure description new 式 基本的な生成手段 String リテラル及び結合演算式 文字列固有の手段 オートボクシング 数値クラス固有の手段 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -113,6 +112,780 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/07/20/study-of-perfect-java-chapter-5/">パーフェクトJava読書メモ Chapter 5 クラス</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-07-20T08:40:03+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:40 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>オブジェクトの生成</h2>
+
+<p>Javaのオブジェクト生成方法は以下の5つ</p>
+
+<table>
+<thead>
+<tr>
+<th> procedure   </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>new</code> 式 </td>
+<td> 基本的な生成手段 </td>
+</tr>
+<tr>
+<td> <code>String</code> リテラル及び結合演算式 </td>
+<td> 文字列固有の手段 </td>
+</tr>
+<tr>
+<td> オートボクシング </td>
+<td> 数値クラス固有の手段 </td>
+</tr>
+<tr>
+<td> リフレクション </td>
+<td> フレームワークなどが下位に隠蔽すべき手段 </td>
+</tr>
+<tr>
+<td> <code>clone</code> メソッド</td>
+<td> <code>Object</code> クラスに実装された手段 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>ファクトリパターン</h2>
+
+<p><code>new</code> 式をファクトリメソッドに隠蔽することでオブジェクトの生成をコンストラクタから分離する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// コンストラクタへのアクセスを制限</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="nf">Sample</span><span class="o">()</span> <span class="o">{}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// ファクトリメソッド</span>
+</span><span class='line'>    <span class="kd">static</span> <span class="n">Sample</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Sample</span> <span class="n">sample</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Sample</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">sample</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>オブジェクトプーリング
+
+<ul>
+<li>オブジェクトの生成にコストがかかる場合、キャッシュされた生成済みオブジェクトを使う</li>
+</ul>
+</li>
+<li>シングルトンパターン
+
+<ul>
+<li>オブジェクトの数を1つに制限する</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>クラス宣言</h2>
+
+<p>新しいクラスを定義するには次のように予約語 <code>class</code> を使う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">[</span><span class="n">修飾子</span><span class="o">]</span> <span class="kd">class</span> <span class="nc">クラス名</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">メンバ宣言</span>
+</span><span class='line'>      <span class="o">-</span> <span class="n">フィールド宣言</span>
+</span><span class='line'>      <span class="o">-</span> <span class="n">メソッド宣言</span>
+</span><span class='line'>      <span class="o">-</span> <span class="n">ネストしたクラス宣言及びネストしたインターフェース宣言</span>
+</span><span class='line'>    <span class="n">コンストラクタ宣言</span>
+</span><span class='line'>    <span class="n">初期化ブロック</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>クラスの修飾子</h3>
+
+<ul>
+<li>クラス宣言時に指定できる修飾子は以下の5つ</li>
+<li>複数同時指定可能（ただし <code>final</code> と <code>abstract</code> を同時に指定するとコンパイルエラー）</li>
+</ul>
+
+
+<table>
+<thead>
+<tr>
+<th> modifier </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>public</code> </td>
+<td> グローバルにアクセス可（書かないとパッケージ内に限定） </td>
+</tr>
+<tr>
+<td> <code>final</code> </td>
+<td> 継承禁止 </td>
+</tr>
+<tr>
+<td> <code>abstract</code> </td>
+<td> 抽象クラス </td>
+</tr>
+<tr>
+<td> <code>strictfp</code> </td>
+<td> クラス内に記述した浮動小数点演算を厳密に評価 </td>
+</tr>
+<tr>
+<td> アノテーション </td>
+<td> 省略 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>フィールド</h2>
+
+<h3>フィールド宣言の修飾子</h3>
+
+<table>
+<thead>
+<tr>
+<th> modifier </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>public</code> </td>
+<td> アクセス制御 </td>
+</tr>
+<tr>
+<td> <code>protected</code> </td>
+<td> アクセス制御 </td>
+</tr>
+<tr>
+<td> <code>private</code> </td>
+<td> アクセス制御 </td>
+</tr>
+<tr>
+<td> <code>final</code> </td>
+<td> フィールド変数への再代入禁止 </td>
+</tr>
+<tr>
+<td> <code>static</code> </td>
+<td> クラスフィールド </td>
+</tr>
+<tr>
+<td> <code>transient</code> </td>
+<td> シリアライズの対象外 </td>
+</tr>
+<tr>
+<td> <code>volatile</code> </td>
+<td> スレッド間で変数の値を同期 </td>
+</tr>
+</tbody>
+</table>
+
+
+<ul>
+<li><code>public</code> 、 <code>protected</code> 、 <code>private</code> は同時に指定不可</li>
+<li><code>final</code> 、 <code>volatile</code> は同時に指定不可</li>
+</ul>
+
+
+<h3>フィールド変数のスコープ</h3>
+
+<ul>
+<li>宣言の位置にかかわらず同一クラス内のすべてのコンストラクタとメソッドから使える</li>
+<li>コンストラクタ内、メソッド内以外の場所では宣言した行以降がスコープとなる</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// コンパイルエラー</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">s</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// コンパイルエラー</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// フィールド宣言</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;sample&quot;</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>this参照</h3>
+
+<ul>
+<li><code>this</code> 参照は明示的な宣言なしに使える、該当クラスのオブジェクトを参照する参照型変数</li>
+<li>クラス内での変数名はフィールド変数よりローカル変数、パラメータ変数が優先される</li>
+<li>これらの場合にフィールド変数を使う場合は <code>this</code> 参照を明示する</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;sample&quot;</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">method</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">s</span><span class="o">;</span> <span class="c1">// パラメータ変数</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">s</span><span class="o">;</span> <span class="c1">// フィールド変数</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">method2</span> <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;test 2&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">s</span><span class="o">;</span> <span class="c1">// ローカル変数</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">s</span><span class="o">;</span> <span class="c1">// フィールド変数</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>メソッド</h2>
+
+<h3>メソッド宣言の修飾子</h3>
+
+<table>
+<thead>
+<tr>
+<th> modifier </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>public</code> </td>
+<td> アクセス制御 </td>
+</tr>
+<tr>
+<td> <code>protected</code> </td>
+<td> アクセス制御 </td>
+</tr>
+<tr>
+<td> <code>private</code> </td>
+<td> アクセス制御 </td>
+</tr>
+<tr>
+<td> <code>abstract</code> </td>
+<td> 抽象メソッド </td>
+</tr>
+<tr>
+<td> <code>final</code> </td>
+<td> オーバーライド不可 </td>
+</tr>
+<tr>
+<td> <code>static</code> </td>
+<td> クラスメソッド </td>
+</tr>
+<tr>
+<td> <code>synchronized</code> </td>
+<td> 同期のためのロック獲得 </td>
+</tr>
+<tr>
+<td> <code>native</code> </td>
+<td> ネイティヴメソッド </td>
+</tr>
+<tr>
+<td> <code>strictfp</code> </td>
+<td> 浮動小数点演算を厳密に評価 </td>
+</tr>
+</tbody>
+</table>
+
+
+<ul>
+<li><code>public</code> 、 <code>protected</code> 、 <code>private</code> は同時に指定不可</li>
+<li><code>abstract</code> は <code>static</code> 、 <code>final</code> 、 <code>synchronized</code> 、 <code>native</code> 、 <code>strictfp</code> と同時に指定不可</li>
+</ul>
+
+
+<h3>同一クラス内でのメソッドのスコープ</h3>
+
+<ul>
+<li>クラス内でメソッド宣言より前で有効</li>
+<li>クラス内で <code>this</code> 参照を使った呼び出しも可能</li>
+</ul>
+
+
+<h3>他のクラスからのメソッド呼び出し</h3>
+
+<ul>
+<li>アクセス制御が許せば可能</li>
+<li>オブジェクト参照に <code>.</code> メソッドアクセス修飾子を適用する</li>
+</ul>
+
+
+<h3>引数</h3>
+
+<ul>
+<li>メソッド定義のパラメータ変数を <em>仮引数</em></li>
+<li>メソッド呼び出し時に渡すパラメータを <em>実引数</em></li>
+<li>メソッドが呼ばれると仮引数に実引数が代入される（call by value）</li>
+</ul>
+
+
+<h4>可変長引数</h4>
+
+<ul>
+<li>メソッド宣言の引数定義でパラメータ変数の型に <code>...</code> を書く</li>
+<li>任意の数の実引数で呼び出すことができる</li>
+<li>このような引数を可変長引数という</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='Java'><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">exec</span> <span class="o">(</span><span class="n">String</span><span class="o">...</span> <span class="n">messages</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">messages</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Sample</span> <span class="n">sample</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Sample</span><span class="o">();</span>
+</span><span class='line'><span class="n">sample</span><span class="o">.</span><span class="na">exec</span><span class="o">();</span>
+</span><span class='line'><span class="n">sample</span><span class="o">.</span><span class="na">exec</span><span class="o">(</span><span class="s">&quot;hoge&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">sample</span><span class="o">.</span><span class="na">exec</span><span class="o">(</span><span class="s">&quot;hoge&quot;</span><span class="o">,</span> <span class="s">&quot;fuga&quot;</span><span class="o">,</span> <span class="s">&quot;foo&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>内部的には配列として引数が渡る</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// 上記クラス定義と等価</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">exec</span> <span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">messages</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">messages</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>返り値</h3>
+
+<ul>
+<li><code>return</code> 文を使う</li>
+<li><code>return</code> はどこにいくつ書いても良い</li>
+<li><code>return</code> の後に実行されるような文を書くとコンパイルエラー</li>
+<li><code>void</code> メソッドに <code>return</code> を書くとコンパイルエラー</li>
+<li><code>return</code> が返す値が返り値の型に代入できないとコンパイルエラー</li>
+</ul>
+
+
+<h3>メソッド実行の終わり方</h3>
+
+<ul>
+<li><code>return</code> 文で抜ける</li>
+<li><code>void</code> 型のメソッドを最後まで実行して抜ける</li>
+<li>例外を投げて抜ける</li>
+</ul>
+
+
+<h3>メソッドのオーバーロード</h3>
+
+<ul>
+<li>同じ引数の並びで同名のメソッドの宣言はコンパイルエラー</li>
+<li>引数の型が変わると同名でもコンパイル可能</li>
+<li>これをメソッドのオーバーロードと呼ぶ</li>
+</ul>
+
+
+<h3>メソッドのシグネチャ</h3>
+
+<ul>
+<li>クラスの中でメソッドを一意に特定する情報をシグネチャと呼ぶ</li>
+<li>メソッドのシグネチャは以下の2つ
+
+<ul>
+<li>メソッド名</li>
+<li>引数の型の並び</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>再帰呼び出し</h3>
+
+<ul>
+<li>メソッドが自分自身のメソッドを呼ぶこと</li>
+<li>停止条件が必要</li>
+</ul>
+
+
+<h2>コンストラクタ</h2>
+
+<h3>コンストラクタの宣言</h3>
+
+<ul>
+<li>オブジェクト生成時に呼ばれる</li>
+<li>コンストラクタ名はクラス名と一致する</li>
+<li>修飾子に書けるのは以下の3つ
+
+<ul>
+<li><code>public</code></li>
+<li><code>protected</code></li>
+<li><code>private</code></li>
+</ul>
+</li>
+<li>コンストラクタはクラス名と同名のメソッドに見えるが言語仕様上は別物</li>
+<li>コンストラクタ内に <code>return</code> 文を書くとコンパイルエラー</li>
+<li>オブジェクトの初期化処理はコンストラクタにまとめるべき</li>
+</ul>
+
+
+<h3>this呼び出しとsuper呼び出し</h3>
+
+<ul>
+<li><code>this</code> 呼び出しでコンストラクタの共通化ができる</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// フィールド宣言を省略</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Sample</span> <span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">label</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">label</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span> <span class="c1">// 下のコンストラクタ呼び出し</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">Sample</span> <span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">label</span><span class="o">,</span> <span class="kt">int</span> <span class="n">level</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">level</span> <span class="o">=</span> <span class="n">level</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>継承したクラスから継承元のコンストラクタを <code>super</code> で呼び出す</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">SubSample</span> <span class="kd">extends</span> <span class="n">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">type</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">SubSample</span> <span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">label</span><span class="o">,</span> <span class="kt">int</span> <span class="n">level</span><span class="o">,</span> <span class="n">String</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">super</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">label</span><span class="o">,</span> <span class="n">level</span><span class="o">);</span> <span class="c1">// Sample クラスのコンストラクタ呼び出し</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">type</span> <span class="o">=</span> <span class="n">type</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>デフォルトコンストラクタ</h3>
+
+<ul>
+<li>コンストラクタ宣言が書かれないクラスにはデフォルトコンストラクタが自動生成される</li>
+<li>デフォルトコンストラクタの引数はなし、中身が空</li>
+</ul>
+
+
+<h3>オブジェクト初期化の順序</h3>
+
+<ol>
+<li>フィールド変数にデフォルト値代入</li>
+<li>フィールド変数宣言時の初期化、初期化ブロックを上から順に実行</li>
+<li>コンストラクタ呼び出し</li>
+</ol>
+
+
+<h2>staticメンバ</h2>
+
+<ul>
+<li><code>static</code> 修飾子がついたフィールド変数やメソッド</li>
+<li>クラスメンバという</li>
+<li><code>static</code> がつかないフィールド変数、メソッドはインスタンスメンバ</li>
+<li>クラスメンバは実体がクラスにしかなく、オブジェクトはコピーを持たない</li>
+<li>インスタンスフィールドとクラスフィールドは同じ名前空間（同名はつけられない）</li>
+</ul>
+
+
+<h2>継承</h2>
+
+<ul>
+<li>継承には実装の継承と振る舞いの継承の2つがある</li>
+<li>振る舞いの継承は後出の「インターフェース」</li>
+<li>実装の継承としての拡張継承は、あらかじめ意図して設計されたクラスからのみ行うべき</li>
+</ul>
+
+
+<h3>拡張継承の構文</h3>
+
+<ul>
+<li>クラス宣言時に <code>extends</code> を使って継承する</li>
+<li><code>extends</code> のないクラス宣言は暗黙に <code>java.lang.Object</code> を継承する</li>
+<li>Java のすべてのクラスは必ず <code>java.lang.Object</code> を直接的または間接的に継承する</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">[</span><span class="n">修飾子</span><span class="o">]</span> <span class="kd">class</span> <span class="nc">クラス名</span> <span class="kd">extends</span> <span class="n">基底クラス名</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">クラス本体</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>継承したクラスで継承元と同名のフィールド変数を宣言すると継承元のフィールド変数を隠蔽する</li>
+<li>継承元にあるメソッドと同じシグネチャのメソッドを定義するとメソッドをオーバーライドする</li>
+<li>メソッドをオーバーライドする条件
+
+<ul>
+<li>同じメソッド名</li>
+<li>引数の数と型がすべて一致</li>
+<li>返り値の型が一致、もしくは継承型</li>
+<li><code>throws</code> 説の例外型が一致もしくは継承した例外型</li>
+<li>アクセス制御が一致もしくはより緩い</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>@Overrideアノテーション</h3>
+
+<ul>
+<li><code>@Override</code> というアノテーションをつけるとオーバーライドのミスに気づける</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Class</span> <span class="n">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">exec</span> <span class="o">(</span><span class="n">CharSequence</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;sample:exec&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Class</span> <span class="n">SubSample</span> <span class="kd">extends</span> <span class="n">Sample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">exec</span> <span class="o">(</span><span class="n">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;subSample:exec&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>super参照</h3>
+
+<ul>
+<li>オーバーライドされた元メソッドに <code>private</code> 修飾子がついていなければオーバーライドしたメソッド内から <code>super</code> 参照を通じて元のメソッドを呼び出すことができる</li>
+<li>隠蔽されたフィールド変数も同様</li>
+</ul>
+
+
+<h3>finalクラス</h3>
+
+<ul>
+<li><code>final</code> 修飾子がついたクラスを final クラスと呼ぶ</li>
+<li>final クラスを継承元にして <code>extends</code> で拡張しようとするとコンパイルエラー</li>
+</ul>
+
+
+<h2>抽象クラスと抽象メソッド</h2>
+
+<ul>
+<li>抽象クラスはインスタンス化できないクラス</li>
+<li><code>abstract</code> 修飾子をつけてクラス宣言すると抽象クラスになる</li>
+<li>抽象クラスは何らかの具象クラスの基底クラスとなる（雛形の役割を担う）</li>
+<li>メソッド修飾子として <code>abstract</code> をつけると抽象メソッドとなる</li>
+<li>抽象メソッドはメソッド本体をもたない（オーバーライド前提）</li>
+<li>抽象メソッドを一つでももつとそのクラスは抽象クラス</li>
+</ul>
+
+
+<h2>ネストしたクラス</h2>
+
+<ul>
+<li>あるクラスの下請けを担うクラスをヘルパークラスという</li>
+<li>クラス内にクラスを宣言できる</li>
+<li>ネストしたクラスをメンバクラスと呼ぶ</li>
+<li>外側のクラスをエンクロージングクラスと呼ぶ</li>
+</ul>
+
+
+<h3>staticなネストしたクラス</h3>
+
+<ul>
+<li><code>static</code> 修飾子がついたネストしたクラス</li>
+<li><code>private</code> 修飾子が指定されるとエンクロージングクラスの外から見えなくなる</li>
+<li>エンクロージングクラスの <code>private</code> フィールドや <code>private</code> メソッドにアクセスできる</li>
+<li>エンクロージングクラスもネストしたクラスの <code>private</code> フィールドや <code>private</code> メソッドにアクセスできる</li>
+</ul>
+
+
+<h3>内部クラス</h3>
+
+<ul>
+<li>非 <code>static</code> なネストしたクラスを内部クラスと呼ぶ</li>
+<li>内部クラスのオブジェクトはエンクロージングオブジェクトへの参照を暗黙的にもつ</li>
+<li>エンクロージングクラスのクラスメソッド内では内部クラスのオブジェクト生成ができない</li>
+</ul>
+
+
+<h3>ローカル内部クラス</h3>
+
+<ul>
+<li>ローカル内部クラスはメソッド内、コンストラクタ内、初期化ブロック内、 <code>if</code> 節などのブロック内で定義するクラス</li>
+<li>ローカル内部クラスはブロックの外からはアクセスできない</li>
+<li>クラスの実装をブロック内に隠蔽するときに使う</li>
+</ul>
+
+
+<h3>匿名クラス</h3>
+
+<ul>
+<li>匿名クラスにはクラス名がない</li>
+<li>オブジェクト生成は以下の構文で行う</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">new</span> <span class="nf">基底型</span><span class="o">(</span><span class="n">実引数</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">メソッド宣言とフィールド宣言の差分実装</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>匿名クラスにはクラス名がないため、基底型名を <code>new</code> 演算子に渡し、基底型との差分実装を書き足す</li>
+<li>匿名クラスを使う利点
+
+<ul>
+<li>コンストラクタが不要</li>
+<li>オブジェクト作成が1つだけ</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2328,191 +3101,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/01/the-first-step-of-chef/">初めてのChef</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-11-01T02:17:51+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>2:17 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Chef を使ってみます。
-Vagrant で環境をつくっておいてそこで色々試してみます。</p>
-
-<p>今回はゲスト側でクックブック、レシピを作って実行してみます。</p>
-
-<h2>Chef のインストール</h2>
-
-<p> <code>vagrant ssh</code> で Vagrant の環境に入って Chef をインストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -L https://www.opscode.com/chef/install.sh <span class="p">|</span> sudo bash
-</span><span class='line'>...
-</span><span class='line'>Thank you <span class="k">for</span> installing Chef!
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Chef Solo がインストールされているか確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>chef-solo -v
-</span><span class='line'>Chef: 12.5.1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>クックブックを作る</h2>
-
-<p>Chef をインストールすると <code>knife</code> というコマンドもインストールされる。
-この <code>knife</code> コマンドを使ってクックブックを作る</p>
-
-<p>今回は git をインストールするための git クックブックを作る</p>
-
-<p>コマンドは以下のように指定する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>knife cookbooks create <span class="o">[</span>クックブック名<span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回は出力先を指定する <code>-o</code> オプションを指定</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo knife cookbook create git -o /var/chef/cookbooks
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このコマンドで git という名前のクックブックが作成され、 <code>/var/chef/cookbooks/git/recipes/default.rb</code> にレシピの雛形が作られる</p>
-
-<h2>レシピの編集</h2>
-
-<p>レシピの雛形に git をインストールするレシピを書く</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo vi /var/chef/cookbooks/git/recipes/default.rb
-</span><span class='line'><span class="nv">$ </span>cat /var/chef/cookbooks/git/recipes/default.rb
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Cookbook Name:: git</span>
-</span><span class='line'><span class="c"># Recipe:: default</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Copyright 2015, YOUR_COMPANY_NAME</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># All rights reserved - Do Not Redistribute</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'>
-</span><span class='line'>package <span class="s2">&quot;git&quot;</span> <span class="k">do</span>
-</span><span class='line'>  action :install
-</span><span class='line'>end
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>クックブックの実行</h2>
-
-<p>作成したクックブックを実行する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo chef-solo -o git
-</span><span class='line'>...
-</span><span class='line'>Compiling Cookbooks...
-</span><span class='line'>Converging <span class="m">1</span> resources
-</span><span class='line'>Recipe: git::default
-</span><span class='line'>  * yum_package<span class="o">[</span>git<span class="o">]</span> action install
-</span><span class='line'>    - install version 1.7.1-3.el6_4.1 of package git
-</span><span class='line'>
-</span><span class='line'>Running handlers:
-</span><span class='line'>Running handlers <span class="nb">complete</span>
-</span><span class='line'>Chef Client finished, 1/1 resources updated in <span class="m">38</span> seconds
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>git がインストールされたか確認</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git --version
-</span><span class='line'>git version 1.7.1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Chef の特徴</h2>
-
-<h3>OS の違いを吸収してくれる</h3>
-
-<p>上記 git の例ではこちらで指定していないにも関わらず、実行した環境が CentOS であることを解釈して yum パッケージでインストールが行われた</p>
-
-<p>実行された環境の OS 毎の違いを吸収してくれる</p>
-
-<h3>冪等性が担保されている</h3>
-
-<p>先ほどのクックブックをもう一度実行してみる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo chef-solo -o git
-</span><span class='line'>...
-</span><span class='line'>Chef Client finished, 0/1 resources updated in <span class="m">07</span> seconds
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回は何もせずに正常に終了したことが分かる</p>
-
-<p>Chef ではクックブックを何度実行しても、クックブックに規定された状態になる冪等性が担保されている</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
-</ul>
-
-
-<p>余談: Chef に関する記事は web 上にも色々ありますが、 Chef は用途によって様々なツール、使い方があり、基本的な用語や概念などを理解できていないと思わぬところでハマってしまいがちです。 <a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a> は Chef に関して体系的に理解できるので最初にサラッと読んでしまうのが近道だと感じました。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page3">&larr; Older</a>
@@ -2534,6 +3122,10 @@ Vagrant で環境をつくっておいてそこで色々試してみます。</p
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/06/19/wordpress-on-gae/">WordPress on GAE</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/06/18/unix-time-handling/">Unix timeの扱い</a>
       </li>
     
@@ -2547,10 +3139,6 @@ Vagrant で環境をつくっておいてそこで色々試してみます。</p
     
       <li class="post">
         <a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ chapter 9 文、式、演算子</a>
       </li>
     
   </ul>

@@ -9,7 +9,11 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="研修時代に書いた InnoDB に関するメモ第二弾。 ロックの挙動に関しては基礎の基礎でちょっと考えれば分かるものの、開発しているとふとしたところで考慮が漏れていたりするので注意したい。 SELECT &hellip; FROM 一貫性読み取りであり、データベースのスナップショットを読み取り、 &hellip;">
+  <meta name="description" content="Chef を使ってみます。
+Vagrant で環境をつくっておいてそこで色々試してみます。 今回はゲスト側でクックブック、レシピを作って実行してみます。 Chef のインストール vagrant ssh で Vagrant の環境に入って Chef をインストールする 1
+2
+3
+$ curl - &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,6 +116,191 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/11/01/the-first-step-of-chef/">初めてのChef</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-01T02:17:51+09:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>2:17 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Chef を使ってみます。
+Vagrant で環境をつくっておいてそこで色々試してみます。</p>
+
+<p>今回はゲスト側でクックブック、レシピを作って実行してみます。</p>
+
+<h2>Chef のインストール</h2>
+
+<p> <code>vagrant ssh</code> で Vagrant の環境に入って Chef をインストールする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -L https://www.opscode.com/chef/install.sh <span class="p">|</span> sudo bash
+</span><span class='line'>...
+</span><span class='line'>Thank you <span class="k">for</span> installing Chef!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Chef Solo がインストールされているか確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>chef-solo -v
+</span><span class='line'>Chef: 12.5.1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>クックブックを作る</h2>
+
+<p>Chef をインストールすると <code>knife</code> というコマンドもインストールされる。
+この <code>knife</code> コマンドを使ってクックブックを作る</p>
+
+<p>今回は git をインストールするための git クックブックを作る</p>
+
+<p>コマンドは以下のように指定する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>knife cookbooks create <span class="o">[</span>クックブック名<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回は出力先を指定する <code>-o</code> オプションを指定</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo knife cookbook create git -o /var/chef/cookbooks
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドで git という名前のクックブックが作成され、 <code>/var/chef/cookbooks/git/recipes/default.rb</code> にレシピの雛形が作られる</p>
+
+<h2>レシピの編集</h2>
+
+<p>レシピの雛形に git をインストールするレシピを書く</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo vi /var/chef/cookbooks/git/recipes/default.rb
+</span><span class='line'><span class="nv">$ </span>cat /var/chef/cookbooks/git/recipes/default.rb
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Cookbook Name:: git</span>
+</span><span class='line'><span class="c"># Recipe:: default</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Copyright 2015, YOUR_COMPANY_NAME</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># All rights reserved - Do Not Redistribute</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'>
+</span><span class='line'>package <span class="s2">&quot;git&quot;</span> <span class="k">do</span>
+</span><span class='line'>  action :install
+</span><span class='line'>end
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>クックブックの実行</h2>
+
+<p>作成したクックブックを実行する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo chef-solo -o git
+</span><span class='line'>...
+</span><span class='line'>Compiling Cookbooks...
+</span><span class='line'>Converging <span class="m">1</span> resources
+</span><span class='line'>Recipe: git::default
+</span><span class='line'>  * yum_package<span class="o">[</span>git<span class="o">]</span> action install
+</span><span class='line'>    - install version 1.7.1-3.el6_4.1 of package git
+</span><span class='line'>
+</span><span class='line'>Running handlers:
+</span><span class='line'>Running handlers <span class="nb">complete</span>
+</span><span class='line'>Chef Client finished, 1/1 resources updated in <span class="m">38</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>git がインストールされたか確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git --version
+</span><span class='line'>git version 1.7.1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Chef の特徴</h2>
+
+<h3>OS の違いを吸収してくれる</h3>
+
+<p>上記 git の例ではこちらで指定していないにも関わらず、実行した環境が CentOS であることを解釈して yum パッケージでインストールが行われた</p>
+
+<p>実行された環境の OS 毎の違いを吸収してくれる</p>
+
+<h3>冪等性が担保されている</h3>
+
+<p>先ほどのクックブックをもう一度実行してみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo chef-solo -o git
+</span><span class='line'>...
+</span><span class='line'>Chef Client finished, 0/1 resources updated in <span class="m">07</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>今回は何もせずに正常に終了したことが分かる</p>
+
+<p>Chef ではクックブックを何度実行しても、クックブックに規定された状態になる冪等性が担保されている</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
+</ul>
+
+
+<p>余談: Chef に関する記事は web 上にも色々ありますが、 Chef は用途によって様々なツール、使い方があり、基本的な用語や概念などを理解できていないと思わぬところでハマってしまいがちです。 <a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a> は Chef に関して体系的に理解できるので最初にサラッと読んでしまうのが近道だと感じました。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1118,150 +1307,6 @@ primary key や、unique key といったレコードを一意に特定できる
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/18/validate-json-schema/">JSON Schema のバリデーション</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-18T23:41:47+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:41 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>JSON Schema を勉強中であります。</p>
-
-<p>その名の通り JSON でリソースそのものやリソースの操作まで表現できる面白いツールだと思います。</p>
-
-<p>しかし、 JSON Schema は往々にして複雑になりがちで、書く量が多くなると typo も増えてきます。</p>
-
-<p>そこで今回は JSON Schema のバリデーションに使えるツールをメモ程度に書いておきます。</p>
-
-<h2>validate-schema コマンド</h2>
-
-<p>まずは <code>validate-schema</code> コマンドから。簡単なバリデーションをしてくれる。</p>
-
-<p>gem の json_schema パッケージに入っているのでインストール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install json_schema
-</span><span class='line'>Password:
-</span><span class='line'>Fetching: json_schema-0.6.0.gem <span class="o">(</span>100%<span class="o">)</span>
-</span><span class='line'>Successfully installed json_schema-0.6.0
-</span><span class='line'>...
-</span><span class='line'><span class="m">1</span> gem installed
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストールできたらオプションに <code>-d</code> をつけて実行</p>
-
-<p>これがバリデーションに通った例</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>validate-schema -d json_schema/directory/test.json
-</span><span class='line'>json_schema/directory/test.json is valid.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>バリデーションに落ちるとこうなる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>validate-schema -d json_schema/directory/test.json
-</span><span class='line'>json_schema/directory/test.json: Invalid JSON. Try to validate using <span class="sb">`</span>jsonlint<span class="sb">`</span>.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>なんと別のツールを使って確かめろということなので、以下につづく。</p>
-
-<h2>jsonlint コマンド</h2>
-
-<p>さて、 validate-schema に jsonlint を使え、と言われたので早速インストールする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install jsonlint -g
-</span><span class='line'>npm http GET https://registry.npmjs.org/jsonlint
-</span><span class='line'>npm http <span class="m">200</span> https://registry.npmjs.org/jsonlint
-</span><span class='line'>...
-</span><span class='line'>/usr/local/bin/jsonlint -&gt; /usr/local/lib/node_modules/jsonlint/lib/cli.js
-</span><span class='line'>jsonlint@1.6.2 /usr/local/lib/node_modules/jsonlint
-</span><span class='line'>├── nomnom@1.8.1 <span class="o">(</span>underscore@1.6.0, chalk@0.4.0<span class="o">)</span>
-</span><span class='line'>└── JSV@4.0.2
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>インストールが完了したら早速チェック</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>jsonlint json_schema/directory/test.json
-</span><span class='line'><span class="o">[</span>Error: Parse error on line 20:
-</span><span class='line'>...<span class="err">&quot;</span><span class="o">]</span>,                <span class="o">}</span>            <span class="o">}</span>,
-</span><span class='line'>----------------------^
-</span><span class='line'>Expecting <span class="s1">&#39;STRING&#39;</span>, got <span class="s1">&#39;}&#39;</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今度はバリデーションに落ちる理由と場所を示してくれるのですぐに修正できる</p>
-
-<p>だいたいバリデーションに落ちるときは <code>,</code> のつけ過ぎが多い</p>
-
-<p>これらのツールで無駄にハマる時間をなくしたいものです。</p>
-
-<h2>validate-schema コマンド（再）</h2>
-
-<p>今回は JSON Schema 単体のチェックだったので <code>validate-schema</code> コマンドが使い勝手悪く見えるので補足</p>
-
-<p>もともとは、ある JSON データが JSON Schema に則っているかのバリデーションをするツールである</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>validate-schema json_schema/check.json test.json
-</span><span class='line'>test.json#/emotion: failed schema <span class="c">#/properties/emotion: embarrassment is not a member of [&quot;pleasure&quot;, &quot;anger&quot;, &quot;sadness&quot;, &quot;enjoyment&quot;].</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="https://github.com/brandur/json_schema">validate-schema</a></li>
-<li><a href="https://www.npmjs.com/package/jsonlint">jsonlint</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page4">&larr; Older</a>
@@ -1283,6 +1328,10 @@ primary key や、unique key といったレコードを一意に特定できる
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/06/19/wordpress-on-gae/">WordPress on GAE</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/06/18/unix-time-handling/">Unix timeの扱い</a>
       </li>
     
@@ -1296,10 +1345,6 @@ primary key や、unique key といったレコードを一意に特定できる
     
       <li class="post">
         <a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ chapter 9 文、式、演算子</a>
       </li>
     
   </ul>
