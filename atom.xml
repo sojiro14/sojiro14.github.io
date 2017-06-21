@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2017-06-22T02:37:35+09:00</updated>
+  <updated>2017-06-22T02:41:30+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -20,14 +20,26 @@
     <id>http://sojiro14.github.io/blog/2017/06/19/wordpress-on-gae</id>
     <content type="html"><![CDATA[<h2>GCP の事前準備</h2>
 
-<p>以下の準備が事前に必要。ここでは割愛。
-* GCP アカウントの作成
-* GCP プロジェクトの作成
-* 課金の有効化
-* GCS(Google Cloud Storage)に default bucket を作成
-    * default bucket: <code>YOUR_PROJECT_NAME.appspot.com</code>
-* Google Cloud SDK のインストール
-    * <a href="https://cloud.google.com/sdk/">https://cloud.google.com/sdk/</a></p>
+<p>以下の準備が事前に必要。ここでは割愛。</p>
+
+<ul>
+<li>GCP アカウントの作成</li>
+<li>GCP プロジェクトの作成</li>
+<li>課金の有効化</li>
+<li>GCS(Google Cloud Storage)に default bucket を作成
+
+<ul>
+<li>default bucket: <code>YOUR_PROJECT_NAME.appspot.com</code></li>
+</ul>
+</li>
+<li>Google Cloud SDK のインストール
+
+<ul>
+<li><a href="https://cloud.google.com/sdk/">https://cloud.google.com/sdk/</a></li>
+</ul>
+</li>
+</ul>
+
 
 <h2>Composer のインストール</h2>
 
@@ -88,15 +100,27 @@
 
 <h2>DB の setup</h2>
 
-<p>Cloud SQL を使うので GCP の SQL メニューへ
-* <code>wp</code> という名前で MySQL のインスタンスを立てる
-    * このとき第2世代を選択可
-    * 日本向けがメインであればリージョンは <code>asia-northeast1</code>
-    * マシンタイプは安さ重視なら <code>db-f1-micro</code> とする （このタイプで 30円/日 という印象）
-    * 他の設定はお好みで&hellip;
-* 立てたインスタンスに <code>wp</code> という名前のデータベースを作る
-* <code>wp</code> というユーザーを作る
-    * アクセス制御 → ユーザー → ユーザーアカウントを作成、とたどる</p>
+<p>Cloud SQL を使うので GCP の SQL メニューへ</p>
+
+<ul>
+<li><code>wp</code> という名前で MySQL のインスタンスを立てる
+
+<ul>
+<li>このとき第2世代を選択可</li>
+<li>日本向けがメインであればリージョンは <code>asia-northeast1</code></li>
+<li>マシンタイプは安さ重視なら <code>db-f1-micro</code> とする （このタイプで 30円/日 という印象）</li>
+<li>他の設定はお好みで&hellip;</li>
+</ul>
+</li>
+<li>立てたインスタンスに <code>wp</code> という名前のデータベースを作る</li>
+<li><code>wp</code> というユーザーを作る
+
+<ul>
+<li>アクセス制御 → ユーザー → ユーザーアカウントを作成、とたどる</li>
+</ul>
+</li>
+</ul>
+
 
 <h2>WordPress の setup</h2>
 
