@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2017-06-22T02:41:30+09:00</updated>
+  <updated>2017-08-26T16:29:58+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,192 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[“値オブジェクトとコレクションオブジェクト”]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/08/25/value-object-and-collection-object/"/>
+    <updated>2017-08-25T18:07:57+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/08/25/value-object-and-collection-object</id>
+    <content type="html"><![CDATA[<p>某先輩の書評を読んで気になったので 『<a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a>』 という本を読んだ。</p>
+
+<p>とあるプロジェクトでその先輩に自分の書くコードについて色々ご指摘をいただいていたタイミングであり、自分としてはかなり参考になった点があるので備忘も兼ねて書いてみる。</p>
+
+<p>今回は特に「値オブジェクト」と「コレクションオブジェクト（ファーストクラスコレクション）」について。</p>
+
+<h2>値オブジェクト</h2>
+
+<p>値オブジェクトはアプリケーションに登場する様々な値に対してその値を扱うための専用クラスを作るという考え方。</p>
+
+<h3>値ごとにクラスを定義する</h3>
+
+<p>値オブジェクトの考え方をルール化すると、「プリミティブ型や <code>String</code> 型は使わない」という方針となる。</p>
+
+<p>例えば、先述のプロジェクトのコードでは登場する様々な値を <code>String</code> 型で表現していた。</p>
+
+<ul>
+<li><code>userId</code></li>
+<li><code>nickname</code></li>
+<li><code>address</code></li>
+<li>etc&hellip;</li>
+</ul>
+
+
+<p>これらはサーバーリクエストの口でバリデーションを通るものの、その後の値がアプリケーションコード内で保証されないため非常に不安定だった。</p>
+
+<p>また、例えば <code>nickname</code> と <code>address</code> を引数として受け付けるメソッドがあったとすると</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="n">User</span> <span class="nf">hoge</span><span class="o">(</span><span class="n">String</span> <span class="n">nickname</span><span class="o">,</span> <span class="n">String</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>となるわけだが、この時このメソッドを使う側で間違えて <code>address</code>, <code>nickname</code> の順で引数を指定したとしてもこのメソッドはその引数を受け付けてしまう。</p>
+
+<p>そこで <code>Nickname</code> クラスと <code>Address</code> クラスを定義するというのが値オブジェクトの考え方だ。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">Nickname</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MIN_LENGTH</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MAX_LENGTH</span> <span class="o">=</span> <span class="mi">20</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">String</span> <span class="n">nickname</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Nickname</span><span class="o">(</span><span class="n">String</span> <span class="n">nickname</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">nickname</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">MIN_LENGTH</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;nickname length must be at least&quot;</span> <span class="o">+</span> <span class="n">MIN_LENGTH</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">nickname</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">MAX_LENGTH</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;nickname length must be under&quot;</span> <span class="o">+</span> <span class="n">MAX_LENGTH</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">nickname</span> <span class="o">=</span> <span class="n">nickname</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>address</code> に対しても同様にクラスを定義して先ほどのメソッドを</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="n">User</span> <span class="nf">hoge</span><span class="o">(</span><span class="n">Nickname</span> <span class="n">nickname</span><span class="o">,</span> <span class="n">Address</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>とすればより堅い実装となる。</p>
+
+<h3>値オブジェクトを不変とする</h3>
+
+<p>値オブジェクトの値は上書きしないというのも値オブジェクトを扱う上で重要な考え方で、これをルール化すると、「値を変更する度にオブジェクトそのものを新しく（別のオブジェクトに）する」ということになる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Nickname</span> <span class="n">nickname</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Nickname</span><span class="o">(</span><span class="s">&quot;sojiro&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">nickname</span><span class="o">.</span><span class="na">setNickname</span><span class="o">(</span><span class="s">&quot;shin-sojiro&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ではなく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Nickname</span> <span class="n">nickname</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Nickname</span><span class="o">(</span><span class="s">&quot;sojiro&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">Nickname</span> <span class="n">updatedNickname</span> <span class="o">=</span> <span class="n">nickname</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="s">&quot;shin-sojiro&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>とすることで、各オブジェクトがどの値をもっているのかが明確となり、知らないうちに値が変わっている、ということを防ぐことができる。</p>
+
+<h2>コレクションオブジェクト（ファーストクラスコレクション）</h2>
+
+<p>値オブジェクトの考え方を発展させ、コレクション型のデータとロジックを独自のクラスに切り出す考え方をコレクションオブジェクト、もしくはファーストクラスコレクションという。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span><span class='line'><span class="n">users</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>のように扱っていた <code>User</code> のコレクションを、 <code>Users</code> というクラスを定義し、そのクラスで操作が完結するようにする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">Users</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Users</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Users</span> <span class="nf">add</span><span class="o">(</span><span class="n">User</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">userList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">users</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="nf">Users</span><span class="o">(</span><span class="n">userList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">user</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="nf">asList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">users</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここでのポイントは、</p>
+
+<ul>
+<li>値オブジェクトで値に変更がある場合は常に新しいオブジェクトを返したように、コレクションオブジェクトでもコレクションに変更がある場合は新たなオブジェクトを返すようにすること</li>
+<li>コレクションへの参照を返す場合はなるべく変更できない状態にして返すこと</li>
+</ul>
+
+
+<p>コレクションへの操作を独自クラスに閉じ込め、同一オブジェクトが持つコレクションの内容が変化することのないようにすることでより堅い実装とすることができる。</p>
+
+<h2>感想</h2>
+
+<p>Perl からプログラミングを始めたこともあってか（言い訳）、オブジェクト指向と言っても型への意識は低く、如何にコンパイル時点でバグを見つけられる堅い実装とするか、その変数に今どのような値が入っているかをコードの書き方で明確にするか、というような意識も低かった。</p>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a> からは他にも学んだ点が多いので追って記事にできたらと思う。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[WordPress on GAE]]></title>
@@ -4152,227 +4338,6 @@
 <h2>参照</h2>
 
 <p><a href="http://perldoc.jp/docs/modules/Minilla-v0.6.4/lib/Minilla/Tutorial.pod#Make32a32new32build">Minilla チュートリアルドキュメント</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Chef のリモート実行]]></title>
-    <link href="http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef/"/>
-    <updated>2015-11-14T23:08:53+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef</id>
-    <content type="html"><![CDATA[<p><a href="http://blog.sojiro.me/blog/2015/11/01/the-first-step-of-chef/">前回</a> 対象サーバで直接 Chef を実行してみました。</p>
-
-<p>今回は手元からリモートのサーバに対して Chef を実行する仕組みを試してみます。</p>
-
-<h2>knife-solo のインストール</h2>
-
-<p>手元のクックブックをリモートのサーバに転送して <code>chef-solo</code> コマンドを実行するまでの一連の作業を実行できる <code>knife-solo</code> コマンドをインストールする</p>
-
-<p> <code>knife-solo</code> コマンドは gem でインストールできる。手元の Mac OS でインストール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem install knife-solo
-</span><span class='line'>...
-</span><span class='line'>Thanks <span class="k">for</span> installing knife-solo!
-</span><span class='line'>...
-</span><span class='line'><span class="m">36</span> gems installed
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Berkshelf のインストール</h2>
-
-<p>クックブックの依存関係を管理する <code>Berkshelf</code> というツールもこのタイミングでインストールする。これは <code>knife-solo</code> が他の gem のインストール状況によってデフォルトのオプションが変わるため</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem install berkshelf
-</span><span class='line'>...
-</span><span class='line'><span class="m">25</span> gems installed
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>ローカルにリポジトリを作る</h2>
-
-<p>まずはローカルにリポジトリを作る</p>
-
-<p>Vagrantfile があるディレクトリで以下のコマンドを実行して作成する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo init .
-</span><span class='line'>/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/specification.rb:2007:in <span class="sb">`</span>raise_if_conflicts<span class="err">&#39;</span>: Unable to activate rspec-3.0.0, because rspec-core-3.4.0 conflicts with rspec-core <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span>, rspec-expectations-3.4.0 conflicts with rspec-expectations <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span>, rspec-mocks-3.4.0 conflicts with rspec-mocks <span class="o">(</span>~&gt; 3.0.0<span class="o">)</span> <span class="o">(</span>Gem::LoadError<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>エラーが発生した</p>
-
-<p>rspec と rspec-core のバージョンが合っていなかったので rspec を update する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo gem update rspec
-</span><span class='line'>...
-</span><span class='line'>Gems updated: rspec rspec-collection_matchers
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>再度リポジトリの作成を実行</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo init .
-</span><span class='line'>WARNING: No knife configuration file found
-</span><span class='line'>Creating kitchen...
-</span><span class='line'>Creating knife.rb in kitchen...
-</span><span class='line'>Creating cupboards...
-</span><span class='line'>Setting up Berkshelf...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで実行ディレクトリ内に様々な雛形ディレクトリ、ファイルが作成された</p>
-
-<h2>リモートのサーバに Chef Solo をインストールする</h2>
-
-<p>今回リモートサーバとして想定する Vagrant の環境に対して SSH の設定を以下のようにしておく</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh-config --host testhost &gt;&gt; ~/.ssh/config
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以下のコマンドで Chef Solo をリモートサーバに対してインストール</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo bootstrap testhost
-</span><span class='line'>Bootstrapping Chef...
-</span><span class='line'>...
-</span><span class='line'>Thank you <span class="k">for</span> installing Chef!
-</span><span class='line'>...
-</span><span class='line'>Chef Client finished, 0/0 resources updated in <span class="m">06</span> seconds
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>今回は前回 Chef Solo をインストールした環境に対して打ったので最終的な結果は <code>0/0 resources updated</code> になっている</p>
-
-<h2>クックブックの作成</h2>
-
-<p>ローカルにクックブックを作成する。今回は git をインストールするためのクックブックを作る</p>
-
-<p>自作のクックブックは site-cookbooks 以下に置くことが慣例になっているので出力先に site-cookbooks を指定している</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife cookbook create git -o site-cookbooks
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで site-cookbooks 以下に git クックブックの雛形が出来上がる</p>
-
-<h2>レシピの編集</h2>
-
-<p>レシピの雛形 <code>site-cookbooks/git/recipes/default.rb</code> を編集していく</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim site-cookbooks/git/recipes/default.rb
-</span><span class='line'><span class="nv">$ </span>cat site-cookbooks/git/recipes/default.rb
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Cookbook Name:: git</span>
-</span><span class='line'><span class="c"># Recipe:: default</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Copyright 2015, YOUR_COMPANY_NAME</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># All rights reserved - Do Not Redistribute</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'>package <span class="s2">&quot;git&quot;</span> <span class="k">do</span>
-</span><span class='line'>    action :install
-</span><span class='line'>end
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Node オブジェクトの編集</h2>
-
-<p>Chef で管理する Node （サーバ）の状態を記述し、それぞれの Node に対してどのクックブックが適用されるかを設定する Node オブジェクトを編集する</p>
-
-<p>Node オブジェクトは <code>knife solo bootstrap testhost</code> 実行時に <code>nodes/testhost.json</code> として作成されている</p>
-
-<p>今回はここに先ほど作成した git クックブックの適用を記述する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vim nodes/testhost.json
-</span><span class='line'><span class="nv">$ </span>cat nodes/testhost.json
-</span><span class='line'><span class="o">{</span>
-</span><span class='line'>  <span class="s2">&quot;run_list&quot;</span>: <span class="o">[</span>
-</span><span class='line'>    <span class="s2">&quot;recipe[git]&quot;</span>
-</span><span class='line'>  <span class="o">]</span>,
-</span><span class='line'>  <span class="s2">&quot;automatic&quot;</span>: <span class="o">{</span>
-</span><span class='line'>    <span class="s2">&quot;ipaddress&quot;</span>: <span class="s2">&quot;testhost&quot;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>クックブックの実行</h2>
-
-<p>準備が整ったのでいよいよクックブックをリモートサーバに対して実行する</p>
-
-<p>以下のコマンドで実行</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>knife solo cook testhost
-</span><span class='line'>Running Chef on testhost...
-</span><span class='line'>...
-</span><span class='line'>Chef Client finished, 0/1 resources updated in <span class="m">07</span> seconds
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これも同じく前回の環境ですでに git をインストール済みなので <code>0/1 resources updated</code> として正常に実行された</p>
-
-<p>これでリモートへの Chef 実行完了！</p>
-
-<h2>参照</h2>
-
-<ul>
-<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

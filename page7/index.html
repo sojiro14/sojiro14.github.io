@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="APIを実装することになり、今更ながらWebのアーキテクチャスタイルであるRESTとはなにか理解するためにまとめてみた。 Webのアーキテクチャスタイル Webのアーキテクチャスタイルはクライアント/サーバーというスタイルを中心に、いくつかの制限（アーキテクチャ）を複合的に組み合わせたREST( &hellip;">
+  <meta name="description" content="MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。 単列インサートと複数列インサートで挙動が変わる NOT NULLを指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,6 +112,138 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/">MySQLにおけるNOT NULLカラムへのインサート時の挙動</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-10-20T13:44:28+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>1:44 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。</p>
+
+<h2>単列インサートと複数列インサートで挙動が変わる</h2>
+
+<p> <code>NOT NULL</code>を指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、一度に複数行を挿入する複数列インサート（バルクインサート）で挙動が変わる。</p>
+
+<p><a href="http://dev.mysql.com/doc/refman/5.6/en/insert.html">MySQLマニュアル</a>からの抜粋</p>
+
+<blockquote><p>Inserting NULL into a column that has been declared NOT NULL. For multiple-row INSERT statements or INSERT INTO &hellip; SELECT statements, the column is set to the implicit default value for the column data type. This is 0 for numeric types, the empty string (&lsquo;&rsquo;) for string types, and the “zero” value for date and time types. INSERT INTO &hellip; SELECT statements are handled the same way as multiple-row inserts because the server does not examine the result set from the SELECT to see whether it returns a single row. (For a single-row INSERT, no warning occurs when NULL is inserted into a NOT NULL column. Instead, the statement fails with an error.)</p></blockquote>
+
+<p>単列インサートの場合は<code>NOT NULL</code>が指定されたカラムに<code>NULL</code>値が挿入されるとそのクエリはエラーとなって失敗するが、複数列インサートの場合は警告(warning)を発するものの、クエリは正常に受け付けられる。</p>
+
+<p>その際、<code>NULL</code>値が指定された各カラムにはそれぞれのカラムのデータ型の暗黙的なデフォルト値が挿入される。（数値型なら<code>0</code>、文字列型なら空文字<code>''</code>、etc&hellip;）</p>
+
+<h2>検証</h2>
+
+<ul>
+<li>MySQLのバージョンは5.1.69
+
+<ul>
+<li>ただしマニュアルの該当箇所はバージョン5.7まで変更がないため、どのバージョンでも同じ挙動と思われる</li>
+</ul>
+</li>
+<li>テーブル定義は以下</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="ss">`not_null_test`</span> <span class="p">(</span>
+</span><span class='line'>  <span class="ss">`id`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">`test_score`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">unsigned</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">`created_at`</span> <span class="kt">timestamp</span> <span class="k">NOT</span> <span class="no">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;0000-00-00 00:00:00&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="ss">`id`</span><span class="p">)</span>
+</span><span class='line'><span class="p">)</span> <span class="kp">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="kp">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>単列インサート</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
+</span><span class='line'><span class="nf">not_null_test</span>
+</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
+</span><span class='line'><span class="k">values</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ERROR</span> <span class="mi">1048</span> <span class="p">(</span><span class="mi">23000</span><span class="p">):</span> <span class="k">Column</span> <span class="s1">&#39;test_score&#39;</span> <span class="n">cannot</span> <span class="n">be</span> <span class="no">null</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>複数列インサート</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">insert</span> <span class="k">into</span>
+</span><span class='line'><span class="nf">not_null_test</span>
+</span><span class='line'><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">test_score</span><span class="p">,</span> <span class="n">created_at</span><span class="p">)</span>
+</span><span class='line'><span class="k">values</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">),</span>
+</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="no">NULL</span><span class="p">,</span> <span class="no">NULL</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">2</span> <span class="n">rows</span> <span class="n">affected</span><span class="p">,</span> <span class="mi">2</span> <span class="nf">warnings</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</span><span class='line'><span class="n">Records</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">Duplicates</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Warnings</span><span class="p">:</span> <span class="mi">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">not_null_test</span><span class="p">;</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">test_score</span> <span class="o">|</span> <span class="n">created_at</span>          <span class="o">|</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
+</span><span class='line'><span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span>          <span class="mi">0</span> <span class="o">|</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">18</span> <span class="mi">13</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mi">10</span> <span class="o">|</span>
+</span><span class='line'><span class="o">+----+------------+---------------------+</span>
+</span><span class='line'><span class="mi">2</span> <span class="n">rows</span> <span class="k">in</span> <span class="kt">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>※ timestampにテーブル定義で設定したデフォルト値<code>'0000-00-00 00:00:00'</code>ではなく、型のデフォルト値である現在時刻が入っている点に注意</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1695,126 +1827,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/06/changing-login-shell/">シェルの変更について</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-07-06T20:43:22+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:43 pm</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>さくらでレンタルサーバーを借りたが、デフォルトのシェルが使い慣れたbashではなかったので変更した際のメモ。</p>
-
-<h2>現在のシェルを確認</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% <span class="nb">echo</span> <span class="nv">$SHELL</span>
-</span><span class='line'>/bin/csh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>環境変数 <code>$SHELL</code> に現在のシェルのパスが入っている。</p>
-
-<h2>変更できるシェルの確認</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% cat /etc/shells
-</span><span class='line'><span class="c"># $FreeBSD: release/9.1.0/etc/shells 59717 2000-04-27 21:58:46Z ache $</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># List of acceptable shells for chpass(1).</span>
-</span><span class='line'><span class="c"># Ftpd will not allow users to connect who are not using</span>
-</span><span class='line'><span class="c"># one of these shells.</span>
-</span><span class='line'>
-</span><span class='line'>/bin/sh
-</span><span class='line'>/bin/csh
-</span><span class='line'>/bin/tcsh
-</span><span class='line'>/usr/local/bin/bash
-</span><span class='line'>/usr/local/bin/rbash
-</span><span class='line'>/usr/local/bin/zsh
-</span><span class='line'>/usr/local/bin/rzsh
-</span><span class='line'>/usr/bin/passwd
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>bashが使えることが確認できる。</p>
-
-<h2>シェルを変更する</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% chsh -s /usr/local/bin/bash
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>chsh</code> はログインシェルを変更するコマンド。 <code>-s</code> オプションを付けないとインタラクティブに動作する。</p>
-
-<p>ログインシェルはユーザー毎に設定できるログイン時に起動されるシェルのことで、 <code>/etc/passwd</code> ファイルで設定されている。</p>
-
-<p> <code>chsh</code> はこのファイルを書き換える。</p>
-
-<h2>bashの設定ファイルを書く</h2>
-
-<p>ログインシェルをbashに変更したら</p>
-
-<ul>
-<li>.bash_profile</li>
-<li>.bashrc</li>
-</ul>
-
-
-<p>など、いつもの設定ファイルを記述する</p>
-
-<h2>再度サーバーにログイン</h2>
-
-<p>設定を終えて再度サーバーにログインするとbashが立ち上がる。</p>
-
-<h2>メモ</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='csh'><span class='line'>% <span class="nb">exec</span> /usr/local/bin/bash -l
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>でbashをログインシェルとして立ち上げることもできるが設定ファイルは変わらないのでログインの度にデフォルトのシェルに戻る。</p>
-
-<p><code>exec</code> コマンドは引数で渡された処理にプロセスを置き換える。</p>
-
-<p>よって上記コマンドが実行されるとbashがログインシェルとして置き換わる。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page8">&larr; Older</a>
@@ -1836,6 +1848,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/08/25/value-object-and-collection-object/">“値オブジェクトとコレクションオブジェクト”</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/06/19/wordpress-on-gae/">WordPress on GAE</a>
       </li>
     
@@ -1849,10 +1865,6 @@
     
       <li class="post">
         <a href="/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/">Could not open the requested socket エラーが出たら</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文</a>
       </li>
     
   </ul>

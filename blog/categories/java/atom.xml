@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2017-06-22T02:41:30+09:00</updated>
+  <updated>2017-08-26T16:29:58+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,141 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[“値オブジェクトとコレクションオブジェクト”]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/08/25/value-object-and-collection-object/"/>
+    <updated>2017-08-25T18:07:57+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/08/25/value-object-and-collection-object</id>
+    <content type="html"><![CDATA[<p>某先輩の書評を読んで気になったので 『<a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a>』 という本を読んだ。</p>
+
+<p>とあるプロジェクトでその先輩に自分の書くコードについて色々ご指摘をいただいていたタイミングであり、自分としてはかなり参考になった点があるので備忘も兼ねて書いてみる。</p>
+
+<p>今回は特に「値オブジェクト」と「コレクションオブジェクト（ファーストクラスコレクション）」について。</p>
+
+<h2>値オブジェクト</h2>
+
+<p>値オブジェクトはアプリケーションに登場する様々な値に対してその値を扱うための専用クラスを作るという考え方。</p>
+
+<h3>値ごとにクラスを定義する</h3>
+
+<p>値オブジェクトの考え方をルール化すると、「プリミティブ型や <code>String</code> 型は使わない」という方針となる。</p>
+
+<p>例えば、先述のプロジェクトのコードでは登場する様々な値を <code>String</code> 型で表現していた。</p>
+
+<ul>
+<li><code>userId</code></li>
+<li><code>nickname</code></li>
+<li><code>address</code></li>
+<li>etc&hellip;</li>
+</ul>
+
+
+<p>これらはサーバーリクエストの口でバリデーションを通るものの、その後の値がアプリケーションコード内で保証されないため非常に不安定だった。</p>
+
+<p>また、例えば <code>nickname</code> と <code>address</code> を引数として受け付けるメソッドがあったとすると</p>
+
+<pre><code class="java">public User hoge(String nickname, String address) {
+    ...
+}
+</code></pre>
+
+<p>となるわけだが、この時このメソッドを使う側で間違えて <code>address</code>, <code>nickname</code> の順で引数を指定したとしてもこのメソッドはその引数を受け付けてしまう。</p>
+
+<p>そこで <code>Nickname</code> クラスと <code>Address</code> クラスを定義するというのが値オブジェクトの考え方だ。</p>
+
+<pre><code class="java">class Nickname {
+    static final int MIN_LENGTH = 1;
+    static final int MAX_LENGTH = 20;
+
+    String nickname;
+
+    Nickname(String nickname) {
+        if (nickname.length() &lt; MIN_LENGTH) {
+            throw new IllegalArgumentException("nickname length must be at least" + MIN_LENGTH);
+        }
+        if (nickname.length() &gt; MAX_LENGTH) {
+          throw new IllegalArgumentException("nickname length must be under" + MAX_LENGTH);
+        }
+        this.nickname = nickname;
+    }
+}
+</code></pre>
+
+<p><code>address</code> に対しても同様にクラスを定義して先ほどのメソッドを</p>
+
+<pre><code class="java">public User hoge(Nickname nickname, Address address) {
+    ...
+}
+</code></pre>
+
+<p>とすればより堅い実装となる。</p>
+
+<h3>値オブジェクトを不変とする</h3>
+
+<p>値オブジェクトの値は上書きしないというのも値オブジェクトを扱う上で重要な考え方で、これをルール化すると、「値を変更する度にオブジェクトそのものを新しく（別のオブジェクトに）する」ということになる。</p>
+
+<pre><code class="java">Nickname nickname = new Nickname("sojiro");
+nickname.setNickname("shin-sojiro");
+</code></pre>
+
+<p>ではなく</p>
+
+<pre><code class="java">Nickname nickname = new Nickname("sojiro");
+Nickname updatedNickname = nickname.update("shin-sojiro");
+</code></pre>
+
+<p>とすることで、各オブジェクトがどの値をもっているのかが明確となり、知らないうちに値が変わっている、ということを防ぐことができる。</p>
+
+<h2>コレクションオブジェクト（ファーストクラスコレクション）</h2>
+
+<p>値オブジェクトの考え方を発展させ、コレクション型のデータとロジックを独自のクラスに切り出す考え方をコレクションオブジェクト、もしくはファーストクラスコレクションという。</p>
+
+<pre><code class="java">List&lt;User&gt; users = new ArrayList&lt;&gt;();
+users.add(user);
+</code></pre>
+
+<p>のように扱っていた <code>User</code> のコレクションを、 <code>Users</code> というクラスを定義し、そのクラスで操作が完結するようにする。</p>
+
+<pre><code class="java">class Users {
+    List&lt;User&gt; users;
+
+    Users(List&lt;User&gt; users) {
+        this.users = users;
+    }
+
+    Users add(User user) {
+        List&lt;User&gt; userList = new ArrayList&lt;&gt;(users);
+        return new Users(userList.add(user));
+    }
+
+    List&lt;User&gt; asList() {
+        return Collections.unmodifiableList(users);
+    }
+}
+</code></pre>
+
+<p>ここでのポイントは、</p>
+
+<ul>
+<li>値オブジェクトで値に変更がある場合は常に新しいオブジェクトを返したように、コレクションオブジェクトでもコレクションに変更がある場合は新たなオブジェクトを返すようにすること</li>
+<li>コレクションへの参照を返す場合はなるべく変更できない状態にして返すこと</li>
+</ul>
+
+
+<p>コレクションへの操作を独自クラスに閉じ込め、同一オブジェクトが持つコレクションの内容が変化することのないようにすることでより堅い実装とすることができる。</p>
+
+<h2>感想</h2>
+
+<p>Perl からプログラミングを始めたこともあってか（言い訳）、オブジェクト指向と言っても型への意識は低く、如何にコンパイル時点でバグを見つけられる堅い実装とするか、その変数に今どのような値が入っているかをコードの書き方で明確にするか、というような意識も低かった。</p>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a> からは他にも学んだ点が多いので追って記事にできたらと思う。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Could Not Open the Requested Socket エラーが出たら]]></title>
@@ -454,362 +589,6 @@ interface Mother {
 interface Child2 extends Father, Mother {
     // void print(), void exec() を継承
 }
-</code></pre>
-
-<h2>参照</h2>
-
-<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 6 コレクションと配列]]></title>
-    <link href="http://sojiro14.github.io/blog/2016/07/21/study-of-perfect-java-chapter-6/"/>
-    <updated>2016-07-21T03:27:46+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2016/07/21/study-of-perfect-java-chapter-6</id>
-    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
-
-<h2>コレクションフレームワーク</h2>
-
-<table>
-<thead>
-<tr>
-<th> &mdash;&ndash; </th>
-<th> Hash Table </th>
-<th> Array      </th>
-<th> Tree    </th>
-<th> Linked List </th>
-<th> Hash Table + Linked List </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> set   </td>
-<td> HashSet    </td>
-<td> &mdash;        </td>
-<td> TreeSet </td>
-<td> &mdash;         </td>
-<td> LinkedHashSet            </td>
-</tr>
-<tr>
-<td> list  </td>
-<td> &mdash;        </td>
-<td> ArrayList  </td>
-<td> &mdash;     </td>
-<td> LinkedList  </td>
-<td> &mdash;                      </td>
-</tr>
-<tr>
-<td> deque </td>
-<td> &mdash;        </td>
-<td> ArrayDeque </td>
-<td> &mdash;     </td>
-<td> LinkedList  </td>
-<td> &mdash;                      </td>
-</tr>
-<tr>
-<td> map   </td>
-<td> HashMap    </td>
-<td> &mdash;        </td>
-<td> TreeMap </td>
-<td> &mdash;         </td>
-<td> LinkedHashMap            </td>
-</tr>
-</tbody>
-</table>
-
-
-<h3>コレクション型オブジェクトの生成</h3>
-
-<pre><code class="java">コレクションのインターフェース型&lt;要素の型&gt; 変数 = new コレクションのインターフェースを実装した具象クラス&lt;&gt;([コンストラクタの引数]);
-</code></pre>
-
-<pre><code class="java">List&lt;String&gt; list = new ArrayList&lt;&gt;();
-</code></pre>
-
-<ul>
-<li>上記例で <code>ArrayList&lt;&gt;</code> は <code>ArrayList&lt;String&gt;</code> の略</li>
-</ul>
-
-
-<pre><code class="java">List&lt;int&gt; list = new ArrayList&lt;&gt;();
-</code></pre>
-
-<ul>
-<li>要素の型に基本型は指定できない</li>
-</ul>
-
-
-<h2>リスト</h2>
-
-<h3>リストの具象クラス</h3>
-
-<ul>
-<li>ArrayList</li>
-<li>LinkedList</li>
-</ul>
-
-
-<h3>ArrayList</h3>
-
-<ul>
-<li>良い点
-
-<ul>
-<li>インデックスを指定して要素を読み出す速度が速い[get]</li>
-<li>インデックスを指定して要素を書き換える速度が速い[set]</li>
-<li>先頭から順にすべての要素をなめる処理が速い</li>
-</ul>
-</li>
-<li>悪い点
-
-<ul>
-<li>要素の挿入が遅いことがある[add]
-
-<ul>
-<li>先頭に近い位置への挿入は遅い</li>
-<li>末尾に近い位置への挿入は速いときもあるが遅いときもある</li>
-</ul>
-</li>
-<li>要素の削除が遅いことがある[remove]
-
-<ul>
-<li>先頭に近い位置の削除ほど遅い</li>
-<li>末尾に近い位置の削除ほど速い</li>
-<li>最末尾の削除は高速</li>
-</ul>
-</li>
-<li>条件に合致した要素の検索があまり速くない[contains, indexOf, lastIndexOf]</li>
-</ul>
-</li>
-<li>要素の順序をもつので、順序が入れ替わる要素が多くなる処理は遅い</li>
-<li>連続したメモリの確保ができない場合、末尾への挿入は遅くなる</li>
-</ul>
-
-
-<h3>LinkedList</h3>
-
-<ul>
-<li>良い点
-
-<ul>
-<li>要素の挿入が速い[add]</li>
-<li>要素の削除が速い[remove]</li>
-</ul>
-</li>
-<li>悪い点
-
-<ul>
-<li>インデックスを指定して要素を読み出す速度はあまり速くない[get]</li>
-<li>インデックスを指定して要素を書き換える速度はあまり速くない[set]</li>
-<li>条件に合致した要素を検索する処理の速度はあまり速くない[contains, indexOf, lastIndexOf]</li>
-</ul>
-</li>
-<li>要素にたどり着くまでリンクをたどるのでリストの真ん中に近い要素ほどアクセスに時間がかかる</li>
-</ul>
-
-
-<h2>マップ</h2>
-
-<pre><code class="java">Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
-Map&lt;Integer, List&lt;String&gt;&gt; map = new TreeMap&lt;&gt;();
-</code></pre>
-
-<ul>
-<li>Map インターフェースはキーと値の両方の型を <code>&lt;&gt;</code> の中に指定する</li>
-<li>List インターフェース同様 <code>&lt;&gt;</code> に指定できるのは参照型のみ</li>
-</ul>
-
-
-<h3>マップの具象クラス</h3>
-
-<ul>
-<li>HashMap</li>
-<li>LinkedHashMap</li>
-<li>TreeMap</li>
-</ul>
-
-
-<h3>HashMap</h3>
-
-<h4>HashMapの内部動作</h4>
-
-<ul>
-<li>HashMap は内部に配列を確保する。これをハッシュ表と呼ぶ。</li>
-<li>ハッシュ表の初期サイズは HashMap のコンストラクタで指定する。</li>
-<li>キーと値のペアを HashMap に追加[put]すると HashMap は内部でキーをハッシュ関数に通す。</li>
-<li>ハッシュ関数の出力がハッシュ表のインデックスになる。</li>
-<li>得られたインデックスの要素としてキーと値のペアを格納する。</li>
-</ul>
-
-
-<h3>LinkedHashMap</h3>
-
-<h4>LinkedHashMapの内部動作</h4>
-
-<ul>
-<li>HashMap を拡張継承している</li>
-<li>ハッシュ表に加えて、 LinkedList と同じリンクリストを内部に保持する</li>
-<li>要素を追加すると内部でハッシュ表とリンクリストの両方に要素を追加する</li>
-</ul>
-
-
-<pre><code class="java">LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder)
-</code></pre>
-
-<ul>
-<li>上記コンストラクタの <code>accessOrder</code> に <code>true</code> を指定するとリンクリストの順序が要素にアクセスした順になる</li>
-</ul>
-
-
-<h3>TreeMap</h3>
-
-<p>二分探索木の一種である赤黒木と呼ばれるアルゴリズムによるツリー構造で要素をもつ</p>
-
-<h4>NavigableMap</h4>
-
-<p>TreeMap がキーの順序をもつことを利用したインターフェース</p>
-
-<pre><code class="java">public class Sample {
-    public static void main(String... args) {
-        NavigableMap&lt;String, String&gt; map = new TreeMap&lt;&gt;();
-        map.put("kanayama", "one");
-        map.put("kawai", "four");
-        map.put("kushibiki", "five");
-
-        Map.Entry&lt;String, String&gt; entry = map.ceilingEntry("kana");
-        if (entry != null) {
-            entry.getKey() + ": " + entry.getValue();  // "kanayama: one"
-        }
-    }
-}
-</code></pre>
-
-<h2>セット</h2>
-
-<ul>
-<li>セットは数学の集合の概念</li>
-<li>要素の重複を許さない</li>
-<li>Set インターフェースを実装した具象クラスは以下の3つ
-
-<ul>
-<li>HashSet</li>
-<li>LinkedHashSet</li>
-<li>TreeSet</li>
-</ul>
-</li>
-<li>要素の重複を許さない点が Map のキーの性質と重なるため、具象クラスも Map と重なる</li>
-</ul>
-
-
-<h2>スタック、キュー、デック</h2>
-
-<ul>
-<li>スタック: 最新要素から常に取り出し</li>
-<li>キュー: 最古要素から常に取り出し</li>
-<li>デック: 上記どちらにも対応</li>
-<li>スタック構造は Deque クラス（Stack クラスは古い）</li>
-<li>キュー構造は Queue クラス</li>
-</ul>
-
-
-<h2>イテレータ</h2>
-
-<h3>拡張for構文</h3>
-
-<pre><code class="java">for (要素型 ループ変数 : コレクション変数) {
-    forループが回るたびにループ変数が要素オブジェクトを順に参照
-}
-</code></pre>
-
-<h3>イテレータ</h3>
-
-<ul>
-<li>イテレーションを抽象化したオブジェクト</li>
-<li>Iterator インターフェースは以下のメソッドをもつ
-
-<ul>
-<li><code>boolean</code> <code>hasNext();</code></li>
-<li><code>E</code> <code>next();</code></li>
-<li><code>void</code> <code>remove();</code></li>
-</ul>
-</li>
-<li>ListIterator インターフェースは Iterator を継承している</li>
-<li>ListIterator は上記に加えて以下の以下のメソッドをもつ
-
-<ul>
-<li><code>boolean</code> <code>hasPrevious();</code></li>
-<li><code>E</code> <code>previous();</code></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>例</h3>
-
-<p>セットに対するイテレーション</p>
-
-<pre><code class="java">// Set&lt;Integer&gt; set
-for (Integer n : set) {
-    sum += n;
-}
-
-for (Iterator&lt;Integer&gt; it = set.iterator(); it.hasNext(); ) {
-    Integer n = it.next();
-    sum += n;
-}
-</code></pre>
-
-<p>マップに対するイテレーション</p>
-
-<pre><code class="java">// Map&lt;String, String&gt; map
-
-// 拡張 for でキーを繰り返す
-for (String key : map.keySet()) {
-    System.out.println(key);
-}
-
-// イテレータで値を繰り返す
-for (Iterator&lt;String&gt; it = map.values().iterator(); it.hasNext(); ) {
-    String val = it.next();
-    System.out.println(val);
-}
-
-// 拡張 for でキーと値を繰り返す
-for (Map.Entry&lt;String, String&gt; entry : map.entrySet()) {
-    System.out.println(entry.getKey());
-    System.out.println(entry.getValue());
-}
-</code></pre>
-
-<p>リストを逆順になめる</p>
-
-<pre><code class="java">// List&lt;Integer&gt; list
-for (ListIterator&lt;Integer&gt; it = list.listIterator(list.size()); it.hasPrevious(); ) {
-    Integer i = it.previous();
-    System.out.println(i);
-}
-</code></pre>
-
-<h2>配列</h2>
-
-<pre><code class="java">int[] arr = new int[3];
-
-int[] arr = { 0, 1, 2 };
-</code></pre>
-
-<h3>多次元配列の初期化</h3>
-
-<pre><code class="java">StringBuilder[][][] arr = {
-    {
-        { new StringBuilder("000"), new StringBuilder("001") },
-        { new StringBuilder("010"), new StringBuilder("011") },
-    },
-    {
-        { new StringBuilder("100"), new StringBuilder("101") },
-        { new StringBuilder("110"), new StringBuilder("111") },
-    },
-};
 </code></pre>
 
 <h2>参照</h2>
