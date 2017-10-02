@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://sojiro14.github.io/blog/2017/10/01/install-node-js-and-npm/</loc>
+<lastmod>2017-10-01T20:43:45+09:00</lastmod>
+</url>
+<url>
 <loc>http://sojiro14.github.io/blog/2017/08/25/value-object-and-collection-object/</loc>
 <lastmod>2017-08-25T18:07:57+09:00</lastmod>
 </url>
@@ -452,6 +456,9 @@
 </url>
 <url>
 <loc>http://sojiro14.github.io/blog/categories/oop/</loc>
+</url>
+<url>
+<loc>http://sojiro14.github.io/blog/categories/npm/</loc>
 </url>
 <url>
 <loc>http://sojiro14.github.io/page2/</loc>

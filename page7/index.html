@@ -9,7 +9,7 @@
   <meta name="author" content="Sojiro">
 
   
-  <meta name="description" content="MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。 単列インサートと複数列インサートで挙動が変わる NOT NULLを指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、 &hellip;">
+  <meta name="description" content="Ruby on Railsを使ってみたいと思い、調べてみるとRails4ではRubyのバージョンは1.9以降が必須のようである。 自分がさくらで借りているサーバーではRubyのバージョンが1.8.7だったのでこれを新しくしてみた。 RVMのインストール 新しいRubyをインストールする前にRVM( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,6 +112,127 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-10-31T05:29:00+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>5:29 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ruby on Railsを使ってみたいと思い、調べてみるとRails4ではRubyのバージョンは1.9以降が必須のようである。</p>
+
+<p>自分がさくらで借りているサーバーではRubyのバージョンが1.8.7だったのでこれを新しくしてみた。</p>
+
+<h2>RVMのインストール</h2>
+
+<p>新しいRubyをインストールする前にRVM(Ruby Version Manager)をインストールする。これはRubyをバージョンごとに管理するツール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -L https://get.rvm.io <span class="p">|</span> bash -s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコマンドで自分のホームディレクトリ以下に <code>.rvm/</code> が作られ、ここにRVMがインストールされる。</p>
+
+<p>そして <code>.profile</code> <code>.bashrc</code> <code>.zshrc</code> にPATHを通す記述が追加される。</p>
+
+<p>また、 <code>.bash_profile</code> <code>.zlogin</code> にRVMをロードする記述が追加される。</p>
+
+<p>RVMのインストールが完了したらロードする。ここではbashを使っているので以下のようにする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">source</span> .bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Rubyのインストール</h2>
+
+<h3>さくらのレンタルサーバーでの失敗</h3>
+
+<p>まずはRubyのインストールに必要なパーツを調べ、無ければインストールする。
+以下のコマンドで必要なものをピックアップしインストールまで行ってくれる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
+</span><span class='line'>/your/home/directry/.rvm/scripts/functions/support: line 314: rvm_debug: <span class="nb">command </span>not found
+</span><span class='line'>Checking requirements <span class="k">for</span> freebsd.
+</span><span class='line'>Installing requirements <span class="k">for</span> freebsd.
+</span><span class='line'>Updating system.
+</span><span class='line'>Installing required packages: automake, bison, readline, libyaml...
+</span><span class='line'>Error running <span class="s1">&#39;requirements_freebsd_libs_install automake bison readline libyaml&#39;</span>,
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここでErrorが発生。内容は必要なパッケージがインストールできなかったということ。
+そこでFreeBSDのパッケージ管理コマンドである <code>pkg</code> コマンドを使ってインストールを試みる。</p>
+
+<p>が、サーバーの設定的に自分でパッケージを追加することができなかったのでさくらのサーバーを断念してAWSに移行した。</p>
+
+<h3>AWSに移行</h3>
+
+<p>AWSに移行して <code>$ rvm requirements</code> までを実行する。（AWSは始めからRubyのバージョンが2.0.0だったが構わず実行）
+ここでも <code>$ rvm requirements</code> が転ける。</p>
+
+<p>そこで今度はCentOSだったので <code>yum</code> を使ってインストールを試みる。以下のコマンドは <code>$ rvm requirements</code> が教えてくれる。Errorの原因が <code>sudo</code> で実行していなかったことなので <code>sudo</code> 付きで実行する。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo yum install -y patch libyaml-devel libffi-devel glibc-headers autoconf gcc-c++ glibc-devel patch readline-devel zlib-devel openssl-devel automake libtool bison
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで成功。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm requirements
+</span><span class='line'>Checking requirements <span class="k">for</span> amazon.
+</span><span class='line'>Requirements installation successful.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>$ rvm requirements</code>も成功。</p>
+
+<p>このサーバーではすでにバージョン2.0.0のRubyがインストールされていたが、RVMの配下に新たにバージョン2.0.0のRubyをインストールする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm install 2.0.0 --with-openssl-dir<span class="o">=</span><span class="nv">$HOME</span>/.rvm/usr
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストール完了。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1600,233 +1721,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/17/html5-canvas-number-1/">HTML5 Canvas #1 -Canvasを初めて使う-</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-07-17T02:13:46+09:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:13 am</span></time>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>Canvasとは</h1>
-
-<ul>
-<li>ブラウザ上に図形を描画するためのHTML5の仕様の一つ</li>
-<li>プラグインを使わずにJavaScriptベースで図形を描画することができる。</li>
-<li>アニメーションメソッドはないので動きをつけるためには1コマずつ描画し直す必要がある</li>
-</ul>
-
-
-<p>今回はCanvasを使った図形の描画とそれを動的に消す操作をしてみる。</p>
-
-<h1>今回使う要素</h1>
-
-<ul>
-<li>メソッド
-
-<ul>
-<li>getContext()</li>
-<li>fillRect()</li>
-<li>clearRect()</li>
-</ul>
-</li>
-<li>プロパティ
-
-<ul>
-<li>fillStyle</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>getContext()</h2>
-
-<p>Canvasはこのメソッドから始まる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">targetElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">ctx</span> <span class="o">=</span> <span class="nx">targetElement</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>getElementById</code> などでCanvasの対象となるDOM要素を取得し、その要素に対して <code>getContext()</code> メソッドを呼ぶ</p>
-
-<p>引数は <code>'2d'</code> のみが認められている。（今後&#8217;3d&#8217;とかつかえるようになるかも）</p>
-
-<p> <code>getContext('2d')</code> で取得した <code>ctx</code> オブジェクトに対してメソッドやプロパティを適用していく</p>
-
-<h2>fillRect()</h2>
-
-<p>canvas上の指定した位置に指定した大きさの長方形を描画する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>fillRect()</code> メソッドは4つの引数を取る。</p>
-
-<ul>
-<li>1つめ: 描画する長方形の左上頂点の<strong>x座標</strong></li>
-<li>2つめ: 描画する長方形の左上頂点の<strong>y座標</strong></li>
-<li>3つめ: 描画する長方形の<strong>幅</strong></li>
-<li>4つめ: 描画する長方形の<strong>高さ</strong></li>
-</ul>
-
-
-<p>上記例ではcanvasの左上頂点（原点）から</p>
-
-<ul>
-<li>右方向（x軸方向）に80px</li>
-<li>下方向（y軸方向）に100px</li>
-</ul>
-
-
-<p>の点に左上の頂点を持つ、</p>
-
-<ul>
-<li>幅40px</li>
-<li>高さ40px</li>
-</ul>
-
-
-<p>の長方形（正方形）を描画することになる</p>
-
-<h2>clearRect()</h2>
-
-<p>指定された長方形を消す</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>clearRect()</code> は <code>fillRect()</code> 同様に4つの引数を取る</p>
-
-<ul>
-<li>1つめ: 消す長方形の左上頂点の<strong>x座標</strong></li>
-<li>2つめ: 消す長方形の左上頂点の<strong>y座標</strong></li>
-<li>3つめ: 消す長方形の<strong>幅</strong></li>
-<li>4つめ: 消す長方形の<strong>高さ</strong></li>
-</ul>
-
-
-<p>よって上記例ではcanvasの原点から幅200px、高さ400pxの長方形（範囲）に渡ってクリアする</p>
-
-<h2>fillStyle</h2>
-
-<p>オブジェクトのStyleを変更する</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;rgb(255, 0, 0)&#39;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>主にオブジェクトの色を指定するのに使う（Canvasではデフォルトの色は黒）</p>
-
-<p>指定の仕方はCSSに準拠している</p>
-
-<p>上記例ではオブジェクトを赤で描画できるようになる</p>
-
-<h1>サンプル</h1>
-
-<p>赤い正方形を描いたり消したりする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
-</span><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;head&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">utf-8</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;title&gt;</span>Canvas Sample1<span class="nt">&lt;/title&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>            <span class="kd">var</span> <span class="nx">ctx</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="kd">function</span> <span class="nx">load</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>                <span class="kd">var</span> <span class="nx">targetElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">);</span>
-</span><span class='line'>                <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">targetElement</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
-</span><span class='line'>                <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;rgb(255, 0, 0)&#39;</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="kd">function</span> <span class="nx">paint</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="kd">function</span> <span class="nx">erase</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nx">ctx</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">&lt;/script&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/head&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;body</span> <span class="na">onload=</span><span class="s">&quot;load()&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;target&quot;</span> <span class="na">style=</span><span class="s">&quot;border: 5px solid gray&quot;</span> <span class="na">width=</span><span class="s">&quot;200&quot;</span> <span class="na">height=</span><span class="s">&quot;400&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">value=</span><span class="s">&quot;Paint&quot;</span> <span class="na">onclick=</span><span class="s">&quot;paint()&quot;</span> <span class="nt">/&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">value=</span><span class="s">&quot;Erase&quot;</span> <span class="na">onclick=</span><span class="s">&quot;erase()&quot;</span> <span class="nt">/&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>幅200px、高さ400pxのcanvasを用意し、そこに正方形を描くpaint関数とクリアするerase関数を定義した</p>
-
-<h2>参考資料</h2>
-
-<ul>
-<li><a href="http://www.html5.jp/canvas/index.html">HTML5.jp Canvas</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page8">&larr; Older</a>
@@ -1848,6 +1742,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/10/01/install-node-js-and-npm/">Node.jsとnpmのインストール</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/08/25/value-object-and-collection-object/">値オブジェクトとコレクションオブジェクト</a>
       </li>
     
@@ -1861,10 +1759,6 @@
     
       <li class="post">
         <a href="/blog/2017/06/17/copy-output-to-clipboard/">ファイルの内容を直接クリップボードに出力する</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/">Could not open the requested socket エラーが出たら</a>
       </li>
     
   </ul>

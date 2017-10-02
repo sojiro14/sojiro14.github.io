@@ -4,7 +4,7 @@
   <title><![CDATA[Sojiro's Blog]]></title>
   <link href="http://sojiro14.github.io/atom.xml" rel="self"/>
   <link href="http://sojiro14.github.io/"/>
-  <updated>2017-08-26T16:34:46+09:00</updated>
+  <updated>2017-10-02T23:28:32+09:00</updated>
   <id>http://sojiro14.github.io/</id>
   <author>
     <name><![CDATA[Sojiro]]></name>
@@ -12,6 +12,247 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Node.jsとnpmのインストール]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/10/01/install-node-js-and-npm/"/>
+    <updated>2017-10-01T20:43:45+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/10/01/install-node-js-and-npm</id>
+    <content type="html"><![CDATA[<p>手元の Mac に Node.js と npm がインストールされていなかったのでインストールした手順</p>
+
+<h2><code>homebrew</code> を使って <code>nodebrew</code> をインストール</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install <span class="nv">nodebrew</span>
+</span><span class='line'><span class="o">==</span>&gt; Downloading https://github.com/hokaccha/nodebrew/archive/v0.9.2.tar.gz
+</span><span class='line'><span class="o">==</span>&gt; Downloading from https://codeload.github.com/hokaccha/nodebrew/tar.gz/v0.9.2
+</span><span class='line'><span class="c">######################################################################## 100.0%</span>
+</span><span class='line'><span class="o">==</span>&gt; /usr/local/Cellar/nodebrew/0.9.2/bin/nodebrew <span class="nv">setup_dirs</span>
+</span><span class='line'><span class="o">==</span>&gt; Caveats
+</span><span class='line'>Add path:
+</span><span class='line'>  <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.nodebrew/current/bin:<span class="nv">$PATH</span>
+</span><span class='line'>
+</span><span class='line'>To use Homebrew<span class="err">&#39;</span>s directories rather than ~/.nodebrew add to your profile:
+</span><span class='line'>  <span class="nb">export </span><span class="nv">NODEBREW_ROOT</span><span class="o">=</span>/usr/local/var/nodebrew
+</span><span class='line'>
+</span><span class='line'>Bash completion has been installed to:
+</span><span class='line'>  /usr/local/etc/bash_completion.d
+</span><span class='line'>
+</span><span class='line'>zsh completion has been installed to:
+</span><span class='line'>  /usr/local/share/zsh/site-functions
+</span><span class='line'><span class="o">==</span>&gt; Summary
+</span><span class='line'>🍺  /usr/local/Cellar/nodebrew/0.9.2: <span class="m">7</span> files, 34.4K, built in <span class="m">2</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>nodebrew</code> がインストールされたことを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew -v
+</span><span class='line'>nodebrew 0.9.2
+</span><span class='line'>
+</span><span class='line'>Usage:
+</span><span class='line'>    nodebrew <span class="nb">help                         </span>Show this message
+</span><span class='line'>    nodebrew install &lt;version&gt;            Download and install a &lt;version&gt; <span class="o">(</span>compile from <span class="nb">source</span><span class="o">)</span>
+</span><span class='line'>    nodebrew install-binary &lt;version&gt;     Download and install a &lt;version&gt; <span class="o">(</span>binary file<span class="o">)</span>
+</span><span class='line'>    nodebrew uninstall &lt;version&gt;          Uninstall a version
+</span><span class='line'>    nodebrew use &lt;version&gt;                Use &lt;version&gt;
+</span><span class='line'>    nodebrew list                         List installed versions
+</span><span class='line'>    nodebrew ls                           Alias <span class="k">for</span> <span class="sb">`</span>list<span class="sb">`</span>
+</span><span class='line'>    nodebrew ls-remote                    List remote versions
+</span><span class='line'>    nodebrew ls-all                       List remote and installed versions
+</span><span class='line'>    nodebrew <span class="nb">alias</span> &lt;key&gt; &lt;version&gt;        Set <span class="nb">alias </span>to version
+</span><span class='line'>    nodebrew <span class="nb">unalias</span> &lt;key&gt;                Remove <span class="nb">alias</span>
+</span><span class='line'><span class="nb">    </span>nodebrew clean &lt;version&gt; <span class="p">|</span> all        Remove <span class="nb">source </span>file
+</span><span class='line'>    nodebrew selfupdate                   Update nodebrew
+</span><span class='line'>    nodebrew migrate-package &lt;version&gt;    Install global NPM packages contained in &lt;version&gt; to current version
+</span><span class='line'>    nodebrew <span class="nb">exec</span> &lt;version&gt; -- &lt;<span class="nb">command</span>&gt;  Execute &lt;<span class="nb">command</span>&gt; specified &lt;version&gt;
+</span><span class='line'>
+</span><span class='line'>Example:
+</span><span class='line'>    <span class="c"># install from binary</span>
+</span><span class='line'>    nodebrew install-binary v0.10.22
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># use a specific version number</span>
+</span><span class='line'>    nodebrew use v0.10.22
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># io.js</span>
+</span><span class='line'>    nodebrew install-binary io@v1.0.0
+</span><span class='line'>    nodebrew use io@v1.0.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>インストールできる Node.js のバージョンを確認</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew ls-remote
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE release<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>v0.0.1    v0.0.2    v0.0.3    v0.0.4    v0.0.5    v0.0.6
+</span><span class='line'>
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'>io@v3.3.0 io@v3.3.1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>バージョンを指定してインストール (binary を指定したほうがインストールにかかる時間が短いようだ)</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew install-binary v6.11.3
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE platform<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE release<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE arch<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE version<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>fetch: http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz
+</span><span class='line'>Warning: Failed to create the file
+</span><span class='line'>Warning: /Users/sojiro/.nodebrew/src/v6.11.3/node-v6.11.3-darwin-x64.tar.gz:
+</span><span class='line'>Warning: No such file or directory
+</span><span class='line'>
+</span><span class='line'>curl: <span class="o">(</span>23<span class="o">)</span> Failed writing body <span class="o">(</span><span class="m">0</span> !<span class="o">=</span> 792<span class="o">)</span>
+</span><span class='line'>download faild: http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>自分でインストール先のディレクトリを作らないとダメらしい</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir -p ~/.nodebrew/src
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再度インストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew install-binary v6.11.3
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE platform<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE release<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE version<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE arch<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>fetch: http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz
+</span><span class='line'><span class="c">######################################################################## 100.0%</span>
+</span><span class='line'>Install successful
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールされたバージョンを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew list
+</span><span class='line'>v6.11.3
+</span><span class='line'>
+</span><span class='line'>current: none
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使うバージョンを設定</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew use v6.11.3
+</span><span class='line'>use v6.11.3
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>コマンドにパスを通す</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;export PATH=$PATH:/Users/sojiro/.nodebrew/current/bin&#39;</span> &gt;&gt; ~/.bashrc
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bashrc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>node</code> 及び <code>npm</code> がインストールされたことを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
+</span><span class='line'>v6.11.3
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>npm -v
+</span><span class='line'>3.10.10
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[値オブジェクトとコレクションオブジェクト]]></title>
@@ -4286,58 +4527,6 @@
 <li><a href="https://github.com/rbenv/rbenv">rbenv</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Minil を使った Changes ファイルの更新]]></title>
-    <link href="http://sojiro14.github.io/blog/2016/02/21/how-to-write-changes-with-minil/"/>
-    <updated>2016-02-21T01:24:33+09:00</updated>
-    <id>http://sojiro14.github.io/blog/2016/02/21/how-to-write-changes-with-minil</id>
-    <content type="html"><![CDATA[<p>CPAN モジュールの bug fix を行ったので修正版をリリース。</p>
-
-<p> <code>minil</code> 様様と思いながら <code>minil release</code> コマンドを打つのだが、
-いつも Changes ファイルの更新のところで、どこに何を書けば良いのだっけ？となってしまうのでここにメモしておくことにした。</p>
-
-<h2>{{$NEXT}} の下に書く</h2>
-
-<p>今回のリリースだとこうなった</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Revision history for Perl extension JSON-MergePatch
-</span><span class='line'>
-</span><span class='line'>{\{$NEXT}}
-</span><span class='line'>
-</span><span class='line'>    - (bug fix) diff() :when the same hash-refs are present in the hash values of source and target (thanks bessarabov)
-</span><span class='line'>    - refactoring
-</span><span class='line'>
-</span><span class='line'>0.02 2015-09-13T09:08:20Z
-</span><span class='line'>
-</span><span class='line'>    - use JSON::MaybeXS and fix keys arg
-</span><span class='line'>
-</span><span class='line'>0.01 2015-07-02T18:29:20Z
-</span><span class='line'>
-</span><span class='line'>    - original version</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>{{$NEXT}}</code> となっているところにバージョンやら日付やらが入る。</p>
-
-<h2>参照</h2>
-
-<p><a href="http://perldoc.jp/docs/modules/Minilla-v0.6.4/lib/Minilla/Tutorial.pod#Make32a32new32build">Minilla チュートリアルドキュメント</a></p>
 ]]></content>
   </entry>
   
