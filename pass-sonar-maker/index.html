@@ -10,45 +10,38 @@
     <script type="text/javascript" src="./lib/jquery-3.4.1.min.js"></script>
   </head>
   <body>
-    <div class="columns">
-      <div class="column is-8">
 
-        <!-- GOAL -->
-        <div class="goal top">
+    <!-- GOAL -->
+    <div class="goal top">
+    </div>
+
+    <!-- PITCH -->
+    <div id="pitch">
+      <script id="area_template" type="text/template">
+        <div class="area_<%= horizontal %> area_<%= vertical %>">
+          <% _.each([...Array(12).keys()], function(direction) { %>
+            <svg class="viewbox direction_<%= direction %>" preserveAspectRatio="none" viewBox="0 0 100 100">
+              <polygon class="triangle direction_<%= direction %>" id="<%= horizontal %>_<%= vertical %>_<%= direction %>" points="0,100 50,0 100,100" />
+              <polygon class="sonar direction_<%= direction %>" id="sonar_<%= horizontal %>_<%= vertical %>_<%= direction %>" points="50,0 50,0 50,0" />
+            </svg>
+            <span hidden id="counter_<%= horizontal %>_<%= vertical %>_<%= direction %>">0</span>
+          <% }) %>
+          <div class="area_counter" id="counter_<%= horizontal %>_<%= vertical %>">0</div>
         </div>
+      </script>
+    </div>
 
-        <!-- PITCH -->
-        <div id="pitch">
-          <script id="area_template" type="text/template">
-            <div class="area_<%= horizontal %> area_<%= vertical %>">
-              <% _.each([...Array(12).keys()], function(direction) { %>
-                <svg class="viewbox direction_<%= direction %>" preserveAspectRatio="none" viewBox="0 0 100 100">
-                  <polygon class="triangle direction_<%= direction %>" id="<%= horizontal %>_<%= vertical %>_<%= direction %>" points="0,100 50,0 100,100" />
-                    <polygon class="sonar direction_<%= direction %>" id="sonar_<%= horizontal %>_<%= vertical %>_<%= direction %>" points="50,0 50,0 50,0" />
-                    </svg>
-                    <span hidden id="counter_<%= horizontal %>_<%= vertical %>_<%= direction %>">0</span>
-                    <% }) %>
-                    <div class="area_counter" id="counter_<%= horizontal %>_<%= vertical %>">0</div>
-                  </div>
-                </script>
-              </div>
+    <!-- GOAL -->
+    <div class="goal bottom">
+    </div>
 
-              <!-- GOAL -->
-              <div class="goal bottom">
-              </div>
-            </div>
+    <!-- TOTAL COUNTER -->
+    <div id="total_counter">Total Passes: <span id="total_count">0</span></div>
+    <span hidden id="count_id_history"></span>
 
-            <div class="column is-4">
-
-              <!-- TOTAL COUNTER -->
-              <div id="total_counter">Total Passes: <span id="total_count">0</span></div>
-              <span hidden id="count_id_history"></span>
-
-              <!-- BACK BUTTON -->
-              <a href="#" class="button is-black is-large" id="back_button">Back</a>
-            </div>
-          </div>
-        </body>
+    <!-- BACK BUTTON -->
+    <a href="#" class="button is-black is-large" id="back_button">Back</a>
+  </body>
 
   <script type="text/javascript">
     window.onload = function() {
