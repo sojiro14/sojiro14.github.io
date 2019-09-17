@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby on Rails | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/ruby-on-rails/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[DockerでRails環境を構築した手順]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial/"/>
+    <updated>2016-06-26T03:45:48+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/06/26/docker-rails-setup-tutorial</id>
+    <content type="html"><![CDATA[<p>2016/07/10 修正: <code>docker-compose.yml</code> と <code>nginx.conf</code> の一部を修正しました</p>
+
+<p>とある経緯で Docker を使って Rails の環境をセットアップした手順です。</p>
+
+<h1>setting files</h1>
+
+<p>まずは用意した file から。</p>
+
+<h2>docker-compose.yml</h2>
+
+<pre><code class="yml docker-compose.yml"># not use datastore container now
+#datastore:
+#  build: Dockerfiles/datastore
+
+
+mysql:
+  image: mysql:5.6.26
+  environment:
+    MYSQL_ROOT_PASSWORD: 'pass'
+  ports:
+    - '3306:3306'
+#  volumes_from:
+#    - datastore
+
+nginx:
+  build: Dockerfiles/nginx
+  ports:
+    - '80:80'
+#  volumes_from:
+#    - datastore
+  links:
+    - web
+
+web:
+  build: .
+
+  command: bundle exec unicorn -c config/unicorn.rb
+
+#  volumes_from:
+#    - datastore
+  volumes:
+    - .:/usr/src/app
+  ports:
+    - '3000:3000'
+  links:
+    - mysql
+  environment:
+    RAILS_ENV: development
+    MYSQL_ROOT_PASSWORD: 'pass'
+    DATABASE_URL: mysql2://root:pass@mysql:3306
+    SECRET_KEY_BASE: hogehoge
+</code></pre>
+
+<h2>Dockerfile</h2>
+
+<pre><code class="dockerfile Dockerfile">FROM rails:onbuild
+</code></pre>
+
+<h2>Dockerfiles/nginx/Dockerfile</h2>
+
+<pre><code class="dockerfile Dockerfile">FROM nginx:1.7.9
+
+COPY nginx.conf /etc/nginx/nginx.conf
+</code></pre>
+
+<h2>Dockerfiles/nginx/nginx.conf</h2>
+
+<pre><code class="bash nginx.conf">user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+events {
+  worker_connections 1024; # increase if you have lots of clients
+  accept_mutex off; # "on" if nginx worker_processes &gt; 1
+}
+
+http {
+  include mime.types;
+  default_type application/octet-stream;
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+
+  access_log  /var/log/nginx/access.log  main;
+
+  sendfile on;
+
+  tcp_nopush on; # off may be better for *some* Comet/long-poll stuff
+  tcp_nodelay off; # on may be better for some Comet/long-poll stuff
+
+  gzip on;
+  gzip_http_version 1.0;
+  gzip_proxied any;
+  gzip_min_length 500;
+  gzip_disable "MSIE [1-6]\.";
+  gzip_types text/plain text/html text/xml text/css
+             text/comma-separated-values
+             text/javascript application/x-javascript
+             application/atom+xml;
+
+  upstream app_server {
+    # for UNIX domain socket setups:
+    # server unix:/path/to/.unicorn.sock fail_timeout=0;
+
+    # for TCP setups, point these to your backend servers
+    # server 192.168.0.7:8080 fail_timeout=0;
+    server web:3000 fail_timeout=0;
+  }
+
+  server {
+    listen       80;
+    server_name  localhost;
+    client_max_body_size 4G;
+    keepalive_timeout 5;
+
+    # path for static files
+    root /usr/your_app/home/system/public;
+
+    try_files $uri/index.html $uri.html $uri @app;
+
+    location @app {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_pass http://app_server;
+    }
+
+    # Rails error pages
+    error_page 500 502 503 504 /500.html;
+    location = /500.html {
+      root /usr/your_app/home/system/public;
+    }
+  }
+}
+</code></pre>
+
+<h1>Setup Tutorial</h1>
+
+<h2>Download Tools</h2>
+
+<h3>VirtualBox</h3>
+
+<p><a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></p>
+
+<p>please install version >= 5.x</p>
+
+<h3>Homebrew</h3>
+
+<p><a href="http://brew.sh/index_ja.html">http://brew.sh/index_ja.html</a></p>
+
+<pre><code class="bash">$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></pre>
+
+<h3>Docker Tools</h3>
+
+<h4>Docker</h4>
+
+<pre><code class="bash">$ brew install docker
+</code></pre>
+
+<h4>Docker Machine</h4>
+
+<pre><code class="bash">$ brew install docker-machine
+</code></pre>
+
+<h4>Docker Compose</h4>
+
+<pre><code class="bash">$ brew install docker-compose
+</code></pre>
+
+<h2>Download Application</h2>
+
+<pre><code class="bash">$ cd ~/path/to/workspace
+$ git clone git@github.com:your/App.git your_app
+$ cd your_app
+</code></pre>
+
+<h2>Setup Docker Machine</h2>
+
+<pre><code class="bash">$ docker-machine create --driver virtualbox dev
+...
+
+$ docker-machine ls
+NAME   ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER    ERRORS
+dev    -        virtualbox   Running   tcp://192.168.99.100:2376           v1.10.0
+</code></pre>
+
+<pre><code class="bash">$ eval "$(docker-machine env dev)"
+
+$ echo 'eval "$(docker-machine env dev)"' &gt;&gt; ~/.bashrc
+</code></pre>
+
+<pre><code class="bash">$ docker-machine start dev
+...
+
+$ docker-machine ip dev
+192.168.99.100
+</code></pre>
+
+<h2>Setup Application</h2>
+
+<h3>Build Docker Images and Start Containers</h3>
+
+<pre><code class="bash"># ~/path/to/workspace/your_app
+$ docker-compose build
+...
+
+$ docker-compose up
+...
+</code></pre>
+
+<p>please open another tab</p>
+
+<h3>Setup DB</h3>
+
+<pre><code class="bash">$ docker-compose run web rake db:create
+$ docker-compose run web rake db:migrate
+</code></pre>
+
+<h2>Access Application</h2>
+
+<pre><code class="bash">$ docker-machine ip dev
+192.168.99.100
+</code></pre>
+
+<p>access to <code>192.168.99.100:3000</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails アプリを MySQL で作るときのメモ]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/09/21/rails-new-with-mysql/"/>
+    <updated>2015-09-21T22:34:43+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/09/21/rails-new-with-mysql</id>
+    <content type="html"><![CDATA[<p>Rails 4.0.5 のアプリを MySQL で立てるときのメモ</p>
+
+<h3>rails new にオプションをつける</h3>
+
+<p>オプションを付けずに <code>rails new</code> すると SQLite で立てられてしまうので、以下のようにする。</p>
+
+<pre><code class="bash">$ rails new app_name -d mysql
+</code></pre>
+
+<h3>mysql2 のバージョンを指定</h3>
+
+<p>2015/09/21 時点の mysql2 は rails 上での実行時にバグを含んでいるようなのでバージョン指定する。</p>
+
+<pre><code class="ruby Gemfile">gem 'mysql2', '~&gt; 0.3.20'
+</code></pre>
+
+<pre><code class="bash">$ bundle install
+</code></pre>
+
+<h3>mysql のパスワード設定</h3>
+
+<p> <code>config/database.yml</code> に mysql のパスワードを設定する。環境変数の指定は以下のようにする。
+<code>yml config/database.yml
+development:
+  adapter: mysql2
+  encoding: utf8
+  database: app_name_development
+  pool: 5
+  username: root
+  password: &lt;%= ENV['MYSQLPASS'] %&gt;
+  socket: /var/lib/mysql/mysql.sock
+</code></p>
+
+<h3>database の作成</h3>
+
+<p>最後に database を作って完了。
+<code>bash
+$ rake db:create
+</code></p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/shizuma/items/0f9660d5d46a0012eb9e">Rails mysql2でrake db:createがエラー問題</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #5 -controllerとviewの追加-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view/"/>
+    <updated>2014-11-29T23:58:09+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/29/making-first-app-with-rails-number-5-add-controller-and-view</id>
+    <content type="html"><![CDATA[<p>生成したリソースに対応するcontrollerを作成し、このリソースに対するviewとそのためのアクションを追加していく。</p>
+
+<h2>rails generate controller</h2>
+
+<p>controllerを作成する。controllerの名前は1文字目が大文字で、複数形を指定するのがrailsの規約である。</p>
+
+<pre><code class="bash">$ rails g controller Stocks
+# rails generateコマンドは rails g と省略できる
+</code></pre>
+
+<p>このコマンドでcontrollerのファイルとviewのファイルが生成される。</p>
+
+<!-- more -->
+
+
+<h2>routesの設定</h2>
+
+<p>railsでは <code>config/routes</code> ファイルにてdispatch管理をしている。このファイルの設定でRESTfulなURLを自動生成してくれる。</p>
+
+<p>今回追加したcontrollerの設定も追加する。
+ <code>config/routes</code> に以下の行を追加する</p>
+
+<pre><code class="ruby">resources :stocks
+</code></pre>
+
+<p>この設定により、リソースの基本的な操作を行うURLが生成される。</p>
+
+<p>この他にもroutesの設定方法はいくつかあり、それにより自由にエンドポイントの追加ができるがここでは省略。</p>
+
+<h2>設定されているroutesの確認</h2>
+
+<p>routesの設定が完了したら、生成されたURLの確認をする。</p>
+
+<pre><code class="bash">$ rake routes
+        Prefix Verb   URI Pattern                    Controller#Action
+        stocks GET    /stocks(.:format)              stocks#index
+               POST   /stocks(.:format)              stocks#create
+     new_stock GET    /stocks/new(.:format)          stocks#new
+    edit_stock GET    /stocks/:id/edit(.:format)     stocks#edit
+         stock GET    /stocks/:id(.:format)          stocks#show
+               PATCH  /stocks/:id(.:format)          stocks#update
+               PUT    /stocks/:id(.:format)          stocks#update
+               DELETE /stocks/:id(.:format)          stocks#destroy
+</code></pre>
+
+<h2>アクションの追加</h2>
+
+<p> <code>$ rake routes</code> で示されたController#Actionに沿って、controllerにアクションを追加していく。</p>
+
+<pre><code class="ruby ">app/controllers/stocks_controller.rb
+class StocksController &lt; ApplicationController
+  before_action :set_stock, only: [:show, :edit, :update, :destroy]
+
+  # GET /stocks
+  # GET /stocks.json
+  def index
+    @stocks = Stock.all
+  end
+
+  # GET /stocks/1
+  # GET /stocks/1.json
+  def show
+  end
+
+  # GET /stocks/new
+  def new
+    @stock = Stock.new
+  end
+
+  # GET /stocks/1/edit
+  def edit
+  end
+
+  # POST /stocks
+  # POST /stocks.json
+  def create
+    @stock = Stock.new(stock_params)
+
+    respond_to do |format|
+      if @stock.save
+        format.html { redirect_to @stock, notice: 'Stock was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @stock }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @stock.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /stocks/1
+  # PATCH/PUT /stocks/1.json
+  def update
+    respond_to do |format|
+      if @stock.update(stock_params)
+        format.html { redirect_to @stock, notice: 'Stock was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @stock.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /stocks/1
+  # DELETE /stocks/1.json
+  def destroy
+    @stock.destroy
+    respond_to do |format|
+      format.html { redirect_to stocks_url }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_stock
+      @stock = Stock.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def stock_params
+      params.require(:stock).permit(:title)
+    end
+end
+</code></pre>
+
+<h2>参照</h2>
+
+<p><a href="http://dotinstall.com/lessons/basic_rails_v2">ドットインストール</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #4 -リソースの生成-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources/"/>
+    <updated>2014-11-27T16:32:38+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/27/making-first-app-with-rails-number-4-creating-resources</id>
+    <content type="html"><![CDATA[<p><a href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/">Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-</a> で <code>scaffold</code> コマンドを使ったリソースの生成を行ったが、このコマンドでは決められた形式でのリソースの生成にしか対応できないため、手動で自由にリソースを作成してみる。</p>
+
+<h2>rails generate model</h2>
+
+<p>まずはモデルを作成する。railsの規約に従って、モデルは単数系、最初の文字を大文字で始める。</p>
+
+<pre><code class="bash">$ rails generate model Stock title:string
+</code></pre>
+
+<p>このコマンドで <code>generate</code> は <code>g</code> と省略できる。また、要素の属性はデフォルトが <code>string</code> なので、 <code>string</code> も省略することができる。</p>
+
+<p>省略したコマンドが以下。</p>
+
+<pre><code class="bash">$ rails g model Stock title
+</code></pre>
+
+<p>このコマンドでmodelに加えてmigrateファイルが生成されるのでDBをmigrateする。</p>
+
+<pre><code class="bash">$ bundle exec rake db:migrate
+</code></pre>
+
+<!-- more -->
+
+
+<h2>rails db</h2>
+
+<p>作成したmodelを確認するため、現在使用しているDBのクライアントを立ち上げてみる。</p>
+
+<pre><code class="bash">$ rails db
+sqlite&gt; .schema
+CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL);
+CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version");
+CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "email" varchar(255), "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "microposts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "content" varchar(255), "user_id" integer, "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "stocks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "created_at" datetime, "updated_at" datetime);
+</code></pre>
+
+<p>sqliteのクライアントが立ち上がったら <code>.schema</code> コマンドでこれまで作成されてきたテーブルが確認できる。
+ <code>id</code> や <code>created_at</code> 、 <code>updated_at</code> はrailsが自動で生成する</p>
+
+<p>ちなみにsqliteクライアントから抜けるには <code>.exit</code> とする。 <code>.</code> が付くことに注意。</p>
+
+<h2>rails console</h2>
+
+<p>railsが用意しているconsoleを立ち上げてリソースを追加したり、確認したりすることもできる。</p>
+
+<p>Stockオブジェクトを生成して保存する</p>
+
+<pre><code class="bash">$ rails console
+2.0.0-p594 :001 &gt; s = Stock.new(title: "stock1")
+=&gt; #&lt;Stock id: nil, title: "stock1", created_at: nil, updated_at: nil&gt; 
+2.0.0-p594 :002 &gt; s.save
+  (0.1ms)  begin transaction
+ SQL (2.1ms)  INSERT INTO "stocks" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Sat, 15 Nov 2014 15:02:39 UTC +00:00], ["title", "stock1"], ["updated_at", Sat, 15 Nov 2014 15:02:39 UTC +00:00]]
+  (4.9ms)  commit transaction
+=&gt; true 
+</code></pre>
+
+<p>作られたオブジェクトを確認
+<code>bash
+2.0.0-p594 :003 &gt; s
+=&gt; #&lt;Stock id: 1, title: "stock1", created_at: "2014-11-15 15:02:39", updated_at: "2014-11-15 15:02:39"&gt;
+</code>
+ <code>new</code> と <code>save</code> を一括で行ってくれるコマンドが <code>create</code>
+<code>bash
+2.0.0-p594 :004 &gt; Stock.create(title: "stock2")
+  (0.1ms)  begin transaction
+ SQL (0.3ms)  INSERT INTO "stocks" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Sat, 15 Nov 2014 15:03:44 UTC +00:00], ["title", "stock2"], ["updated_at", Sat, 15 Nov 2014 15:03:44 UTC +00:00]]
+  (5.8ms)  commit transaction
+=&gt; #&lt;Stock id: 2, title: "stock2", created_at: "2014-11-15 15:03:44", updated_at: "2014-11-15 15:03:44"&gt;
+</code>
+作られたオブジェクト全てを確認
+<code>bash
+2.0.0-p594 :005 &gt; Stock.all
+ Stock Load (0.2ms)  SELECT "stocks".* FROM "stocks"
+=&gt; #&lt;ActiveRecord::Relation [#&lt;Stock id: 1, title: "stock1", created_at: "2014-11-15 15:02:39", updated_at: "2014-11-15 15:02:39"&gt;, #&lt;Stock id: 2, title: "stock2", created_at: "2014-11-15 15:03:44", updated_at: "2014-11-15 15:03:44"&gt;]&gt;
+2.0.0-p594 :006 &gt; quit
+</code></p>
+
+<h2>最後にもう一度 <code>rails db</code> で直接確認する</h2>
+
+<pre><code class="bash">[sojiro@ip-172-31-2-112 demo_app]$ rails db
+SQLite version 3.7.17 2013-05-20 00:56:22
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+sqlite&gt; select * from stocks;
+1|stock1|2014-11-15 15:02:39.781183|2014-11-15 15:02:39.781183
+2|stock2|2014-11-15 15:03:44.294543|2014-11-15 15:03:44.294543
+</code></pre>
+
+<h2>参照</h2>
+
+<p><a href="http://dotinstall.com/lessons/basic_rails_v2">ドットインストール</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator/"/>
+    <updated>2014-11-16T23:59:05+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/16/making-first-app-with-rails-number-3-scaffold-generator</id>
+    <content type="html"><![CDATA[<p>railsには <code>scaffold</code> という単純なリソースを一気に生成するコマンドが存在する。
+今回はこのコマンドを使ってみる。</p>
+
+<h2>Usersリソースの生成</h2>
+
+<p>今回は <code>scaffold</code> コマンドを使ってリソースを生成する。
+ここでは以下の要素をもつUsersリソースを生成する。</p>
+
+<ul>
+<li>id int</li>
+<li>name string</li>
+<li>email string</li>
+</ul>
+
+
+<p> <code>rails generate</code> スクリプトに <code>scaffold</code> コマンドを指定し、リソースの単数系と要素の情報を渡す
+<code>bash
+$ rails generate scaffold User name:string email:string
+</code>
+id要素はRailsが主キーとしてデフォルトで設定する</p>
+
+<h2>DBにusersのセットアップを行う</h2>
+
+<p> <code>rake</code> コマンドを使ってDBをmigrate（更新）する。
+<code>bash
+$ bundle exec rake db:migrate
+== 20141111170736 CreateUsers: migrating ======================================
+-- create_table(:users)
+   -&gt; 0.0012s
+== 20141111170736 CreateUsers: migrated (0.0014s) =============================
+</code>
+出力から <code>users</code> テーブルが作られたことがわかる</p>
+
+<h2>ブラウザで確認</h2>
+
+<p> <code>rails server</code> コマンドの短縮版である <code>rails s</code> を使って3000番portにアプリを立ち上げる
+<code>bash
+$ rails s
+</code></p>
+
+<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
+
+<p>にブラウザでアクセスすると <code>#1 railsのセットアップ</code> で見たデフォルトのRailsページが表示される</p>
+
+<p>次に以下のエンドポイントにアクセスしてみる</p>
+
+<p><a href="http://xx.xxx.xxx.xxx:3000/users">http://xx.xxx.xxx.xxx:3000/users</a></p>
+
+<p>すると既にUser一覧ページができあがっているのがわかる。この他に</p>
+
+<ul>
+<li>新規ユーザーを作成するページ</li>
+<li>特定のidのユーザー情報を表示するページ</li>
+<li>特定のidのユーザー情報を編集するページ</li>
+</ul>
+
+
+<p>が作られている。</p>
+
+<h2>Micropostsリソースの生成</h2>
+
+<p>Usersリソースと同様に <code>scaffold</code> コマンドと <code>rake</code> の <code>migrate</code> タスクで生成する
+<code>bash
+$ rails generate scaffold Micropost content:string user_id:integer
+$ bundle exec rake db:migrate
+== 20141112174234 CreateMicroposts: migrating =================================
+-- create_table(:microposts)
+   -&gt; 0.0029s
+== 20141112174234 CreateMicroposts: migrated (0.0031s) ========================
+</code>
+ <code>config/routes.rb</code> にmicropostsリソースの設定が追加された</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+</feed>

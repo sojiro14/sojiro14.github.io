@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Octopress | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Octopressのページに「もっと見る」を設定する方法]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages/"/>
+    <updated>2015-04-30T20:12:17+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/04/30/add-excerpt-link-on-octopress-pages</id>
+    <content type="html"><![CDATA[<p>今回はOctopressで生成したページにいわゆる「もっと見る」リンクを設定する方法をメモします。</p>
+
+<h2>「もっと見る」の場所を指定する</h2>
+
+<p>記事の内容としてトップページで表示させる範囲が決まったら、その直後に「もっと見る」リンクを設置します。</p>
+
+<p>設置方法は以下のコメントを記事内の「もっと見る」リンクを設置する箇所に記述するだけです。</p>
+
+<pre><code class="html"> &lt;!-- more --&gt;
+</code></pre>
+
+<p>「もっと見る」以降の記事内容はトップページ上では省略されます。</p>
+
+<p>「もっと見る」リンクは個別記事ページにリンクしています。</p>
+
+<h2>リンクの文言を変更する</h2>
+
+<p>上記で設定したリンクはデフォルトでは「Read on →」と表示されます。</p>
+
+<p>リンクの文言は <code>_config.yml</code> ファイルの項目 <code>excerpt_link</code> で管理されています。</p>
+
+<p>従って以下のように設定することでリンクの文言が「もっと見る」となります。
+<code>
+excerpt_link: "もっと見る"
+</code></p>
+
+<!-- more -->
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://morizyun.github.io/blog/octopress-hatena-disqus-new-tab/">5分でできる簡単 Octopress セッティング</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Github PagesとOctopressで作ったブログに独自ドメインを設定する]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages/"/>
+    <updated>2015-01-30T00:14:23+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/01/30/setting-custom-domain-on-a-blog-by-octopress-and-github-pages</id>
+    <content type="html"><![CDATA[<p>本ブログをリニューアルしたついでに新しくドメインを取ってこのブログに適用してみた。</p>
+
+<p>Github PagesとOctopressを使ったブログへの独自ドメイン設定のメモとして残しておく。</p>
+
+<h2>やるべきこと</h2>
+
+<p>今回は <code>blog.sojiro.me</code> というサブドメインを使うことにしたので、やるべき手順は以下の2つのみ。</p>
+
+<ul>
+<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
+<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h2>CNAMEレコードとはなにか</h2>
+
+<p>CNAMEレコードとはDNSに用意されたレコード(ドメイン設定)の種類の一つで、
+特定のドメインに対して別名を設定することができる。</p>
+
+<p>今回は元々のGithub Pagesのドメインである</p>
+
+<p> <code>sojiro14.github.io</code></p>
+
+<p>というドメインの別名として</p>
+
+<p> <code>blog.sojiro.me</code></p>
+
+<p>というドメインを設定することで、ブラウザから<code>blog.sojiro.me</code>にアクセスした場合も内部的に名前解決して <code>sojiro14.github.io</code> の内容を表示できるようにする。</p>
+
+<h2>CNAMEファイル</h2>
+
+<p>Github Pagesでは <code>CNAME</code> というファイルをルートディレクトリに設置することでリダイレクト処理を設定することができる</p>
+
+<p>このリダイレクト処理として、 <code>sojiro14.github.io</code> にアクセスがあった場合に <code>blog.sojiro.me</code> にリダイレクトする、という設定をしておけば、さらに前述のDNS上のCNAMEレコードにより内部的にGithub Pagesの内容を見に行くことになり、常に <code>blog.sojiro.me</code> ドメインでブログにアクセスすることになる。</p>
+
+<h2>実施手順</h2>
+
+<p>DNSへのCNAMEレコードの登録よりも <code>CNAME</code> ファイルの設置を先に行ってしまうと、
+Github Pagesの元々のドメインへのアクセスが独自ドメインにリダイレクトされた際に名前解決が上手く行かず、適切なページが表示されない、
+という状態になってしまうので、</p>
+
+<ol>
+<li>DNSホストにGithub Pagesのドメインを向いたCNAMEレコードを追加する</li>
+<li>ブログのソースに <code>CNAME</code> ファイルを追加する</li>
+</ol>
+
+
+<p>という順序で行う</p>
+
+<h2>実践</h2>
+
+<h3>CNAMEレコードの登録</h3>
+
+<p>今回はお名前.comでドメインを取得したのでお名前.comでのCNAMEレコード追加の手順となる</p>
+
+<p>お名前Navi > ドメイン設定 > DNS関連機能の設定</p>
+
+<p>から対象のドメインを選択して次へ進むと、</p>
+
+<p>DNSレコード設定を利用する</p>
+
+<p>という選択肢があるので、そこから以下のようにCNAMEレコードを設定する。</p>
+
+<p><img src="/images/onamae/add_cname_record.png"></p>
+
+<p>通常CNAMEレコードのvalueに設定するドメインは最後に <code>.</code> を付ける必要があるが、お名前.comでは自動で設定してくれるので、最後の <code>.</code> を付ける必要はない。</p>
+
+<p>また、レコードを追加後、ページ下部の確認ボタンから確認、完了の手続きを踏まないと登録されないので注意。</p>
+
+<p>登録完了から反映まで10分ほどかかる。</p>
+
+<h3>CNAMEファイルの設置</h3>
+
+<p>Octopressの管理ディレクトリにて以下の手順で設置する。</p>
+
+<pre><code class="bash">$ echo 'blog.sojiro.me' &gt;&gt; source/CNAME
+$ rake gen_deploy
+</code></pre>
+
+<p>これで <code>sojiro14.github.io</code> にアクセスすると <code>blog.sojiro.me</code> にリダイレクトされ、 <code>blog.sojiro.me</code> ではGithub Pagesの内容を表示することができるようになった。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://octopress.org/docs/deploying/github/">Deploying to Github Pages</a></li>
+<li><a href="http://blog.livedoor.jp/techblog/archives/65340720.html">CNAMEの間違った使い方</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OctopressにDISQUSのコメント欄を導入する]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress/"/>
+    <updated>2014-08-09T16:02:24+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/08/09/add-disqus-comment-section-on-my-blog-by-octopress</id>
+    <content type="html"><![CDATA[<h2>ブログにコメント欄を追加したい</h2>
+
+<p>本ブログにコメント欄を追加しようと思い立った。</p>
+
+<p><a href="https://disqus.com/">DISQUS</a>というコミュニケーションサービスが好評のようなので導入してみる。</p>
+
+<ul>
+<li>DISQUSを使うための準備</li>
+<li>OctopressでのDISQUS導入方法</li>
+</ul>
+
+
+<h2>DISQUSを使うための準備</h2>
+
+<h3>DISQUSのアカウントを作成する</h3>
+
+<p><a href="https://disqus.com/">DISQUS</a>のWebサイトからアカウントを作成。登録に必要なのはメールアドレスのみ。</p>
+
+<h3>自分のWebサイトをDISQUSに登録する</h3>
+
+<p>DISQUSの<a href="https://disqus.com/admin/create/">サイト登録ページ</a>から自分のサイトを登録する</p>
+
+<p>登録が完了すると設定ページが表示されるので、ここで設定をしつつ、ページ中段に表示されている<code>Shortname</code>の文字列を確認する</p>
+
+<h2>OctopressでのDISQUS導入方法</h2>
+
+<h3>configファイルへの記載</h3>
+
+<p>OctopressでのDISQUS導入はconfigファイルに先ほどDISQUSで取得したShortnameを記載するのみで完了する。</p>
+
+<p> <code>_config.yml</code> の<code>disqus_short_name</code>に自分のサイトのShortnameを指定する。</p>
+
+<pre><code class="yml _config.yml"># Disqus Comments
+disqus_short_name: yoursitesshortname
+disqus_show_comment_count: false
+</code></pre>
+
+<p>これでブログの各ページの下部にDISQUSのコメント欄が表示されるようになる。</p>
+
+<h3>disqus_show_comment_count</h3>
+
+<p><code>disqus_show_comment_count</code> はDISQUSコメント欄を導入するページのヘッダにコメント欄へのリンクを表示させるかどうかを指定する項目。</p>
+
+<h4>trueのとき</h4>
+
+<p><img src="/images/disqus/header_with_comment_link.png"></p>
+
+<h4>falseのとき</h4>
+
+<p><img src="/images/disqus/header_without_comment_link.png"></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Octopressのテーマを変える]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/05/03/changing-octopress-theme/"/>
+    <updated>2014-05-03T17:37:29+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/05/03/changing-octopress-theme</id>
+    <content type="html"><![CDATA[<p>Octopressのテーマを変更する</p>
+
+<ul>
+<li><a href="http://octopress.org/docs/theme/">Octopressの公式ドキュメント</a></li>
+</ul>
+
+
+<p>今回は既に作られ、公開されているテーマを拝借する</p>
+
+<h2>好みのテーマを探す</h2>
+
+<p><a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">3rd Party Octopress Themes</a>にテーマリストが公開されている。ここから使いたいテーマを探す。</p>
+
+<p><a href="http://opthemes.com/">Octopress Themes</a>にPreviewが見やすくまとめられている</p>
+
+<p>今回使用するテーマ</p>
+
+<ul>
+<li><a href="https://github.com/lucaslew/whitespace">Whitespace</a></li>
+</ul>
+
+
+<h2>テーマのインストール</h2>
+
+<h3>テーマをダウンロード</h3>
+
+<p>テーマ毎にclone元とclone先のpathを指定する</p>
+
+<pre><code class="bash">$ cd git/octopress
+$ git clone GIT_URL .themes/THEME_NAME
+</code></pre>
+
+<p>テーマ: Whitespaceの場合</p>
+
+<pre><code class="bash">$ git clone git://github.com/lucaslew/whitespace.git .themes/whitespace
+</code></pre>
+
+<h3>テーマをインストール</h3>
+
+<p>テーマを指定して <code>rake install</code></p>
+
+<pre><code class="bash">$ rake install['THEME_NAME']
+$ rake generate
+</code></pre>
+
+<p>テーマ: Whitespaceの場合</p>
+
+<pre><code class="bash">$ rake install['whitespace']
+A theme is already installed, proceeding will overwrite existing files. Are you sure? [y/n] y
+## Copying whitespace theme into ./source and ./sass
+mkdir -p source
+cp -r .themes/whitespace/source/. source
+mkdir -p sass
+cp -r .themes/whitespace/sass/. sass
+mkdir -p source/_posts
+mkdir -p public
+</code></pre>
+
+<p>テーマを上書きするか？と聞かれたので <code>y</code> で答える</p>
+
+<pre><code class="bash">$ rake generate
+## Generating Site with Jekyll
+overwrite source/stylesheets/screen.css 
+Configuration from /Users/user.name/git/octopress/_config.yml
+Building site: source -&gt; public
+Successfully generated site: source -&gt; public
+</code></pre>
+
+<h2>デプロイ</h2>
+
+<p>テーマをインストールしたらデプロイ</p>
+
+<pre><code class="bash">$ rake deploy
+</code></pre>
+
+<p>ページにアクセスしてテーマが変更されていることを確認できればok</p>
+
+<h2>テーマがアップデートされたら</h2>
+
+<p>テーマが開発者によってアップデートされたら手元のファイルもアップデートする</p>
+
+<pre><code class="bash">$ cd octopress/.themes/THEME_NAME
+$ git pull
+$ rake install['THEME_NAME']
+$ rake generate
+</code></pre>
+
+<p>テーマ: Whitespaceの場合</p>
+
+<pre><code class="bash">$ cd octopress/.themes/whitespace
+$ git pull
+$ rake install['whitespace']
+$ rake generate
+</code></pre>
+
+<p>デプロイしてアップデート完了</p>
+
+<pre><code class="bash">$ rake deploy
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Github PagesとOctopressを使ったブログの作成]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress/"/>
+    <updated>2014-04-26T17:05:36+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/04/26/how-to-make-your-blog-on-github-pages-with-octopress</id>
+    <content type="html"><![CDATA[<h2>①Octopress のインストール</h2>
+
+<h3>octopressリポジトリをクローン</h3>
+
+<pre><code class="bash">$ cd git/
+$ git clone git://github.com/imathis/octopress.git octopress
+</code></pre>
+
+<h3>Bundlerを使って必要なパッケージをインストール</h3>
+
+<pre><code class="bash">$ cd octopress/
+$ sudo gem install bundler
+$ sudo bundle install
+</code></pre>
+
+<h3>bundle installがエラーになる</h3>
+
+<pre><code class="bash">$ sudo bundle install
+Fetching gem metadata from https://rubygems.org/.......
+Fetching additional metadata from https://rubygems.org/..
+Using rake 0.9.2.2
+
+Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension.
+
+    /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby extconf.rb 
+checking for main() in -lc... yes
+creating Makefile
+
+make "DESTDIR="
+compiling redcloth_attributes.c
+compiling redcloth_inline.c
+compiling redcloth_scan.c
+linking shared-object redcloth_scan.bundle
+clang: error: unknown argument: '-multiply_definedsuppress' [-Wunused-command-line-argument-hard-error-in-future]
+clang: note: this will be a hard error (cannot be downgraded to a warning) in the future
+make: *** [redcloth_scan.bundle] Error 1
+
+
+Gem files will remain installed in /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9 for inspection.
+Results logged to /Library/Ruby/Gems/2.0.0/gems/RedCloth-4.2.9/ext/redcloth_scan/gem_make.out
+An error occurred while installing RedCloth (4.2.9), and Bundler cannot continue.
+Make sure that `gem install RedCloth -v '4.2.9'` succeeds before bundling.
+</code></pre>
+
+<p>Xcodeのアップデートでコンパイラが更新されたことが原因のよう</p>
+
+<h3>オプションをつけてやり直し</h3>
+
+<pre><code class="bash">$ sudo ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future bundle install
+</code></pre>
+
+<h3>ビルドツール、rakeをインストール</h3>
+
+<pre><code class="bash">$ rake install
+</code></pre>
+
+<h2>②GitHubにリポジトリを作成</h2>
+
+<ul>
+<li>[username].github.io</li>
+</ul>
+
+
+<p>という名前でリポジトリを作る。今回は</p>
+
+<ul>
+<li>sojiro14.github.io</li>
+</ul>
+
+
+<h2>③Octopressでのデプロイ</h2>
+
+<h3>デプロイ設定する</h3>
+
+<pre><code>rake setup_github_pages
+</code></pre>
+
+<p>途中でリポジトリのurlを聞かれるので入力。今回は</p>
+
+<pre><code>git@github.com:sojiro14/sojiro14.github.io.git
+</code></pre>
+
+<p>を入力した</p>
+
+<pre><code class="bash">$ rake setup_github_pages
+Enter the read/write url for your repository
+(For example, 'git@github.com:your_username/your_username.github.io.git)
+           or 'https://github.com/your_username/your_username.github.io')
+Repository url: git@github.com:sojiro14/sojiro14.github.io.git
+Added remote git@github.com:sojiro14/sojiro14.github.io.git as origin
+Set origin as default remote
+Master branch renamed to 'source' for committing your blog source files
+
+・・・・（略）
+
+ 1 file changed, 1 insertion(+)
+ create mode 100644 index.html
+cd -
+
+---
+## Now you can deploy to git@github.com:sojiro14/sojiro14.github.io.git with `rake deploy` ##
+</code></pre>
+
+<h3>ページの作成</h3>
+
+<p>必要ファイルを作成
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake generate&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Generating Site with Jekyll&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;directory <span class="nb">source</span>/stylesheets/
+</span><span class='line'>   create <span class="nb">source</span>/stylesheets/screen.css
+</span><span class='line'>Configuration from /Your/Octopress/Directory/git/octopress/_config.yml
+</span><span class='line'>Building site: <span class="nb">source</span> -&gt; public
+</span><span class='line'>Successfully generated site: <span class="nb">source</span> -&gt; public
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>deploy
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rake deploy&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Deploying branch to Github Pages&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Pulling any updates from Github Pages&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd _deploy&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;・・・・（略）&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;Github Pages deploy <span class="nb">complete</span>&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd -
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>deployの確認</h3>
+
+<p>実際にページにアクセスして確認する
+<code>
+http://sojiro14.github.io
+</code>
+確認できればok。反映には少々(5分ほど)時間がかかる。</p>
+
+<h2>④Octopressの初期設定を変更</h2>
+
+<h3>_config.ymlの編集</h3>
+
+<p>_config.ymlファイルにてブログのタイトル、サブタイトル、筆者などを設定できる</p>
+
+<pre><code class="bash">$ vim _config.yml
+</code></pre>
+
+<p>例えばタイトル、サブタイトルは以下のように設定</p>
+
+<pre><code class="yaml">title: Sojiro's Blog
+subtitle: This is nothing much.
+</code></pre>
+
+<p>設定したらdeploy。Task: gen_deployを使う
+<code>bash
+$ rake gen_deploy
+</code>
+もう一度ページにアクセスしてタイトルなどが変更されているのを確認できればok</p>
+
+<h2>⑤記事の投稿</h2>
+
+<h2>記事を書く</h2>
+
+<p>new_postの後には記事のタイトルを指定。英数字のみ使用可
+<code>bash
+$ rake new_post["IRC-bot by HUBOT"]
+mkdir -p source/_posts
+Creating new post: source/_posts/2014-04-19-irc-bot-by-hubot.markdown
+</code></p>
+
+<p>source/_posts/2014-04-19-irc-bot-by-hubot.markdownというファイルが生成されるのでそこに内容をマークダウンで記述
+<code>bash
+$ vim source/_posts/2014-04-19-irc-bot-by-hubot.markdown
+</code></p>
+
+<pre><code>---
+layout: post
+title: "IRC-bot by HUBOT"
+date: 2014-04-19 21:05:49 +0900
+comments: true
+categories:
+---
+ここ以下に内容をマークダウンで書いていく
+</code></pre>
+
+<h3>記事をデプロイ</h3>
+
+<p>記事を書いたらデプロイする
+<code>bash
+$ rake gen_deploy
+</code></p>
+
+<p>記事が投稿されていることを確認できればok</p>
+
+<h2>⑥Google Analyticsを導入する</h2>
+
+<h3>Google AnalyticsのトラッキングIDを取得する</h3>
+
+<p><a href="http://www.google.com/intl/ja_jp/analytics/">Google Analyticsのサイト</a>からアカウントを作成し、</p>
+
+<ul>
+<li>username.github.io</li>
+</ul>
+
+
+<p>のトラッキングIDを取得する</p>
+
+<h3>取得したトラッキングIDを設定</h3>
+
+<p>_config.ymlにトラッキングIDを設定する
+<code>bash
+$ vim _config.yml
+</code></p>
+
+<p>場所はこちら</p>
+
+<pre><code class="yaml"># Google Analytics
+google_analytics_tracking_id: XX-12345678-9
+</code></pre>
+
+<p>設定が終わったらデプロイ
+<code>bash
+$ rake gen_deploy
+</code>
+Google Analyticsのサイト上でトラッキングできていることを確認できればok</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://www.rubylife.jp/rails/ini/index2.html">Bundlerを使ったGemパッケージの管理</a></li>
+<li><a href="http://qiita.com/yonesuke/items/26ed04f3f15e269c3ed9">Octopress インストールがうまくいかなかったのでメモ</a></li>
+<li><a href="http://d.hatena.ne.jp/unageanu/20100829/1283069269">Rakeの基本的な使い方まとめ</a></li>
+<li><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a></li>
+<li><a href="http://morizyun.github.io/blog/octopress-gitpage-minimum-install-guide/">OctopressでGitHub無料ブログ構築。sourceをBitbucket管理。簡単ガイド！</a></li>
+<li><a href="http://qiita.com/syui/items/07365ed24eef63602233">GitHub Pages + Octopress カスタマイズ</a></li>
+<li><a href="http://qiita.com/fakestarbaby/items/14785a63e064bb1306b9">OctopressでGoogleアナリティクスを使おう！</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

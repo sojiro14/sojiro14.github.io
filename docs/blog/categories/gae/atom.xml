@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Gae | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/gae/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[WordPress on GAE]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/19/wordpress-on-gae/"/>
+    <updated>2017-06-19T00:34:42+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/19/wordpress-on-gae</id>
+    <content type="html"><![CDATA[<h2>GCP の事前準備</h2>
+
+<p>以下の準備が事前に必要。ここでは割愛。</p>
+
+<ul>
+<li>GCP アカウントの作成</li>
+<li>GCP プロジェクトの作成</li>
+<li>課金の有効化</li>
+<li>GCS(Google Cloud Storage)に default bucket を作成
+
+<ul>
+<li>default bucket: <code>YOUR_PROJECT_NAME.appspot.com</code></li>
+</ul>
+</li>
+<li>Google Cloud SDK のインストール
+
+<ul>
+<li><a href="https://cloud.google.com/sdk/">https://cloud.google.com/sdk/</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Composer のインストール</h2>
+
+<p>Composer は PHP のパッケージ管理ツール</p>
+
+<blockquote><p>Composer is strongly inspired by node&rsquo;s npm and ruby&rsquo;s bundler.</p></blockquote>
+
+<p>node の npm、ruby の bundler に強く影響を受けているようだ。</p>
+
+<h3>手順</h3>
+
+<p>PHP がインストールされていることを確認
+<code>bash
+$ php -v
+PHP 5.5.38 (cli) (built: Aug 21 2016 21:48:49)
+</code></p>
+
+<p><a href="https://getcomposer.org/download/">こちら</a> の手順通り Composer をインストール
+<code>bash
+$ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+$ php -r "if (hash_file('SHA384', 'composer-setup.php') === '669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+$ php composer-setup.php
+$ php -r "unlink('composer-setup.php');"
+</code></p>
+
+<p>グローバルに呼び出せるようにしておく
+<code>bash
+$ mv composer.phar /usr/local/bin/composer
+</code></p>
+
+<h2>GCS へのアクセス権限変更</h2>
+
+<p>作成したプロジェクトでログイン
+<code>bash
+$ gcloud auth login
+$ gcloud config set project YOUR_PROJECT_NAME
+</code></p>
+
+<p>GCS のアクセス権更新
+<code>bash
+$ gsutil defacl ch -u AllUsers:R gs://YOUR_PROJECT_NAME.appspot.com
+</code></p>
+
+<h2>DB の setup</h2>
+
+<p>Cloud SQL を使うので GCP の SQL メニューへ</p>
+
+<ul>
+<li><code>wp</code> という名前で MySQL のインスタンスを立てる
+
+<ul>
+<li>このとき第2世代を選択可</li>
+<li>日本向けがメインであればリージョンは <code>asia-northeast1</code></li>
+<li>マシンタイプは安さ重視なら <code>db-f1-micro</code> とする （このタイプで 30円/日 という印象）</li>
+<li>他の設定はお好みで&hellip;</li>
+</ul>
+</li>
+<li>立てたインスタンスに <code>wp</code> という名前のデータベースを作る</li>
+<li><code>wp</code> というユーザーを作る
+
+<ul>
+<li>アクセス制御 → ユーザー → ユーザーアカウントを作成、とたどる</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>WordPress の setup</h2>
+
+<p>ローカルに WordPress 構築に必要な素材を用意する
+<code>bash
+$ git clone https://github.com/GoogleCloudPlatform/php-docs-samples.git
+$ cd php-docs-samples/appengine/wordpress/
+$ composer install
+</code></p>
+
+<p>setup の開始
+&#8220;`bash
+$ php wordpress-helper.php setup</p>
+
+<h1>ここでいろいろインタラクティブに聞かれるので答える</h1>
+
+<pre><code>※ リージョンを聞かれるが、 `asia-northeast1` がない場合は適当に答えておく
+
+### DB_HOST 設定を変更
+上記手順で WordPress setup 時に適切なリージョンが指定できなかった場合には自分で一部設定を変更する
+</code></pre>
+
+<p>cd YOUR_PROJECT_NAME/
+vim wordpress/wp-config.php
+<code>``
+</code>/<em>* Production login info </em>/<code>以下の</code>DB_HOST` を適切なリージョンを用いて変更する</p>
+
+<h2>Deploy</h2>
+
+<p>GAE インスタンスに WordPress を deploy する
+<code>bash
+$ gcloud app deploy --promote --stop-previous-version app.yaml cron.yaml
+</code>
+最初はかなり多くのファイルを GCS にあげるのでそこそこ時間がかかる</p>
+
+<h2>参照</h2>
+
+<p><a href="https://github.com/GoogleCloudPlatform/php-docs-samples/tree/master/appengine/wordpress">https://github.com/GoogleCloudPlatform/php-docs-samples/tree/master/appengine/wordpress</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Could Not Open the Requested Socket エラーが出たら]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/"/>
+    <updated>2017-06-16T02:28:06+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio</id>
+    <content type="html"><![CDATA[<p>Android Studio で GAE に乗せるアプリを開発しているとき、ローカルで立ち上げようとすると以下のようなエラーが出た</p>
+
+<pre><code>Could not open the requested socket: Address already in use
+Try overriding --address and/or --port.
+</code></pre>
+
+<p>どうやら以前立ち上げた際のプロセスが生き残っていて邪魔しているらしい</p>
+
+<h3>以下のように対応した</h3>
+
+<p>Android Studio のメニューから <code>Run</code> → <code>Edit Configurations...</code> とたどり、対象 module が使っている port を確認</p>
+
+<p>ポートを指定してプロセスを確認、そして <code>kill</code></p>
+
+<pre><code class="bash">$ lsof -i:8080
+COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+java    74792  sojiro   48u  IPv6 0xXXXXXXXXXXXXXXXX      0t0  TCP *:http-alt (LISTEN)
+</code></pre>
+
+<pre><code class="bash">$ kill -9 74792
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GAE Task Queue について]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/08/10/about-gae-task-queue/"/>
+    <updated>2016-08-10T21:29:29+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/08/10/about-gae-task-queue</id>
+    <content type="html"><![CDATA[<p>GAE の Task Queue についてざっくり。</p>
+
+<p>具体的な実装に関しては別エントリに書こうと思います。</p>
+
+<h2>Overview</h2>
+
+<ul>
+<li>アプリケーションの処理（task）を Task Queue API に渡す（queue）ことでユーザーからのリクエスト外で非同期に処理させることができる</li>
+<li>task はスケーラブルな GAE の Worker モジュールによってバックグラウンドで処理される</li>
+</ul>
+
+
+<p>Task Queue には以下の2つのタイプがある</p>
+
+<h3>Push queues</h3>
+
+<ul>
+<li>queue を処理する間隔をあらかじめスケジュールすることができる</li>
+<li>queue は GAE のモジュールへのリクエストとして処理される</li>
+<li>task の処理には期限がある
+
+<ul>
+<li>自動的にスケーリングするモジュールで処理するものは 10 分以内</li>
+<li>そうでないモジュールで処理するものは 24 時間以内</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Pull queues</h3>
+
+<ul>
+<li>GAE は queue を処理せず、外部の Worker が queue を取得（lease）して処理する</li>
+<li>外部の Worker で、どのような間隔で queue を処理するか管理する必要がある</li>
+<li>lease のタイミングで外部 Worker に対して queue の処理期限が渡される</li>
+<li>期限内に queue の処理が完了するか、 queue が削除されない場合は同一 queue に対する他の Worker プロセスからの lease を許可する</li>
+</ul>
+
+
+<p>queue の処理は非同期で行われるので task を作成したアプリケーションは処理の結果を知ることができないが、処理に失敗した場合は自動でリトライ処理が走る</p>
+
+<h2>Use cases</h2>
+
+<h3>Push queues</h3>
+
+<ul>
+<li>SNS メッセージアプリケーションでユーザーがメッセージを送るたびにフォロワーの更新を非同期で行う</li>
+<li>キャンペーン広告の送信をあらかじめスケジュールしておいて決められた時間に送る</li>
+</ul>
+
+
+<h3>Pull queues</h3>
+
+<ul>
+<li>バッチジョブに効果がある</li>
+<li>task に tag をつけることで外部 worker が lease する時に同じ tag がつく task をまとめて処理することができる</li>
+<li>実装例としては複数のゲームのリーダーボードが典型的
+
+<ul>
+<li>ハイスコアの更新があるたびに game id を tag として、 score と user 名を enqueue する</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Push queue</h2>
+
+<ul>
+<li>Push queue は GAE の Worker モジュールに HTTP リクエストで task を渡す</li>
+<li>このリクエストは一定の間隔で実行され、失敗すると新たなリクエストをもってリトライされる</li>
+<li>タスクの種類ごとにハンドラを書く必要がある</li>
+<li>1つのモジュールに各種類ごとのハンドラを用意することができる</li>
+<li>task の種類ごとに別々のモジュールを使うこともできる</li>
+</ul>
+
+
+<h3>Working with push queues</h3>
+
+<ul>
+<li>task を作って push queue に enqueue するプログラムを書く</li>
+<li>task リクエストを受け取って GAE モジュールに渡すハンドラを書く</li>
+<li>quota を気にする必要がある</li>
+</ul>
+
+
+<h2>Pull queue</h2>
+
+<ul>
+<li>Pull queue を使うことで独自のシステムから GAE の task を処理することができる</li>
+<li>ここでいう独自のシステムには GAE で構成されたシステムも含まれる</li>
+<li>GAE アプリケーションからは <code>com.google.appengine.api.taskqueue</code> パッケージを使って task を処理できる</li>
+<li>その他のアプリケーションからは Task Queue REST API を使う</li>
+<li>Push queue では GAE がやってくれる以下の処理を自前で用意する必要がある</li>
+<li>アプリケーション側で worker スケールの管理をする</li>
+<li>アプリケーション側で処理の終わった task を削除する</li>
+<li>Pull queue は <code>queue.xml</code> という設定ファイルが必要</li>
+</ul>
+
+
+<h3>Pull queue による task 処理の流れ</h3>
+
+<ol>
+<li>アプリケーションが task を lease する</li>
+<li>GAE が task データを返す</li>
+<li>アプリケーションが task を処理する
+
+<ol>
+<li>もし lease の期限以内に処理を完了できなかった場合は再度 lease できる</li>
+<li>retry できる最大の回数はあらかじめ設定できる</li>
+<li>この回数を超えると GAE が task を削除する</li>
+</ol>
+</li>
+<li>アプリケーションは task への処理が完了したら必ずその task を削除する</li>
+</ol>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://cloud.google.com/appengine/docs/java/taskqueue/">Task Queue Overview</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/taskqueue/push/">Push Queues in Java</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/taskqueue/overview-pull">Using Pull Queues in Java</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GAE Datastore について]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/08/07/about-gae-datastore/"/>
+    <updated>2016-08-07T04:34:09+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/08/07/about-gae-datastore</id>
+    <content type="html"><![CDATA[<p>GAE の Datastore についてざっくり</p>
+
+<h2>Overview</h2>
+
+<ul>
+<li>スキーマのないオブジェクトデータベース</li>
+<li>オートスケーリング</li>
+<li>ディスクへの書き込み時に自動で暗号化、読み出し時に自動で復号</li>
+<li>計画的ダウンタイムなし</li>
+</ul>
+
+
+<table>
+<thead>
+<tr>
+<th> Concept                   </th>
+<th> Cloud Datastore </th>
+<th> Relational database </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> オブジェクトが所属するカテゴリ </td>
+<td> Kind            </td>
+<td> Table               </td>
+</tr>
+<tr>
+<td> オブジェクト                </td>
+<td> Entity          </td>
+<td> Row                 </td>
+</tr>
+<tr>
+<td> オブジェクトがもつデータ      </td>
+<td> Property        </td>
+<td> Field               </td>
+</tr>
+<tr>
+<td> オブジェクトを特定する ID     </td>
+<td> Key             </td>
+<td> Primary key         </td>
+</tr>
+</tbody>
+</table>
+
+
+<ul>
+<li>同一 kind の entity でも違う property を持ちうる</li>
+<li>それぞれの entity は同名の property でも型の違うデータを持ちうる</li>
+</ul>
+
+
+<h3>Other storages</h3>
+
+<ul>
+<li>複数の table の join や 複数のカラムに対する不等号比較など、すべての SQL 操作が必要なら Google Cloud SQL</li>
+<li>ACID transaction を必要としないスキーマレスなデータを扱うなら Google Bigtable</li>
+<li>オンラインで分析されるデータを扱うなら Google BigQuery</li>
+<li>画像や動画などの変更がない大きなデータを扱うなら Google Cloud Storage</li>
+</ul>
+
+
+<h2>Entities</h2>
+
+<ul>
+<li>ひとつの entity は1つ以上の property をもつ</li>
+<li>property は1つ以上の値を取りうる</li>
+</ul>
+
+
+<h2>Keys</h2>
+
+<ul>
+<li>key は entity を特定する</li>
+<li>key は以下を含む
+
+<ul>
+<li>entity の kind</li>
+<li>以下のいずれかの識別子
+
+<ul>
+<li>文字列の key name</li>
+<li>数値の ID</li>
+</ul>
+</li>
+<li>ancestor path (optional)</li>
+</ul>
+</li>
+<li>識別子は entity が生成されたタイミングで設定される</li>
+<li>一度設定された識別子は変更されない</li>
+<li>識別子は以下の2つの方法で設定できる
+
+<ul>
+<li>アプリケーションで特定の key name を設定する</li>
+<li>Datastore が自動で発行する数値の ID を使う</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Ancestor paths</h2>
+
+<ul>
+<li>Datastore はファイルシステムのディレクトリ構成に似た階層構造をもつ</li>
+<li>entity 作成時に parent entity を指定することができる</li>
+<li>parent entity が指定されない entity は root entity と呼ぶ</li>
+<li>一度親子関係ができた entity はその関係が変更されることはない</li>
+<li>同じ parent をもつ2つの entity に対して Datastore は同一の ID を払い出すことはない</li>
+<li>同様に2つの root entity に対して同一の ID を払い出すこともない</li>
+<li>parent や parent の更に parent を ancestor と呼ぶ</li>
+<li>逆に children や children の更に children を descendant と呼ぶ</li>
+<li>root entity とその descendant は同一の entity group に属する</li>
+<li>ancestor path は root entity からたどって該当の entity に到達するまでの親子関係で構成される</li>
+</ul>
+
+
+<h2>Transactions and entity groups</h2>
+
+<ul>
+<li>entity に対する create, update, delete はトランザクションで管理される</li>
+<li>トランザクションにはこれらの複数の操作が内包される</li>
+<li>トランザクションは一貫性の担保のため、そこに含まれる操作をひとまとまりとして適用する、あるいはいずれかの操作が失敗するとすべての操作を適用しない</li>
+<li>commit を試みてエラーが返ってきたとしても、トランザクションが失敗したとは限らない
+
+<ul>
+<li><code>DatastoreTimeoutException</code> や <code>DatastoreFailureException</code> といったエラーが返ってきたとしても、 commit は成功している可能性がある</li>
+<li>このため、 Datastore は可能な限り同一のトランザクションを複数回適用しても最終的な結果が変わらないように設計すべきである</li>
+</ul>
+</li>
+<li>entity group とトランザクションの関係
+
+<ul>
+<li>1つのトランザクションで扱うデータは 25 の entity group 内に収まっていなければならない</li>
+<li>トランザクション内でクエリを発行する場合には正しいデータにマッチする ancestor filter を指定できるように entity group 内のデータを設計する必要がある</li>
+<li>広域に渡って各 entity group をレプリケーションするために、1つの entity group ごとに1秒あたりの書き込みスループットの上限値が定められている</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Understanding write costs</h2>
+
+<ul>
+<li>発生する書き込み
+
+<ul>
+<li>entity 自身</li>
+<li><code>EntitiesByKind</code> という index</li>
+<li>1つの property value ごとに <code>EntitiesByProperty</code> と <code>EntitiesByPropertyDesc</code> の各 index</li>
+</ul>
+</li>
+</ul>
+
+
+<p>以下のような entity を考える</p>
+
+<pre><code>Key: 'Foo:1' (kind = 'Foo', id = 1, no parent)
+A: 1, 2
+B: null
+C: 'this', 'that', 'theOther'
+</code></pre>
+
+<p>このとき発生する書き込み</p>
+
+<ul>
+<li>1: entity 自身</li>
+<li>1: <code>EntitiesByKind</code> index</li>
+<li>4: A property の2つの値にそれぞれ2つの index</li>
+<li>2: B property の値に2つの index （null でも必要）</li>
+<li>6: C property の3つの値にそれぞれ2つの index</li>
+</ul>
+
+
+<p>よって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 = 14</p>
+
+<p>上記の entity に複合 index を追加することを考える</p>
+
+<pre><code>Kind: 'Foo'
+A ▲, B ▼, C ▼
+</code></pre>
+
+<p>このとき、各 property の値の組み合わせ分の書き込みが発生する</p>
+
+<pre><code>(1, null, 'this') (1, null, 'that') (1, null, 'theOther')
+(2, null, 'this') (2, null, 'that') (2, null, 'theOther')
+</code></pre>
+
+<p>したがって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 + 6 = 20</p>
+
+<p>次にこれまでと同様に ancestor が存在する以下のような entity を考える</p>
+
+<pre><code>Key: 'GreatGrandpa:1/Grandpa:1/Dad:1/Foo:1' (kind = 'Foo', id = 1, parent = 'GreatGrandpa:1/Grandpa:1/Dad:1')
+A: 1, 2
+B: null
+C: 'this', 'that', 'theOther'
+</code></pre>
+
+<pre><code>Kind: 'Foo'
+A ▲, B ▼, C ▼
+Ancestor: True
+</code></pre>
+
+<p>このとき各 property の値と各 ancestor 及び自身の entity の組み合わせ分の書き込みを必要とする</p>
+
+<pre><code>(1, null, 'this', 'GreatGrandpa') (1, null, 'this', 'Grandpa') (1, null, 'this', 'Dad') (1, null, 'this', 'Foo')
+(1, null, 'that', 'GreatGrandpa') (1, null, 'that', 'Grandpa') (1, null, 'that', 'Dad') (1, null, 'that', 'Foo')
+(1, null, 'theOther', 'GreatGrandpa') (1, null, 'theOther', 'Grandpa') (1, null, 'theOther', 'Dad') (1, null, 'theOther', 'Foo')
+(2, null, 'this', 'GreatGrandpa') (2, null, 'this', 'Grandpa') (2, null, 'this', 'Dad') (2, null, 'this', 'Foo')
+(2, null, 'that', 'GreatGrandpa') (2, null, 'that', 'Grandpa') (2, null, 'that', 'Dad') (2, null, 'that', 'Foo')
+(2, null, 'theOther', 'GreatGrandpa') (2, null, 'theOther', 'Grandpa') (2, null, 'theOther', 'Dad') (2, null, 'theOther', 'Foo')
+</code></pre>
+
+<p>したがって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 + 24 = 38</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://cloud.google.com/appengine/docs/java/datastore/">Cloud Datastore Overview</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/datastore/entities">Entities, Properties, and Keys</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae/"/>
+    <updated>2016-07-07T08:27:00+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/07/07/facets-necessary-in-order-to-deploy-from-android-studio-to-gae</id>
+    <content type="html"><![CDATA[<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちらの記事</a>を参考にGAE for JavaアプリケーションをAndroid Studio + Gradleでセットアップし、サンプルアプリケーションを開発してみました。</p>
+
+<p>早速GAEにdeployしてみようと、メニューバーの <code>Build</code> から <code>Deploy Module to App Engine...</code> を選択してdeployを実行&hellip;ところがタスクが走らずうんともすんとも言わないので調べてみました。</p>
+
+<h2>結論</h2>
+
+<p>以下の設定を <code>app.iml</code> ファイルに追記する</p>
+
+<pre><code class="xml">&lt;facet type="android-gradle" name="Android-Gradle"&gt;
+  &lt;configuration&gt;
+    &lt;option name="GRADLE_PROJECT_PATH" value=":app" /&gt;
+  &lt;/configuration&gt;
+&lt;/facet&gt;
+&lt;facet type="java-gradle" name="Java-Gradle"&gt;
+  &lt;configuration&gt;
+     &lt;option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" /&gt;
+     &lt;option name="BUILDABLE" value="true" /&gt;
+  &lt;/configuration&gt;
+&lt;/facet&gt;
+</code></pre>
+
+<p><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">こちら</a>は少々特殊な方法でmoduleを作成しているのでFacetの設定が不十分となってしまった模様。</p>
+
+<h2>Facetとは</h2>
+
+<p>FacetはIntelliJ IDEAに用意された機能で、使用するフレームワークや言語に合わせたFacetを設定することでIntelliJ IDEAが必要なコンポーネントのダウンロードや各種補完機能の設定などを行ってくれるもの。</p>
+
+<p>Android StudioはIntelliJ IDEAをベースとして開発されたIDEなのでFacetの機能を継承している。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/okitsutakatomo/items/18cdd3db35185a9b1e99">GoogleAppEngine for Java を AndroidStudio + Gradleで開発環境を作る</a></li>
+<li><a href="https://www.jetbrains.com/help/idea/2016.1/facet.html">Facet</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

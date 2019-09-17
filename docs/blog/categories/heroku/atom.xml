@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Heroku | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/heroku/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Slack BotをHeroku上で動かす]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/04/transfer-the-slack-bot-to-heroku/"/>
+    <updated>2015-05-04T21:38:12+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/04/transfer-the-slack-bot-to-heroku</id>
+    <content type="html"><![CDATA[<p><a href="http://blog.sojiro.me/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a>で作ったSlack Botをローカル以外の環境で動かしたくなったのでHeroku上で動かせるようにしてみます。</p>
+
+<p>あらかじめ<a href="https://www.heroku.com">Heroku</a>にSign upしておきます。</p>
+
+<h2>Heroku Toolbelt のインストール</h2>
+
+<p>HerokuのCLIツールであるHeroku Toolbeltをインストールします</p>
+
+<p>今回はMacを使っているのでこちらからダウンロード&amp;インストールしました</p>
+
+<p><a href="https://toolbelt.heroku.com/osx">https://toolbelt.heroku.com/osx</a></p>
+
+<pre><code class="bash">$ heroku version
+heroku-toolbelt/3.34.0 (x86_64-darwin10.8.0) ruby/1.9.3
+You have no installed plugins.
+</code></pre>
+
+<h2>コマンドラインからHerokuにログイン</h2>
+
+<p>HerokuにSign upしたときのIDとPasswordでコマンドライン上からHerokuにログインする</p>
+
+<pre><code class="bash">$ heroku login
+Enter your Heroku credentials.
+Email: sojiro@example.com
+Password (typing will be hidden): 
+Authentication successful.
+</code></pre>
+
+<h2>hubotのディレクトリをGitHubにpush</h2>
+
+<p>HerokuにはGitHubを通じてデプロイするようなのでhubotのあるディレクトリをGitHubにpushしておく</p>
+
+<pre><code class="bash">$ cd ~/git/hubot/my_slack_bot/
+$ git init
+$ git add .
+$ git commit -m 'initial commit'
+$ git remote add origin git@github.com:your_name/slack_bot_repository  # 自分で用意したslack bot用のGitリポジトリ
+$ git push origin master
+</code></pre>
+
+<h2>Herokuにデプロイ</h2>
+
+<p>Herokuにアプリケーションを作る</p>
+
+<p>このときstackにcedarを指定する。アプリケーションの名前は指定しないとHerokuが勝手に名前をつけてくれる。</p>
+
+<pre><code class="bash">$ heroku create --stack cedar
+Creating random_name... done, stack is cedar-10
+https://random_name.herokuapp.com/ | https://git.heroku.com/random_name.git
+Git remote heroku added
+updating...done. Updated to 3.35.0
+</code></pre>
+
+<p>ここまできたらいよいよデプロイ</p>
+
+<pre><code class="bash">$ git push heroku master
+Counting objects: 16, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (13/13), done.
+Writing objects: 100% (16/16), 6.58 KiB | 0 bytes/s, done.
+Total 16 (delta 0), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+...
+</code></pre>
+
+<h2>Herokuに設定を追加</h2>
+
+<p>HerokuにHubotとSlackの設定を追加していく</p>
+
+<p>ここでは<a href="http://blog.sojiro.me/blog/2014/12/15/slack-bot-by-hubot/">HUBOTを使ったSlack Bot作成メモ</a>で払い出されたものを指定する</p>
+
+<pre><code class="bash"># HUBOT_SLACK_TOKENの設定
+$ heroku config:add HUBOT_SLACK_TOKEN=xxxx-123456789-abcdefghijklmnopqrstuvwxyz
+Setting config vars and restarting random_name... done, v4
+HUBOT_SLACK_TOKEN: xxxx-123456789-abcdefghijklmnopqrstuvwxyz
+
+# SlackのTeam設定
+$ heroku config:add HUBOT_SLACK_TEAM=your_team_name
+Setting config vars and restarting random_name... done, v5
+HUBOT_SLACK_TEAM: your_team_name
+
+# Botの名前の設定
+$ heroku config:add HUBOT_SLACK_BOTNAME=your_bot_name
+Setting config vars and restarting random_name... done, v6
+HUBOT_SLACK_BOTNAME: your_bot_name
+
+# HerokuアプリのURL設定
+$ heroku config:add HEROKU_URL=http://random_name.herokuapp.com
+Setting config vars and restarting random_name... done, v7
+HEROKU_URL: http://random_name.herokuapp.com
+</code></pre>
+
+<h2>HerokuのWebプロセスの起動</h2>
+
+<p>最後にHerokuのWebプロセスを起動する</p>
+
+<pre><code class="bash">$ heroku ps:scale web=1
+Scaling dynos... done, now running web at 1:1X.
+</code></pre>
+
+<p>SlackにBotが現れれば成功！</p>
+
+<p>今回はRedisを使わなかったのでHerokuのaddon設定やクレジットカードの登録無しでいけました</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://memo.sanographix.net/post/88371442780">Hubotで西木野真姫bot作ってSlackに呼ぶ</a></li>
+<li><a href="http://tech-sketch.jp/2013/12/hubot-install-heroku.html">GitHubがOpsツールの中心として活用しているHubotを使ってみる～インストール、スクリプトの作成、Herokuへのデプロイ～</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku/"/>
+    <updated>2014-11-12T12:06:23+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/12/first-app-with-rails-number-2-setup-heroku</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsのアプリケーション構築に適したPaaSであるHerokuのセットアップをする。</p>
+
+<h2>Herokuに必要なgemのインストール</h2>
+
+<p>Herokuで使用するDBであるPostgreSQLと通信するための <code>pg</code> とHerokuで画像やスタイルシートなどの静的アセットを提供するための <code>rails_12factor</code> を本番（production）環境にインストールするための内容をGemfileに追記する
+<code>ruby
+group :production do
+  gem 'pg', '0.15.1'
+  gem 'rails_12factor', '0.0.2'
+end
+</code>
+production環境用のgemをインストールしないオプションをつけて <code>bundle install</code> を実行する。
+これによりGemfile.lockが更新され、production環境に備えることができる。
+<code>bash
+$ bundle install --without production
+Your bundle is complete!
+Gems in the group production were not installed.
+Use `bundle show [gemname]` to see where a bundled gem is installed.
+</code>
+ここまでできたらgitにcommitしておく。
+<code>bash
+$ git commit -a -m "Update Gemfile.lock for Heroku"
+</code>
+ <code>git commit</code> の <code>-a</code> は変更のあったファイルを自動で <code>add</code> するオプション。</p>
+
+<h2>herokuコマンドが使えるようにする</h2>
+
+<p>まずは以下のURLからHerokuにアカウント登録をする。</p>
+
+<p><a href="https://signup.heroku.com/identity">https://signup.heroku.com/identity</a></p>
+
+<p>アカウント登録が完了したら <code>heroku</code> コマンドをインストールする。
+今回はAWSのLinux環境へのインストールなので以下のURL（ <code>Heroku Toolbelt</code> のStandalone）を参照して以下の手順を得る。</p>
+
+<p><a href="https://toolbelt.heroku.com/standalone">https://toolbelt.heroku.com/standalone</a></p>
+
+<pre><code class="bash">$ wget -qO- https://toolbelt.heroku.com/install.sh | sh
+This script requires superuser access to install software.
+You will be prompted for your password by sudo.
+[sudo] password for sojiro: 
+Add the Heroku CLI to your PATH using:
+$ echo 'PATH="/usr/local/heroku/bin:$PATH"' &gt;&gt; ~/.profile
+Installation complete
+</code></pre>
+
+<p>自動で <code>sudo</code> をつけて実行してくれる。インストールが完了したら出力にあるようにPATHを通す。
+<code>bash
+$ echo 'PATH="/usr/local/heroku/bin:$PATH"' &gt;&gt; ~/.bashrc
+$ source ~/.bashrc
+$ heroku version
+heroku-toolbelt/3.15.2 (x86_64-linux) ruby/2.0.0
+</code></p>
+
+<h2>Herokuのセットアップ</h2>
+
+<p> <code>heroku</code> コマンドがインストールされたことを確認できたらコマンドラインからHerokuの認証を行う。
+<code>bash
+$ heroku login
+Enter your Heroku credentials.
+Email: your.account@email.com
+Password (typing will be hidden):
+Your Heroku account does not have a public ssh key uploaded.
+Could not find an existing public key at ~/.ssh/id_rsa.pub
+Would you like to generate one? [Yn] Y
+Generating new SSH public key.
+Uploading SSH public key /home/user/.ssh/id_rsa.pub... done
+Authentication successful.
+</code>
+認証が完了したらHerokuのセットアップをする
+<code>bash
+$ heroku create
+Creating infinite-peak-4923... done, stack is cedar-14
+https://infinite-peak-4923.herokuapp.com/ | git@heroku.com:infinite-peak-4923.git
+Git remote heroku added
+</code>
+これでgitのremoteにherokuが追加される
+<code>bash
+$ git remote -v
+heroku  git@heroku.com:infinite-peak-4923.git (fetch)
+heroku  git@heroku.com:infinite-peak-4923.git (push)
+origin  https://github.com/sojiro14/first_app.git (fetch)
+origin  https://github.com/sojiro14/first_app.git (push)
+</code></p>
+
+<h2>Herokuへデプロイ</h2>
+
+<p>追加されたremoteに <code>push</code> をすればHerokuへのデプロイが完了
+<code>bash
+$ git push heroku master
+</code></p>
+
+<p><a href="https://infinite-peak-4923.herokuapp.com/">https://infinite-peak-4923.herokuapp.com/</a></p>
+
+<p> <code>heroku create</code> 時に出力された上記URL（アプリケーションごとに異なる）にアクセスするとHerokuにデプロイしたアプリケーションが確認できる。Rails 4.0ではこの時点で <code>The page you were looking for doesn't exist.</code> と表示されてしまう模様。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+</feed>

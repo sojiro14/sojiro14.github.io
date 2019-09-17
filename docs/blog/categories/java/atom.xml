@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Java | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[値オブジェクトとコレクションオブジェクト]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/08/25/value-object-and-collection-object/"/>
+    <updated>2017-08-25T18:07:57+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/08/25/value-object-and-collection-object</id>
+    <content type="html"><![CDATA[<p>某先輩の書評を読んで気になったので 『<a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a>』 という本を読んだ。</p>
+
+<p>とあるプロジェクトでその先輩に自分の書くコードについて色々ご指摘をいただいていたタイミングであり、自分としてはかなり参考になった点があるので備忘も兼ねて書いてみる。</p>
+
+<p>今回は特に「値オブジェクト」と「コレクションオブジェクト（ファーストクラスコレクション）」について。</p>
+
+<h2>値オブジェクト</h2>
+
+<p>値オブジェクトはアプリケーションに登場する様々な値に対してその値を扱うための専用クラスを作るという考え方。</p>
+
+<h3>値ごとにクラスを定義する</h3>
+
+<p>値オブジェクトの考え方をルール化すると、「プリミティブ型や <code>String</code> 型は使わない」という方針となる。</p>
+
+<p>例えば、先述のプロジェクトのコードでは登場する様々な値を <code>String</code> 型で表現していた。</p>
+
+<ul>
+<li><code>userId</code></li>
+<li><code>nickname</code></li>
+<li><code>address</code></li>
+<li>etc&hellip;</li>
+</ul>
+
+
+<p>これらはサーバーリクエストの口でバリデーションを通るものの、その後の値がアプリケーションコード内で保証されないため非常に不安定だった。</p>
+
+<p>また、例えば <code>nickname</code> と <code>address</code> を引数として受け付けるメソッドがあったとすると</p>
+
+<pre><code class="java">public User hoge(String nickname, String address) {
+    ...
+}
+</code></pre>
+
+<p>となるわけだが、この時このメソッドを使う側で間違えて <code>address</code>, <code>nickname</code> の順で引数を指定したとしてもこのメソッドはその引数を受け付けてしまう。</p>
+
+<p>そこで <code>Nickname</code> クラスと <code>Address</code> クラスを定義するというのが値オブジェクトの考え方だ。</p>
+
+<pre><code class="java">class Nickname {
+    static final int MIN_LENGTH = 1;
+    static final int MAX_LENGTH = 20;
+
+    String nickname;
+
+    Nickname(String nickname) {
+        if (nickname.length() &lt; MIN_LENGTH) {
+            throw new IllegalArgumentException("nickname length must be at least" + MIN_LENGTH);
+        }
+        if (nickname.length() &gt; MAX_LENGTH) {
+          throw new IllegalArgumentException("nickname length must be under" + MAX_LENGTH);
+        }
+        this.nickname = nickname;
+    }
+}
+</code></pre>
+
+<p><code>address</code> に対しても同様にクラスを定義して先ほどのメソッドを</p>
+
+<pre><code class="java">public User hoge(Nickname nickname, Address address) {
+    ...
+}
+</code></pre>
+
+<p>とすればより堅い実装となる。</p>
+
+<h3>値オブジェクトを不変とする</h3>
+
+<p>値オブジェクトの値は上書きしないというのも値オブジェクトを扱う上で重要な考え方で、これをルール化すると、「値を変更する度にオブジェクトそのものを新しく（別のオブジェクトに）する」ということになる。</p>
+
+<pre><code class="java">Nickname nickname = new Nickname("sojiro");
+nickname.setNickname("shin-sojiro");
+</code></pre>
+
+<p>ではなく</p>
+
+<pre><code class="java">Nickname nickname = new Nickname("sojiro");
+Nickname updatedNickname = nickname.update("shin-sojiro");
+</code></pre>
+
+<p>とすることで、各オブジェクトがどの値をもっているのかが明確となり、知らないうちに値が変わっている、ということを防ぐことができる。</p>
+
+<h2>コレクションオブジェクト（ファーストクラスコレクション）</h2>
+
+<p>値オブジェクトの考え方を発展させ、コレクション型のデータとロジックを独自のクラスに切り出す考え方をコレクションオブジェクト、もしくはファーストクラスコレクションという。</p>
+
+<pre><code class="java">List&lt;User&gt; users = new ArrayList&lt;&gt;();
+users.add(user);
+</code></pre>
+
+<p>のように扱っていた <code>User</code> のコレクションを、 <code>Users</code> というクラスを定義し、そのクラスで操作が完結するようにする。</p>
+
+<pre><code class="java">class Users {
+    List&lt;User&gt; users;
+
+    Users(List&lt;User&gt; users) {
+        this.users = users;
+    }
+
+    Users add(User user) {
+        List&lt;User&gt; userList = new ArrayList&lt;&gt;(users);
+        return new Users(userList.add(user));
+    }
+
+    List&lt;User&gt; asList() {
+        return Collections.unmodifiableList(users);
+    }
+}
+</code></pre>
+
+<p>ここでのポイントは、</p>
+
+<ul>
+<li>値オブジェクトで値に変更がある場合は常に新しいオブジェクトを返したように、コレクションオブジェクトでもコレクションに変更がある場合は新たなオブジェクトを返すようにすること</li>
+<li>コレクションへの参照を返す場合はなるべく変更できない状態にして返すこと</li>
+</ul>
+
+
+<p>コレクションへの操作を独自クラスに閉じ込め、同一オブジェクトが持つコレクションの内容が変化することのないようにすることでより堅い実装とすることができる。</p>
+
+<h2>感想</h2>
+
+<p>Perl からプログラミングを始めたこともあってか（言い訳）、オブジェクト指向と言っても型への意識は低く、如何にコンパイル時点でバグを見つけられる堅い実装とするか、その変数に今どのような値が入っているかをコードの書き方で明確にするか、というような意識も低かった。</p>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a> からは他にも学んだ点が多いので追って記事にできたらと思う。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Could Not Open the Requested Socket エラーが出たら]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/"/>
+    <updated>2017-06-16T02:28:06+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio</id>
+    <content type="html"><![CDATA[<p>Android Studio で GAE に乗せるアプリを開発しているとき、ローカルで立ち上げようとすると以下のようなエラーが出た</p>
+
+<pre><code>Could not open the requested socket: Address already in use
+Try overriding --address and/or --port.
+</code></pre>
+
+<p>どうやら以前立ち上げた際のプロセスが生き残っていて邪魔しているらしい</p>
+
+<h3>以下のように対応した</h3>
+
+<p>Android Studio のメニューから <code>Run</code> → <code>Edit Configurations...</code> とたどり、対象 module が使っている port を確認</p>
+
+<p>ポートを指定してプロセスを確認、そして <code>kill</code></p>
+
+<pre><code class="bash">$ lsof -i:8080
+COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+java    74792  sojiro   48u  IPv6 0xXXXXXXXXXXXXXXXX      0t0  TCP *:http-alt (LISTEN)
+</code></pre>
+
+<pre><code class="bash">$ kill -9 74792
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 10 Javaプログラムの実行と制御構文]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/08/31/study-of-perfect-java-chapter-10/"/>
+    <updated>2016-08-31T03:40:04+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/08/31/study-of-perfect-java-chapter-10</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>条件分岐</h2>
+
+<h3>if-else文</h3>
+
+<p>インデントの取り方に関係なく <code>else</code> は最も近い（直近の） <code>if</code> にかかる</p>
+
+<h3>switch-case文</h3>
+
+<pre><code class="java">switch(式) {
+case 定数1:
+    0個以上の文
+case 定数N:
+    0個以上の文
+default:
+    0個以上の文
+}
+</code></pre>
+
+<p>式の評価値は以下</p>
+
+<ul>
+<li>int 型</li>
+<li>int 型に暗黙に型変換される型
+
+<ul>
+<li>char</li>
+<li>byte</li>
+<li>short</li>
+</ul>
+</li>
+<li>数値ラッパークラス
+
+<ul>
+<li>Integer</li>
+<li>Character</li>
+<li>Byte</li>
+<li>Short</li>
+</ul>
+</li>
+<li>enum 型</li>
+<li>String 型</li>
+</ul>
+
+
+<p>式が <code>null</code> になると <code>NullPointerException</code> が発生する</p>
+
+<p><code>break;</code> 文がない限り処理を続ける</p>
+
+<pre><code class="java">int i = 0;
+switch (i) {
+    case 0:
+        System.out.println(0);
+    case 1:
+        System.out.println(1);
+    default:
+        System.out.println("default");
+}
+</code></pre>
+
+<pre><code class="java">0
+1
+default
+</code></pre>
+
+<h2>繰り返し</h2>
+
+<h3>for文</h3>
+
+<pre><code class="java">for (初期化式; 条件式; 更新式) {
+    文
+}
+</code></pre>
+
+<p>条件式は評価値が <code>boolean</code> もしくは <code>Boolean</code></p>
+
+<p>初期化式と更新式は複数の式を <code>,</code> で区切って書ける</p>
+
+<pre><code class="java">for (int i = 0, j = 0; (i &lt; 10 &amp;&amp; j &lt; 10); i++, j++) { 
+}
+</code></pre>
+
+<p>異なる型の宣言と初期化を並べるとエラー</p>
+
+<pre><code class="java">for (int i = 0, byte j = 0; (i &lt; 10 &amp;&amp; j &lt; 10); i++, j++) { 
+}
+</code></pre>
+
+<p>for文の外に出して回避</p>
+
+<pre><code class="java">int i;
+byte j;
+for (i = 0, j = 0; (i &lt; 10 &amp;&amp; j &lt; 10); i++, j++) { 
+}
+</code></pre>
+
+<h2>ジャンプ</h2>
+
+<h3>break文</h3>
+
+<ul>
+<li>ループを抜ける</li>
+<li>ループがネストしている場合、抜けるのは内側のループのみ</li>
+</ul>
+
+
+<h3>continue文</h3>
+
+<ul>
+<li>ループ内の文をスキップしてループの条件式の評価に戻る</li>
+</ul>
+
+
+<h3>ラベル</h3>
+
+<ul>
+<li>繰り返しにラベルをつける</li>
+<li>break文、continue文にラベルを渡すことでどの繰り返しを対象にするか定める</li>
+</ul>
+
+
+<pre><code class="java">target_loop:
+while (true) {
+    while (true) {
+        break target_loop;
+    }
+}
+</code></pre>
+
+<ul>
+<li>外側の while ループに <code>target_loop</code> というラベルがつく</li>
+<li><code>break target_loop</code> で外側の while ループを抜ける</li>
+<li>（ <code>continue</code> の場合は対象のループ内の文をスキップして条件式の評価に戻る）</li>
+</ul>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 9 文、式、演算子]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/08/24/study-of-perfect-java-chapter-9/"/>
+    <updated>2016-08-24T03:19:11+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/08/24/study-of-perfect-java-chapter-9</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>Java の文法と文</h2>
+
+<p>Java で扱う文は以下の4種類</p>
+
+<ul>
+<li>制御文</li>
+<li>ブロック文</li>
+<li>宣言文</li>
+<li>式文</li>
+</ul>
+
+
+<p>宣言文と式文は終端にセミコロン必要</p>
+
+<h2>Java の演算子と式</h2>
+
+<ul>
+<li><code>&amp;&amp;</code> 、 <code>||</code> 、 <code>?</code> <code>:</code> （三項演算子）を除くすべての演算子は演算前にすべてのオペランドを評価する</li>
+<li>オペランドは左のものから評価する</li>
+<li>メソッド及びコンストラクタ呼び出し式では引数を左から評価する</li>
+</ul>
+
+
+<h2>数値の演算</h2>
+
+<h3>インクリメント/デクリメント演算の前置後置</h3>
+
+<p>前置演算は評価値が演算後の値、後置演算は評価値が演算前の値</p>
+
+<pre><code class="java">int n = 10;
+int m = ++n;
+// m: 11, n: 11
+int n = 10;
+int m = n++;
+// m: 10, n: 11
+</code></pre>
+
+<pre><code class="java">int n = 0;
+while (++n &lt; 10) {
+    // ループが回る回数は 9 回
+}
+</code></pre>
+
+<h2>論理演算</h2>
+
+<h3>遅延評価</h3>
+
+<p><code>&amp;&amp;</code> 、<code>||</code> は遅延評価を行う</p>
+
+<ul>
+<li><code>&amp;&amp;</code> は左辺の評価値が偽であれば右辺の評価値に関係なく結果が偽になるため右辺を評価しない</li>
+<li><code>||</code> は左辺の評価値が真であれば右辺の評価値に関係なく結果が真になるため右辺の評価をしない</li>
+</ul>
+
+
+<p>これらの演算子の右辺に副作用のある式を書くと、左辺の評価値により実行さるか否かが変わってくるので注意</p>
+
+<h2>その他の演算</h2>
+
+<h3>instanceof 演算子</h3>
+
+<p>ダウンキャストを安全に行えるかを事前にチェックする</p>
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[パーフェクトJava読書メモ Chapter 7 インターフェース]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/07/24/study-of-perfect-java-chapter-7/"/>
+    <updated>2016-07-24T02:29:32+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/07/24/study-of-perfect-java-chapter-7</id>
+    <content type="html"><![CDATA[<p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>クラスとインターフェースの違い</h2>
+
+<ul>
+<li>インターフェースは雛形としての役割を持たない</li>
+<li>インターフェースは実体化できず、型定義に特化している</li>
+<li>インターフェースの継承の目的は多様性のみ（クラスの拡張継承には実装コードの共有という側面もある）</li>
+</ul>
+
+
+<h2>インターフェース宣言</h2>
+
+<pre><code class="java">[修飾子] interface インターフェース名 {
+    メンバ宣言
+}
+</code></pre>
+
+<h3>インターフェースの修飾子</h3>
+
+<table>
+<thead>
+<tr>
+<th> modifier </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>public</code> </td>
+<td> グローバルにアクセス可（書かないとパッケージ内に限定） </td>
+</tr>
+<tr>
+<td> <code>abstract</code> </td>
+<td> インターフェースは暗黙的に abstract なので書かなくても同じ </td>
+</tr>
+<tr>
+<td> <code>strictfp</code> </td>
+<td> インターフェース内に記述した浮動小数点演算を厳密に評価 </td>
+</tr>
+<tr>
+<td> アノテーション </td>
+<td> 省略 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>インターフェースのメンバ</h3>
+
+<ul>
+<li>抽象メソッド（実装なし）</li>
+<li>default メソッド</li>
+<li>static メソッド</li>
+<li>定数フィールド</li>
+<li>static なネストしたクラス</li>
+<li>static なネストしたインターフェース</li>
+</ul>
+
+
+<h3>メソッド宣言</h3>
+
+<table>
+<thead>
+<tr>
+<th> modifier </th>
+<th> description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>public</code> </td>
+<td> 暗黙的に public なので書かなくても同じ</td>
+</tr>
+<tr>
+<td> <code>default</code> </td>
+<td> デフォルトメソッド </td>
+</tr>
+<tr>
+<td> <code>static</code> </td>
+<td> static メソッド </td>
+</tr>
+<tr>
+<td> <code>abstract</code> </td>
+<td> 暗黙的に abstract なので書かなくても同じ </td>
+</tr>
+</tbody>
+</table>
+
+
+<ul>
+<li><code>default</code> メソッドはインスタンスメソッド</li>
+<li>インターフェースを継承した具象クラスのインスタンスメソッドになる</li>
+<li>フィールド変数は暗黙的に <code>public</code> <code>static</code> <code>final</code></li>
+</ul>
+
+
+<h2>インターフェースと実装クラス</h2>
+
+<h3>インターフェース継承</h3>
+
+<pre><code class="java">[修飾子] class クラス名 implements インターフェース名 {
+    クラス本体
+}
+</code></pre>
+
+<p>複数のインターフェースを同時に継承することができる</p>
+
+<pre><code class="java">[修飾子] class クラス名 implements インターフェース名, インターフェース名 {
+    クラス本体
+}
+</code></pre>
+
+<ul>
+<li>クラスの拡張継承とインターフェースの継承を同時にできる</li>
+<li>このとき <code>implements</code> は <code>extends</code> より後に書く</li>
+</ul>
+
+
+<pre><code class="java">[修飾子] class クラス名 extends 親クラス名 implements インターフェース名 {
+    クラス本体
+}
+</code></pre>
+
+<ul>
+<li>インターフェースを継承したクラスはインターフェースの抽象メソッドをすべてオーバーライドする必要がある</li>
+<li>インターフェースから継承したメソッドのアクセス制御は <code>public</code> 修飾子がないとコンパイルエラー</li>
+<li>メソッドのオーバーライドはクラスの拡張継承と同様に行う</li>
+</ul>
+
+
+<h3>ネストしたインターフェース</h3>
+
+<ul>
+<li>クラス内のネストしたインターフェース
+
+<ul>
+<li><code>public</code> <code>protected</code> 無指定 <code>private</code> のいずれかを指定する</li>
+</ul>
+</li>
+<li>インターフェース内のネストしたインターフェース
+
+<ul>
+<li>常に <code>public</code></li>
+</ul>
+</li>
+<li>インターフェース内のネストしたクラス
+
+<ul>
+<li>常に <code>public</code> かつ <code>static</code></li>
+</ul>
+</li>
+<li>ネストして宣言されたインターフェースは常に <code>static</code></li>
+</ul>
+
+
+<h3>インターフェース自体の拡張継承</h3>
+
+<ul>
+<li>インターフェースも拡張継承できる</li>
+<li>インターフェースは複数の親インターフェースを指定可能</li>
+</ul>
+
+
+<pre><code class="java">interface Parent {
+    void print();
+}
+
+interface Child extends Parent {
+    // void print() を継承
+}
+
+interface Father {
+    void print();
+}
+
+interface Mother {
+    void exec();
+}
+
+interface Child2 extends Father, Mother {
+    // void print(), void exec() を継承
+}
+</code></pre>
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+]]></content>
+  </entry>
+  
+</feed>

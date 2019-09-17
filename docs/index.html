@@ -1,0 +1,1788 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="手元の Mac に Node.js と npm がインストールされていなかったのでインストールした手順 homebrew を使って nodebrew をインストール 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+$ brew install &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-50182043-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+<ul class="subscribe">
+  <li><a href="https://github.com/sojiro14" rel="subscribe-github" title="@sojiro14 on GitHub" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 50,0 C 22.385714,0 0,22.385714 0,50 0,77.614286 22.385714,100 50,100 77.614286,100 100,77.614286 100,50 100,22.385714 77.614286,0 50,0 z m 29.692858,79.692858 c -3.859184,3.859182 -8.351022,6.887754 -13.35,9.00306 -1.27041,0.536736 -2.560204,1.009184 -3.867348,1.415306 v -7.493878 c 0,-3.938774 -1.35102,-6.835714 -4.053062,-8.690816 1.692858,-0.163264 3.24694,-0.390816 4.663266,-0.683672 1.416326,-0.292858 2.913266,-0.716328 4.491838,-1.27041 1.57857,-0.55408 2.994896,-1.213264 4.247958,-1.97755 1.253062,-0.765306 2.458164,-1.758164 3.613266,-2.978572 1.155102,-1.220408 2.12449,-2.604082 2.905102,-4.15 0.780612,-1.545918 1.4,-3.40204 1.855102,-5.566326 0.455102,-2.164286 0.683674,-4.54898 0.683674,-7.153062 0,-5.045918 -1.643878,-9.341836 -4.931634,-12.890816 C 77.44796,33.35 77.285714,29.10204 75.463266,24.512244 l -1.22143,-0.145918 c -0.845918,-0.09796 -2.368366,0.260204 -4.565306,1.07449 -2.196938,0.814286 -4.663264,2.14796 -7.396938,4.004082 -3.87449,-1.07449 -7.893878,-1.611224 -12.061224,-1.611224 -4.19898,0 -8.203062,0.536734 -12.012246,1.611224 -1.72449,-1.17245 -3.361224,-2.139796 -4.907142,-2.905102 C 31.753062,25.77449 30.516326,25.254082 29.587756,24.97653 28.660204,24.7 27.79796,24.528572 27,24.463266 c -0.79796,-0.0653 -1.310204,-0.08062 -1.537756,-0.04898 -0.22755,0.03164 -0.390816,0.0653 -0.487754,0.09796 -1.82347,4.62245 -1.985714,8.87143 -0.487756,12.743878 -3.287754,3.54796 -4.931632,7.844898 -4.931632,12.890816 0,2.604082 0.227552,4.988776 0.683674,7.153062 0.456122,2.164286 1.07449,4.020408 1.855102,5.566326 0.780612,1.545918 1.75,2.929592 2.905102,4.15 1.155102,1.220408 2.360204,2.213266 3.613264,2.978572 1.253062,0.766326 2.669388,1.42449 4.24796,1.97755 1.578572,0.554082 3.07551,0.976532 4.491836,1.27041 1.416328,0.292856 2.970408,0.521428 4.663266,0.683672 -2.669388,1.82347 -4.004082,4.720408 -4.004082,8.690816 v 7.639796 C 36.536734,89.818368 35.083674,89.3 33.656122,88.695918 c -4.99898,-2.115306 -9.490816,-5.143878 -13.35,-9.00306 -3.859184,-3.859184 -6.887754,-8.351022 -9.00306,-13.35 C 9.1163263,61.171428 8.0071428,55.67347 8.0071428,50 c 0,-5.67347 1.1091835,-11.171428 3.2969392,-16.342858 2.115306,-4.998978 5.143878,-9.490816 9.00306,-13.35 3.859184,-3.859182 8.351022,-6.887754 13.35,-9.00306 C 38.828572,9.1163266 44.32653,8.0071428 50,8.0071428 c 5.67347,0 11.171428,1.1091838 16.342858,3.2969392 5,2.115306 9.490816,5.143878 13.35,9.00306 3.859182,3.859184 6.887754,8.351022 9.00306,13.35 2.186736,5.17245 3.295918,10.67041 3.295918,16.342858 0,5.672448 -1.109182,11.171428 -3.296938,16.342858 -2.115306,4.998978 -5.143878,9.490816 -9.00204,13.35 l 0,0 z"></path></svg></a></li>
+</ul>
+  
+  
+  
+<ul class="subscribe">
+  <li><a href="https://twitter.com/sojiro14" rel="subscribe-twitter" title="@sojiro14 on Twitter" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 512 512"><path class="social" d="M0.001,334.932c33.327,30.816,118.891,59.981,188.517-8.271c-12.52,1.955-22.972-0.416-30.913-8.269
+  c-7.531-7.465-7.945-15.182-3.914-22.202c3.275-5.725,10.184-9.741,16.977-13.934c-12.323,2.285-22.829,1.095-32.218-3.706
+  c-12.604-6.444-24.863-13.228-28.3-27.207c7.71-8.112,16.28-15.359,34.831-12.627c-17.45-5.83-33.087-13.429-44.41-24.815
+  c-11.028-11.091-12.163-18.302-13.932-26.996c9.632-3.567,19.688-5.421,30.478-4.353c-24.397-12.476-34.757-29.63-40.487-48.325
+  c-1.731-5.652-2.044-11.03-1.31-16.545c98.826,37.305,145.11,64.109,170.662,89.251c11.496-30.589,38.3-99.868,78.371-123.646
+  c0.191,3.77-1.309,7.837-4.357,12.189c11.863-6.609,21.125-17.188,37.445-16.98c-1.879,7.723-7.279,13.904-17.85,17.854
+  c10.662-4.084,21.463-7.545,32.65-9.578c10.375-1.881,10.229,6.304,4.355,10.444c-11.916,8.412-24.578,9.456-37.006,13.498
+  c38.105,0.949,69.266,18.994,93.604,58.343c8.088,13.074,13.52,26.149,14.807,40.487c16.254,4.563,32.426,5.494,48.76,2.61
+  c4.475-0.796,8.645-1.63,12.627-3.482c-6.354,9.529-13.686,17.356-23.947,20.899c-9.811,3.387-19.637,6.688-30.473,6.968
+  c17.641,6.675,37.082,7.045,57.033,5.659c-24.402,23.486-43.08,22.922-61.824,22.642c-8.221,34.703-25.025,69.315-60.52,101.005
+  c-46.559,41.569-96.678,61.397-148.457,65.742c-48.552,4.07-95.488,3.512-146.726-20.464
+  C56.486,393.349,24.648,368.884,0.001,334.932L0.001,334.932z"/></svg></a></li>
+</ul>
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/10/01/install-node-js-and-npm/">Node.jsとnpmのインストール</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-10-01T20:43:45+09:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2017</span></span> <span class='time'>8:43 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>手元の Mac に Node.js と npm がインストールされていなかったのでインストールした手順</p>
+
+<h2><code>homebrew</code> を使って <code>nodebrew</code> をインストール</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>brew install <span class="nv">nodebrew</span>
+</span><span class='line'><span class="o">==</span>&gt; Downloading https://github.com/hokaccha/nodebrew/archive/v0.9.2.tar.gz
+</span><span class='line'><span class="o">==</span>&gt; Downloading from https://codeload.github.com/hokaccha/nodebrew/tar.gz/v0.9.2
+</span><span class='line'><span class="c">######################################################################## 100.0%</span>
+</span><span class='line'><span class="o">==</span>&gt; /usr/local/Cellar/nodebrew/0.9.2/bin/nodebrew <span class="nv">setup_dirs</span>
+</span><span class='line'><span class="o">==</span>&gt; Caveats
+</span><span class='line'>Add path:
+</span><span class='line'>  <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.nodebrew/current/bin:<span class="nv">$PATH</span>
+</span><span class='line'>
+</span><span class='line'>To use Homebrew<span class="err">&#39;</span>s directories rather than ~/.nodebrew add to your profile:
+</span><span class='line'>  <span class="nb">export </span><span class="nv">NODEBREW_ROOT</span><span class="o">=</span>/usr/local/var/nodebrew
+</span><span class='line'>
+</span><span class='line'>Bash completion has been installed to:
+</span><span class='line'>  /usr/local/etc/bash_completion.d
+</span><span class='line'>
+</span><span class='line'>zsh completion has been installed to:
+</span><span class='line'>  /usr/local/share/zsh/site-functions
+</span><span class='line'><span class="o">==</span>&gt; Summary
+</span><span class='line'>🍺  /usr/local/Cellar/nodebrew/0.9.2: <span class="m">7</span> files, 34.4K, built in <span class="m">2</span> seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>nodebrew</code> がインストールされたことを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew -v
+</span><span class='line'>nodebrew 0.9.2
+</span><span class='line'>
+</span><span class='line'>Usage:
+</span><span class='line'>    nodebrew <span class="nb">help                         </span>Show this message
+</span><span class='line'>    nodebrew install &lt;version&gt;            Download and install a &lt;version&gt; <span class="o">(</span>compile from <span class="nb">source</span><span class="o">)</span>
+</span><span class='line'>    nodebrew install-binary &lt;version&gt;     Download and install a &lt;version&gt; <span class="o">(</span>binary file<span class="o">)</span>
+</span><span class='line'>    nodebrew uninstall &lt;version&gt;          Uninstall a version
+</span><span class='line'>    nodebrew use &lt;version&gt;                Use &lt;version&gt;
+</span><span class='line'>    nodebrew list                         List installed versions
+</span><span class='line'>    nodebrew ls                           Alias <span class="k">for</span> <span class="sb">`</span>list<span class="sb">`</span>
+</span><span class='line'>    nodebrew ls-remote                    List remote versions
+</span><span class='line'>    nodebrew ls-all                       List remote and installed versions
+</span><span class='line'>    nodebrew <span class="nb">alias</span> &lt;key&gt; &lt;version&gt;        Set <span class="nb">alias </span>to version
+</span><span class='line'>    nodebrew <span class="nb">unalias</span> &lt;key&gt;                Remove <span class="nb">alias</span>
+</span><span class='line'><span class="nb">    </span>nodebrew clean &lt;version&gt; <span class="p">|</span> all        Remove <span class="nb">source </span>file
+</span><span class='line'>    nodebrew selfupdate                   Update nodebrew
+</span><span class='line'>    nodebrew migrate-package &lt;version&gt;    Install global NPM packages contained in &lt;version&gt; to current version
+</span><span class='line'>    nodebrew <span class="nb">exec</span> &lt;version&gt; -- &lt;<span class="nb">command</span>&gt;  Execute &lt;<span class="nb">command</span>&gt; specified &lt;version&gt;
+</span><span class='line'>
+</span><span class='line'>Example:
+</span><span class='line'>    <span class="c"># install from binary</span>
+</span><span class='line'>    nodebrew install-binary v0.10.22
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># use a specific version number</span>
+</span><span class='line'>    nodebrew use v0.10.22
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># io.js</span>
+</span><span class='line'>    nodebrew install-binary io@v1.0.0
+</span><span class='line'>    nodebrew use io@v1.0.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>インストールできる Node.js のバージョンを確認</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew ls-remote
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE release<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>v0.0.1    v0.0.2    v0.0.3    v0.0.4    v0.0.5    v0.0.6
+</span><span class='line'>
+</span><span class='line'>...
+</span><span class='line'>
+</span><span class='line'>io@v3.3.0 io@v3.3.1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>バージョンを指定してインストール (binary を指定したほうがインストールにかかる時間が短いようだ)</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew install-binary v6.11.3
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE platform<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE release<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE arch<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE version<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>fetch: http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz
+</span><span class='line'>Warning: Failed to create the file
+</span><span class='line'>Warning: /Users/sojiro/.nodebrew/src/v6.11.3/node-v6.11.3-darwin-x64.tar.gz:
+</span><span class='line'>Warning: No such file or directory
+</span><span class='line'>
+</span><span class='line'>curl: <span class="o">(</span>23<span class="o">)</span> Failed writing body <span class="o">(</span><span class="m">0</span> !<span class="o">=</span> 792<span class="o">)</span>
+</span><span class='line'>download faild: http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>自分でインストール先のディレクトリを作らないとダメらしい</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir -p ~/.nodebrew/src
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再度インストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew install-binary v6.11.3
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE platform<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE release<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE version<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by &lt;-- HERE in m/#<span class="o">{</span> &lt;-- HERE arch<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>fetch: http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz
+</span><span class='line'><span class="c">######################################################################## 100.0%</span>
+</span><span class='line'>Install successful
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インストールされたバージョンを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew list
+</span><span class='line'>v6.11.3
+</span><span class='line'>
+</span><span class='line'>current: none
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使うバージョンを設定</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew use v6.11.3
+</span><span class='line'>use v6.11.3
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>コマンドにパスを通す</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;export PATH=$PATH:/Users/sojiro/.nodebrew/current/bin&#39;</span> &gt;&gt; ~/.bashrc
+</span><span class='line'><span class="nv">$ </span><span class="nb">source</span> ~/.bashrc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>node</code> 及び <code>npm</code> がインストールされたことを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
+</span><span class='line'>v6.11.3
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>npm -v
+</span><span class='line'>3.10.10
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/08/25/value-object-and-collection-object/">値オブジェクトとコレクションオブジェクト</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-08-25T18:07:57+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>6:07 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>某先輩の書評を読んで気になったので 『<a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a>』 という本を読んだ。</p>
+
+<p>とあるプロジェクトでその先輩に自分の書くコードについて色々ご指摘をいただいていたタイミングであり、自分としてはかなり参考になった点があるので備忘も兼ねて書いてみる。</p>
+
+<p>今回は特に「値オブジェクト」と「コレクションオブジェクト（ファーストクラスコレクション）」について。</p>
+
+<h2>値オブジェクト</h2>
+
+<p>値オブジェクトはアプリケーションに登場する様々な値に対してその値を扱うための専用クラスを作るという考え方。</p>
+
+<h3>値ごとにクラスを定義する</h3>
+
+<p>値オブジェクトの考え方をルール化すると、「プリミティブ型や <code>String</code> 型は使わない」という方針となる。</p>
+
+<p>例えば、先述のプロジェクトのコードでは登場する様々な値を <code>String</code> 型で表現していた。</p>
+
+<ul>
+<li><code>userId</code></li>
+<li><code>nickname</code></li>
+<li><code>address</code></li>
+<li>etc&hellip;</li>
+</ul>
+
+
+<p>これらはサーバーリクエストの口でバリデーションを通るものの、その後の値がアプリケーションコード内で保証されないため非常に不安定だった。</p>
+
+<p>また、例えば <code>nickname</code> と <code>address</code> を引数として受け付けるメソッドがあったとすると</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="n">User</span> <span class="nf">hoge</span><span class="o">(</span><span class="n">String</span> <span class="n">nickname</span><span class="o">,</span> <span class="n">String</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>となるわけだが、この時このメソッドを使う側で間違えて <code>address</code>, <code>nickname</code> の順で引数を指定したとしてもこのメソッドはその引数を受け付けてしまう。</p>
+
+<p>そこで <code>Nickname</code> クラスと <code>Address</code> クラスを定義するというのが値オブジェクトの考え方だ。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">Nickname</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MIN_LENGTH</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MAX_LENGTH</span> <span class="o">=</span> <span class="mi">20</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">String</span> <span class="n">nickname</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Nickname</span><span class="o">(</span><span class="n">String</span> <span class="n">nickname</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">nickname</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">MIN_LENGTH</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;nickname length must be at least&quot;</span> <span class="o">+</span> <span class="n">MIN_LENGTH</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">nickname</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">MAX_LENGTH</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;nickname length must be under&quot;</span> <span class="o">+</span> <span class="n">MAX_LENGTH</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">nickname</span> <span class="o">=</span> <span class="n">nickname</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>address</code> に対しても同様にクラスを定義して先ほどのメソッドを</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="n">User</span> <span class="nf">hoge</span><span class="o">(</span><span class="n">Nickname</span> <span class="n">nickname</span><span class="o">,</span> <span class="n">Address</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>とすればより堅い実装となる。</p>
+
+<h3>値オブジェクトを不変とする</h3>
+
+<p>値オブジェクトの値は上書きしないというのも値オブジェクトを扱う上で重要な考え方で、これをルール化すると、「値を変更する度にオブジェクトそのものを新しく（別のオブジェクトに）する」ということになる。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Nickname</span> <span class="n">nickname</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Nickname</span><span class="o">(</span><span class="s">&quot;sojiro&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">nickname</span><span class="o">.</span><span class="na">setNickname</span><span class="o">(</span><span class="s">&quot;shin-sojiro&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ではなく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Nickname</span> <span class="n">nickname</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Nickname</span><span class="o">(</span><span class="s">&quot;sojiro&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">Nickname</span> <span class="n">updatedNickname</span> <span class="o">=</span> <span class="n">nickname</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="s">&quot;shin-sojiro&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>とすることで、各オブジェクトがどの値をもっているのかが明確となり、知らないうちに値が変わっている、ということを防ぐことができる。</p>
+
+<h2>コレクションオブジェクト（ファーストクラスコレクション）</h2>
+
+<p>値オブジェクトの考え方を発展させ、コレクション型のデータとロジックを独自のクラスに切り出す考え方をコレクションオブジェクト、もしくはファーストクラスコレクションという。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span><span class='line'><span class="n">users</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>のように扱っていた <code>User</code> のコレクションを、 <code>Users</code> というクラスを定義し、そのクラスで操作が完結するようにする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">Users</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Users</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">users</span> <span class="o">=</span> <span class="n">users</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Users</span> <span class="nf">add</span><span class="o">(</span><span class="n">User</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">userList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">users</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="nf">Users</span><span class="o">(</span><span class="n">userList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">user</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="nf">asList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">users</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここでのポイントは、</p>
+
+<ul>
+<li>値オブジェクトで値に変更がある場合は常に新しいオブジェクトを返したように、コレクションオブジェクトでもコレクションに変更がある場合は新たなオブジェクトを返すようにすること</li>
+<li>コレクションへの参照を返す場合はなるべく変更できない状態にして返すこと</li>
+</ul>
+
+
+<p>コレクションへの操作を独自クラスに閉じ込め、同一オブジェクトが持つコレクションの内容が変化することのないようにすることでより堅い実装とすることができる。</p>
+
+<h2>感想</h2>
+
+<p>Perl からプログラミングを始めたこともあってか（言い訳）、オブジェクト指向と言っても型への意識は低く、如何にコンパイル時点でバグを見つけられる堅い実装とするか、その変数に今どのような値が入っているかをコードの書き方で明確にするか、というような意識も低かった。</p>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a> からは他にも学んだ点が多いので追って記事にできたらと思う。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/06/19/wordpress-on-gae/">WordPress on GAE</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-06-19T00:34:42+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>12:34 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>GCP の事前準備</h2>
+
+<p>以下の準備が事前に必要。ここでは割愛。</p>
+
+<ul>
+<li>GCP アカウントの作成</li>
+<li>GCP プロジェクトの作成</li>
+<li>課金の有効化</li>
+<li>GCS(Google Cloud Storage)に default bucket を作成
+
+<ul>
+<li>default bucket: <code>YOUR_PROJECT_NAME.appspot.com</code></li>
+</ul>
+</li>
+<li>Google Cloud SDK のインストール
+
+<ul>
+<li><a href="https://cloud.google.com/sdk/">https://cloud.google.com/sdk/</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Composer のインストール</h2>
+
+<p>Composer は PHP のパッケージ管理ツール</p>
+
+<blockquote><p>Composer is strongly inspired by node&rsquo;s npm and ruby&rsquo;s bundler.</p></blockquote>
+
+<p>node の npm、ruby の bundler に強く影響を受けているようだ。</p>
+
+<h3>手順</h3>
+
+<p>PHP がインストールされていることを確認</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php -v
+</span><span class='line'>PHP 5.5.38 <span class="o">(</span>cli<span class="o">)</span> <span class="o">(</span>built: Aug <span class="m">21</span> <span class="m">2016</span> 21:48:49<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://getcomposer.org/download/">こちら</a> の手順通り Composer をインストール</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php -r <span class="s2">&quot;copy(&#39;https://getcomposer.org/installer&#39;, &#39;composer-setup.php&#39;);&quot;</span>
+</span><span class='line'><span class="nv">$ </span>php -r <span class="s2">&quot;if (hash_file(&#39;SHA384&#39;, &#39;composer-setup.php&#39;) === &#39;669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410&#39;) { echo &#39;Installer verified&#39;; } else { echo &#39;Installer corrupt&#39;; unlink(&#39;composer-setup.php&#39;); } echo PHP_EOL;&quot;</span>
+</span><span class='line'><span class="nv">$ </span>php composer-setup.php
+</span><span class='line'><span class="nv">$ </span>php -r <span class="s2">&quot;unlink(&#39;composer-setup.php&#39;);&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>グローバルに呼び出せるようにしておく</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mv composer.phar /usr/local/bin/composer
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>GCS へのアクセス権限変更</h2>
+
+<p>作成したプロジェクトでログイン</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gcloud auth login
+</span><span class='line'><span class="nv">$ </span>gcloud config <span class="nb">set </span>project YOUR_PROJECT_NAME
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GCS のアクセス権更新</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gsutil defacl ch -u AllUsers:R gs://YOUR_PROJECT_NAME.appspot.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>DB の setup</h2>
+
+<p>Cloud SQL を使うので GCP の SQL メニューへ</p>
+
+<ul>
+<li><code>wp</code> という名前で MySQL のインスタンスを立てる
+
+<ul>
+<li>このとき第2世代を選択可</li>
+<li>日本向けがメインであればリージョンは <code>asia-northeast1</code></li>
+<li>マシンタイプは安さ重視なら <code>db-f1-micro</code> とする （このタイプで 30円/日 という印象）</li>
+<li>他の設定はお好みで&hellip;</li>
+</ul>
+</li>
+<li>立てたインスタンスに <code>wp</code> という名前のデータベースを作る</li>
+<li><code>wp</code> というユーザーを作る
+
+<ul>
+<li>アクセス制御 → ユーザー → ユーザーアカウントを作成、とたどる</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>WordPress の setup</h2>
+
+<p>ローカルに WordPress 構築に必要な素材を用意する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone https://github.com/GoogleCloudPlatform/php-docs-samples.git
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>php-docs-samples/appengine/wordpress/
+</span><span class='line'><span class="nv">$ </span>composer install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>setup の開始</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php wordpress-helper.php setup
+</span><span class='line'><span class="c"># ここでいろいろインタラクティブに聞かれるので答える</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>※ リージョンを聞かれるが、 <code>asia-northeast1</code> がない場合は適当に答えておく</p>
+
+<h3>DB_HOST 設定を変更</h3>
+
+<p>上記手順で WordPress setup 時に適切なリージョンが指定できなかった場合には自分で一部設定を変更する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>YOUR_PROJECT_NAME/
+</span><span class='line'>vim wordpress/wp-config.php
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>/** Production login info */</code> 以下の <code>DB_HOST</code> を適切なリージョンを用いて変更する</p>
+
+<h2>Deploy</h2>
+
+<p>GAE インスタンスに WordPress を deploy する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gcloud app deploy --promote --stop-previous-version app.yaml cron.yaml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最初はかなり多くのファイルを GCS にあげるのでそこそこ時間がかかる</p>
+
+<h2>参照</h2>
+
+<p><a href="https://github.com/GoogleCloudPlatform/php-docs-samples/tree/master/appengine/wordpress">https://github.com/GoogleCloudPlatform/php-docs-samples/tree/master/appengine/wordpress</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/06/18/unix-time-handling/">Unix Timeの扱い</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-06-18T14:07:59+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>2:07 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Unix time を日付及び時刻に変換したいこと、日付及び時刻を Unix time に変換したいことがある。</p>
+
+<h3>Unix time からの変換</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ date -r 616388399
+</span><span class='line'>1989年 7月14日 金曜日 11時59分59秒 JST</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>日付からの変換</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ date -jf '%Y-%m-%d %H:%M:%S' '1989-07-14 11:59:59' +%s
+</span><span class='line'>616388399</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/06/17/copy-output-to-clipboard/">ファイルの内容を直接クリップボードに出力する</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-06-17T08:21:23+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>8:21 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>ファイルの内容を直接クリップボードにコピーしたり、クリップボードからファイルにペーストしたいことがある。</p>
+
+<h3>クリップボードにコピー</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat ~/Desktop/memo.text <span class="p">|</span> pbcopy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>クリップボードからペースト</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>pbpaste &gt; ~/Documents/memo.text
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/06/16/could-not-open-the-requested-socket-on-android-studio/">Could Not Open the Requested Socket エラーが出たら</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-06-16T02:28:06+09:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>2:28 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Android Studio で GAE に乗せるアプリを開発しているとき、ローカルで立ち上げようとすると以下のようなエラーが出た</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Could not open the requested socket: Address already in use
+</span><span class='line'>Try overriding --address and/or --port.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>どうやら以前立ち上げた際のプロセスが生き残っていて邪魔しているらしい</p>
+
+<h3>以下のように対応した</h3>
+
+<p>Android Studio のメニューから <code>Run</code> → <code>Edit Configurations...</code> とたどり、対象 module が使っている port を確認</p>
+
+<p>ポートを指定してプロセスを確認、そして <code>kill</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>lsof -i:8080
+</span><span class='line'>COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+</span><span class='line'>java    <span class="m">74792</span>  sojiro   48u  IPv6 0xXXXXXXXXXXXXXXXX      0t0  TCP *:http-alt <span class="o">(</span>LISTEN<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">kill</span> -9 74792
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/08/31/study-of-perfect-java-chapter-10/">パーフェクトJava読書メモ Chapter 10 Javaプログラムの実行と制御構文</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-08-31T03:40:04+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>3:40 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>条件分岐</h2>
+
+<h3>if-else文</h3>
+
+<p>インデントの取り方に関係なく <code>else</code> は最も近い（直近の） <code>if</code> にかかる</p>
+
+<h3>switch-case文</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">switch</span><span class="o">(</span><span class="n">式</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="k">case</span> <span class="nl">定数1:</span>
+</span><span class='line'>    <span class="mi">0</span><span class="n">個以上の文</span>
+</span><span class='line'><span class="k">case</span> <span class="nl">定数N:</span>
+</span><span class='line'>    <span class="mi">0</span><span class="n">個以上の文</span>
+</span><span class='line'><span class="k">default</span><span class="o">:</span>
+</span><span class='line'>    <span class="mi">0</span><span class="n">個以上の文</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>式の評価値は以下</p>
+
+<ul>
+<li>int 型</li>
+<li>int 型に暗黙に型変換される型
+
+<ul>
+<li>char</li>
+<li>byte</li>
+<li>short</li>
+</ul>
+</li>
+<li>数値ラッパークラス
+
+<ul>
+<li>Integer</li>
+<li>Character</li>
+<li>Byte</li>
+<li>Short</li>
+</ul>
+</li>
+<li>enum 型</li>
+<li>String 型</li>
+</ul>
+
+
+<p>式が <code>null</code> になると <code>NullPointerException</code> が発生する</p>
+
+<p><code>break;</code> 文がない限り処理を続ける</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="k">switch</span> <span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;default&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="k">default</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>繰り返し</h2>
+
+<h3>for文</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">初期化式</span><span class="o">;</span> <span class="n">条件式</span><span class="o">;</span> <span class="n">更新式</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">文</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>条件式は評価値が <code>boolean</code> もしくは <code>Boolean</code></p>
+
+<p>初期化式と更新式は複数の式を <code>,</code> で区切って書ける</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">);</span> <span class="n">i</span><span class="o">++,</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span> 
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>異なる型の宣言と初期化を並べるとエラー</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="kt">byte</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">);</span> <span class="n">i</span><span class="o">++,</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span> 
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>for文の外に出して回避</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'><span class="kt">byte</span> <span class="n">j</span><span class="o">;</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">);</span> <span class="n">i</span><span class="o">++,</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span> 
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ジャンプ</h2>
+
+<h3>break文</h3>
+
+<ul>
+<li>ループを抜ける</li>
+<li>ループがネストしている場合、抜けるのは内側のループのみ</li>
+</ul>
+
+
+<h3>continue文</h3>
+
+<ul>
+<li>ループ内の文をスキップしてループの条件式の評価に戻る</li>
+</ul>
+
+
+<h3>ラベル</h3>
+
+<ul>
+<li>繰り返しにラベルをつける</li>
+<li>break文、continue文にラベルを渡すことでどの繰り返しを対象にするか定める</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">target_loop:</span>
+</span><span class='line'><span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">break</span> <span class="n">target_loop</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>外側の while ループに <code>target_loop</code> というラベルがつく</li>
+<li><code>break target_loop</code> で外側の while ループを抜ける</li>
+<li>（ <code>continue</code> の場合は対象のループ内の文をスキップして条件式の評価に戻る）</li>
+</ul>
+
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/08/24/study-of-perfect-java-chapter-9/">パーフェクトJava読書メモ Chapter 9 文、式、演算子</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-08-24T03:19:11+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:19 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Javaを使うために<a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a>を読んだメモ</p>
+
+<h2>Java の文法と文</h2>
+
+<p>Java で扱う文は以下の4種類</p>
+
+<ul>
+<li>制御文</li>
+<li>ブロック文</li>
+<li>宣言文</li>
+<li>式文</li>
+</ul>
+
+
+<p>宣言文と式文は終端にセミコロン必要</p>
+
+<h2>Java の演算子と式</h2>
+
+<ul>
+<li><code>&amp;&amp;</code> 、 <code>||</code> 、 <code>?</code> <code>:</code> （三項演算子）を除くすべての演算子は演算前にすべてのオペランドを評価する</li>
+<li>オペランドは左のものから評価する</li>
+<li>メソッド及びコンストラクタ呼び出し式では引数を左から評価する</li>
+</ul>
+
+
+<h2>数値の演算</h2>
+
+<h3>インクリメント/デクリメント演算の前置後置</h3>
+
+<p>前置演算は評価値が演算後の値、後置演算は評価値が演算前の値</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="o">++</span><span class="n">n</span><span class="o">;</span>
+</span><span class='line'><span class="c1">// m: 11, n: 11</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">n</span><span class="o">++;</span>
+</span><span class='line'><span class="c1">// m: 10, n: 11</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="k">while</span> <span class="o">(++</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// ループが回る回数は 9 回</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>論理演算</h2>
+
+<h3>遅延評価</h3>
+
+<p><code>&amp;&amp;</code> 、<code>||</code> は遅延評価を行う</p>
+
+<ul>
+<li><code>&amp;&amp;</code> は左辺の評価値が偽であれば右辺の評価値に関係なく結果が偽になるため右辺を評価しない</li>
+<li><code>||</code> は左辺の評価値が真であれば右辺の評価値に関係なく結果が真になるため右辺の評価をしない</li>
+</ul>
+
+
+<p>これらの演算子の右辺に副作用のある式を書くと、左辺の評価値により実行さるか否かが変わってくるので注意</p>
+
+<h2>その他の演算</h2>
+
+<h3>instanceof 演算子</h3>
+
+<p>ダウンキャストを安全に行えるかを事前にチェックする</p>
+
+<h2>参照</h2>
+
+<p><a href="http://www.amazon.co.jp/gp/product/4774166855/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774166855&amp;linkCode=as2&amp;tag=sojiro14-22">改訂2版 パーフェクトJava</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/08/10/about-gae-task-queue/">GAE Task Queue について</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-08-10T21:29:29+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:29 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>GAE の Task Queue についてざっくり。</p>
+
+<p>具体的な実装に関しては別エントリに書こうと思います。</p>
+
+<h2>Overview</h2>
+
+<ul>
+<li>アプリケーションの処理（task）を Task Queue API に渡す（queue）ことでユーザーからのリクエスト外で非同期に処理させることができる</li>
+<li>task はスケーラブルな GAE の Worker モジュールによってバックグラウンドで処理される</li>
+</ul>
+
+
+<p>Task Queue には以下の2つのタイプがある</p>
+
+<h3>Push queues</h3>
+
+<ul>
+<li>queue を処理する間隔をあらかじめスケジュールすることができる</li>
+<li>queue は GAE のモジュールへのリクエストとして処理される</li>
+<li>task の処理には期限がある
+
+<ul>
+<li>自動的にスケーリングするモジュールで処理するものは 10 分以内</li>
+<li>そうでないモジュールで処理するものは 24 時間以内</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Pull queues</h3>
+
+<ul>
+<li>GAE は queue を処理せず、外部の Worker が queue を取得（lease）して処理する</li>
+<li>外部の Worker で、どのような間隔で queue を処理するか管理する必要がある</li>
+<li>lease のタイミングで外部 Worker に対して queue の処理期限が渡される</li>
+<li>期限内に queue の処理が完了するか、 queue が削除されない場合は同一 queue に対する他の Worker プロセスからの lease を許可する</li>
+</ul>
+
+
+<p>queue の処理は非同期で行われるので task を作成したアプリケーションは処理の結果を知ることができないが、処理に失敗した場合は自動でリトライ処理が走る</p>
+
+<h2>Use cases</h2>
+
+<h3>Push queues</h3>
+
+<ul>
+<li>SNS メッセージアプリケーションでユーザーがメッセージを送るたびにフォロワーの更新を非同期で行う</li>
+<li>キャンペーン広告の送信をあらかじめスケジュールしておいて決められた時間に送る</li>
+</ul>
+
+
+<h3>Pull queues</h3>
+
+<ul>
+<li>バッチジョブに効果がある</li>
+<li>task に tag をつけることで外部 worker が lease する時に同じ tag がつく task をまとめて処理することができる</li>
+<li>実装例としては複数のゲームのリーダーボードが典型的
+
+<ul>
+<li>ハイスコアの更新があるたびに game id を tag として、 score と user 名を enqueue する</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Push queue</h2>
+
+<ul>
+<li>Push queue は GAE の Worker モジュールに HTTP リクエストで task を渡す</li>
+<li>このリクエストは一定の間隔で実行され、失敗すると新たなリクエストをもってリトライされる</li>
+<li>タスクの種類ごとにハンドラを書く必要がある</li>
+<li>1つのモジュールに各種類ごとのハンドラを用意することができる</li>
+<li>task の種類ごとに別々のモジュールを使うこともできる</li>
+</ul>
+
+
+<h3>Working with push queues</h3>
+
+<ul>
+<li>task を作って push queue に enqueue するプログラムを書く</li>
+<li>task リクエストを受け取って GAE モジュールに渡すハンドラを書く</li>
+<li>quota を気にする必要がある</li>
+</ul>
+
+
+<h2>Pull queue</h2>
+
+<ul>
+<li>Pull queue を使うことで独自のシステムから GAE の task を処理することができる</li>
+<li>ここでいう独自のシステムには GAE で構成されたシステムも含まれる</li>
+<li>GAE アプリケーションからは <code>com.google.appengine.api.taskqueue</code> パッケージを使って task を処理できる</li>
+<li>その他のアプリケーションからは Task Queue REST API を使う</li>
+<li>Push queue では GAE がやってくれる以下の処理を自前で用意する必要がある</li>
+<li>アプリケーション側で worker スケールの管理をする</li>
+<li>アプリケーション側で処理の終わった task を削除する</li>
+<li>Pull queue は <code>queue.xml</code> という設定ファイルが必要</li>
+</ul>
+
+
+<h3>Pull queue による task 処理の流れ</h3>
+
+<ol>
+<li>アプリケーションが task を lease する</li>
+<li>GAE が task データを返す</li>
+<li>アプリケーションが task を処理する
+
+<ol>
+<li>もし lease の期限以内に処理を完了できなかった場合は再度 lease できる</li>
+<li>retry できる最大の回数はあらかじめ設定できる</li>
+<li>この回数を超えると GAE が task を削除する</li>
+</ol>
+</li>
+<li>アプリケーションは task への処理が完了したら必ずその task を削除する</li>
+</ol>
+
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://cloud.google.com/appengine/docs/java/taskqueue/">Task Queue Overview</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/taskqueue/push/">Push Queues in Java</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/taskqueue/overview-pull">Using Pull Queues in Java</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/08/07/about-gae-datastore/">GAE Datastore について</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-08-07T04:34:09+09:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>4:34 am</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>GAE の Datastore についてざっくり</p>
+
+<h2>Overview</h2>
+
+<ul>
+<li>スキーマのないオブジェクトデータベース</li>
+<li>オートスケーリング</li>
+<li>ディスクへの書き込み時に自動で暗号化、読み出し時に自動で復号</li>
+<li>計画的ダウンタイムなし</li>
+</ul>
+
+
+<table>
+<thead>
+<tr>
+<th> Concept                   </th>
+<th> Cloud Datastore </th>
+<th> Relational database </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> オブジェクトが所属するカテゴリ </td>
+<td> Kind            </td>
+<td> Table               </td>
+</tr>
+<tr>
+<td> オブジェクト                </td>
+<td> Entity          </td>
+<td> Row                 </td>
+</tr>
+<tr>
+<td> オブジェクトがもつデータ      </td>
+<td> Property        </td>
+<td> Field               </td>
+</tr>
+<tr>
+<td> オブジェクトを特定する ID     </td>
+<td> Key             </td>
+<td> Primary key         </td>
+</tr>
+</tbody>
+</table>
+
+
+<ul>
+<li>同一 kind の entity でも違う property を持ちうる</li>
+<li>それぞれの entity は同名の property でも型の違うデータを持ちうる</li>
+</ul>
+
+
+<h3>Other storages</h3>
+
+<ul>
+<li>複数の table の join や 複数のカラムに対する不等号比較など、すべての SQL 操作が必要なら Google Cloud SQL</li>
+<li>ACID transaction を必要としないスキーマレスなデータを扱うなら Google Bigtable</li>
+<li>オンラインで分析されるデータを扱うなら Google BigQuery</li>
+<li>画像や動画などの変更がない大きなデータを扱うなら Google Cloud Storage</li>
+</ul>
+
+
+<h2>Entities</h2>
+
+<ul>
+<li>ひとつの entity は1つ以上の property をもつ</li>
+<li>property は1つ以上の値を取りうる</li>
+</ul>
+
+
+<h2>Keys</h2>
+
+<ul>
+<li>key は entity を特定する</li>
+<li>key は以下を含む
+
+<ul>
+<li>entity の kind</li>
+<li>以下のいずれかの識別子
+
+<ul>
+<li>文字列の key name</li>
+<li>数値の ID</li>
+</ul>
+</li>
+<li>ancestor path (optional)</li>
+</ul>
+</li>
+<li>識別子は entity が生成されたタイミングで設定される</li>
+<li>一度設定された識別子は変更されない</li>
+<li>識別子は以下の2つの方法で設定できる
+
+<ul>
+<li>アプリケーションで特定の key name を設定する</li>
+<li>Datastore が自動で発行する数値の ID を使う</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Ancestor paths</h2>
+
+<ul>
+<li>Datastore はファイルシステムのディレクトリ構成に似た階層構造をもつ</li>
+<li>entity 作成時に parent entity を指定することができる</li>
+<li>parent entity が指定されない entity は root entity と呼ぶ</li>
+<li>一度親子関係ができた entity はその関係が変更されることはない</li>
+<li>同じ parent をもつ2つの entity に対して Datastore は同一の ID を払い出すことはない</li>
+<li>同様に2つの root entity に対して同一の ID を払い出すこともない</li>
+<li>parent や parent の更に parent を ancestor と呼ぶ</li>
+<li>逆に children や children の更に children を descendant と呼ぶ</li>
+<li>root entity とその descendant は同一の entity group に属する</li>
+<li>ancestor path は root entity からたどって該当の entity に到達するまでの親子関係で構成される</li>
+</ul>
+
+
+<h2>Transactions and entity groups</h2>
+
+<ul>
+<li>entity に対する create, update, delete はトランザクションで管理される</li>
+<li>トランザクションにはこれらの複数の操作が内包される</li>
+<li>トランザクションは一貫性の担保のため、そこに含まれる操作をひとまとまりとして適用する、あるいはいずれかの操作が失敗するとすべての操作を適用しない</li>
+<li>commit を試みてエラーが返ってきたとしても、トランザクションが失敗したとは限らない
+
+<ul>
+<li><code>DatastoreTimeoutException</code> や <code>DatastoreFailureException</code> といったエラーが返ってきたとしても、 commit は成功している可能性がある</li>
+<li>このため、 Datastore は可能な限り同一のトランザクションを複数回適用しても最終的な結果が変わらないように設計すべきである</li>
+</ul>
+</li>
+<li>entity group とトランザクションの関係
+
+<ul>
+<li>1つのトランザクションで扱うデータは 25 の entity group 内に収まっていなければならない</li>
+<li>トランザクション内でクエリを発行する場合には正しいデータにマッチする ancestor filter を指定できるように entity group 内のデータを設計する必要がある</li>
+<li>広域に渡って各 entity group をレプリケーションするために、1つの entity group ごとに1秒あたりの書き込みスループットの上限値が定められている</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Understanding write costs</h2>
+
+<ul>
+<li>発生する書き込み
+
+<ul>
+<li>entity 自身</li>
+<li><code>EntitiesByKind</code> という index</li>
+<li>1つの property value ごとに <code>EntitiesByProperty</code> と <code>EntitiesByPropertyDesc</code> の各 index</li>
+</ul>
+</li>
+</ul>
+
+
+<p>以下のような entity を考える</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Key: 'Foo:1' (kind = 'Foo', id = 1, no parent)
+</span><span class='line'>A: 1, 2
+</span><span class='line'>B: null
+</span><span class='line'>C: 'this', 'that', 'theOther'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このとき発生する書き込み</p>
+
+<ul>
+<li>1: entity 自身</li>
+<li>1: <code>EntitiesByKind</code> index</li>
+<li>4: A property の2つの値にそれぞれ2つの index</li>
+<li>2: B property の値に2つの index （null でも必要）</li>
+<li>6: C property の3つの値にそれぞれ2つの index</li>
+</ul>
+
+
+<p>よって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 = 14</p>
+
+<p>上記の entity に複合 index を追加することを考える</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Kind: 'Foo'
+</span><span class='line'>A ▲, B ▼, C ▼</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このとき、各 property の値の組み合わせ分の書き込みが発生する</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(1, null, 'this') (1, null, 'that') (1, null, 'theOther')
+</span><span class='line'>(2, null, 'this') (2, null, 'that') (2, null, 'theOther')</span></code></pre></td></tr></table></div></figure>
+
+
+<p>したがって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 + 6 = 20</p>
+
+<p>次にこれまでと同様に ancestor が存在する以下のような entity を考える</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Key: 'GreatGrandpa:1/Grandpa:1/Dad:1/Foo:1' (kind = 'Foo', id = 1, parent = 'GreatGrandpa:1/Grandpa:1/Dad:1')
+</span><span class='line'>A: 1, 2
+</span><span class='line'>B: null
+</span><span class='line'>C: 'this', 'that', 'theOther'</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Kind: 'Foo'
+</span><span class='line'>A ▲, B ▼, C ▼
+</span><span class='line'>Ancestor: True</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このとき各 property の値と各 ancestor 及び自身の entity の組み合わせ分の書き込みを必要とする</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(1, null, 'this', 'GreatGrandpa') (1, null, 'this', 'Grandpa') (1, null, 'this', 'Dad') (1, null, 'this', 'Foo')
+</span><span class='line'>(1, null, 'that', 'GreatGrandpa') (1, null, 'that', 'Grandpa') (1, null, 'that', 'Dad') (1, null, 'that', 'Foo')
+</span><span class='line'>(1, null, 'theOther', 'GreatGrandpa') (1, null, 'theOther', 'Grandpa') (1, null, 'theOther', 'Dad') (1, null, 'theOther', 'Foo')
+</span><span class='line'>(2, null, 'this', 'GreatGrandpa') (2, null, 'this', 'Grandpa') (2, null, 'this', 'Dad') (2, null, 'this', 'Foo')
+</span><span class='line'>(2, null, 'that', 'GreatGrandpa') (2, null, 'that', 'Grandpa') (2, null, 'that', 'Dad') (2, null, 'that', 'Foo')
+</span><span class='line'>(2, null, 'theOther', 'GreatGrandpa') (2, null, 'theOther', 'Grandpa') (2, null, 'theOther', 'Dad') (2, null, 'theOther', 'Foo')</span></code></pre></td></tr></table></div></figure>
+
+
+<p>したがって発生する書き込みの合計は 1 + 1 + 4 + 2 + 6 + 24 = 38</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://cloud.google.com/appengine/docs/java/datastore/">Cloud Datastore Overview</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/java/datastore/entities">Entities, Properties, and Keys</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/page2">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/10/01/install-node-js-and-npm/">Node.jsとnpmのインストール</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/08/25/value-object-and-collection-object/">値オブジェクトとコレクションオブジェクト</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/06/19/wordpress-on-gae/">WordPress on GAE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/06/18/unix-time-handling/">Unix timeの扱い</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/06/17/copy-output-to-clipboard/">ファイルの内容を直接クリップボードに出力する</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

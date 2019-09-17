@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Xdg-open コマンドとは - Sojiro&#8217;s Blog</title>
+  <meta name="author" content="Sojiro">
+
+  
+  <meta name="description" content="以前 初めてのYeoman (Grunt/Bowerを使ってみる) というエントリで Grunt を実行したときに 1
+Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sojiro's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-50182043-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sojiro&#8217;s Blog</a></h1>
+  
+    <h2>This is nothing much.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+<ul class="subscribe">
+  <li><a href="https://github.com/sojiro14" rel="subscribe-github" title="@sojiro14 on GitHub" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 50,0 C 22.385714,0 0,22.385714 0,50 0,77.614286 22.385714,100 50,100 77.614286,100 100,77.614286 100,50 100,22.385714 77.614286,0 50,0 z m 29.692858,79.692858 c -3.859184,3.859182 -8.351022,6.887754 -13.35,9.00306 -1.27041,0.536736 -2.560204,1.009184 -3.867348,1.415306 v -7.493878 c 0,-3.938774 -1.35102,-6.835714 -4.053062,-8.690816 1.692858,-0.163264 3.24694,-0.390816 4.663266,-0.683672 1.416326,-0.292858 2.913266,-0.716328 4.491838,-1.27041 1.57857,-0.55408 2.994896,-1.213264 4.247958,-1.97755 1.253062,-0.765306 2.458164,-1.758164 3.613266,-2.978572 1.155102,-1.220408 2.12449,-2.604082 2.905102,-4.15 0.780612,-1.545918 1.4,-3.40204 1.855102,-5.566326 0.455102,-2.164286 0.683674,-4.54898 0.683674,-7.153062 0,-5.045918 -1.643878,-9.341836 -4.931634,-12.890816 C 77.44796,33.35 77.285714,29.10204 75.463266,24.512244 l -1.22143,-0.145918 c -0.845918,-0.09796 -2.368366,0.260204 -4.565306,1.07449 -2.196938,0.814286 -4.663264,2.14796 -7.396938,4.004082 -3.87449,-1.07449 -7.893878,-1.611224 -12.061224,-1.611224 -4.19898,0 -8.203062,0.536734 -12.012246,1.611224 -1.72449,-1.17245 -3.361224,-2.139796 -4.907142,-2.905102 C 31.753062,25.77449 30.516326,25.254082 29.587756,24.97653 28.660204,24.7 27.79796,24.528572 27,24.463266 c -0.79796,-0.0653 -1.310204,-0.08062 -1.537756,-0.04898 -0.22755,0.03164 -0.390816,0.0653 -0.487754,0.09796 -1.82347,4.62245 -1.985714,8.87143 -0.487756,12.743878 -3.287754,3.54796 -4.931632,7.844898 -4.931632,12.890816 0,2.604082 0.227552,4.988776 0.683674,7.153062 0.456122,2.164286 1.07449,4.020408 1.855102,5.566326 0.780612,1.545918 1.75,2.929592 2.905102,4.15 1.155102,1.220408 2.360204,2.213266 3.613264,2.978572 1.253062,0.766326 2.669388,1.42449 4.24796,1.97755 1.578572,0.554082 3.07551,0.976532 4.491836,1.27041 1.416328,0.292856 2.970408,0.521428 4.663266,0.683672 -2.669388,1.82347 -4.004082,4.720408 -4.004082,8.690816 v 7.639796 C 36.536734,89.818368 35.083674,89.3 33.656122,88.695918 c -4.99898,-2.115306 -9.490816,-5.143878 -13.35,-9.00306 -3.859184,-3.859184 -6.887754,-8.351022 -9.00306,-13.35 C 9.1163263,61.171428 8.0071428,55.67347 8.0071428,50 c 0,-5.67347 1.1091835,-11.171428 3.2969392,-16.342858 2.115306,-4.998978 5.143878,-9.490816 9.00306,-13.35 3.859184,-3.859182 8.351022,-6.887754 13.35,-9.00306 C 38.828572,9.1163266 44.32653,8.0071428 50,8.0071428 c 5.67347,0 11.171428,1.1091838 16.342858,3.2969392 5,2.115306 9.490816,5.143878 13.35,9.00306 3.859182,3.859184 6.887754,8.351022 9.00306,13.35 2.186736,5.17245 3.295918,10.67041 3.295918,16.342858 0,5.672448 -1.109182,11.171428 -3.296938,16.342858 -2.115306,4.998978 -5.143878,9.490816 -9.00204,13.35 l 0,0 z"></path></svg></a></li>
+</ul>
+  
+  
+  
+<ul class="subscribe">
+  <li><a href="https://twitter.com/sojiro14" rel="subscribe-twitter" title="@sojiro14 on Twitter" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 512 512"><path class="social" d="M0.001,334.932c33.327,30.816,118.891,59.981,188.517-8.271c-12.52,1.955-22.972-0.416-30.913-8.269
+  c-7.531-7.465-7.945-15.182-3.914-22.202c3.275-5.725,10.184-9.741,16.977-13.934c-12.323,2.285-22.829,1.095-32.218-3.706
+  c-12.604-6.444-24.863-13.228-28.3-27.207c7.71-8.112,16.28-15.359,34.831-12.627c-17.45-5.83-33.087-13.429-44.41-24.815
+  c-11.028-11.091-12.163-18.302-13.932-26.996c9.632-3.567,19.688-5.421,30.478-4.353c-24.397-12.476-34.757-29.63-40.487-48.325
+  c-1.731-5.652-2.044-11.03-1.31-16.545c98.826,37.305,145.11,64.109,170.662,89.251c11.496-30.589,38.3-99.868,78.371-123.646
+  c0.191,3.77-1.309,7.837-4.357,12.189c11.863-6.609,21.125-17.188,37.445-16.98c-1.879,7.723-7.279,13.904-17.85,17.854
+  c10.662-4.084,21.463-7.545,32.65-9.578c10.375-1.881,10.229,6.304,4.355,10.444c-11.916,8.412-24.578,9.456-37.006,13.498
+  c38.105,0.949,69.266,18.994,93.604,58.343c8.088,13.074,13.52,26.149,14.807,40.487c16.254,4.563,32.426,5.494,48.76,2.61
+  c4.475-0.796,8.645-1.63,12.627-3.482c-6.354,9.529-13.686,17.356-23.947,20.899c-9.811,3.387-19.637,6.688-30.473,6.968
+  c17.641,6.675,37.082,7.045,57.033,5.659c-24.402,23.486-43.08,22.922-61.824,22.642c-8.221,34.703-25.025,69.315-60.52,101.005
+  c-46.559,41.569-96.678,61.397-148.457,65.742c-48.552,4.07-95.488,3.512-146.726-20.464
+  C56.486,393.349,24.648,368.884,0.001,334.932L0.001,334.932z"/></svg></a></li>
+</ul>
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="sojiro14.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Xdg-open コマンドとは</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-12T23:55:57+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:55 pm</span></time>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>以前 <a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a> というエントリで Grunt を実行したときに</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>と怒られたことがあったので <code>xdg-open</code> コマンドについて少し調べてみます</p>
+
+<h2>xdg-open コマンドのインストール</h2>
+
+<p>xdg-open の実体はシェルスクリプトである</p>
+
+<p>すんなりインストールできるかと思いきや普段の CentOS に入れるのに手こずってしまった</p>
+
+<p>どうやら Ubuntu との相性が良いようなので Vagrant で Ubuntu を立ち上げてそこでインストールしてみる</p>
+
+<h3>Ubuntu のセットアップ</h3>
+
+<p>Vagrant で Ubuntu 環境をセットアップする</p>
+
+<p>まずは box のインストールから</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box add ubuntu http://goo.gl/8kWkm
+</span><span class='line'><span class="o">==</span>&gt; box: Adding box <span class="s1">&#39;ubuntu&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> provider:
+</span><span class='line'>   box: Downloading: http://goo.gl/8kWkm
+</span><span class='line'><span class="o">==</span>&gt; box: Successfully added box <span class="s1">&#39;ubuntu&#39;</span> <span class="o">(</span>v0<span class="o">)</span> <span class="k">for</span> <span class="s1">&#39;virtualbox&#39;</span>!
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box list
+</span><span class='line'>centos64 <span class="o">(</span>virtualbox, 0<span class="o">)</span>
+</span><span class='line'>ubuntu   <span class="o">(</span>virtualbox, 0<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>box がセットアップできたら立ち上げまで行ってしまう</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir ubuntu
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>ubuntu/
+</span><span class='line'><span class="nv">$ </span>vagrant init ubuntu
+</span><span class='line'>A <span class="sb">`</span>Vagrantfile<span class="sb">`</span> has been placed in this directory. You are now
+</span><span class='line'>ready to <span class="sb">`</span>vagrant up<span class="sb">`</span> your first virtual environment! Please <span class="nb">read</span>
+</span><span class='line'>the comments in the Vagrantfile as well as documentation on
+</span><span class='line'><span class="sb">`</span>vagrantup.com<span class="sb">`</span> <span class="k">for</span> more information on using Vagrant.
+</span><span class='line'><span class="nv">$ </span>ls
+</span><span class='line'>Vagrantfile
+</span><span class='line'><span class="nv">$ </span>vagrant up
+</span><span class='line'>Bringing machine <span class="s1">&#39;default&#39;</span> up with <span class="s1">&#39;virtualbox&#39;</span> provider...
+</span><span class='line'><span class="o">==</span>&gt; default: Importing base box <span class="s1">&#39;ubuntu&#39;</span>...
+</span><span class='line'><span class="o">==</span>&gt; default: Matching MAC address <span class="k">for</span> NAT networking...
+</span><span class='line'><span class="o">==</span>&gt; default: Setting the name of the VM: <span class="nv">ubuntu_default_1432117537476_54763</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Fixed port collision <span class="k">for</span> <span class="nv">22</span> <span class="o">=</span>&gt; 2222. Now on port 2200.
+</span><span class='line'><span class="o">==</span>&gt; default: Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">==</span>&gt; default: Preparing network interfaces based on configuration...
+</span><span class='line'>   default: Adapter 1: <span class="nv">nat</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Forwarding ports...
+</span><span class='line'>   default: <span class="nv">22</span> <span class="o">=</span>&gt; <span class="m">2200</span> <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">==</span>&gt; default: Booting VM...
+</span><span class='line'><span class="o">==</span>&gt; default: Waiting <span class="k">for</span> machine to boot. This may take a few minutes...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>立ち上がったら以下のコマンドで Ubuntu 環境に入り、インストールの準備が完了する</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh
+</span><span class='line'>Welcome to Ubuntu 12.04.1 LTS <span class="o">(</span>GNU/Linux 3.2.0-32-generic x86_64<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>* Documentation:  https://help.ubuntu.com/
+</span><span class='line'>
+</span><span class='line'> System information as of Wed May <span class="m">20</span> 07:30:10 BRT 2015
+</span><span class='line'>
+</span><span class='line'> System load:  0.0               Processes:           73
+</span><span class='line'> Usage of /:   11.7% of 7.87GB   Users logged in:     0
+</span><span class='line'> Memory usage: 1%                IP address <span class="k">for</span> eth0: 10.0.2.15
+</span><span class='line'> Swap usage:   0%
+</span><span class='line'>
+</span><span class='line'> Graph this data and manage this system at https://landscape.canonical.com/
+</span><span class='line'>
+</span><span class='line'>New release <span class="s1">&#39;14.04.2 LTS&#39;</span> available.
+</span><span class='line'>Run <span class="s1">&#39;do-release-upgrade&#39;</span> to upgrade to it.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>インストール</h3>
+
+<p>ここからいよいよ Ubuntu に <code>xdg-open</code> をインストールしていく</p>
+
+<p>最初から入ってたらラッキーだなーと思いつつ打ってみる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>xdg-open
+</span><span class='line'>The program <span class="s1">&#39;xdg-open&#39;</span> is currently not installed.  You can install it by typing:
+</span><span class='line'>sudo apt-get install xdg-utils
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>思いがけず大ヒントが返ってきたので従う</p>
+
+<p>xdg-utils は <code>xdg-open</code> を内包するパッケージである</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install xdg-utils
+</span><span class='line'>Reading package lists... Done
+</span><span class='line'>Building dependency tree
+</span><span class='line'>...
+</span><span class='line'>E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>エラーになってしまった</p>
+
+<p>しかしまたヒントがあるので従う</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo apt-get install xdg-utils --fix-missing
+</span><span class='line'>Reading package lists... Done
+</span><span class='line'>Building dependency tree
+</span><span class='line'>...
+</span><span class='line'>Extracting templates from packages: 100%
+</span><span class='line'>Preconfiguring packages ...
+</span><span class='line'>Selecting previously unselected package ttf-dejavu-core.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>晴れてインストール完了</p>
+
+<h2>使ってみる</h2>
+
+<ul>
+<li>テキストファイル: 普通に開ける</li>
+<li>画像ファイル: 開けるメソッドがなくエラー（環境立ち上げたばかりなので）</li>
+</ul>
+
+
+<h3>ディレクトリを指定</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>mkdir <span class="nb">test</span>
+</span><span class='line'><span class="nv">$ </span>touch <span class="nb">test</span>/file
+</span><span class='line'><span class="nv">$ </span>xdg-open <span class="nb">test</span>/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/xdg_open/directory.png"></p>
+
+<h3>URL を指定してみる</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>xdg-open http://blog.sojiro.me
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/xdg_open/blog.png"></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>xdg-open http://google.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/xdg_open/google.png"></p>
+
+<p>ブラウザはないが URL を指定すると CUI 上で Web ページが開ける</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Sojiro
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-05-12T23:55:57+09:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:55 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command/" data-via="sojiro14" data-counturl="http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-layout="button_count" data-send="false" data-width="300" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/05/11/the-third-step-of-yeoman/" title="Previous Post: 初めてのYeoman (Grunt/Bowerとは)">&laquo; 初めてのYeoman (Grunt/Bowerとは)</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/05/13/start-up-a-web-camera-via-web/" title="Next Post: Webからデバイスのカメラを起動する">Webからデバイスのカメラを起動する &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Sojiro -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sojirosblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command/';
+        var disqus_url = 'http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

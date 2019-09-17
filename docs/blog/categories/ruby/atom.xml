@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rbenv で Ruby を管理する]]></title>
+    <link href="http://sojiro14.github.io/blog/2016/03/05/management-ruby-versions-by-rbenv/"/>
+    <updated>2016-03-05T06:22:42+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2016/03/05/management-ruby-versions-by-rbenv</id>
+    <content type="html"><![CDATA[<p>Ruby をバージョンごと、あるいはプロジェクトごとに管理するためのツールである rbenv の導入手順メモ</p>
+
+<h2>rbenv をインストールする</h2>
+
+<h3>homebrew の update</h3>
+
+<pre><code class="bash">$ brew update
+Updated Homebrew from b369c25 to c0fae05.
+...
+</code></pre>
+
+<h3>rbenv と ruby-build のインストール</h3>
+
+<p> <code>rbenv</code> と同時に <code>ruby-build</code> もインストールする</p>
+
+<p> <code>ruby-build</code> は <code>rbenv</code> のプラグインで <code>rbenv install</code> コマンドを提供する</p>
+
+<pre><code class="bash">$ brew install rbenv ruby-build
+==&gt; Installing dependencies for rbenv: autoconf, pkg-config, openssl, ruby-build
+...
+</code></pre>
+
+<h2>rbenv init</h2>
+
+<pre><code class="bash">$ echo 'eval "$(rbenv init -)"' &gt;&gt; ~/.bash_profile
+$ source ~/.bash_profile
+</code></pre>
+
+<p> <code>rbenv init -</code> でやっていることは以下の通り</p>
+
+<pre><code class="bash">$ rbenv init -
+export PATH="/Your/Home/Directory/.rbenv/shims:${PATH}"
+export RBENV_SHELL=bash
+source '/usr/local/Cellar/rbenv/1.0.0/libexec/../completions/rbenv.bash'
+command rbenv rehash 2&gt;/dev/null
+rbenv() {
+  local command
+  command="$1"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell)
+    eval "$(rbenv "sh-$command" "$@")";;
+  *)
+    command rbenv "$command" "$@";;
+  esac
+}
+</code></pre>
+
+<h2>ruby のインストール</h2>
+
+<p>インストールできる ruby のバージョンを確認
+<code>bash
+$ rbenv install -l
+Available versions:
+  1.8.6-p383
+  1.8.6-p420
+  1.8.7-p249
+...
+</code></p>
+
+<p>バージョン <code>2.2.0</code> をインストールする
+<code>bash
+$ rbenv install 2.2.0
+Downloading ruby-2.2.0.tar.bz2...
+-&gt; https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.0.tar.bz2
+Installing ruby-2.2.0...
+...
+</code></p>
+
+<p>インストールされたバージョンを確認
+<code>bash
+$ rbenv versions
+* system (set by /My/Home/Directory/.rbenv/version)
+  2.2.0
+</code></p>
+
+<h2>使用する ruby を設定</h2>
+
+<pre><code class="bash">$ rbenv global 2.2.0
+$ rbenv versions
+  system
+* 2.2.0 (set by /My/Home/Directory/.rbenv/version)
+</code></pre>
+
+<p>ブログを管理しているディレクトリは system ruby にしておく
+<code>bash
+$ cd git/blog/
+$ rbenv local system
+$ rbenv versions
+* system (set by /My/Home/Directory/git/blog/.ruby-version)
+  2.2.0
+$ cd
+$ rbenv versions
+  system
+* 2.2.0 (set by /My/Home/Directory/.rbenv/version)
+</code></p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/rbenv/rbenv">rbenv</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails/"/>
+    <updated>2014-11-10T03:27:49+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/10/making-first-app-with-rails-number-1-setup-rails</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsで初めてアプリを作ってみます。
+今回はRailsの立ち上がりを確認するところまで。</p>
+
+<h2>アプリのセットアップ（rails new）</h2>
+
+<p>railsのアプリ作成は <code>rails new</code> コマンドで始まる。
+<code>bash
+$ mkdir rails_projects
+$ cd rails_projects
+</code>
+今回のアプリ作成の為にディレクトリを作成し、早速コマンドを実行。
+<code>bash
+$ rails new first_app
+...
+An error occurred while installing sqlite3 (1.3.10), and Bundler cannot continue.
+...
+</code>
+いくつかのディレクトリやファイルが作成されるが、最後にこのようなエラーが出てbundle失敗。
+そこでGemfileを編集してbundleをやり直す。</p>
+
+<pre><code class="bash">$ cd first_app/
+</code></pre>
+
+<p>Gemfileを編集。内容は<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-bundler">Ruby on Rails #Bundler</a>を参照。
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bundle update
+</span><span class='line'><span class="p">&amp;</span>hellip<span class="p">;</span>
+</span><span class='line'>Building native extensions.  This could take a <span class="k">while</span><span class="p">&amp;</span>hellip<span class="p">;</span>
+</span><span class='line'>ERROR:  Error installing sqlite3:
+</span><span class='line'>    ERROR: Failed to build gem native extension.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;/home/sojiro/.rvm/rubies/ruby-2.0.0-p594/bin/ruby extconf.rb
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;checking <span class="k">for</span> sqlite3.h<span class="p">&amp;</span>hellip<span class="p">;</span> no
+</span><span class='line'>sqlite3.h is missing. Try <span class="p">&amp;</span>lsquo<span class="p">;</span>port install sqlite3 +universal<span class="p">&amp;</span>rsquo<span class="p">;</span>
+</span><span class='line'>or <span class="p">&amp;</span>lsquo<span class="p">;</span>yum install sqlite-devel<span class="p">&amp;</span>rsquo<span class="p">;</span> and check your shared library search path <span class="o">(</span>the
+</span><span class='line'>location where your sqlite3 shared library is located<span class="o">)</span>.
+</span><span class='line'>&lt;strong&gt;&lt;em&gt; extconf.rb failed &lt;/em&gt;&lt;/strong&gt;
+</span><span class='line'>Could not create Makefile due to some reason, probably lack of necessary
+</span><span class='line'>libraries and/or headers.  Check the mkmf.log file <span class="k">for</span> more details.  You may
+</span><span class='line'>need configuration options.
+</span><span class='line'><span class="p">&amp;</span>hellip<span class="p">;</span>
+</span><span class='line'>&lt;code&gt;
+</span><span class='line'>またも失敗。よく見るとsqlite-develが足りていないらしい
+</span><span class='line'>&lt;/code&gt; bash
+</span><span class='line'><span class="nv">$ </span>sudo yum install sqlite-devel
+</span><span class='line'>&lt;code&gt;
+</span><span class='line'>sqlite-develをインストール後再度bundleによるgemのインストールを試みる
+</span><span class='line'>&lt;/code&gt; bash
+</span><span class='line'><span class="nv">$ </span>bundle update
+</span><span class='line'>Installing sqlite3 1.3.8
+</span><span class='line'>Installing turbolinks 1.1.1
+</span><span class='line'>Installing uglifier 2.1.1
+</span><span class='line'>Your bundle is updated!
+</span><span class='line'><span class="nv">$ </span>bundle install
+</span><span class='line'>Your bundle is <span class="nb">complete</span>!
+</span><span class='line'>Use &lt;code&gt;bundle show <span class="o">[</span>gemname<span class="o">]</span>&lt;/code&gt; to see where a bundled gem is installed.
+</span></code></pre></td></tr></table></div></figure>
+インストール成功。</p>
+
+<h2>サーバーの立ち上げ（rails server）</h2>
+
+<p>ローカルでrailsを立ち上げるコマンド <code>rails server</code> を実行。
+<code>bash
+$ rails server
+...
+Could not find a JavaScript runtime. See https://github.com/sstephenson/execjs for a list of available runtimes. (ExecJS::RuntimeUnavailable)
+...
+</code></p>
+
+<h3>Node.jsのインストール</h3>
+
+<p> <code>rails server</code> コマンド実行でエラーが出てしまう。JavaScript runtimeがインストールされていないことが原因のよう。メッセージ通り <a href="https://github.com/sstephenson/execjs">https://github.com/sstephenson/execjs</a> に行ってみるとJavaScript runtimeとしてNode.jsが有効と書いてあるのでNode.jsをインストールする。</p>
+
+<pre><code class="bash">$ sudo rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+$ sudo yum install nodejs npm --enablerepo=epel
+</code></pre>
+
+<p>今回はyumでインストールした。そして再度 <code>rails server</code>
+<code>bash
+$ rails server
+=&gt; Booting WEBrick
+=&gt; Rails 4.0.5 application starting in development on http://0.0.0.0:3000
+=&gt; Run `rails server -h` for more startup options
+=&gt; Ctrl-C to shutdown server
+</code>
+ローカルでサーバーが立ち上がる。
+今回はAWS上で作業しているので、AWS該当インスタンスのSecurity Groupで3000番portを空ける。</p>
+
+<p><a href="http://xx.xxx.xxx.xxx:3000">http://xx.xxx.xxx.xxx:3000</a></p>
+
+<p>にブラウザでアクセスして以下の画面が見えればOK</p>
+
+<p><img src="/images/rails/rails_starting.png"></p>
+
+<h2>GitHubに上げておく</h2>
+
+<pre><code class="bash">$ git init
+$ git remote add origin https://github.com/sojiro14/first_app.git
+</code></pre>
+
+<p>GitHubでリポジトリ作成
+<code>bash
+$ git add .
+$ git commit -m 'Initialize repository'
+$ git push -u origin master
+</code></p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://qiita.com/you21979@github/items/4efd9fc4363573191b5c">node.jsをyumでインストールする(centos6.5)</a></li>
+<li><a href="http://railstutorial.jp">Ruby on Rails チュートリアル</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[LinuxにRuby on Railsをインストールする]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/11/05/installing-ruby-on-rails-on-linux/"/>
+    <updated>2014-11-05T03:58:11+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/11/05/installing-ruby-on-rails-on-linux</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsを使ってみたいと思い、AWSにインストールした手順。</p>
+
+<h2>Ruby version 2.0.0 を RVMを使ってインストール</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/">Linuxに最新のRubyをインストールする</a>を参照</p>
+
+<h2>gemsetの作成</h2>
+
+<blockquote><p>Rubyをインストールしたら、Railsのアプリケーションを実行するために必要な他のソフトウェア向けにシステムを構成する必要があります。通常、これはgemのインストールに関連します。gemとは自己完結型のRubyコードのパッケージです。バージョン番号の異なるgem同士がコンフリクトすることがあるため、一連のgemを自己完結的にまとめたgemsetというものを作成してバージョンを使い分けるのが便利です。
+（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
+
+<p>以下のコマンドでgemsetを作成する。
+<code>bash
+$ rvm use 2.0.0@railstutorial_rails_4_0 --create --default
+</code></p>
+
+<blockquote><p>上のコマンドを実行すると、Ruby 2.0.0に関連付けられたrailstutorial_rails_4_0というgemsetを作成し (&ndash;create)、その場でgemsetを有効にし (use)、gemsetをデフォルトに設定 (&ndash;default) します。これにより、ターミナルウィンドウを開いたときに2.0.0@railstutorial_rails_4_0というRubyとgemsetの組み合わせが常に選択されるようになります。
+（引用: <a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a>）</p></blockquote>
+
+<h2>RubyGemsのインストール</h2>
+
+<p>AWSには始めからgemがインストールされていて、PATHは以下。
+<code>bash
+$ which gem
+/usr/bin/gem
+</code>
+RVMでRubyをインストールするとPATHが上書きされる。
+<code>bash
+$ which gem
+~/.rvm/rubies/ruby-2.0.0-p594/bin/gem
+</code>
+今回はチュートリアルに合わせてgemのバージョンを更新する
+<code>bash
+$ gem update --system 2.0.3
+</code>
+gemの設定ファイルである <code>.gemrc</code> に自動生成されるドキュメントである <code>ri</code> と <code>rdoc</code> の自動生成を抑制する設定をする
+<code>bash
+$ vim .gemrc
+$ cat .gemrc
+install: --no-rdoc --no-ri
+update:  --no-rdoc --no-ri
+</code></p>
+
+<h2>Railsをインストールする</h2>
+
+<p>いよいよRailsをインストールする
+<code>bash
+$ gem install rails --version 4.0.5
+</code>
+インストール完了。
+以下のコマンドで確認する
+<code>bash
+$ rails -v
+Rails 4.0.5
+</code>
+Railsがインストールされたことを確認できた</p>
+
+<h2>参照</h2>
+
+<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linuxに最新のRubyをインストールする]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux/"/>
+    <updated>2014-10-31T05:29:00+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/10/31/installing-latest-ruby-in-linux</id>
+    <content type="html"><![CDATA[<p>Ruby on Railsを使ってみたいと思い、調べてみるとRails4ではRubyのバージョンは1.9以降が必須のようである。</p>
+
+<p>自分がさくらで借りているサーバーではRubyのバージョンが1.8.7だったのでこれを新しくしてみた。</p>
+
+<h2>RVMのインストール</h2>
+
+<p>新しいRubyをインストールする前にRVM(Ruby Version Manager)をインストールする。これはRubyをバージョンごとに管理するツール
+<code>bash
+$ curl -L https://get.rvm.io | bash -s
+</code></p>
+
+<p>このコマンドで自分のホームディレクトリ以下に <code>.rvm/</code> が作られ、ここにRVMがインストールされる。</p>
+
+<p>そして <code>.profile</code> <code>.bashrc</code> <code>.zshrc</code> にPATHを通す記述が追加される。</p>
+
+<p>また、 <code>.bash_profile</code> <code>.zlogin</code> にRVMをロードする記述が追加される。</p>
+
+<p>RVMのインストールが完了したらロードする。ここではbashを使っているので以下のようにする。
+<code>bash
+$ source .bash_profile
+</code></p>
+
+<h2>Rubyのインストール</h2>
+
+<h3>さくらのレンタルサーバーでの失敗</h3>
+
+<p>まずはRubyのインストールに必要なパーツを調べ、無ければインストールする。
+以下のコマンドで必要なものをピックアップしインストールまで行ってくれる。
+<code>bash
+$ rvm requirements
+/your/home/directry/.rvm/scripts/functions/support: line 314: rvm_debug: command not found
+Checking requirements for freebsd.
+Installing requirements for freebsd.
+Updating system.
+Installing required packages: automake, bison, readline, libyaml...
+Error running 'requirements_freebsd_libs_install automake bison readline libyaml',
+</code>
+ここでErrorが発生。内容は必要なパッケージがインストールできなかったということ。
+そこでFreeBSDのパッケージ管理コマンドである <code>pkg</code> コマンドを使ってインストールを試みる。</p>
+
+<p>が、サーバーの設定的に自分でパッケージを追加することができなかったのでさくらのサーバーを断念してAWSに移行した。</p>
+
+<h3>AWSに移行</h3>
+
+<p>AWSに移行して <code>$ rvm requirements</code> までを実行する。（AWSは始めからRubyのバージョンが2.0.0だったが構わず実行）
+ここでも <code>$ rvm requirements</code> が転ける。</p>
+
+<p>そこで今度はCentOSだったので <code>yum</code> を使ってインストールを試みる。以下のコマンドは <code>$ rvm requirements</code> が教えてくれる。Errorの原因が <code>sudo</code> で実行していなかったことなので <code>sudo</code> 付きで実行する。
+<code>bash
+sudo yum install -y patch libyaml-devel libffi-devel glibc-headers autoconf gcc-c++ glibc-devel patch readline-devel zlib-devel openssl-devel automake libtool bison
+</code>
+これで成功。
+<code>bash
+$ rvm requirements
+Checking requirements for amazon.
+Requirements installation successful.
+</code>
+ <code>$ rvm requirements</code>も成功。</p>
+
+<p>このサーバーではすでにバージョン2.0.0のRubyがインストールされていたが、RVMの配下に新たにバージョン2.0.0のRubyをインストールする。
+<code>bash
+$ rvm install 2.0.0 --with-openssl-dir=$HOME/.rvm/usr
+</code>
+インストール完了。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://railstutorial.jp/chapters/beginning?version=4.0#top">Ruby on Rails チュートリアル</a></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Yeoman | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/yeoman/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerとは)]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/11/the-third-step-of-yeoman/"/>
+    <updated>2015-05-11T23:51:11+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/11/the-third-step-of-yeoman</id>
+    <content type="html"><![CDATA[<p>初めてのYeoman というタイトルでこれまで2つのエントリを投稿しました。</p>
+
+<ul>
+<li><a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a></li>
+<li><a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a></li>
+</ul>
+
+
+<p>ここであらためて Grunt と Bower について書いておきます。</p>
+
+<p>特に技術的なことはないです。</p>
+
+<h2>Grunt とは</h2>
+
+<blockquote><p>The JavaScript Task Runner</p></blockquote>
+
+<p>と公式サイトに書いてある。一言で言うと自動化、とも。</p>
+
+<p>要するに予め決められたタスクをその通りに実行してくれるツールである。
+（似たようなツールとして make や rake を使ったことがある）</p>
+
+<p>そして js 界隈で話題のツールやプラグイン、フレームワークがどんどん移り変わって行くのと同様に Grunt も gulp にとって変わられると話題になっている。</p>
+
+<p>しかしこれは自分でやりたいことを自動化したい場合の話であって、何か自分のやりたいことを他の人がやっていたら素直にその人の作ったタスクを使わせてもらえば良いわけである。</p>
+
+<p>（そういう意味で他の人が作った設定に多少手を加えられるほどの理解はあると嬉しいかもしれないが、それは必要になったときで良い）</p>
+
+<p>つまり Grunt でも gulp でも、自分がやりたいことを他の人が既にやっていればそれに乗っかれば良いし、他の人がまだやっていなければ、その時点で自分が一番書きやすい方法をつかって自動化すれば良い。</p>
+
+<p>問題は自分にやりたいこと（自動化したいこと）があるかどうかであって、自分が自分以外の何者でもない以上、それはあるはずで、それに気づいてないとか、考え続けられないから僕はまだまだ三流以下ということなんですね。</p>
+
+<h2>Bower とは</h2>
+
+<p>フロントエンドのパッケージマネージャーで</p>
+
+<ul>
+<li>cpan(perl)</li>
+<li>gem(ruby)</li>
+<li>Node.js(npm)</li>
+</ul>
+
+
+<p>みたいなものだと理解している</p>
+
+<p>使い方も対して変わらないですね</p>
+
+<h2>Yeoman</h2>
+
+<p>ここまで Yeoman を見てきて Yeoman の要は yo のように思える</p>
+
+<p>使う側の立場では雛形(generator)を選んで yo を実行したらやりたいことは既に決まっている</p>
+
+<p>作る側としては最終的にどんな雛形を作るかが問題である</p>
+
+<p>ここで雛形のルール（設定）を Grunt で規定し、フロントエンドを Bower で規定することをルールとしたら雛形もまとめやすいよね、ということか</p>
+
+<h2>最後に</h2>
+
+<p>なんだか雑なエントリになってしまった。。。</p>
+
+<p>まずは Yeoman の恩恵をもっと受けまくってみます</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://gruntjs.com/">Grunt</a></li>
+<li><a href="http://bower.io/">Bower</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのYeoman (Grunt/Bowerを使ってみる)]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/10/the-second-step-of-yeoman/"/>
+    <updated>2015-05-10T18:25:06+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/10/the-second-step-of-yeoman</id>
+    <content type="html"><![CDATA[<p>以前のエントリ <a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a> で <code>yo</code> を使い generator-angular-fullstack の雛形を作りました。</p>
+
+<p>今回はこのとき作った雛形を Grunt を使って実際に動かしてみたいと思います。</p>
+
+<p>Gruntがどんなものかはとりあえず使ってみてからと言うことで。</p>
+
+<h2>Grunt のインストール</h2>
+
+<p> <code>npm</code> でインストールする</p>
+
+<pre><code class="bash">$ npm install -g grunt-cli
+</code></pre>
+
+<p>インストールされたことを確認</p>
+
+<pre><code class="bash">$ grunt --version
+grunt-cli v0.1.13
+grunt v0.4.5
+</code></pre>
+
+<p>OK.</p>
+
+<h2>Grunt / Bower の実行</h2>
+
+<p>インストールできたら早速 Grunt を実行してみる</p>
+
+<p>今回は雛形作成時に生成された Gruntfile.js で規定されている serve タスクを実行する</p>
+
+<pre><code class="bash">$ grunt serve
+Running "serve" task
+
+Running "clean:server" (clean) task
+
+Running "env:all" (env) task
+
+Running "injector:sass" (injector) task
+Missing option `template`, using `dest` as template instead
+Injecting scss files (4 files)
+
+Running "concurrent:server" (concurrent) task
+    Warning: Running "sass:server" (sass) task
+    Warning: 
+    You need to have Ruby and Sass installed and in your PATH for this task to work.
+    More info: https://github.com/gruntjs/grunt-contrib-sass
+     Use --force to continue.
+
+    Aborted due to warnings.
+...
+</code></pre>
+
+<p>何やら怒られた</p>
+
+<pre><code>You need to have Ruby and Sass installed and in your PATH for this task to work.
+</code></pre>
+
+<p>ということだそうなので Sass をインストールする。</p>
+
+<pre><code class="bash">$ yum install rubygems
+$ gem install sass
+</code></pre>
+
+<p>もう一度トライ</p>
+
+<pre><code class="bash">$ grunt serve
+Running "serve" task
+
+Running "clean:server" (clean) task
+
+Running "env:all" (env) task
+
+Running "injector:sass" (injector) task
+Missing option `template`, using `dest` as template instead
+Injecting scss files (4 files)
+&gt;&gt; Nothing changed
+
+Running "concurrent:server" (concurrent) task
+    Warning: Error: File to import not found or unreadable: bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.
+           Load paths:
+             /home/sojiro/yeoman/angular_fullstack/client/bower_components
+             /home/sojiro/yeoman/angular_fullstack/client/app
+             /home/sojiro/yeoman/angular_fullstack/client/components
+            on line 4 of client/app/app.scss
+      Use --trace for backtrace. Use --force to continue.
+
+        Aborted due to warnings.
+...
+</code></pre>
+
+<p>また怒られた</p>
+
+<pre><code>Warning: Error: File to import not found or unreadable: bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.
+</code></pre>
+
+<p>今回のエラーはよくわからなかったので少し調べると、 Yeoman 三種の神器の三つ目、 Bower が必要らしいのでインストールする</p>
+
+<pre><code class="bash">$ npm install -g bower
+$ bower -v
+1.4.1
+</code></pre>
+
+<p>雛形作成時に bower.json が生成されているのでここに記述されているパッケージをインストール</p>
+
+<pre><code class="bash">$ bower install
+</code></pre>
+
+<p>そして再度実行</p>
+
+<pre><code class="bash">$ grunt serve
+Running "serve" task
+
+...
+
+Running "open:server" (open) task
+Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
+xdg-open: no method available for opening 'http://localhost:9000'
+ Use --force to continue.
+
+Aborted due to warnings.
+
+...
+</code></pre>
+
+<p>また怒られる</p>
+
+<pre><code>Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
+</code></pre>
+
+<p>xdg-open は引数に受け取ったものをよしなにアプリケーションを選択して開いてくれるコマンドらしい（未検証）</p>
+
+<p>このコマンドが、指定されたオブジェクトを適切なアプリケーションで開くために mime タイプを取得するとき、 <code>xdg-mime</code> コマンドを使用するようである</p>
+
+<p>今回は <code>xdg-open URL</code> とすることで指定したURL（localhost）をブラウザで開こうとしているようである</p>
+
+<p>そもそもここで使っているサーバーはブラウザが入っていないリモートのサーバーなので、該当タスクをコメントアウトする。また、サーバーのURLもIPアドレスで指定するように設定ファイル(Gruntfile.js)を変更する。</p>
+
+<pre><code class="bash">$ vim Gruntfile.js
+</code></pre>
+
+<pre><code class="javascript">    grunt.task.run([
+      'clean:server',
+      'env:all',
+      'injector:sass', 
+      'concurrent:server',
+      'injector',
+      'wiredep',
+      'autoprefixer',
+      'express:dev',
+      'wait',
+//      'open',
+      'watch'
+    ]);
+  });
+</code></pre>
+
+<pre><code class="javascript">    open: {
+      server: {
+        //url: 'http://localhost:&lt;%= express.options.port %&gt;'
+        url: 'http://xx.xxx.xxx.xxx:&lt;%= express.options.port %&gt;'
+      }
+    },
+</code></pre>
+
+<p>そしてまたまた実行</p>
+
+<pre><code class="bash">$ grunt serve
+Running "serve" task
+
+...
+
+Running "watch" task
+Waiting...
+</code></pre>
+
+<p>動いた！！</p>
+
+<h2>雛形の動作確認</h2>
+
+<p>watch タスクまで問題なく進んだので早速ブラウザからアクセスしてみる</p>
+
+<p>上記で Gruntfile.js に設定したアドレスにアクセスする。ポートは 9000番。</p>
+
+<p>雛形アプリケーションのトップが表示された</p>
+
+<p><img src="/images/angular_fullstack/top.png"></p>
+
+<p>Sign up 画面なども用意されている</p>
+
+<p><img src="/images/angular_fullstack/sign_up.png"></p>
+
+<h2>つづく</h2>
+
+<p>今回は何も考えずに Grunt と（はからずも）Bower を使ってみた。</p>
+
+<p>それぞれがどのようなツールなのか次回はまとめてみたい。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/DaftMonk/generator-angular-fullstack/issues/710">Error sass when build mode product #710</a></li>
+<li><a href="http://zkohi.hatenablog.com/entry/2013/12/14/021639">yeoman, grunt, bowerで静的サイト構築（第三回）</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのYeoman (Yoを使った雛形作成)]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/06/the-first-step-of-yeoman/"/>
+    <updated>2015-05-06T18:55:02+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/06/the-first-step-of-yeoman</id>
+    <content type="html"><![CDATA[<p>前回 <a href="http://blog.sojiro.me/blog/2015/05/05/hubot-create-is-now-old/">‘Hubot –create’ は古い</a> というエントリでYeomanを試してみたいと宣言したので試してみます。</p>
+
+<p>Yeoman は以下の3要素で構成されているそうな</p>
+
+<ul>
+<li>yo: 雛形作成ツール</li>
+<li>Grunt: タスクランナー</li>
+<li>Bower: フロントエンドパッケージマネージャ</li>
+</ul>
+
+
+<p>今回は前回に引き続き <code>yo</code> を使ってみたいと思います。</p>
+
+<p>前提としては <code>yo</code> をインストール済みであること。</p>
+
+<pre><code class="bash">$ npm install -g yo
+</code></pre>
+
+<p>また、 <code>yo</code> は npm のバージョン2.1.0以上が推奨なので必要に応じて npm もアップデートします。</p>
+
+<pre><code class="bash">npm update -g npm
+</code></pre>
+
+<h2>generator-angular-fullstack を使ってみる</h2>
+
+<p>今回 <code>yo</code> で作成する雛形として generator-angular-fullstack を使ってみる</p>
+
+<p>generator-angular-fullstack は MEAN なアプリケーションの雛形で、使い勝手が良いという噂</p>
+
+<p>早速インストール</p>
+
+<pre><code class="bash">$ cd yeoman/angular_fullstack
+$ npm install generator-angular-fullstack
+</code></pre>
+
+<p>インストールできたので実行してみる</p>
+
+<pre><code class="bash">$ yo angular-fullstack
+     _-----_
+    |       |
+    |--(o)--|   .--------------------------.
+   `---------´  |    Welcome to Yeoman,    |
+    ( _´U`_ )   |   ladies and gentlemen!  |
+    /___A___\   '__________________________'
+     |  ~  |
+   __'.___.'__
+ ´   `  |° ´ Y `
+
+Out of the box I create an AngularJS app with an Express server.
+
+# Client
+
+? What would you like to write scripts with? JavaScript
+? What would you like to write markup with? HTML
+? What would you like to write stylesheets with? Sass
+? What Angular router would you like to use? uiRouter
+? Would you like to include Bootstrap? Yes
+? Would you like to include UI Bootstrap? Yes
+
+# Server
+
+? Would you like to use mongoDB with Mongoose for data modeling? Yes
+? Would you scaffold out an authentication boilerplate? Yes
+? Would you like to include additional oAuth strategies? Google, Facebook, Twitter
+? Would you like to use socket.io? Yes
+</code></pre>
+
+<p>雛形作成を実行するといくつかインタラクティブに聞かれるので答える</p>
+
+<p>今回は基本的に Yes と答えてみた</p>
+
+<p>実行が終わると雛形ができていた</p>
+
+<pre><code class="bash">$ ls
+Gruntfile.js  bower.json  client  e2e  karma.conf.js  node_modules  package.json  protractor.conf.js  server
+</code></pre>
+
+<h2>つづく</h2>
+
+<p>次回は <code>grunt</code> を使って実際にアプリケーションを動かしてみる</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.chat.ac/yeoman%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6meanmongodbexpressangularjsnode-js%E3%82%92%E4%BD%9C%E6%88%90%E3%81%97%E3%82%88%E3%81%86/">YEOMANを使ってMEAN(MongoDB+Express+AngularJS+Node.js)を作成しよう</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA['Hubot --create' は古い]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old/"/>
+    <updated>2015-05-05T17:50:15+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/05/hubot-create-is-now-old</id>
+    <content type="html"><![CDATA[<p>このブログで過去に何度かHubotについて書いたときに、新しいbotを作るときのコマンドは <code>hubot --create bot_name</code> だったのですが、このコマンドが非推奨になったようなのでメモ。</p>
+
+<h2>hubot &ndash;create が使えない</h2>
+
+<p>新しいbotを作ろうとして <code>hubot --create</code> コマンドを打つと以下のように怒られた</p>
+
+<pre><code class="bash">$ hubot --create test_bot
+'hubot --create' is deprecated. Use the yeoman generator instead:
+    npm install -g yo generator-hubot
+    mkdir -p test_bot
+    yo hubot
+See https://github.com/github/hubot/blob/master/docs/README.md for more details on getting started.
+</code></pre>
+
+<p>ところがseeとなっているREADMEファイルは存在しない模様&hellip;</p>
+
+<h2>yo と generator-hubot とは何か</h2>
+
+<p>よくわからないが <code>yo</code> と <code>generator-hubot</code> をインストールしろと言われているのはわかるので調べてみる</p>
+
+<h3>yo と generator-xxx</h3>
+
+<p>yoはYeomanというGoole社が開発した統合開発ツール群に属するツールの一つで、「雛形作成ツール」であるらしい</p>
+
+<p>そしてその雛形は &ldquo;generator-xxx&rdquo; という形でさまざま用意されており、そのHubot版が <code>generator-hubot</code> と言う訳である</p>
+
+<p>つまり上記エラーメッセージは</p>
+
+<ul>
+<li>雛形作成ツールである <code>yo</code> と、Hubotの雛形である <code>generator-hubot</code> をインストールし</li>
+<li>新規ディレクトリ上で <code>yo</code> を実行してHubotの雛形を作るべし</li>
+</ul>
+
+
+<p>ということのようである</p>
+
+<h2>yo と generator-hubot のインストール</h2>
+
+<p>指定された通り以下のようにインストールする</p>
+
+<pre><code class="bash">$ npm install -g yo generator-hubot
+</code></pre>
+
+<p>（余談：私の場合はNode.jsのインストールされたpathとnpmのrootが違っていたため少々上手くいかなかった。エラーメッセージは素直によく読むべきだ。。。）</p>
+
+<h2>yo の実行</h2>
+
+<p>インストールが成功したら、新しいbotのディレクトリを作ってそこで <code>yo</code> を実行する</p>
+
+<pre><code class="bash">$ mkdir test_bot
+$ cd test_bot
+$ yo hubot  # これは generator-hubot の雛形を作る、という意味
+</code></pre>
+
+<p> <code>yo hubot</code> を実行するとHubotのAAが表示され、いくつかのやり取りが立ち上がる</p>
+
+<pre><code class="bash">$ yo hubot
+                     _____________________________  
+                    /                             \ 
+   //\              |      Extracting input for    |
+  ////\    _____    |   self-replication process   |
+ //////\  /_____\   \                             / 
+ ======= |[^_/\_]|   /----------------------------  
+  |   | _|___@@__|__                                
+  +===+/  ///     \_\                               
+   | |_\ /// HUBOT/\\                             
+   |___/\//      /  \\                            
+         \      /   +---+                            
+          \____/    |   |                            
+           | //|    +===+                            
+            \//      |xx|                            
+
+? Owner: sojiro
+? Bot name: slack-test-bot
+? Description: Slack Bot test
+? Bot adapter: (campfire) slack
+? Bot adapter: slack
+   create bin/hubot
+   create bin/hubot.cmd
+   create Procfile
+   create README.md
+   create external-scripts.json
+   create hubot-scripts.json
+   create .gitignore
+   create package.json
+   create scripts/example.coffee
+   create .editorconfig
+                     _____________________________  
+ _____              /                             \ 
+ \    \             |   Self-replication process   |
+ |    |    _____    |          complete...         |
+ |__\\|   /_____\   \     Good luck with that.    / 
+   |//+  |[^_/\_]|   /----------------------------  
+  |   | _|___@@__|__                                
+  +===+/  ///     \_\                               
+   | |_\ /// HUBOT/\\                             
+   |___/\//      /  \\                            
+         \      /   +---+                            
+          \____/    |   |                            
+           | //|    +===+                            
+            \//      |xx|      
+...
+...
+</code></pre>
+
+<p>各項目それぞれデフォルト値が設定されており、なにも入力せずEnterを押していくとその通りになる</p>
+
+<p>今回はSlack用のbotだったので Bot adapter: の欄で <code>slack</code> と入力した</p>
+
+<p>他にも用途に合わせてadapterが用意されているようである</p>
+
+<p>この <code>yo</code> 実行により、Hubotの雛形が作成され、 <code>hubot --create</code> と同様にセットアップが完了する</p>
+
+<p>なおかつadapterを予め設定できる分、セットアップが楽になっている</p>
+
+<h2>最後に</h2>
+
+<p>今回はHubotに絡んで偶発的に <code>yo</code> を知りましたが、かなり便利そうなのでYeoman含めて今後も使ってみたいところです</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://yosuke-furukawa.hatenablog.com/entry/2013/07/04/085814">Yeoman入門(第一部、yoを使う)</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

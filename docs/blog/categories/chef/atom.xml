@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Chef | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/chef/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Chef のリモート実行]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef/"/>
+    <updated>2015-11-14T23:08:53+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/11/14/the-second-step-of-chef</id>
+    <content type="html"><![CDATA[<p><a href="http://blog.sojiro.me/blog/2015/11/01/the-first-step-of-chef/">前回</a> 対象サーバで直接 Chef を実行してみました。</p>
+
+<p>今回は手元からリモートのサーバに対して Chef を実行する仕組みを試してみます。</p>
+
+<h2>knife-solo のインストール</h2>
+
+<p>手元のクックブックをリモートのサーバに転送して <code>chef-solo</code> コマンドを実行するまでの一連の作業を実行できる <code>knife-solo</code> コマンドをインストールする</p>
+
+<p> <code>knife-solo</code> コマンドは gem でインストールできる。手元の Mac OS でインストール</p>
+
+<pre><code class="bash">$ sudo gem install knife-solo
+...
+Thanks for installing knife-solo!
+...
+36 gems installed
+</code></pre>
+
+<h2>Berkshelf のインストール</h2>
+
+<p>クックブックの依存関係を管理する <code>Berkshelf</code> というツールもこのタイミングでインストールする。これは <code>knife-solo</code> が他の gem のインストール状況によってデフォルトのオプションが変わるため</p>
+
+<pre><code class="bash">$ sudo gem install berkshelf
+...
+25 gems installed
+</code></pre>
+
+<h2>ローカルにリポジトリを作る</h2>
+
+<p>まずはローカルにリポジトリを作る</p>
+
+<p>Vagrantfile があるディレクトリで以下のコマンドを実行して作成する</p>
+
+<pre><code class="bash">$ knife solo init .
+/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/ruby/2.0.0/rubygems/specification.rb:2007:in `raise_if_conflicts': Unable to activate rspec-3.0.0, because rspec-core-3.4.0 conflicts with rspec-core (~&gt; 3.0.0), rspec-expectations-3.4.0 conflicts with rspec-expectations (~&gt; 3.0.0), rspec-mocks-3.4.0 conflicts with rspec-mocks (~&gt; 3.0.0) (Gem::LoadError)
+</code></pre>
+
+<p>エラーが発生した</p>
+
+<p>rspec と rspec-core のバージョンが合っていなかったので rspec を update する</p>
+
+<pre><code class="bash">$ sudo gem update rspec
+...
+Gems updated: rspec rspec-collection_matchers
+</code></pre>
+
+<p>再度リポジトリの作成を実行</p>
+
+<pre><code class="bash">$ knife solo init .
+WARNING: No knife configuration file found
+Creating kitchen...
+Creating knife.rb in kitchen...
+Creating cupboards...
+Setting up Berkshelf...
+</code></pre>
+
+<p>これで実行ディレクトリ内に様々な雛形ディレクトリ、ファイルが作成された</p>
+
+<h2>リモートのサーバに Chef Solo をインストールする</h2>
+
+<p>今回リモートサーバとして想定する Vagrant の環境に対して SSH の設定を以下のようにしておく</p>
+
+<pre><code class="bash">$ vagrant ssh-config --host testhost &gt;&gt; ~/.ssh/config
+</code></pre>
+
+<p>以下のコマンドで Chef Solo をリモートサーバに対してインストール</p>
+
+<pre><code class="bash">$ knife solo bootstrap testhost
+Bootstrapping Chef...
+...
+Thank you for installing Chef!
+...
+Chef Client finished, 0/0 resources updated in 06 seconds
+</code></pre>
+
+<p>今回は前回 Chef Solo をインストールした環境に対して打ったので最終的な結果は <code>0/0 resources updated</code> になっている</p>
+
+<h2>クックブックの作成</h2>
+
+<p>ローカルにクックブックを作成する。今回は git をインストールするためのクックブックを作る</p>
+
+<p>自作のクックブックは site-cookbooks 以下に置くことが慣例になっているので出力先に site-cookbooks を指定している</p>
+
+<pre><code class="bash">$ knife cookbook create git -o site-cookbooks
+</code></pre>
+
+<p>これで site-cookbooks 以下に git クックブックの雛形が出来上がる</p>
+
+<h2>レシピの編集</h2>
+
+<p>レシピの雛形 <code>site-cookbooks/git/recipes/default.rb</code> を編集していく</p>
+
+<pre><code class="bash">$ vim site-cookbooks/git/recipes/default.rb
+$ cat site-cookbooks/git/recipes/default.rb
+#
+# Cookbook Name:: git
+# Recipe:: default
+#
+# Copyright 2015, YOUR_COMPANY_NAME
+#
+# All rights reserved - Do Not Redistribute
+#
+package "git" do
+    action :install
+end
+</code></pre>
+
+<h2>Node オブジェクトの編集</h2>
+
+<p>Chef で管理する Node （サーバ）の状態を記述し、それぞれの Node に対してどのクックブックが適用されるかを設定する Node オブジェクトを編集する</p>
+
+<p>Node オブジェクトは <code>knife solo bootstrap testhost</code> 実行時に <code>nodes/testhost.json</code> として作成されている</p>
+
+<p>今回はここに先ほど作成した git クックブックの適用を記述する</p>
+
+<pre><code class="bash">$ vim nodes/testhost.json
+$ cat nodes/testhost.json 
+{
+  "run_list": [
+    "recipe[git]"
+  ],
+  "automatic": {
+    "ipaddress": "testhost"
+  }
+}
+</code></pre>
+
+<h2>クックブックの実行</h2>
+
+<p>準備が整ったのでいよいよクックブックをリモートサーバに対して実行する</p>
+
+<p>以下のコマンドで実行</p>
+
+<pre><code class="bash">$ knife solo cook testhost
+Running Chef on testhost...
+...
+Chef Client finished, 0/1 resources updated in 07 seconds
+</code></pre>
+
+<p>これも同じく前回の環境ですでに git をインストール済みなので <code>0/1 resources updated</code> として正常に実行された</p>
+
+<p>これでリモートへの Chef 実行完了！</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのChef]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/11/01/the-first-step-of-chef/"/>
+    <updated>2015-11-01T02:17:51+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/11/01/the-first-step-of-chef</id>
+    <content type="html"><![CDATA[<p>Chef を使ってみます。
+Vagrant で環境をつくっておいてそこで色々試してみます。</p>
+
+<p>今回はゲスト側でクックブック、レシピを作って実行してみます。</p>
+
+<h2>Chef のインストール</h2>
+
+<p> <code>vagrant ssh</code> で Vagrant の環境に入って Chef をインストールする</p>
+
+<pre><code class="bash">$ curl -L https://www.opscode.com/chef/install.sh | sudo bash
+...
+Thank you for installing Chef!
+</code></pre>
+
+<p>Chef Solo がインストールされているか確認
+<code>bash
+$ chef-solo -v
+Chef: 12.5.1
+</code></p>
+
+<h2>クックブックを作る</h2>
+
+<p>Chef をインストールすると <code>knife</code> というコマンドもインストールされる。
+この <code>knife</code> コマンドを使ってクックブックを作る</p>
+
+<p>今回は git をインストールするための git クックブックを作る</p>
+
+<p>コマンドは以下のように指定する</p>
+
+<pre><code class="bash">knife cookbooks create [クックブック名]
+</code></pre>
+
+<p>今回は出力先を指定する <code>-o</code> オプションを指定</p>
+
+<pre><code class="bash">$ sudo knife cookbook create git -o /var/chef/cookbooks
+</code></pre>
+
+<p>このコマンドで git という名前のクックブックが作成され、 <code>/var/chef/cookbooks/git/recipes/default.rb</code> にレシピの雛形が作られる</p>
+
+<h2>レシピの編集</h2>
+
+<p>レシピの雛形に git をインストールするレシピを書く</p>
+
+<pre><code class="bash">$ sudo vi /var/chef/cookbooks/git/recipes/default.rb
+$ cat /var/chef/cookbooks/git/recipes/default.rb
+#
+# Cookbook Name:: git
+# Recipe:: default
+#
+# Copyright 2015, YOUR_COMPANY_NAME
+#
+# All rights reserved - Do Not Redistribute
+#
+
+package "git" do
+  action :install
+end
+</code></pre>
+
+<h2>クックブックの実行</h2>
+
+<p>作成したクックブックを実行する</p>
+
+<pre><code class="bash">$ sudo chef-solo -o git
+...
+Compiling Cookbooks...
+Converging 1 resources
+Recipe: git::default
+  * yum_package[git] action install
+    - install version 1.7.1-3.el6_4.1 of package git
+
+Running handlers:
+Running handlers complete
+Chef Client finished, 1/1 resources updated in 38 seconds
+</code></pre>
+
+<p>git がインストールされたか確認</p>
+
+<pre><code class="bash">$ git --version
+git version 1.7.1
+</code></pre>
+
+<h2>Chef の特徴</h2>
+
+<h3>OS の違いを吸収してくれる</h3>
+
+<p>上記 git の例ではこちらで指定していないにも関わらず、実行した環境が CentOS であることを解釈して yum パッケージでインストールが行われた</p>
+
+<p>実行された環境の OS 毎の違いを吸収してくれる</p>
+
+<h3>冪等性が担保されている</h3>
+
+<p>先ほどのクックブックをもう一度実行してみる</p>
+
+<pre><code class="bash">$ sudo chef-solo -o git
+...
+Chef Client finished, 0/1 resources updated in 07 seconds
+</code></pre>
+
+<p>今回は何もせずに正常に終了したことが分かる</p>
+
+<p>Chef ではクックブックを何度実行しても、クックブックに規定された状態になる冪等性が担保されている</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a></li>
+</ul>
+
+
+<p>余談: Chef に関する記事は web 上にも色々ありますが、 Chef は用途によって様々なツール、使い方があり、基本的な用語や概念などを理解できていないと思わぬところでハマってしまいがちです。 <a href="http://www.amazon.co.jp/gp/product/477416500X/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=477416500X&amp;linkCode=as2&amp;tag=sojiro14-22">Chef 実践入門</a> は Chef に関して体系的に理解できるので最初にサラッと読んでしまうのが近道だと感じました。</p>
+]]></content>
+  </entry>
+  
+</feed>

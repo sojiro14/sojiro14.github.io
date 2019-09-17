@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Linux | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Unix Timeの扱い]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/18/unix-time-handling/"/>
+    <updated>2017-06-18T14:07:59+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/18/unix-time-handling</id>
+    <content type="html"><![CDATA[<p>Unix time を日付及び時刻に変換したいこと、日付及び時刻を Unix time に変換したいことがある。</p>
+
+<h3>Unix time からの変換</h3>
+
+<pre><code>$ date -r 616388399
+1989年 7月14日 金曜日 11時59分59秒 JST
+</code></pre>
+
+<h3>日付からの変換</h3>
+
+<pre><code>$ date -jf '%Y-%m-%d %H:%M:%S' '1989-07-14 11:59:59' +%s
+616388399
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ファイルの内容を直接クリップボードに出力する]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/06/17/copy-output-to-clipboard/"/>
+    <updated>2017-06-17T08:21:23+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/06/17/copy-output-to-clipboard</id>
+    <content type="html"><![CDATA[<p>ファイルの内容を直接クリップボードにコピーしたり、クリップボードからファイルにペーストしたいことがある。</p>
+
+<h3>クリップボードにコピー</h3>
+
+<pre><code class="bash">$ cat ~/Desktop/memo.text | pbcopy
+</code></pre>
+
+<h3>クリップボードからペースト</h3>
+
+<pre><code class="bash">$ pbpaste &gt; ~/Documents/memo.text
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sed コマンドで置換]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command/"/>
+    <updated>2015-09-15T01:58:45+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/09/15/note-of-sed-command</id>
+    <content type="html"><![CDATA[<p>ファイルの中身を置換する必要があったので <code>sed</code> コマンドを使った。</p>
+
+<h3>使うオプション</h3>
+
+<p>今回使うのは</p>
+
+<ul>
+<li>変換処理の条件式を指定するための <code>e</code> オプション</li>
+<li>変換してそのままファイルを上書きする <code>i</code> オプション</li>
+</ul>
+
+
+<h3>やってみる</h3>
+
+<p>今回はこんな感じ
+<code>bash
+sed -ie '条件式' ファイル名
+</code></p>
+
+<pre><code class="bash">$ cat test
+testtesttest
+
+$ sed -ie 's/test/hoge/g' test
+
+$ cat test
+hogehogehoge
+
+$ ls
+test teste
+</code></pre>
+
+<p>指定したファイルは条件に沿って置換されているが、オリジナルの内容を持ったファイルも生成されている</p>
+
+<p>オリジナルの内容を持ったファイルは使う sed コマンド（OS）によって元のファイル名に &lsquo;e&rsquo; が付いたり &lsquo;-e&rsquo; が付いたりする</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Find コマンドの使い方]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/08/14/how-to-use-find-command/"/>
+    <updated>2015-08-14T09:37:49+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/08/14/how-to-use-find-command</id>
+    <content type="html"><![CDATA[<p>いつまでも <code>find</code> コマンドの使い方を覚えられないアホなのでメモしておく。。。</p>
+
+<h3>基本的に</h3>
+
+<pre><code class="bash">find [探すディレクトリ] -name 'ファイルの条件'
+</code></pre>
+
+<p>これだけは覚えとけ、と。</p>
+
+<h3>たまには</h3>
+
+<pre><code class="bash">find . -name '*.swp' -ok rm {} \;
+</code></pre>
+
+<p>見つけたファイルをそのまま次のコマンドに受け渡す <code>-ok</code> オプションもたまには使えるかも知れない。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xdg-open コマンドとは]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command/"/>
+    <updated>2015-05-12T23:55:57+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/12/what-is-xdg-open-command</id>
+    <content type="html"><![CDATA[<p>以前 <a href="http://blog.sojiro.me/blog/2015/05/10/the-second-step-of-yeoman/">初めてのYeoman (Grunt/Bowerを使ってみる)</a> というエントリで Grunt を実行したときに</p>
+
+<pre><code class="bash">Warning: Command failed: /home/sojiro/yeoman/angular_fullstack/node_modules/open/vendor/xdg-open: line 584: xdg-mime: コマンドが見つかりません
+</code></pre>
+
+<p>と怒られたことがあったので <code>xdg-open</code> コマンドについて少し調べてみます</p>
+
+<h2>xdg-open コマンドのインストール</h2>
+
+<p>xdg-open の実体はシェルスクリプトである</p>
+
+<p>すんなりインストールできるかと思いきや普段の CentOS に入れるのに手こずってしまった</p>
+
+<p>どうやら Ubuntu との相性が良いようなので Vagrant で Ubuntu を立ち上げてそこでインストールしてみる</p>
+
+<h3>Ubuntu のセットアップ</h3>
+
+<p>Vagrant で Ubuntu 環境をセットアップする</p>
+
+<p>まずは box のインストールから</p>
+
+<pre><code class="bash">$ vagrant box add ubuntu http://goo.gl/8kWkm
+==&gt; box: Adding box 'ubuntu' (v0) for provider: 
+   box: Downloading: http://goo.gl/8kWkm
+==&gt; box: Successfully added box 'ubuntu' (v0) for 'virtualbox'!
+</code></pre>
+
+<pre><code class="bash">$ vagrant box list
+centos64 (virtualbox, 0)
+ubuntu   (virtualbox, 0)
+</code></pre>
+
+<p>box がセットアップできたら立ち上げまで行ってしまう</p>
+
+<pre><code class="bash">$ mkdir ubuntu
+$ cd ubuntu/
+$ vagrant init ubuntu
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+$ ls
+Vagrantfile
+$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==&gt; default: Importing base box 'ubuntu'...
+==&gt; default: Matching MAC address for NAT networking...
+==&gt; default: Setting the name of the VM: ubuntu_default_1432117537476_54763
+==&gt; default: Fixed port collision for 22 =&gt; 2222. Now on port 2200.
+==&gt; default: Clearing any previously set network interfaces...
+==&gt; default: Preparing network interfaces based on configuration...
+   default: Adapter 1: nat
+==&gt; default: Forwarding ports...
+   default: 22 =&gt; 2200 (adapter 1)
+==&gt; default: Booting VM...
+==&gt; default: Waiting for machine to boot. This may take a few minutes...
+</code></pre>
+
+<p>立ち上がったら以下のコマンドで Ubuntu 環境に入り、インストールの準備が完了する</p>
+
+<pre><code class="bash">$ vagrant ssh
+Welcome to Ubuntu 12.04.1 LTS (GNU/Linux 3.2.0-32-generic x86_64)
+
+* Documentation:  https://help.ubuntu.com/
+
+ System information as of Wed May 20 07:30:10 BRT 2015
+
+ System load:  0.0               Processes:           73
+ Usage of /:   11.7% of 7.87GB   Users logged in:     0
+ Memory usage: 1%                IP address for eth0: 10.0.2.15
+ Swap usage:   0%
+
+ Graph this data and manage this system at https://landscape.canonical.com/
+
+New release '14.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+</code></pre>
+
+<h3>インストール</h3>
+
+<p>ここからいよいよ Ubuntu に <code>xdg-open</code> をインストールしていく</p>
+
+<p>最初から入ってたらラッキーだなーと思いつつ打ってみる</p>
+
+<pre><code class="bash">$ xdg-open
+The program 'xdg-open' is currently not installed.  You can install it by typing:
+sudo apt-get install xdg-utils
+</code></pre>
+
+<p>思いがけず大ヒントが返ってきたので従う</p>
+
+<p>xdg-utils は <code>xdg-open</code> を内包するパッケージである</p>
+
+<pre><code class="bash">$ sudo apt-get install xdg-utils
+Reading package lists... Done
+Building dependency tree
+...
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+</code></pre>
+
+<p>エラーになってしまった</p>
+
+<p>しかしまたヒントがあるので従う</p>
+
+<pre><code class="bash">$ sudo apt-get install xdg-utils --fix-missing
+Reading package lists... Done
+Building dependency tree
+...
+Extracting templates from packages: 100%
+Preconfiguring packages ...
+Selecting previously unselected package ttf-dejavu-core.
+</code></pre>
+
+<p>晴れてインストール完了</p>
+
+<h2>使ってみる</h2>
+
+<ul>
+<li>テキストファイル: 普通に開ける</li>
+<li>画像ファイル: 開けるメソッドがなくエラー（環境立ち上げたばかりなので）</li>
+</ul>
+
+
+<h3>ディレクトリを指定</h3>
+
+<pre><code class="bash">$ mkdir test
+$ touch test/file
+$ xdg-open test/
+</code></pre>
+
+<p><img src="/images/xdg_open/directory.png"></p>
+
+<h3>URL を指定してみる</h3>
+
+<pre><code class="bash">$ xdg-open http://blog.sojiro.me
+</code></pre>
+
+<p><img src="/images/xdg_open/blog.png"></p>
+
+<pre><code class="bash">$ xdg-open http://google.com
+</code></pre>
+
+<p><img src="/images/xdg_open/google.png"></p>
+
+<p>ブラウザはないが URL を指定すると CUI 上で Web ページが開ける</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.sojiro.me/blog/2015/05/03/the-first-step-for-vagrant/">初めてのVagrant</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

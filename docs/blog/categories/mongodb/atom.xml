@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mongodb | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/mongodb/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[初めてのMongoDB]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/01/02/the-first-step-for-mongodb/"/>
+    <updated>2015-01-02T02:20:55+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/01/02/the-first-step-for-mongodb</id>
+    <content type="html"><![CDATA[<p>NoSQLの流れを汲むMongoDBを初めて使ってみるにあたり、基本的な操作をまとめてみる。</p>
+
+<h1>基本的な用語</h1>
+
+<ul>
+<li>データベース(database)</li>
+<li>コレクション(collection)</li>
+<li>ドキュメント(document)</li>
+</ul>
+
+
+<h2>データベース</h2>
+
+<p>MySQLなどのRDBMSにおけるデータベース、という言葉とほぼ同じ意味として使われる。
+データ管理の大元となる単位。</p>
+
+<h2>コレクション</h2>
+
+<p>RDBMSにおけるテーブル(table)に相当するもの。
+MongoDBはスキーマレスなので、テーブルのように厳格なスキーマが決まっている訳ではなく、特定の対象に対するデータの集まり(正にコレクション)と言える。</p>
+
+<h2>ドキュメント</h2>
+
+<p>RDBMSにおけるレコード(record)に相当するもの。
+各コレクションを構成する要素であり、BSONと呼ばれるJSONライクな形式で記述される。</p>
+
+<!-- more -->
+
+
+<h2>MongoDBの起動</h2>
+
+<p>MongoDBの起動、停止には <code>service mongod</code> コマンドを使う</p>
+
+<pre><code class="bash">$ sudo service mongod status
+mongod is stopped
+$ sudo service mongod start
+Starting mongod:                                           [  OK  ]
+$ sudo service mongod status
+mongod (pid xxxx) is running...
+</code></pre>
+
+<p>停止させる時には以下のようにする</p>
+
+<pre><code class="bash">$ sudo service mongod stop
+Stopping mongod:                                           [  OK  ]
+$ sudo service mongod status
+mongod is stopped
+</code></pre>
+
+<h2>DBの作成と選択</h2>
+
+<p>MongoDBを起動したら、早速コンソールを立ち上げて操作してみる。</p>
+
+<pre><code class="bash">$ mongo testdb
+MongoDB shell version: 2.6.6
+connecting to: testdb
+&gt;
+</code></pre>
+
+<p> <code>mongo</code> の後にDB名を指定してコンソールに入る。
+このとき、存在しないDB名を指定すると新規でDBが作られる。</p>
+
+<pre><code class="bash">&gt; show dbs;
+admin   (empty)
+local   0.078GB
+mydb    0.078GB
+testdb  (empty)
+</code></pre>
+
+<p>上記コマンドで既存のDBを確認することができる。 <code>testdb</code> は新規で作成された。</p>
+
+<p>使用するDBを変更するときは以下のようにする。今回は既に作ってある <code>mydb</code> を使うことにする。</p>
+
+<pre><code class="bash">&gt; use mydb
+switched to db mydb
+</code></pre>
+
+<p>これで <code>mydb</code> に操作対象が移った</p>
+
+<h1>コレクションの操作</h1>
+
+<h2>コレクションの確認</h2>
+
+<p>まず対象DBに存在するコレクションを確認してみる</p>
+
+<pre><code class="bash">&gt; show collections;
+system.indexes
+users
+</code></pre>
+
+<p>いま <code>system.indexes</code> と <code>users</code> というコレクションが存在することがわかる。</p>
+
+<p> <code>system.indexes</code> は各DBのインデックス情報を管理するコレクションで、各DBにそれぞれ1つ作成されるもの</p>
+
+<h2>コレクションの作成</h2>
+
+<p>次に新たにコレクションを作成してみる</p>
+
+<pre><code class="bash">&gt; db.createCollection('items');
+{ "ok" : 1 }
+&gt; show collections;
+items
+system.indexes
+users
+</code></pre>
+
+<p> <code>items</code> という新たなコレクションが作成された</p>
+
+<h2>コレクションの名前の変更</h2>
+
+<p> <code>items</code> コレクションの名前を <code>weapons</code> に変更する</p>
+
+<pre><code class="bash">&gt; db.items.renameCollection('weapons');
+{ "ok" : 1 }
+&gt; show collections;
+system.indexes
+users
+weapons
+</code></pre>
+
+<p>コレクションの名前が変わったことが確認できる</p>
+
+<h2>コレクションの削除</h2>
+
+<p> <code>weapons</code> コレクションを削除する</p>
+
+<pre><code class="bash">&gt; db.weapons.drop();
+true
+&gt; show collections;
+system.indexes
+users
+</code></pre>
+
+<p> <code>weapons</code> コレクションが削除された</p>
+
+<h1>ドキュメントの操作</h1>
+
+<h2>ドキュメントの検索(find)</h2>
+
+<p>コレクションの操作の次はドキュメントの操作について見ていく。
+ドキュメントの検索には <code>find</code> メソッドを使う</p>
+
+<pre><code class="bash">&gt; db.users.find();
+{ "_id" : ObjectId("54a3fd93ce8a5464641af4eb"), "name" : "sojiro", "score" : 10 }
+{ "_id" : ObjectId("54a3fee1ce8a5464641af4ec"), "name" : "sojiro_1", "score" : 20 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ed"), "name" : "sojiro_2", "score" : 67 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ee"), "name" : "sojiro_3", "score" : 51 }
+</code></pre>
+
+<p>対象のコレクションを指定して <code>find</code> を引数無しで実行すると全件検索となる</p>
+
+<h2>条件を指定して検索</h2>
+
+<p> <code>{key:value}</code> を指定して検索も可能</p>
+
+<pre><code class="bash">&gt; db.users.find({name:"sojiro"});
+{ "_id" : ObjectId("54a3fd93ce8a5464641af4eb"), "name" : "sojiro", "score" : 10 }
+</code></pre>
+
+<p> <code>{key:value}</code> の指定には正規表現を用いることもできる</p>
+
+<pre><code class="bash">&gt; db.users.find({name:/sojiro_[12]/});
+{ "_id" : ObjectId("54a3fee1ce8a5464641af4ec"), "name" : "sojiro_1", "score" : 20 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ed"), "name" : "sojiro_2", "score" : 67 }
+</code></pre>
+
+<h2>ANDとOR</h2>
+
+<p>検索で複数の条件を組み合わせるには <code>$and</code> や <code>$or</code> を使う</p>
+
+<pre><code class="bash">&gt; db.users.find({
+    $and: [
+        {name:/sojiro_[12]/},
+        {score: {$lt: 60}},
+    ]
+});
+{ "_id" : ObjectId("54a3fee1ce8a5464641af4ec"), "name" : "sojiro_1", "score" : 20 }
+</code></pre>
+
+<p>ここで <code>$lt</code> は「〜より小さい」を表す演算子</p>
+
+<pre><code class="bash">&gt; db.users.find({
+    $or: [
+        {name:/sojiro_[12]/},
+        {score: {$gt: 50}},
+    ]
+});
+{ "_id" : ObjectId("54a3fee1ce8a5464641af4ec"), "name" : "sojiro_1", "score" : 20 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ed"), "name" : "sojiro_2", "score" : 67 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ee"), "name" : "sojiro_3", "score" : 51 }
+</code></pre>
+
+<p>ここで <code>$gt</code> は「〜より大きい」を表す演算子</p>
+
+<h2>検索結果の限定</h2>
+
+<p>検索結果に特定のkeyだけを指定したい場合や、 <code>_id</code> を非表示にしたい場合がある</p>
+
+<pre><code class="bash">&gt; db.users.find({}, {name:1});
+{ "_id" : ObjectId("54a3fd93ce8a5464641af4eb"), "name" : "sojiro" }
+{ "_id" : ObjectId("54a3fee1ce8a5464641af4ec"), "name" : "sojiro_1" }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ed"), "name" : "sojiro_2" }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ee"), "name" : "sojiro_3" }
+&gt; db.users.find({}, {name:0});
+{ "_id" : ObjectId("54a3fd93ce8a5464641af4eb"), "score" : 10 }
+{ "_id" : ObjectId("54a3fee1ce8a5464641af4ec"), "score" : 20 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ed"), "score" : 67 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ee"), "score" : 51 }
+</code></pre>
+
+<p> <code>find()</code> の第二引数にkeyの表示、非表示を設定することができる</p>
+
+<pre><code class="bash">&gt; db.users.find({}, {name:1, score:1});
+</code></pre>
+
+<p>のように複数のkeyに対して表示非表示の設定ができるが、</p>
+
+<pre><code class="bash">&gt; db.users.find({}, {name:1, score:0});
+error: {
+    "$err" : "Can't canonicalize query: BadValue Projection cannot have a mix of inclusion and exclusion.",
+    "code" : 17287
+}
+</code></pre>
+
+<p>key毎に表示非表示を別々に設定しようとすると怒られる</p>
+
+<p>ただし、 <code>_id</code> だけは例外である</p>
+
+<pre><code class="bash">&gt; db.users.find({}, {name:1, _id:0});
+{ "name" : "sojiro" }
+{ "name" : "sojiro_1" }
+{ "name" : "sojiro_2" }
+{ "name" : "sojiro_3" }
+</code></pre>
+
+<h2>ドキュメントの挿入(insert)</h2>
+
+<p>これまで見てきた <code>users</code> コレクションに新たなドキュメントを追加してみる</p>
+
+<pre><code class="bash">&gt; db.users.insert({name:"sojiro_4", score:40});
+WriteResult({ "nInserted" : 1 })
+&gt; db.users.find({name:"sojiro_4"});
+{ "_id" : ObjectId("54a777d7a49abc8e743c71ac"), "name" : "sojiro_4", "score" : 40 }
+</code></pre>
+
+<p>JavaScriptの使用も可能</p>
+
+<pre><code class="bash">&gt; db.users.insert({name:"sojiro_5", score: Math.floor(Math.random() * 100)});
+WriteResult({ "nInserted" : 1 })
+&gt; db.users.find({name:"sojiro_5"});
+{ "_id" : ObjectId("54a77886a49abc8e743c71ad"), "name" : "sojiro_5", "score" : 38 }
+</code></pre>
+
+<h2>ドキュメントの更新(update)</h2>
+
+<p>MongoDBのupdateには少し癖がある。</p>
+
+<p>更新するドキュメントが属するコレクションと、対象ドキュメントの条件を指定するところは直感的だが、特定のkeyのみupdateする場合は <code>$set</code> を使う必要がある。</p>
+
+<pre><code class="bash">&gt; db.users.find({name:"sojiro_4"});
+{ "_id" : ObjectId("54a777d7a49abc8e743c71ac"), "name" : "sojiro_4", "score" : 40 }
+&gt; db.users.update({name:"sojiro_4"}, {$set: {score:44}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+&gt; db.users.find({name:"sojiro_4"});
+{ "_id" : ObjectId("54a777d7a49abc8e743c71ac"), "name" : "sojiro_4", "score" : 44 }
+</code></pre>
+
+<p> <code>$set</code> を使わずにupdateを実行すると、対象ドキュメントの内容全てが書き変わる</p>
+
+<pre><code class="bash">&gt; db.users.find({name:"sojiro_4"});
+{ "_id" : ObjectId("54a777d7a49abc8e743c71ac"), "name" : "sojiro_4", "score" : 44 }
+&gt; db.users.update({name:"sojiro_4"}, {score:100});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+&gt; db.users.find({name:"sojiro_4"});
+</code></pre>
+
+<p> <code>{name: "sojiro_4"}</code> に該当するドキュメントが <code>{score:100}</code> に書き換えられたため、 <code>{name:"sojiro_4"}</code> では検索結果に出てこない</p>
+
+<pre><code class="bash">&gt; db.users.find();
+{ "_id" : ObjectId("54a3fd93ce8a5464641af4eb"), "name" : "sojiro", "score" : 10 }
+{ "_id" : ObjectId("54a3fee1ce8a5464641af4ec"), "name" : "sojiro_1", "score" : 20 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ed"), "name" : "sojiro_2", "score" : 67 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ee"), "name" : "sojiro_3", "score" : 51 }
+{ "_id" : ObjectId("54a777d7a49abc8e743c71ac"), "score" : 100 }
+{ "_id" : ObjectId("54a77886a49abc8e743c71ad"), "name" : "sojiro_5", "score" : 38 }
+</code></pre>
+
+<h2>ドキュメントの削除(remove)</h2>
+
+<pre><code class="bash">&gt; db.users.find();
+{ "_id" : ObjectId("54a3fd93ce8a5464641af4eb"), "name" : "sojiro", "score" : 10 }
+{ "_id" : ObjectId("54a3fee1ce8a5464641af4ec"), "name" : "sojiro_1", "score" : 20 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ed"), "name" : "sojiro_2", "score" : 67 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ee"), "name" : "sojiro_3", "score" : 51 }
+{ "_id" : ObjectId("54a777d7a49abc8e743c71ac"), "score" : 100 }
+{ "_id" : ObjectId("54a77886a49abc8e743c71ad"), "name" : "sojiro_5", "score" : 38 }
+</code></pre>
+
+<p>ドキュメントの削除には <code>remove</code> メソッドを使い、このメソッドには <code>find</code> メソッドと同じように条件を指定することができる</p>
+
+<pre><code class="bash">&gt; db.users.remove({name:"sojiro_5"});
+WriteResult({ "nRemoved" : 1 })
+&gt; db.users.find();
+{ "_id" : ObjectId("54a3fd93ce8a5464641af4eb"), "name" : "sojiro", "score" : 10 }
+{ "_id" : ObjectId("54a3fee1ce8a5464641af4ec"), "name" : "sojiro_1", "score" : 20 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ed"), "name" : "sojiro_2", "score" : 67 }
+{ "_id" : ObjectId("54a40181ce8a5464641af4ee"), "name" : "sojiro_3", "score" : 51 }
+{ "_id" : ObjectId("54a777d7a49abc8e743c71ac"), "score" : 100 }
+</code></pre>
+
+<p>以上MongoDBの基本的な操作</p>
+
+<h2>参照</h2>
+
+<p><a href="http://dotinstall.com/lessons/basic_mongodb_v2">ドットインストール</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AWSのLinuxにMongoDBをインストール]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/30/installing-mongodb-on-linux-aws/"/>
+    <updated>2014-12-30T13:32:15+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/30/installing-mongodb-on-linux-aws</id>
+    <content type="html"><![CDATA[<p>AWSで借りたサーバーにmongoDBが入っていなかったのでインストールした手順</p>
+
+<h2>YUMの設定</h2>
+
+<p>パッケージ管理システムであるYUMにmongoDB用の設定を追加する
+<code>bash
+$ sudo vim /etc/yum.repos.d/mongodb.repo
+</code>
+<code>bash /etc/yum.repos.d/mongodb.repo
+[mongodb]
+name=MongoDB Repository
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
+gpgcheck=0
+enabled=1
+</code>
+これでYUMにmongoDBのリポジトリが追加される</p>
+
+<!-- more -->
+
+
+<h2>mongoDBのインストール</h2>
+
+<p>今回は何も考えず最新のバージョンをインストールするので以下のコマンドで実行する
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo yum install mongodb-org
+</span><span class='line'>読み込んだプラグイン:priorities, update-motd, upgrade-helper&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;<span class="p">&amp;</span>hellip<span class="p">;</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt; Package                                                  アーキテクチャー                             バージョン                                       リポジトリー                                   容量&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;インストール中:
+</span><span class='line'> mongodb-org                                              x86_64                                       2.6.6-1                                          mongodb                                       4.9 k
+</span><span class='line'>依存性関連でのインストールをします:
+</span><span class='line'> mongodb-org-mongos                                       x86_64                                       2.6.6-1                                          mongodb                                       6.8 M
+</span><span class='line'> mongodb-org-server                                       x86_64                                       2.6.6-1                                          mongodb                                       9.0 M
+</span><span class='line'> mongodb-org-shell                                        x86_64                                       2.6.6-1                                          mongodb                                       4.3 M
+</span><span class='line'> mongodb-org-tools                                        x86_64                                       2.6.6-1                                          mongodb                                        <span class="m">90</span> M&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;トランザクションの要約&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;インストール  <span class="m">1</span> パッケージ <span class="o">(</span>+4 個の依存関係のパッケージ<span class="o">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;総ダウンロード容量: <span class="m">110</span> M
+</span><span class='line'>インストール容量: <span class="m">277</span> M
+</span><span class='line'>Is this ok <span class="o">[</span>y/d/N<span class="o">]</span>: y
+</span><span class='line'>Downloading packages:
+</span><span class='line'><span class="p">&amp;</span>hellip<span class="p">;</span>
+</span><span class='line'>完了しました!
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>確認</h2>
+
+<pre><code class="bash">$ mongo --version
+MongoDB shell version: 2.6.6
+</code></pre>
+
+<p>インストール完了</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat-centos-or-fedora-linux/">Install MongoDB on Red Hat Enterprise, CentOS, Fedora, or Amazon Linux</a></li>
+<li><a href="http://qiita.com/nownabe/items/123a8fd04ff5252b3036">CentOS6.5にMongoDBをインストールする</a></li>
+<li><a href="http://qiita.com/ykyk1218/items/1c1824e77fb8af78bcf5">MongoDBをLinuxにインストール</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MacにNode.jsとMongoDBをインストールしたメモ]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/"/>
+    <updated>2014-12-07T18:30:01+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac</id>
+    <content type="html"><![CDATA[<p>某勉強会でNode.jsとMongoDBを使うということがあったので、インストールした際のメモを残しておく。</p>
+
+<h2>Homebrewのインストール</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>でも触れた通り、以下の方法でインストールを試みる。
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.github.com/mxcl/homebrew/go/install&quot;</span>&gt;https://raw.github.com/mxcl/homebrew/go/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>Whoops, the Homebrew installer has moved! Please instead run:&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.githubusercontent.com/Homebrew/install/master/install&quot;</span>&gt;https://raw.githubusercontent.com/Homebrew/install/master/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Also, please ask wherever you got this link from to update it to the above.
+</span><span class='line'>Thanks!
+</span></code></pre></td></tr></table></div></figure>
+どうやらHomebrewのインストーラーの場所があれから変わったようで、以下のパスで再度実行。</p>
+
+<p>コマンドのレスポンスとして新しいパスをメッセージに残してくれるのはありがたい。
+<code>bash
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code>
+これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
+
+<!-- more -->
+
+
+<h2>Node.jsのインストール</h2>
+
+<pre><code class="bash">$ brew install node
+</code></pre>
+
+<p>これで完了。
+<code>bash
+$ node -v
+v0.10.33
+</code>
+npmもばっちり入っている
+<code>bash
+$ npm -v
+2.1.10
+</code></p>
+
+<h2>MongoDBのインストール</h2>
+
+<p>これも以下を実行するだけ。
+<code>bash
+$ brew install mongodb
+</code>
+<code>bash
+$ mongo --version
+MongoDB shell version: 2.6.5
+</code>
+おしまい。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
+<li><a href="http://qiita.com/hajimeni/items/3c93fd981e92f66a20ce">Macにhomebrewを使ってmongodbをインストール</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

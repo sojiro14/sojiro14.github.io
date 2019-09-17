@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: reveal.js | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/reveal-dot-js/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[reveal.jsを使ったプレゼンテーションの作成]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/08/31/presentation-by-reveal-dot-js/"/>
+    <updated>2014-08-31T19:17:21+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/08/31/presentation-by-reveal-dot-js</id>
+    <content type="html"><![CDATA[<p><a href="http://yapcasia.org/2014/">YAPC::Asia 2014</a>のLTに登壇させていただいた。その際、サクッとオシャレなプレゼンテーションを作ることができるということでreveal.jsを使って作ったのでメモ。</p>
+
+<ul>
+<li><a href="http://sojiro14.github.io/presentation/2014/08/30/YAPC-Asia-LT/">実際のプレゼンテーション</a>（一部の画像を削除したもの）</li>
+</ul>
+
+
+<h2>reveal.jsとは</h2>
+
+<p>htmlやmarkdown形式で簡単にリッチなプレゼンテーションを書くことができるjsやcssを中心としたライブラリ</p>
+
+<ul>
+<li><a href="https://github.com/hakimel/reveal.js/">reveal.jsの実体</a></li>
+<li><a href="http://lab.hakim.se/reveal-js/#/">本家Demo</a></li>
+</ul>
+
+
+<h2>reveal.jsの入手</h2>
+
+<p><a href="https://github.com/hakimel/reveal.js">GitHubのreveal.jsリポジトリ</a>からzipをダウンロードする。右下の<code>Download ZIP</code>ボタンを押すだけで完了。</p>
+
+<h2>プレゼンテーションの作成</h2>
+
+<p>基本的に<code>index.html</code>を編集していく。特に以下の部分を編集していけば良い。</p>
+
+<p>&#8220;`html</p>
+
+<div class="slides">
+<!---...
+ここを編集
+...-->
+</div>
+
+
+<pre><code>デフォルトでは[本家Demo](http://lab.hakim.se/reveal-js/#/)の仕様となっている。
+
+## ページの追加
+ ``` &lt;section&gt;&lt;/section&gt; ```タグを追加することで新しいページを追加することができる。新しいページは右側に追加されていく。
+
+さらに``` &lt;section&gt;&lt;/section&gt; ```タグの中に``` &lt;section&gt;&lt;/section&gt; ```タグをネストすることで、縦方向にスライドを追加することができる。
+
+## スライドの動きの設定
+ ``` &lt;section&gt; ```タグに``` data-transition ```や``` data-background-transition ```を指定することでスライドの動きを設定できる。
+
+デフォルトではスライドが回転するように動いていくが、例えば以下のように設定することで横方向にスライドが流れるようになる。
+</code></pre>
+
+<p><section data-transition="linear" data-background-transition="slide">
+&#8220;`
+* data-transition
+    * スライドに載っているコンテンツの動きを指定
+* data-background-transition
+    * スライド自体の動きを指定</p>
+
+<h2>背景の設定</h2>
+
+<p> <code>&lt;section&gt;</code>タグに<code>data-background</code>を指定することでスライドの背景を設定できる。</p>
+
+<pre><code class="html">&lt;section data-background="#000000"&gt;  &lt;!--背景色を指定--&gt;
+&lt;section data-background="img.jpg"&gt;  &lt;!--背景画像をパスで指定--&gt;
+</code></pre>
+
+<h2>コードブロックを設定</h2>
+
+<p>コードブロックを挿入するには<code>&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</code>タグを挿入する。</p>
+
+<p> <code>&lt;code&gt;</code>タグのclassに言語を指定することで適切なハイライトが適用される。</p>
+
+<pre><code class="html">&lt;section&gt;
+    &lt;pre&gt;&lt;code class="html"&gt;
+        &lt;body&gt;
+            &lt;div class="example"&gt;
+                test
+            &lt;/div&gt;
+        &lt;/body&gt;
+    &lt;/code&gt;&lt;/pre&gt;
+&lt;/section&gt;
+</code></pre>
+
+<h2>スライド内コンテンツの動きの設定</h2>
+
+<p>スライドのページ内でいくつかの動きを設定したいときは</p>
+
+<ul>
+<li><code>section</code>タグのidに<code>fragments</code>を指定する。</li>
+<li>ページ内のコンテンツのclassに<code>fragment</code>を指定する。</li>
+</ul>
+
+
+<pre><code class="html">&lt;section id="fragments"&gt;
+    &lt;h2&gt;example&lt;/h2&gt;
+    &lt;ol&gt;
+        &lt;li class="fragment"&gt;test1&lt;/li&gt;
+        &lt;li class="fragment"&gt;test2&lt;/li&gt;
+        &lt;li class="fragment"&gt;test3&lt;/li&gt;
+    &lt;/ol&gt;
+&lt;/section&gt;
+</code></pre>
+
+<p>上記のように設定するとリストの要素が一つずつ出現する。</p>
+
+<p> <code>fragment</code>classにはオプションを設定することができ、オプションによって動作をが変わる。</p>
+
+<ul>
+<li><code>class="fragment current-visible"</code>: 要素が出現する（デフォルト）</li>
+<li><code>class="fragment grow"</code>: 要素が大きくなる</li>
+<li><code>class="fragment shrink"</code>: 要素が小さくなる</li>
+<li><code>class="fragment roll-in"</code>: 要素が回転しながら出現</li>
+<li><code>class="fragment fade-out"</code>: 要素が消える</li>
+<li><code>class="fragment highlight-green"</code>: 要素が指定した色になる(red, blueなども指定可能)</li>
+<li><code>class="fragment highlight-current-blue"</code>: 要素が指定した色で出現する(red, greenなども指定可能)</li>
+</ul>
+
+
+<h2>マークダウンでの記述</h2>
+
+<p>reveal.jsではプレゼンテーションをマークダウンで記述することもできる</p>
+
+<ul>
+<li><code>section</code>タグに<code>data-markdown</code>を指定</li>
+<li><code>&lt;script type="text/template"&gt;&lt;/script&gt;</code>ブロック内に記述</li>
+</ul>
+
+
+<p>&#8220;`html
+<section data-markdown></p>
+
+<script type="text/template">
+    # ここにmarkdown形式で記述
+    ```
+    echo "you can also write code.";
+    ````
+</script>
+
+
+<p></section>
+<code>
+コードブロック内でも</code> </script> &#8220;`タグが出現するとマークダウンの終了と誤解されるので注意</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="https://github.com/hakimel/reveal.js">GitHub</a></li>
+<li><a href="http://qiita.com/budougumi0617/items/19b19019bbe01f86e251">Reveal.js、Markdown、Githubでスライドを作成する。</a></li>
+<li><a href="http://qiita.com/ryurock/items/9c6de36b9d6a716e7992">なんかかっこいいプレゼンテーションテンプレートを探しているならreveal.js使ってみろって</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

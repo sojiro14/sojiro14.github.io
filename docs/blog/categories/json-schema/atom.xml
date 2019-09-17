@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Json Schema | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/json-schema/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[JSON Schema のバリデーション]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/18/validate-json-schema/"/>
+    <updated>2015-05-18T23:41:47+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/18/validate-json-schema</id>
+    <content type="html"><![CDATA[<p>JSON Schema を勉強中であります。</p>
+
+<p>その名の通り JSON でリソースそのものやリソースの操作まで表現できる面白いツールだと思います。</p>
+
+<p>しかし、 JSON Schema は往々にして複雑になりがちで、書く量が多くなると typo も増えてきます。</p>
+
+<p>そこで今回は JSON Schema のバリデーションに使えるツールをメモ程度に書いておきます。</p>
+
+<h2>validate-schema コマンド</h2>
+
+<p>まずは <code>validate-schema</code> コマンドから。簡単なバリデーションをしてくれる。</p>
+
+<p>gem の json_schema パッケージに入っているのでインストール</p>
+
+<pre><code class="bash">$ gem install json_schema
+Password:
+Fetching: json_schema-0.6.0.gem (100%)
+Successfully installed json_schema-0.6.0
+...
+1 gem installed
+</code></pre>
+
+<p>インストールできたらオプションに <code>-d</code> をつけて実行</p>
+
+<p>これがバリデーションに通った例
+<code>bash
+$ validate-schema -d json_schema/directory/test.json
+json_schema/directory/test.json is valid.
+</code></p>
+
+<p>バリデーションに落ちるとこうなる</p>
+
+<pre><code class="bash">$ validate-schema -d json_schema/directory/test.json
+json_schema/directory/test.json: Invalid JSON. Try to validate using `jsonlint`.
+</code></pre>
+
+<p>なんと別のツールを使って確かめろということなので、以下につづく。</p>
+
+<h2>jsonlint コマンド</h2>
+
+<p>さて、 validate-schema に jsonlint を使え、と言われたので早速インストールする</p>
+
+<pre><code class="bash">$ npm install jsonlint -g
+npm http GET https://registry.npmjs.org/jsonlint
+npm http 200 https://registry.npmjs.org/jsonlint
+...
+/usr/local/bin/jsonlint -&gt; /usr/local/lib/node_modules/jsonlint/lib/cli.js
+jsonlint@1.6.2 /usr/local/lib/node_modules/jsonlint
+├── nomnom@1.8.1 (underscore@1.6.0, chalk@0.4.0)
+└── JSV@4.0.2
+</code></pre>
+
+<p>インストールが完了したら早速チェック</p>
+
+<pre><code class="bash">$ jsonlint json_schema/directory/test.json
+[Error: Parse error on line 20:
+..."],                }            },   
+----------------------^
+Expecting 'STRING', got '}']
+</code></pre>
+
+<p>今度はバリデーションに落ちる理由と場所を示してくれるのですぐに修正できる</p>
+
+<p>だいたいバリデーションに落ちるときは <code>,</code> のつけ過ぎが多い</p>
+
+<p>これらのツールで無駄にハマる時間をなくしたいものです。</p>
+
+<h2>validate-schema コマンド（再）</h2>
+
+<p>今回は JSON Schema 単体のチェックだったので <code>validate-schema</code> コマンドが使い勝手悪く見えるので補足</p>
+
+<p>もともとは、ある JSON データが JSON Schema に則っているかのバリデーションをするツールである</p>
+
+<pre><code class="bash">$ validate-schema json_schema/check.json test.json 
+test.json#/emotion: failed schema #/properties/emotion: embarrassment is not a member of ["pleasure", "anger", "sadness", "enjoyment"].
+</code></pre>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="https://github.com/brandur/json_schema">validate-schema</a></li>
+<li><a href="https://www.npmjs.com/package/jsonlint">jsonlint</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

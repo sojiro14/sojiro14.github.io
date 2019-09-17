@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Cpan | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/cpan/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CPAN モジュールのリリース]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/07/06/release-cpan-module/"/>
+    <updated>2015-07-06T02:19:14+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/07/06/release-cpan-module</id>
+    <content type="html"><![CDATA[<p>上司にお膳立てされ、後輩にお尻を叩かれ、やっとのことで CPAN モジュールをリリースしました。</p>
+
+<p>前回のエントリに続き、リリースの手順を記します。</p>
+
+<h2>モジュールの作成</h2>
+
+<p>ここがコアの部分ですが、内容は作るモジュールに依るので割愛。編集すべきは以下のファイルです。</p>
+
+<ul>
+<li>lib/ 配下のプログラム</li>
+<li>t/ 配下のテストプラグラム</li>
+<li>cpanfile</li>
+</ul>
+
+
+<p>cpanfile の作成は <code>scan-prereqs-cpanfile</code> を使うと便利です。</p>
+
+<p>このコマンドは <strong>App::scan_prereqs_cpanfile</strong> モジュールで提供されています。</p>
+
+<pre><code class="bash">cpanm App::scan_prereqs_cpanfile
+scan-prereqs-cpanfile &gt; cpanfile
+</code></pre>
+
+<h2>テスト</h2>
+
+<p>モジュールの作成ができたら test を実行しますが、このとき <code>minil test</code> コマンドを使うと Changes や META.json、README.md が自動で編集されます。</p>
+
+<pre><code class="bash">$ minil test
+Creating working directory: /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7
+cp Build.PL /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/Build.PL
+cp Changes /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/Changes
+cp LICENSE /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/LICENSE
+cp META.json /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/META.json
+cp README.md /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/README.md
+cp cpanfile /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/cpanfile
+cp lib/JSON/MergePatch.pm /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/lib/JSON/MergePatch.pm
+cp minil.toml /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/minil.toml
+cp t/00_compile.t /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/t/00_compile.t
+Building /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7
+Retrieving meta data from lib/JSON/MergePatch.pm.
+Name: JSON::MergePatch
+Abstract: It's new $module
+Version: 0.01
+fatal: bad default revision 'HEAD'
+Writing MANIFEST file
+Writing release tests: xt/minilla/minimum_version.t
+Writing release tests: xt/minilla/cpan_meta.t
+Writing release tests: xt/minilla/pod.t
+Writing release tests: xt/minilla/spelling.t
+Writing release tests: xt/minilla/permissions.t
+[5DuYQ9x7] $ perl -I. Build.PL
+Creating new 'Build' script for 'JSON-MergePatch' version '0.01'
+[5DuYQ9x7] $ perl -I. Build build
+cp lib/JSON/MergePatch.pm blib/lib/JSON/MergePatch.pm
+t/00_compile.t .. ok   
+All tests successful.
+Files=1, Tests=1,  0 wallclock secs ( 0.01 usr  0.01 sys +  0.03 cusr  0.01 csys =  0.06 CPU)
+Result: PASS
+Removing /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7
+</code></pre>
+
+<h2>リリース</h2>
+
+<p>テストが通ったらいよいよリリースします。</p>
+
+<p>CPAN へのリリースには PAUSE ID が必要です。取得方法は<a href="http://blog.sojiro.me/blog/2015/05/17/get-pause-id/">こちら</a>。</p>
+
+<p>リリースには <code>minil release</code> コマンドを使います。</p>
+
+<pre><code class="bash">$ minil release
+
+Release engineering requires Version::Next, but it is not available. Please install Version::Next using your preferred CPAN client at ...
+</code></pre>
+
+<p> <strong>Version::Next</strong> がないと怒られたので入れて再度実行。</p>
+
+<pre><code class="bash">$ cpanm Version::Next
+...
+
+$ minil release
+
+Release engineering requires CPAN::Uploader, but it is not available. Please install CPAN::Uploader using your preferred CPAN client at ...
+</code></pre>
+
+<p>今度は <strong>CPAN::Uploader</strong> がないと怒られたので入れて再度実行。</p>
+
+<pre><code class="bash">$ cpanm CPAN::Uploader
+...
+
+$ minil release
+
+Retrieving meta data from lib/JSON/MergePatch.pm.
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: 0.01
+Next Release? [0.01] 
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: 0.01
+...
+All tests successful.
+Files=8, Tests=67,  0 wallclock secs ( 0.04 usr  0.03 sys +  0.18 cusr  0.04 csys =  0.29 CPU)
+Result: PASS
+Wrote JSON-MergePatch-0.01.tar.gz
+Upload to CPAN
+Release to CPAN ? [y/n]   y
+missing user argument at
+</code></pre>
+
+<p>リリースバージョンの確認と、 CPAN にリリースするかの確認に答えていざリリース、と思いきや</p>
+
+<pre><code class="bash">missing user argument at
+</code></pre>
+
+<p>と怒られました。</p>
+
+<p>どうやら <code>~/.pause</code> ファイルに PAUSE のユーザー情報を記載する必要があるようです。</p>
+
+<pre><code class="bash">$ vim ~/.pause
+$ cat ~/.pause
+user SOJIRO
+password your_password
+</code></pre>
+
+<p>再度実行</p>
+
+<pre><code class="bash">$ minil release
+
+Retrieving meta data from lib/JSON/MergePatch.pm.
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: 0.01
+Next Release? [0.01] 
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: 0.01
+...
+All tests successful.
+Files=8, Tests=67,  0 wallclock secs ( 0.04 usr  0.03 sys +  0.18 cusr  0.05 csys =  0.30 CPU)
+Result: PASS
+Wrote JSON-MergePatch-0.01.tar.gz
+Upload to CPAN
+Release to CPAN ? [y/n]   y
+registering upload with PAUSE web server
+POSTing upload for /user/home_directory/git/cpan/JSON-MergePatch/.build/ilpDOKuE/JSON-MergePatch-0.01.tar.gz to https://pause.perl.org/pause/authenquery
+PAUSE add message sent ok [200]
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: 0.01
+[JSON-MergePatch] $ git commit -a -m Checking in changes prior to tagging of version 0.01.
+Changelog diff is:
+diff --git a/Changes b/Changes
+index 643c7bc..dae7daa 100644
+--- a/Changes
++++ b/Changes
+@@ -2,5 +2,7 @@ Revision history for Perl extension JSON-MergePatch
+
+ 
+
++0.01 2015-07-02T18:29:20Z
++
+     - original version
+
+[master 3bf0db2] Checking in changes prior to tagging of version 0.01.
+
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+Pushing to origin
+[JSON-MergePatch] $ git push origin master
+Counting objects: 7, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 831 bytes | 0 bytes/s, done.
+Total 4 (delta 2), reused 0 (delta 0)
+To git@github.com:sojiro14/JSON-MergePatch.git
+
+   9c8c207..3bf0db2  master -&gt; master
+
+[JSON-MergePatch] $ git tag 0.01
+[JSON-MergePatch] $ git push origin tag 0.01
+Total 0 (delta 0), reused 0 (delta 0)
+To git@github.com:sojiro14/JSON-MergePatch.git
+
+ * [new tag]         0.01 -&gt; 0.01
+
+Removing /user/home_directory/git/cpan/JSON-MergePatch/.build/ilpDOKuE
+</code></pre>
+
+<p>テストが実行された後、CPAN にリリースされました。最後にその時点の tag が切られて完了。</p>
+
+<p>ついに CPAN モジュールをリリースしてしまいました。メンテナンスちゃんとしなくては。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.64p.org/entry/2013/05/14/080423">Minilla を用いた Perl モジュールの作り方</a></li>
+<li><a href="http://hotolab.net/blog/first_minil/">はじめてのCPAN Authorになろうとして困ったメモ</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CPAN モジュールのための雛形を作る]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/07/02/create-basic-model-for-cpan-module/"/>
+    <updated>2015-07-02T00:13:24+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/07/02/create-basic-model-for-cpan-module</id>
+    <content type="html"><![CDATA[<p>いよいよ CPAN モジュールを作ろうと思います。</p>
+
+<p>しかし既存の CPAN モジュールを見てみると本体のプログラムの他に見慣れないファイルがちらほら。。。</p>
+
+<p>正直どんなファイル群で CPAN モジュールを構成すれば良いのか分かっていないわけです。</p>
+
+<p>そんな悩みを解決してくれたのが <strong>Minilla</strong> モジュールです。</p>
+
+<h2>Minilla のインストール</h2>
+
+<p> <strong>Minilla</strong> は CPAN モジュールなので <code>cpanm</code> コマンドでインストールできます。</p>
+
+<pre><code class="bash">$ cpanm Minilla
+--&gt; Working on Minilla
+Fetching http://cpan.metacpan.org/authors/id/T/TO/TOKUHIROM/Minilla-v2.4.1.tar.gz ... OK
+Configuring Minilla-v2.4.1 ... OK
+...
+Building and testing Minilla-v2.4.1 ... OK
+Successfully installed Minilla-v2.4.1
+11 distributions installed
+</code></pre>
+
+<h2>雛形の作成</h2>
+
+<p> <strong>Minilla</strong> がインストールできたら早速 CPAN モジュールの雛形を作ります。 <code>minil new Your::Module</code> で作成できます。</p>
+
+<p>今回は <strong>JSON::MergePatch</strong> というモジュールを作ります。</p>
+
+<pre><code class="bash">$cd ~/git/cpan
+$ minil new JSON::MergePatch
+Writing lib/JSON/MergePatch.pm
+Writing Changes
+Writing t/00_compile.t
+Writing .travis.yml
+Writing .gitignore
+Writing LICENSE
+Writing cpanfile
+Initializing git JSON::MergePatch
+[JSON-MergePatch] $ git init
+Initialized empty Git repository in /user/home_directory/git/cpan/JSON-MergePatch/.git/
+Retrieving meta data from lib/JSON/MergePatch.pm.
+Name: JSON::MergePatch
+Abstract: It's new $module
+Version: 0.01
+fatal: bad default revision 'HEAD'
+[JSON-MergePatch] $ git add .
+Finished to create JSON::MergePatch
+</code></pre>
+
+<p>これで雛形ができました。</p>
+
+<p>そしてこれから雛形を編集していくわけですが、自分で編集するのは基本的に以下のファイルのみです。</p>
+
+<ul>
+<li>lib/ 配下のプログラム</li>
+<li>t/ 配下のテストプラグラム</li>
+<li>cpanfile</li>
+</ul>
+
+
+<p>以下のファイルはそれぞれ <code>minil hoge</code> コマンド実行時に自動で編集されます。</p>
+
+<ul>
+<li>Changes: リリース時に更新される</li>
+<li>META.json: cpanfile に合わせて更新される</li>
+<li>README.md: lib/Your/Module.pm の記述から更新される</li>
+</ul>
+
+
+<h2>つづく</h2>
+
+<p>次回はいよいよ CPAN へ公開する際の手順を書こうと思います。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.64p.org/entry/2013/05/14/080423">Minilla を用いた Perl モジュールの作り方</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PAUSE ID の取得]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/17/get-pause-id/"/>
+    <updated>2015-05-17T23:23:14+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/17/get-pause-id</id>
+    <content type="html"><![CDATA[<p>いま私は日本の Perl シーンにおける名立たるプログラマの方々の元で仕事させていただくという大変ありがたい立場にいるのですが、常々</p>
+
+<p><strong> OSS に対する活動が成長の大きな糧になるからチャレンジすべし </strong></p>
+
+<p>とアドバイスを受けています。</p>
+
+<p>ところが初めてその言葉を受けてから既に1年以上経とうというのに何もしていない。これは本当にいかんと思ってとにかく CAPN に貢献してみようと。</p>
+
+<p>そこで調べてみると PAUSE ID なるものが必要なようなので取得までの過程をここへメモします</p>
+
+<h2>PAUSE ID の取得</h2>
+
+<p>PAUSE は The Perl Authors Upload Server の略称で、ここから CPAN へのアップなどするよう</p>
+
+<p><a href="http://pause.perl.org/pause/query?ACTION=request_id">ここ</a> から登録を開始する</p>
+
+<p>各項目に入力してアカウント申請を行う</p>
+
+<p>full name の欄はそれっぽい名前じゃないとはじかれるが、後から変えられる</p>
+
+<p>申請を行うと、しばらくしてアカウント発行の通知が登録したメールアドレスに届く</p>
+
+<p>この通知は人によって届くまでの時間にばらつきがあるようだが、今回は申請したその日のうちに来た</p>
+
+<p>通知にはパスワード変更ページへのリンクと暫定のパスワードが記載されているので、登録した ID と暫定パスワードで Basic 認証を突破してパスワードを設定する</p>
+
+<p>アカウントが発行されると Edit Account Info というメニューへアクセスできるようになる</p>
+
+<p>ここに</p>
+
+<blockquote><p>The email address [id]@cpan.org should be configured to forward mail to &hellip;</p></blockquote>
+
+<p>という項目があるので、 <code>[id]@cpan.org</code> へのメールを受け取るメールアドレスを設定する</p>
+
+<p>ここで設定しておかないと後々 <code>[id]@cpan.org</code> に対するメールが受け取れず不便を被るので要設定とのこと</p>
+
+<h2>Gravatar の設定</h2>
+
+<p>Gravatar は Email アカウントにアイコンを紐づけて様々なサービスで使えるようにするサービスで、 GitHub などでも使われている</p>
+
+<p><a href="https://ja.gravatar.com/">https://ja.gravatar.com/</a></p>
+
+<p>Gravatar に PAUSE ID に紐づいたアドレスでアイコンを設定することで CPAN のアカウントへアイコンを設定することができる</p>
+
+<pre><code>[id]@cpan.org  # 設定するメールアドレス
+</code></pre>
+
+<p>既に Gravatar のアカウントがある場合は「メールアドレスの追加」から上記アドレスを追加すればよい</p>
+
+<p>新たに Gravatar のアカウントを取得する場合は注意が必要なようである。 <code>@cpan.org</code> のメールアドレスが前項の PAUSE ID 取得の際に自分のメールアドレスへ転送されるよう設定してからでないと、メールアドレスの認証が取れず、 Gravatar のアカウント取得に失敗するようだ。</p>
+
+<p><img src="/images/cpan/gravatar.png"></p>
+
+<p>Gravatar の設定が済むと PAUSE アカウントに設定したアイコンが表示されるようになる</p>
+
+<p><img src="/images/cpan/sojiro.png"></p>
+
+<p>さて、アカウントは取得した。後はコードを書いて上げるだけ。</p>
+
+<p>やるしかないのです。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://blog.livedoor.jp/sasata299/archives/51284970.html">こんな僕が CPAN Author （一応） になるまで。</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

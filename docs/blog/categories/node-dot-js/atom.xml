@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: node.js | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/node-dot-js/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Node.jsとnpmのインストール]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/10/01/install-node-js-and-npm/"/>
+    <updated>2017-10-01T20:43:45+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/10/01/install-node-js-and-npm</id>
+    <content type="html"><![CDATA[<p>手元の Mac に Node.js と npm がインストールされていなかったのでインストールした手順</p>
+
+<h2><code>homebrew</code> を使って <code>nodebrew</code> をインストール</h2>
+
+<pre><code class="bash">$ brew install nodebrew
+==&gt; Downloading https://github.com/hokaccha/nodebrew/archive/v0.9.2.tar.gz
+==&gt; Downloading from https://codeload.github.com/hokaccha/nodebrew/tar.gz/v0.9.2
+######################################################################## 100.0%
+==&gt; /usr/local/Cellar/nodebrew/0.9.2/bin/nodebrew setup_dirs
+==&gt; Caveats
+Add path:
+  export PATH=$HOME/.nodebrew/current/bin:$PATH
+
+To use Homebrew's directories rather than ~/.nodebrew add to your profile:
+  export NODEBREW_ROOT=/usr/local/var/nodebrew
+
+Bash completion has been installed to:
+  /usr/local/etc/bash_completion.d
+
+zsh completion has been installed to:
+  /usr/local/share/zsh/site-functions
+==&gt; Summary
+🍺  /usr/local/Cellar/nodebrew/0.9.2: 7 files, 34.4K, built in 2 seconds
+</code></pre>
+
+<p><code>nodebrew</code> がインストールされたことを確認
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew -v
+</span><span class='line'>nodebrew 0.9.2&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Usage:
+</span><span class='line'>    nodebrew <span class="nb">help                         </span>Show this message
+</span><span class='line'>    nodebrew install &lt;version&gt;            Download and install a &lt;version&gt; <span class="o">(</span>compile from <span class="nb">source</span><span class="o">)</span>
+</span><span class='line'>    nodebrew install-binary &lt;version&gt;     Download and install a &lt;version&gt; <span class="o">(</span>binary file<span class="o">)</span>
+</span><span class='line'>    nodebrew uninstall &lt;version&gt;          Uninstall a version
+</span><span class='line'>    nodebrew use &lt;version&gt;                Use &lt;version&gt;
+</span><span class='line'>    nodebrew list                         List installed versions
+</span><span class='line'>    nodebrew ls                           Alias <span class="k">for</span> &lt;code&gt;list&lt;/code&gt;
+</span><span class='line'>    nodebrew ls-remote                    List remote versions
+</span><span class='line'>    nodebrew ls-all                       List remote and installed versions
+</span><span class='line'>    nodebrew <span class="nb">alias</span> &lt;key&gt; &lt;version&gt;        Set <span class="nb">alias </span>to version
+</span><span class='line'>    nodebrew <span class="nb">unalias</span> &lt;key&gt;                Remove <span class="nb">alias</span>
+</span><span class='line'><span class="nb">    </span>nodebrew clean &lt;version&gt; <span class="p">|</span> all        Remove <span class="nb">source </span>file
+</span><span class='line'>    nodebrew selfupdate                   Update nodebrew
+</span><span class='line'>    nodebrew migrate-package &lt;version&gt;    Install global NPM packages contained in &lt;version&gt; to current version
+</span><span class='line'>    nodebrew <span class="nb">exec</span> &lt;version&gt; <span class="p">&amp;</span>ndash<span class="p">;</span> &lt;<span class="nb">command</span>&gt;  Execute &lt;<span class="nb">command</span>&gt; specified &lt;version&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Example:
+</span><span class='line'>    <span class="c"># install from binary</span>
+</span><span class='line'>    nodebrew install-binary v0.10.22&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;# use a specific version number
+</span><span class='line'>nodebrew use v0.10.22
+</span><span class='line'>
+</span><span class='line'><span class="c"># io.js</span>
+</span><span class='line'>nodebrew install-binary io@v1.0.0
+</span><span class='line'>nodebrew use io@v1.0.0
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'><span class="c">## インストールできる Node.js のバージョンを確認</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;<span class="nv">$ </span>nodebrew ls-remote
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE in m/#<span class="o">{</span> <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE release<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>v0.0.1    v0.0.2    v0.0.3    v0.0.4    v0.0.5    v0.0.6&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;<span class="p">&amp;</span>hellip<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;&amp;#109;&amp;#x61;&amp;#105;&amp;#108;&amp;#x74;&amp;#x6f;&amp;#58;&amp;#105;&amp;#x6f;&amp;#64;&amp;#118;&amp;#51;&amp;#x2e;&amp;#51;&amp;#46;&amp;#x30;&quot;</span>&gt;<span class="p">&amp;</span><span class="c">#x69;&amp;#111;&amp;#64;&amp;#118;&amp;#51;&amp;#46;&amp;#x33;&amp;#46;&amp;#x30;&lt;/a&gt; &lt;a href=&quot;&amp;#x6d;&amp;#x61;&amp;#105;&amp;#x6c;&amp;#x74;&amp;#111;&amp;#58;&amp;#105;&amp;#111;&amp;#64;&amp;#x76;&amp;#51;&amp;#46;&amp;#x33;&amp;#x2e;&amp;#49;&quot;&gt;&amp;#x69;&amp;#x6f;&amp;#x40;&amp;#118;&amp;#x33;&amp;#46;&amp;#x33;&amp;#46;&amp;#49;&lt;/a&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>バージョンを指定してインストール (binary を指定したほうがインストールにかかる時間が短いようだ)</h2>
+
+<pre><code class="bash">$ nodebrew install-binary v6.11.3
+Unescaped left brace in regex is deprecated, passed through in regex; marked by &lt;-- HERE in m/#{ &lt;-- HERE platform}/ at /usr/local/bin/nodebrew line 731.
+Unescaped left brace in regex is deprecated, passed through in regex; marked by &lt;-- HERE in m/#{ &lt;-- HERE release}/ at /usr/local/bin/nodebrew line 731.
+Unescaped left brace in regex is deprecated, passed through in regex; marked by &lt;-- HERE in m/#{ &lt;-- HERE arch}/ at /usr/local/bin/nodebrew line 731.
+Unescaped left brace in regex is deprecated, passed through in regex; marked by &lt;-- HERE in m/#{ &lt;-- HERE version}/ at /usr/local/bin/nodebrew line 731.
+fetch: http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz
+Warning: Failed to create the file 
+Warning: /Users/sojiro/.nodebrew/src/v6.11.3/node-v6.11.3-darwin-x64.tar.gz: 
+Warning: No such file or directory
+
+curl: (23) Failed writing body (0 != 792)
+download faild: http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz
+</code></pre>
+
+<p>自分でインストール先のディレクトリを作らないとダメらしい
+<code>bash
+$ mkdir -p ~/.nodebrew/src
+</code></p>
+
+<p>再度インストール
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew install-binary v6.11.3
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE in m/#<span class="o">{</span> <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE platform<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE in m/#<span class="o">{</span> <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE release<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE in m/#<span class="o">{</span> <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE version<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>Unescaped left brace in regex is deprecated, passed through in regex<span class="p">;</span> marked by <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE in m/#<span class="o">{</span> <span class="p">&amp;</span>lt<span class="p">;&amp;</span>ndash<span class="p">;</span> HERE arch<span class="o">}</span>/ at /usr/local/bin/nodebrew line 731.
+</span><span class='line'>fetch: &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz&quot;</span>&gt;http://nodejs.org/dist/v6.11.3/node-v6.11.3-darwin-x64.tar.gz&lt;/a&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h6&gt;################################################################## 100.0%&lt;/h6&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Install successful
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>インストールされたバージョンを確認
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>nodebrew list
+</span><span class='line'>v6.11.3&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;current: none
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>使うバージョンを設定</h2>
+
+<pre><code class="bash">$ nodebrew use v6.11.3
+use v6.11.3
+</code></pre>
+
+<h2>コマンドにパスを通す</h2>
+
+<pre><code class="bash">$ echo 'export PATH=$PATH:/Users/sojiro/.nodebrew/current/bin' &gt;&gt; ~/.bashrc
+$ source ~/.bashrc 
+</code></pre>
+
+<p><code>node</code> 及び <code>npm</code> がインストールされたことを確認
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>node -v
+</span><span class='line'>v6.11.3&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;<span class="nv">$ </span>npm -v
+</span><span class='line'>3.10.10
+</span></code></pre></td></tr></table></div></figure></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Node.jsを使ってWeb Serverを作ってみました]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/01/07/making-a-web-server-with-node-dot-js/"/>
+    <updated>2015-01-07T00:55:25+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/01/07/making-a-web-server-with-node-dot-js</id>
+    <content type="html"><![CDATA[<p>Node.jsを使って簡単なWeb Serverを作ってみた際のメモ。</p>
+
+<p>今回使うNode.jsのバージョン
+<code>bash
+$ node -v
+v0.10.32
+</code></p>
+
+<h2>Web Serverオブジェクトの準備</h2>
+
+<p>Node.jsにはWeb Serverの機能を備えたオブジェクトが用意されている
+<code>javascript
+var http = require('http');
+var server = http.createServer();
+</code>
+Nodeの <code>http</code> モジュールを読み込んだ後、 <code>createServer()</code> メソッドでWeb Serverオブジェクトを取得できる</p>
+
+<!-- more -->
+
+
+<h2>requestイベントの追加</h2>
+
+<p>取得したServerオブジェクトのリスナーとして、requestを受けたときに発火するrequestイベントを追加する</p>
+
+<p>リスナーの追加には <code>emitter.on(event, listener)</code> という形式のメソッドを使う。今回はeventに <code>'request'</code> を指定する。
+<code>javascript
+server.on('request', function(request, response) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.write('Hello World.');
+    response.end();
+});
+</code>
+ここでリスナーとして指定するコールバック関数は以下の2つの引数を受ける</p>
+
+<ul>
+<li>requestの内容をもつ <code>http.IncomingMessage</code> クラスのインスタンス</li>
+<li>responseの内容となる <code>http.ServerResponse</code> クラスのインスタンス</li>
+</ul>
+
+
+<h3>response.writeHead(statusCode, [reasonPhrase], [headers])</h3>
+
+<p>responseのHeadを規定するメソッド</p>
+
+<h3>response.write(chunk, [encoding])</h3>
+
+<p>responseのbodyを規定するメソッド。 <code>chunk</code> に文字列を指定した場合は第二引数にencodingを指定することができる。デフォルトはUTF-8。</p>
+
+<h3>response.end([data], [encoding])</h3>
+
+<p>serverにresponseの完了を通知するメソッド。responseの終了時に必ず呼ばなければならない。</p>
+
+<h2>接続を受け入れる</h2>
+
+<p>ポートとホスト名を指定してWeb Serverへの接続を受け付ける
+<code>javascript
+server.listen(1337, 'xx.xxx.xxx.xxx');
+</code></p>
+
+<h2>コードの全体像</h2>
+
+<pre><code class="javascript web.js">var http = require('http');
+var server = http.createServer();
+server.on('request', function(request, response) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.write('Hello World.');
+    response.end();
+});
+server.listen(1337, 'xx.xxx.xxx.xxx');
+console.log('server listening...');  //起動時のメッセージ
+</code></pre>
+
+<h2>Web Serverの起動と確認</h2>
+
+<pre><code class="bash">$ node web.js 
+server listening...
+</code></pre>
+
+<p>Web Serverを起動したらブラウザで確認する</p>
+
+<p><img src="/images/nodejs/web_server/hello_world.png"></p>
+
+<p>簡単なWeb Serverの完成</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://nodejs.org/api/http.html#http_http">Node.js v0.10.35 Manual &amp; Documentation#HTTP</a></li>
+<li><a href="http://nodejs.org/api/events.html#events_events">Node.js v0.10.35 Manual &amp; Documentation#Events</a></li>
+<li><a href="http://dotinstall.com/lessons/basic_nodejs/26205">ドットインストール</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MacにNode.jsとMongoDBをインストールしたメモ]]></title>
+    <link href="http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac/"/>
+    <updated>2014-12-07T18:30:01+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2014/12/07/installing-node-dot-js-and-mongodb-in-mac</id>
+    <content type="html"><![CDATA[<p>某勉強会でNode.jsとMongoDBを使うということがあったので、インストールした際のメモを残しておく。</p>
+
+<h2>Homebrewのインストール</h2>
+
+<p><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a>でも触れた通り、以下の方法でインストールを試みる。
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.github.com/mxcl/homebrew/go/install&quot;</span>&gt;https://raw.github.com/mxcl/homebrew/go/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>Whoops, the Homebrew installer has moved! Please instead run:&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;ruby -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>curl -fsSL &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.githubusercontent.com/Homebrew/install/master/install&quot;</span>&gt;https://raw.githubusercontent.com/Homebrew/install/master/install&lt;/a&gt;<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Also, please ask wherever you got this link from to update it to the above.
+</span><span class='line'>Thanks!
+</span></code></pre></td></tr></table></div></figure>
+どうやらHomebrewのインストーラーの場所があれから変わったようで、以下のパスで再度実行。</p>
+
+<p>コマンドのレスポンスとして新しいパスをメッセージに残してくれるのはありがたい。
+<code>bash
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code>
+これでHomebrewのインストールは完了したのであとはサクサク必要なものをインストールするのみ。</p>
+
+<!-- more -->
+
+
+<h2>Node.jsのインストール</h2>
+
+<pre><code class="bash">$ brew install node
+</code></pre>
+
+<p>これで完了。
+<code>bash
+$ node -v
+v0.10.33
+</code>
+npmもばっちり入っている
+<code>bash
+$ npm -v
+2.1.10
+</code></p>
+
+<h2>MongoDBのインストール</h2>
+
+<p>これも以下を実行するだけ。
+<code>bash
+$ brew install mongodb
+</code>
+<code>bash
+$ mongo --version
+MongoDB shell version: 2.6.5
+</code>
+おしまい。</p>
+
+<h2>参照</h2>
+
+<ul>
+<li><a href="http://sojiro14.github.io/blog/2014/04/19/irc-bot-by-hubot/">HUBOTを使ったirc-bot作成メモ</a></li>
+<li><a href="http://qiita.com/hajimeni/items/3c93fd981e92f66a20ce">Macにhomebrewを使ってmongodbをインストール</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

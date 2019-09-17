@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mean | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/mean/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[MEANとはなにか]]></title>
+    <link href="http://sojiro14.github.io/blog/2015/05/08/what-is-mean/"/>
+    <updated>2015-05-08T22:14:38+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2015/05/08/what-is-mean</id>
+    <content type="html"><![CDATA[<p>以前のエントリ、 <a href="http://blog.sojiro.me/blog/2015/05/06/the-first-step-of-yeoman/">初めてのYeoman (Yoを使った雛形作成)</a> にて generator-angular-fullstack という雛形を使いましたが、この雛形は <strong>MEAN</strong> なアプリケーションの雛形、と呼ばれているそうです。</p>
+
+<p>MEANとはどういう意味でしょうか？</p>
+
+<h2>MEAN とはなにか</h2>
+
+<p>MEAN は</p>
+
+<ul>
+<li><strong>M</strong>ongoDB</li>
+<li><strong>E</strong>xpress.js</li>
+<li><strong>A</strong>ngular.js</li>
+<li><strong>N</strong>ode.js</li>
+</ul>
+
+
+<p>これらの頭文字をとったもので、これらの技術を使ったサービスのことを言う</p>
+
+<h2>特徴はなにか</h2>
+
+<p>まだ使ったこともないので想像だが、（恥ずかしいので早く使いたい）</p>
+
+<ul>
+<li>サーバーサイドからクライアントサイドまですべて JavaScript で制御できること
+
+<ul>
+<li>現状他の言語ではなかなかマネできないのではないか</li>
+</ul>
+</li>
+<li>DB含むすべてのデータを JSON 形式でやり取りできること
+
+<ul>
+<li>すべて JavaScript で、というのと被るところもあるが、やはりシンプルで良い感じがする</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>最後に</h2>
+
+<p>やっぱり使わないと上記のようなしょうもないことしか言えないので generator-angular-fullstack で作った雛形を少しずつ触りながら次回はもう少しまともなことを言えるようにします。</p>
+]]></content>
+  </entry>
+  
+</feed>

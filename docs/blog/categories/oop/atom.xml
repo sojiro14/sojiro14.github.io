@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Oop | Sojiro's Blog]]></title>
+  <link href="http://sojiro14.github.io/blog/categories/oop/atom.xml" rel="self"/>
+  <link href="http://sojiro14.github.io/"/>
+  <updated>2017-10-02T23:28:32+09:00</updated>
+  <id>http://sojiro14.github.io/</id>
+  <author>
+    <name><![CDATA[Sojiro]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[値オブジェクトとコレクションオブジェクト]]></title>
+    <link href="http://sojiro14.github.io/blog/2017/08/25/value-object-and-collection-object/"/>
+    <updated>2017-08-25T18:07:57+09:00</updated>
+    <id>http://sojiro14.github.io/blog/2017/08/25/value-object-and-collection-object</id>
+    <content type="html"><![CDATA[<p>某先輩の書評を読んで気になったので 『<a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a>』 という本を読んだ。</p>
+
+<p>とあるプロジェクトでその先輩に自分の書くコードについて色々ご指摘をいただいていたタイミングであり、自分としてはかなり参考になった点があるので備忘も兼ねて書いてみる。</p>
+
+<p>今回は特に「値オブジェクト」と「コレクションオブジェクト（ファーストクラスコレクション）」について。</p>
+
+<h2>値オブジェクト</h2>
+
+<p>値オブジェクトはアプリケーションに登場する様々な値に対してその値を扱うための専用クラスを作るという考え方。</p>
+
+<h3>値ごとにクラスを定義する</h3>
+
+<p>値オブジェクトの考え方をルール化すると、「プリミティブ型や <code>String</code> 型は使わない」という方針となる。</p>
+
+<p>例えば、先述のプロジェクトのコードでは登場する様々な値を <code>String</code> 型で表現していた。</p>
+
+<ul>
+<li><code>userId</code></li>
+<li><code>nickname</code></li>
+<li><code>address</code></li>
+<li>etc&hellip;</li>
+</ul>
+
+
+<p>これらはサーバーリクエストの口でバリデーションを通るものの、その後の値がアプリケーションコード内で保証されないため非常に不安定だった。</p>
+
+<p>また、例えば <code>nickname</code> と <code>address</code> を引数として受け付けるメソッドがあったとすると</p>
+
+<pre><code class="java">public User hoge(String nickname, String address) {
+    ...
+}
+</code></pre>
+
+<p>となるわけだが、この時このメソッドを使う側で間違えて <code>address</code>, <code>nickname</code> の順で引数を指定したとしてもこのメソッドはその引数を受け付けてしまう。</p>
+
+<p>そこで <code>Nickname</code> クラスと <code>Address</code> クラスを定義するというのが値オブジェクトの考え方だ。</p>
+
+<pre><code class="java">class Nickname {
+    static final int MIN_LENGTH = 1;
+    static final int MAX_LENGTH = 20;
+
+    String nickname;
+
+    Nickname(String nickname) {
+        if (nickname.length() &lt; MIN_LENGTH) {
+            throw new IllegalArgumentException("nickname length must be at least" + MIN_LENGTH);
+        }
+        if (nickname.length() &gt; MAX_LENGTH) {
+          throw new IllegalArgumentException("nickname length must be under" + MAX_LENGTH);
+        }
+        this.nickname = nickname;
+    }
+}
+</code></pre>
+
+<p><code>address</code> に対しても同様にクラスを定義して先ほどのメソッドを</p>
+
+<pre><code class="java">public User hoge(Nickname nickname, Address address) {
+    ...
+}
+</code></pre>
+
+<p>とすればより堅い実装となる。</p>
+
+<h3>値オブジェクトを不変とする</h3>
+
+<p>値オブジェクトの値は上書きしないというのも値オブジェクトを扱う上で重要な考え方で、これをルール化すると、「値を変更する度にオブジェクトそのものを新しく（別のオブジェクトに）する」ということになる。</p>
+
+<pre><code class="java">Nickname nickname = new Nickname("sojiro");
+nickname.setNickname("shin-sojiro");
+</code></pre>
+
+<p>ではなく</p>
+
+<pre><code class="java">Nickname nickname = new Nickname("sojiro");
+Nickname updatedNickname = nickname.update("shin-sojiro");
+</code></pre>
+
+<p>とすることで、各オブジェクトがどの値をもっているのかが明確となり、知らないうちに値が変わっている、ということを防ぐことができる。</p>
+
+<h2>コレクションオブジェクト（ファーストクラスコレクション）</h2>
+
+<p>値オブジェクトの考え方を発展させ、コレクション型のデータとロジックを独自のクラスに切り出す考え方をコレクションオブジェクト、もしくはファーストクラスコレクションという。</p>
+
+<pre><code class="java">List&lt;User&gt; users = new ArrayList&lt;&gt;();
+users.add(user);
+</code></pre>
+
+<p>のように扱っていた <code>User</code> のコレクションを、 <code>Users</code> というクラスを定義し、そのクラスで操作が完結するようにする。</p>
+
+<pre><code class="java">class Users {
+    List&lt;User&gt; users;
+
+    Users(List&lt;User&gt; users) {
+        this.users = users;
+    }
+
+    Users add(User user) {
+        List&lt;User&gt; userList = new ArrayList&lt;&gt;(users);
+        return new Users(userList.add(user));
+    }
+
+    List&lt;User&gt; asList() {
+        return Collections.unmodifiableList(users);
+    }
+}
+</code></pre>
+
+<p>ここでのポイントは、</p>
+
+<ul>
+<li>値オブジェクトで値に変更がある場合は常に新しいオブジェクトを返したように、コレクションオブジェクトでもコレクションに変更がある場合は新たなオブジェクトを返すようにすること</li>
+<li>コレクションへの参照を返す場合はなるべく変更できない状態にして返すこと</li>
+</ul>
+
+
+<p>コレクションへの操作を独自クラスに閉じ込め、同一オブジェクトが持つコレクションの内容が変化することのないようにすることでより堅い実装とすることができる。</p>
+
+<h2>感想</h2>
+
+<p>Perl からプログラミングを始めたこともあってか（言い訳）、オブジェクト指向と言っても型への意識は低く、如何にコンパイル時点でバグを見つけられる堅い実装とするか、その変数に今どのような値が入っているかをコードの書き方で明確にするか、というような意識も低かった。</p>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a> からは他にも学んだ点が多いので追って記事にできたらと思う。</p>
+
+<h2>参照</h2>
+
+<p><a href="http://amzn.to/2vpxmgg">現場で役立つシステム設計の原則</a></p>
+]]></content>
+  </entry>
+  
+</feed>
