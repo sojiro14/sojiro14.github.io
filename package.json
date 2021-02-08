@@ -1,0 +1,18 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "blog by VuePress",
+  "main": "index.js",
+  "repository": "git@github.com:sojiro14/sojiro14.github.io.git",
+  "author": "sojiro14 <sojiro@cpan.org>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-blog": "^1.9.4",
+    "@vuepress/theme-blog": "^2.3.3",
+    "vuepress": "^1.8.0"
+  }
+}
