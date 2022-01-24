@@ -13,4 +13,13 @@ module.exports = {
     logo: '/favicon.png',
   },
   
+  // plugins
+  plugins: [
+    [
+      '@vuepress/plugin-google-analytics',
+      {
+        id: 'G-ECN7E21ZM0',
+      },
+    ],
+  ],
 }
