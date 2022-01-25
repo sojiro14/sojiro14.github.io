@@ -1,3 +1,5 @@
+const { path } = require('@vuepress/utils')
+
 module.exports = {
   // site config
   lang: 'ja-JP',
@@ -8,7 +10,7 @@ module.exports = {
   ],
 
   // theme and its config
-  theme: '@vuepress/theme-default',
+  theme: path.resolve(__dirname, './theme'),
   themeConfig: {
     logo: '/favicon.png',
     navbar: [
@@ -16,6 +18,7 @@ module.exports = {
       { text: 'archive', link: '/archive/' },
       { text: 'about', link: '/about/' }
     ],
+    sidebarDepth: 1,
   },
   
   // plugins
@@ -40,6 +43,13 @@ module.exports = {
             placeholder: '搜索',
           },
         },
+      },
+    ],
+    [
+      'vuepress-plugin-use-pages',
+      {
+        startsWith: '/blog/',
+        file: 'blogs.js',
       },
     ],
   ],
