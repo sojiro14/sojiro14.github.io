@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "InnoDBにおけるロックの種類"
-date: 2015-10-25 23:02:53 +0900
+date: 2015-10-25 23:02:53+0900
 comments: true
 categories: [MySQL]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Vagrant provisioning の謎"
-date: 2015-09-17 05:21:08 +0900
+date: 2015-09-17 05:21:08+0900
 comments: true
 categories: [Vagrant, RVM]
 ---

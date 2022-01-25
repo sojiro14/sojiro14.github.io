@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "初めてのChef"
-date: 2015-11-01 02:17:51 +0900
+date: 2015-11-01 02:17:51+0900
 comments: true
 categories: [Chef]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Octopressのテーマを変える"
-date: 2014-05-03 17:37:29 +0900
+date: 2014-05-03 17:37:29+0900
 comments: true
 categories: [Octopress]
 ---

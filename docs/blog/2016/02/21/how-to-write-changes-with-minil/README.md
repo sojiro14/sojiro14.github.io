@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "minil を使った Changes ファイルの更新"
-date: 2016-02-21 01:24:33 +0900
+date: 2016-02-21 01:24:33+0900
 comments: true
 categories: [Perl]
 ---

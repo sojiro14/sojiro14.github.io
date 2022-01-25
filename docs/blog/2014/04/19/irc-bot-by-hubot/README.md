@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "HUBOTを使ったirc-bot作成メモ"
-date: 2014-04-19 21:05:49 +0900
+date: 2014-04-19 21:05:49+0900
 comments: true
 categories: [HUBOT, IRC]
 ---

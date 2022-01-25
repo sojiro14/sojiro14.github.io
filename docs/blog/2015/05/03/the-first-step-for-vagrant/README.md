@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "初めてのVagrant"
-date: 2015-05-03 22:18:11 +0900
+date: 2015-05-03 22:18:11+0900
 comments: true
 categories: [Vagrant]
 ---

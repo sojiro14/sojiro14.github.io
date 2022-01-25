@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "OctopressにDISQUSのコメント欄を導入する"
-date: 2014-08-09 16:02:24 +0900
+date: 2014-08-09 16:02:24+0900
 comments: true
 categories: [Octopress, Disqus]
 ---

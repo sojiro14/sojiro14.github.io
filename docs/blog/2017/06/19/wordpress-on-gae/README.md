@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "WordPress on GAE"
-date: 2017-06-19 00:34:42 +0900
+date: 2017-06-19 00:34:42+0900
 comments: true
 categories: [GAE, WordPress]
 ---

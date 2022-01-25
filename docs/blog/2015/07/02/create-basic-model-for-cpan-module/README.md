@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "CPAN モジュールのための雛形を作る"
-date: 2015-07-02 00:13:24 +0900
+date: 2015-07-02 00:13:24+0900
 comments: true
 categories: [perl, CPAN]
 ---

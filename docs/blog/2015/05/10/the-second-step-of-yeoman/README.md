@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "初めてのYeoman (Grunt/Bowerを使ってみる)"
-date: 2015-05-10 18:25:06 +0900
+date: 2015-05-10 18:25:06+0900
 comments: true
 categories: [Yeoman, Grunt, Bower]
 ---

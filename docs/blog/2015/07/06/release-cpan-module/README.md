@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "CPAN モジュールのリリース"
-date: 2015-07-06 02:19:14 +0900
+date: 2015-07-06 02:19:14+0900
 comments: true
 categories: [perl, CPAN]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-"
-date: 2014-11-16 23:59:05 +0900
+date: 2014-11-16 23:59:05+0900
 comments: true
 categories: [Ruby on Rails]
 ---

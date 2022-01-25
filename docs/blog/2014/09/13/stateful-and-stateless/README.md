@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "ステートフル ステートレスとはどういうことか"
-date: 2014-09-13 18:00:03 +0900
+date: 2014-09-13 18:00:03+0900
 comments: true
 categories: [Web]
 ---

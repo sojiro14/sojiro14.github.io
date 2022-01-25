@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Amazon Linux AMIにagをインストールした手順"
-date: 2014-08-25 23:38:16 +0900
+date: 2014-08-25 23:38:16+0900
 comments: true
 categories: [Linux]
 ---

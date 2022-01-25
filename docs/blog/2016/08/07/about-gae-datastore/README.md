@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "GAE Datastore について"
-date: 2016-08-07 04:34:09 +0900
+date: 2016-08-07 04:34:09+0900
 comments: true
 categories: [GAE, Datastore]
 ---

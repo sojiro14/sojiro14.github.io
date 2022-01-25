@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "AWSに複数のユーザーを設定した手順"
-date: 2014-08-22 00:58:55 +0900
+date: 2014-08-22 00:58:55+0900
 comments: true
 categories: [Linux, AWS]
 ---

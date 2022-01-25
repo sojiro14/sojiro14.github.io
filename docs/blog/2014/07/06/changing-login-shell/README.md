@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "シェルの変更について"
-date: 2014-07-06 20:43:22 +0900
+date: 2014-07-06 20:43:22+0900
 comments: true
 categories: [Shell]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "値オブジェクトとコレクションオブジェクト"
-date: 2017-08-25 18:07:57 +0900
+date: 2017-08-25 18:07:57+0900
 comments: true
 categories: [OOP, Java]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-"
-date: 2014-11-12 12:06:23 +0900
+date: 2014-11-12 12:06:23+0900
 comments: true
 categories: [Ruby on Rails, Heroku, Git]
 ---

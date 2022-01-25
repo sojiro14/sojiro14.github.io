@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-"
-date: 2014-07-31 04:45:04 +0900
+date: 2014-07-31 04:45:04+0900
 comments: true
 categories: [HUBOT]
 ---

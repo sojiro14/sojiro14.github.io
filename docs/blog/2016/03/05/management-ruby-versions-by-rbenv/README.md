@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "rbenv で ruby を管理する"
-date: 2016-03-05 06:22:42 +0900
+date: 2016-03-05 06:22:42+0900
 comments: true
 categories: [Ruby]
 ---

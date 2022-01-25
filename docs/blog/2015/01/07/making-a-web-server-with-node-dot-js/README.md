@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Node.jsを使ってWeb Serverを作ってみました"
-date: 2015-01-07 00:55:25 +0900
+date: 2015-01-07 00:55:25+0900
 comments: true
 categories: [Node.js]
 ---

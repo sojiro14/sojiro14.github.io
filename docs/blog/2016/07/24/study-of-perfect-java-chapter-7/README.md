@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 7 インターフェース"
-date: 2016-07-24 02:29:32 +0900
+date: 2016-07-24 02:29:32+0900
 comments: true
 categories: [Java]
 ---

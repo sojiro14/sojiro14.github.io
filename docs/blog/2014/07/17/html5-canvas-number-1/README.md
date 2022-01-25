@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "HTML5 Canvas #1  -Canvasを初めて使う-"
-date: 2014-07-17 02:13:46 +0900
+date: 2014-07-17 02:13:46+0900
 comments: true
 categories: [Canvas]
 ---

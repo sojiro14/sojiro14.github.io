@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "HUBOTを使ったSlack Bot作成メモ"
-date: 2014-12-15 03:02:30 +0900
+date: 2014-12-15 03:02:30+0900
 comments: true
 categories: [HUBOT, Slack]
 ---

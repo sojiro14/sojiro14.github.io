@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Chef のリモート実行"
-date: 2015-11-14 23:08:53 +0900
+date: 2015-11-14 23:08:53+0900
 comments: true
 categories: [Chef]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "JSON Schema のバリデーション"
-date: 2015-05-18 23:41:47 +0900
+date: 2015-05-18 23:41:47+0900
 comments: true
 categories: [JSON Schema]
 ---

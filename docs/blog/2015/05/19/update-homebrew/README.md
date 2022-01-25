@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Homebrewをupdateしよう"
-date: 2015-05-19 23:39:53 +0900
+date: 2015-05-19 23:39:53+0900
 comments: true
 categories: [Homebrew]
 ---

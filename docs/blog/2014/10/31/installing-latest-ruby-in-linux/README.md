@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Linuxに最新のRubyをインストールする"
-date: 2014-10-31 05:29:00 +0900
+date: 2014-10-31 05:29:00+0900
 comments: true
 categories: [Ruby, Ruby on Rails, Linux, AWS]
 ---

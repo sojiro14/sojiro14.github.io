@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Redisに用意されたデータ型とその扱い"
-date: 2014-07-27 00:47:21 +0900
+date: 2014-07-27 00:47:21+0900
 comments: true
 categories: [Redis]
 ---

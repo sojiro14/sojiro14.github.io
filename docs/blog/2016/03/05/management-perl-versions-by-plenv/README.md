@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "plenv で perl を管理する"
-date: 2016-03-05 07:14:26 +0900
+date: 2016-03-05 07:14:26+0900
 comments: true
 categories: [Perl]
 ---

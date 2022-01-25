@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet"
-date: 2016-07-07 08:27:00 +0900
+date: 2016-07-07 08:27:00+0900
 comments: true
 categories: [GAE, Android Studio, Java]
 ---

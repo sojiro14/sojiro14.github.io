@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "MySQLにおけるNOT NULLカラムへのインサート時の挙動"
-date: 2014-10-20 13:44:28 +0900
+date: 2014-10-20 13:44:28+0900
 comments: true
 categories: [MySQL]
 ---

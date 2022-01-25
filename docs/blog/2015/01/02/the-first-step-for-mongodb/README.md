@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "初めてのMongoDB"
-date: 2015-01-02 02:20:55 +0900
+date: 2015-01-02 02:20:55+0900
 comments: true
 categories: [MongoDB]
 ---

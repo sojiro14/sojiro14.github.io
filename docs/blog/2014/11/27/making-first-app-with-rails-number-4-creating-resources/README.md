@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #4 -リソースの生成-"
-date: 2014-11-27 16:32:38 +0900
+date: 2014-11-27 16:32:38+0900
 comments: true
 categories: [Ruby on Rails]
 ---

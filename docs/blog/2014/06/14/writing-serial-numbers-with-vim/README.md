@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "vimで連番を振る方法"
-date: 2014-06-14 02:01:05 +0900
+date: 2014-06-14 02:01:05+0900
 comments: true
 categories: [Vim]
 ---

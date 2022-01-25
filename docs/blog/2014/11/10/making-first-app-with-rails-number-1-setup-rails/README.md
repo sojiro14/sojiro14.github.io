@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-"
-date: 2014-11-10 03:27:49 +0900
+date: 2014-11-10 03:27:49+0900
 comments: true
 categories: [Ruby, Ruby on Rails, Git, GitHub]
 ---

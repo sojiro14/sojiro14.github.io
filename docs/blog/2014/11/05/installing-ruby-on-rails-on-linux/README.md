@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "LinuxにRuby on Railsをインストールする"
-date: 2014-11-05 03:58:11 +0900
+date: 2014-11-05 03:58:11+0900
 comments: true
 categories: [Ruby, Ruby on Rails, Linux, AWS]
 ---

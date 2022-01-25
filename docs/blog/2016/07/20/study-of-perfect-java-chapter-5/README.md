@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 5 クラス"
-date: 2016-07-20 08:40:03 +0900
+date: 2016-07-20 08:40:03+0900
 comments: true
 categories: [Java]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Replyを試してみる"
-date: 2015-05-09 23:34:36 +0900
+date: 2015-05-09 23:34:36+0900
 comments: true
 categories: [Perl, REPL, Reply]
 ---

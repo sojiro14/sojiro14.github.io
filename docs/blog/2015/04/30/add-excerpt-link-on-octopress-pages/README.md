@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Octopressのページに「もっと見る」を設定する方法"
-date: 2015-04-30 20:12:17 +0900
+date: 2015-04-30 20:12:17+0900
 comments: true
 categories: [Octopress]
 ---

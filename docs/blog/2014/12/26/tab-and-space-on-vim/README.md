@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "VimにおけるTABとスペースの扱いについて"
-date: 2014-12-26 10:52:26 +0900
+date: 2014-12-26 10:52:26+0900
 comments: true
 categories: [Vim]
 ---

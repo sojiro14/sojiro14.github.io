@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "find コマンドの使い方"
-date: 2015-08-14 09:37:49 +0900
+date: 2015-08-14 09:37:49+0900
 comments: true
 categories: [Linux]
 ---

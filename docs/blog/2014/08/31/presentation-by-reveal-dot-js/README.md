@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "reveal.jsを使ったプレゼンテーションの作成"
-date: 2014-08-31 19:17:21 +0900
+date: 2014-08-31 19:17:21+0900
 comments: true
 categories: [reveal.js]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "「トークン」とはなにか"
-date: 2015-05-07 23:57:03 +0900
+date: 2015-05-07 23:57:03+0900
 comments: true
 categories: [Web]
 ---

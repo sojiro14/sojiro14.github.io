@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "PAUSE ID の取得"
-date: 2015-05-17 23:23:14 +0900
+date: 2015-05-17 23:23:14+0900
 comments: true
 categories: [CPAN]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "MacにNode.jsとMongoDBをインストールしたメモ"
-date: 2014-12-07 18:30:01 +0900
+date: 2014-12-07 18:30:01+0900
 comments: true
 categories: [Node.js, MongoDB]
 ---

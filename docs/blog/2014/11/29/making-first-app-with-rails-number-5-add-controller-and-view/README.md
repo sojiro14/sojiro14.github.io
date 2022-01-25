@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #5 -controllerとviewの追加-"
-date: 2014-11-29 23:58:09 +0900
+date: 2014-11-29 23:58:09+0900
 comments: true
 categories: [Ruby on Rails]
 ---

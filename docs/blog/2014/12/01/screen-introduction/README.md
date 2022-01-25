@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "screenを使ってみる"
-date: 2014-12-01 17:15:25 +0900
+date: 2014-12-01 17:15:25+0900
 comments: true
 categories: [screen, Shell]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 2 文字と文字列"
-date: 2016-07-12 16:17:33 +0900
+date: 2016-07-12 16:17:33+0900
 comments: true
 categories: [Java]
 ---

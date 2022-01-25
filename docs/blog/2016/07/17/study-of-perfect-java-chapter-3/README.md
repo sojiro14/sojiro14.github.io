@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 3 数値①"
-date: 2016-07-17 17:36:05 +0900
+date: 2016-07-17 17:36:05+0900
 comments: true
 categories: [Java]
 ---

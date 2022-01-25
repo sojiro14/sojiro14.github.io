@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Github PagesとOctopressで作ったブログに独自ドメインを設定する"
-date: 2015-01-30 00:14:23 +0900
+date: 2015-01-30 00:14:23+0900
 comments: true
 categories: [Octopress, Github Pages, Domain]
 ---

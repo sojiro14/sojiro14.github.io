@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Could not open the requested socket エラーが出たら"
-date: 2017-06-16 02:28:06 +0900
+date: 2017-06-16 02:28:06+0900
 comments: true
 categories: [GAE, Android Studio, Java]
 ---

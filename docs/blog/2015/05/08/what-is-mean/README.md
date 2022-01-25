@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "MEANとはなにか"
-date: 2015-05-08 22:14:38 +0900
+date: 2015-05-08 22:14:38+0900
 comments: true
 categories: [MEAN]
 ---

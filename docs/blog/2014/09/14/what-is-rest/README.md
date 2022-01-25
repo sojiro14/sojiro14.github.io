@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "RESTとはなにか"
-date: 2014-09-14 13:57:07 +0900
+date: 2014-09-14 13:57:07+0900
 comments: true
 categories: [Web]
 ---

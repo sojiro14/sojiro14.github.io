@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "xdg-open コマンドとは"
-date: 2015-05-12 23:55:57 +0900
+date: 2015-05-12 23:55:57+0900
 comments: true
 categories: [Linux]
 ---

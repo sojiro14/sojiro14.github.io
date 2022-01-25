@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Rails アプリを MySQL で作るときのメモ"
-date: 2015-09-21 22:34:43 +0900
+date: 2015-09-21 22:34:43+0900
 comments: true
 categories: [Ruby on Rails]
 ---

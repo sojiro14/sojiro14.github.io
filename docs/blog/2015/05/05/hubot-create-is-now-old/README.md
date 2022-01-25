@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "'hubot --create' は古い"
-date: 2015-05-05 17:50:15 +0900
+date: 2015-05-05 17:50:15+0900
 comments: true
 categories: [Hubot, Yeoman, yo]
 ---

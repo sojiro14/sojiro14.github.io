@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "AWSのLinuxにMongoDBをインストール"
-date: 2014-12-30 13:32:15 +0900
+date: 2014-12-30 13:32:15+0900
 comments: true
 categories: [MongoDB, AWS, Linux]
 ---

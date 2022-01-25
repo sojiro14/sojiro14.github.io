@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "GAE Task Queue について"
-date: 2016-08-10 21:29:29 +0900
+date: 2016-08-10 21:29:29+0900
 comments: true
 categories: [GAE, Task Queue]
 ---

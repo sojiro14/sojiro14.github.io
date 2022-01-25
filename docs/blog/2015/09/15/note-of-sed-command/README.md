@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "sed コマンドで置換"
-date: 2015-09-15 01:58:45 +0900
+date: 2015-09-15 01:58:45+0900
 comments: true
 categories: [Linux]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "DockerでRails環境を構築した手順"
-date: 2016-06-26 03:45:48 +0900
+date: 2016-06-26 03:45:48+0900
 comments: true
 categories: [Docker, Ruby on Rails]
 ---

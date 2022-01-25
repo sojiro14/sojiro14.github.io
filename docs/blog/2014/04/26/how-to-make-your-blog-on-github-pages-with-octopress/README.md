@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Github PagesとOctopressを使ったブログの作成"
-date: 2014-04-26 17:05:36 +0900
+date: 2014-04-26 17:05:36+0900
 comments: true
 categories: [Octopress, Github Pages]
 ---
@@ -175,7 +175,7 @@ $ vim source/_posts/2014-04-19-irc-bot-by-hubot.markdown
 ---
 layout: post
 title: "IRC-bot by HUBOT"
-date: 2014-04-19 21:05:49 +0900
+date: 2014-04-19 21:05:49+0900
 comments: true
 categories:
 ---

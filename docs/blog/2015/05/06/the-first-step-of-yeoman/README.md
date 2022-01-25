@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "初めてのYeoman (yoを使った雛形作成)"
-date: 2015-05-06 18:55:02 +0900
+date: 2015-05-06 18:55:02+0900
 comments: true
 categories: [Yeoman, yo]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: Layout
 title: "Unix timeの扱い"
-date: 2017-06-18 14:07:59 +0900
+date: 2017-06-18 14:07:59+0900
 comments: true
 categories: [Linux]
 ---
