@@ -1,4 +1,3 @@
 ---
 layout: Archive
-postsDir: ^/blog/.
 ---
