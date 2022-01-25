@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="VuePress 2.0.0-beta.35">
+    <style>
+      :root {
+        --c-bg: #fff;
+      }
+      html.dark {
+        --c-bg: #22272e;
+      }
+      html, body {
+        background-color: var(--c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme');
+			const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (userMode === 'dark' || (userMode !== 'light' && systemDarkMode)) {
+				document.documentElement.classList.toggle('dark', true);
+			}
+    </script>
+    <link rel="icon" href="/favicon.png"><title>CPAN モジュールのリリース | Sojiro's Blog</title><meta name="description" content="Everything written here is a xxx.">
+    <link rel="modulepreload" href="/assets/app.1c49a48c.js"><link rel="modulepreload" href="/assets/index.html.78d32cb2.js"><link rel="modulepreload" href="/assets/index.html.5727b3b0.js"><link rel="modulepreload" href="/assets/plugin-vue_export-helper.21dcd24c.js">
+    <link rel="stylesheet" href="/assets/style.c3e6d599.css">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme-container"><!--[--><header ref_key="navbar" class="navbar"><div class="toggle-sidebar-button" title="toggle sidebar" aria-expanded="false" role="button" tabindex="0"><div class="icon" aria-hidden="true"><span></span><span></span><span></span></div></div><span><a href="/" class=""><img class="logo" src="/favicon.png" alt="Sojiro&#39;s Blog"><span class="site-name can-hide">Sojiro&#39;s Blog</span></a></span><div class="navbar-items-wrapper" style=""><!--[--><!--]--><nav class="navbar-items can-hide"><!--[--><div class="navbar-item"><a href="/" class="" aria-label="home"><!--[--><!--]--> home <!--[--><!--]--></a></div><div class="navbar-item"><a href="/archive/" class="" aria-label="archive"><!--[--><!--]--> archive <!--[--><!--]--></a></div><div class="navbar-item"><a href="/about/" class="" aria-label="about"><!--[--><!--]--> about <!--[--><!--]--></a></div><!--]--></nav><!--[--><!--]--><button class="toggle-dark-button" title="toggle dark mode"><svg style="" class="icon" focusable="false" viewBox="0 0 32 32"><path d="M16 12.005a4 4 0 1 1-4 4a4.005 4.005 0 0 1 4-4m0-2a6 6 0 1 0 6 6a6 6 0 0 0-6-6z" fill="currentColor"></path><path d="M5.394 6.813l1.414-1.415l3.506 3.506L8.9 10.318z" fill="currentColor"></path><path d="M2 15.005h5v2H2z" fill="currentColor"></path><path d="M5.394 25.197L8.9 21.691l1.414 1.415l-3.506 3.505z" fill="currentColor"></path><path d="M15 25.005h2v5h-2z" fill="currentColor"></path><path d="M21.687 23.106l1.414-1.415l3.506 3.506l-1.414 1.414z" fill="currentColor"></path><path d="M25 15.005h5v2h-5z" fill="currentColor"></path><path d="M21.687 8.904l3.506-3.506l1.414 1.415l-3.506 3.505z" fill="currentColor"></path><path d="M15 2.005h2v5h-2z" fill="currentColor"></path></svg><svg style="display:none;" class="icon" focusable="false" viewBox="0 0 32 32"><path d="M13.502 5.414a15.075 15.075 0 0 0 11.594 18.194a11.113 11.113 0 0 1-7.975 3.39c-.138 0-.278.005-.418 0a11.094 11.094 0 0 1-3.2-21.584M14.98 3a1.002 1.002 0 0 0-.175.016a13.096 13.096 0 0 0 1.825 25.981c.164.006.328 0 .49 0a13.072 13.072 0 0 0 10.703-5.555a1.01 1.01 0 0 0-.783-1.565A13.08 13.08 0 0 1 15.89 4.38A1.015 1.015 0 0 0 14.98 3z" fill="currentColor"></path></svg></button><form class="search-box" role="search"><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" value><!----></form></div></header><!--]--><div class="sidebar-mask"></div><!--[--><aside class="sidebar"><nav class="navbar-items"><!--[--><div class="navbar-item"><a href="/" class="" aria-label="home"><!--[--><!--]--> home <!--[--><!--]--></a></div><div class="navbar-item"><a href="/archive/" class="" aria-label="archive"><!--[--><!--]--> archive <!--[--><!--]--></a></div><div class="navbar-item"><a href="/about/" class="" aria-label="about"><!--[--><!--]--> about <!--[--><!--]--></a></div><!--]--></nav><!--[--><!--]--><ul class="sidebar-items"><!--[--><li><p tabindex="0" class="sidebar-item sidebar-heading">CPAN モジュールのリリース <!----></p><!--[--><ul style="" class="sidebar-item-children"><!--[--><li><a aria-current="page" href="/blog/2015/07/06/release-cpan-module/#モジュールの作成" class="router-link-active router-link-exact-active sidebar-item" aria-label="モジュールの作成"><!--[--><!--]--> モジュールの作成 <!--[--><!--]--></a><!----></li><li><a aria-current="page" href="/blog/2015/07/06/release-cpan-module/#テスト" class="router-link-active router-link-exact-active sidebar-item" aria-label="テスト"><!--[--><!--]--> テスト <!--[--><!--]--></a><!----></li><li><a aria-current="page" href="/blog/2015/07/06/release-cpan-module/#リリース" class="router-link-active router-link-exact-active sidebar-item" aria-label="リリース"><!--[--><!--]--> リリース <!--[--><!--]--></a><!----></li><li><a aria-current="page" href="/blog/2015/07/06/release-cpan-module/#参照" class="router-link-active router-link-exact-active sidebar-item" aria-label="参照"><!--[--><!--]--> 参照 <!--[--><!--]--></a><!----></li><!--]--></ul><!--]--></li><!--]--></ul><!--[--><!--]--></aside><!--]--><!--[--><main class="page"><!--[--><!--]--><div class="theme-default-content"><!--[--><p>上司にお膳立てされ、後輩にお尻を叩かれ、やっとのことで CPAN モジュールをリリースしました。</p><p>前回のエントリに続き、リリースの手順を記します。</p><h2 id="モジュールの作成" tabindex="-1"><a class="header-anchor" href="#モジュールの作成" aria-hidden="true">#</a> モジュールの作成</h2><p>ここがコアの部分ですが、内容は作るモジュールに依るので割愛。編集すべきは以下のファイルです。</p><ul><li>lib/ 配下のプログラム</li><li>t/ 配下のテストプラグラム</li><li>cpanfile</li></ul><p>cpanfile の作成は <code>scan-prereqs-cpanfile</code> を使うと便利です。</p><p>このコマンドは <strong>App::scan_prereqs_cpanfile</strong> モジュールで提供されています。</p><div class="language-bash ext-sh line-numbers-mode"><pre class="language-bash"><code>cpanm App::scan_prereqs_cpanfile
+scan-prereqs-cpanfile <span class="token operator">&gt;</span> cpanfile
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><h2 id="テスト" tabindex="-1"><a class="header-anchor" href="#テスト" aria-hidden="true">#</a> テスト</h2><p>モジュールの作成ができたら test を実行しますが、このとき <code>minil test</code> コマンドを使うと Changes や META.json、README.md が自動で編集されます。</p><div class="language-bash ext-sh line-numbers-mode"><pre class="language-bash"><code>$ minil <span class="token builtin class-name">test</span>
+Creating working directory: /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7
+<span class="token function">cp</span> Build.PL /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/Build.PL
+<span class="token function">cp</span> Changes /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/Changes
+<span class="token function">cp</span> LICENSE /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/LICENSE
+<span class="token function">cp</span> META.json /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/META.json
+<span class="token function">cp</span> README.md /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/README.md
+<span class="token function">cp</span> cpanfile /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/cpanfile
+<span class="token function">cp</span> lib/JSON/MergePatch.pm /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/lib/JSON/MergePatch.pm
+<span class="token function">cp</span> minil.toml /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/minil.toml
+<span class="token function">cp</span> t/00_compile.t /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7/t/00_compile.t
+Building /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7
+Retrieving meta data from lib/JSON/MergePatch.pm.
+Name: JSON::MergePatch
+Abstract: It<span class="token string">&#39;s new $module
+Version: 0.01
+fatal: bad default revision &#39;</span>HEAD<span class="token string">&#39;
+Writing MANIFEST file
+Writing release tests: xt/minilla/minimum_version.t
+Writing release tests: xt/minilla/cpan_meta.t
+Writing release tests: xt/minilla/pod.t
+Writing release tests: xt/minilla/spelling.t
+Writing release tests: xt/minilla/permissions.t
+[5DuYQ9x7] $ perl -I. Build.PL
+Creating new &#39;</span>Build<span class="token string">&#39; script for &#39;</span>JSON-MergePatch<span class="token string">&#39; version &#39;</span><span class="token number">0.01</span>&#39;
+<span class="token punctuation">[</span>5DuYQ9x7<span class="token punctuation">]</span> $ perl -I. Build build
+<span class="token function">cp</span> lib/JSON/MergePatch.pm blib/lib/JSON/MergePatch.pm
+t/00_compile.t <span class="token punctuation">..</span> ok   
+All tests successful.
+<span class="token assign-left variable">Files</span><span class="token operator">=</span><span class="token number">1</span>, <span class="token assign-left variable">Tests</span><span class="token operator">=</span><span class="token number">1</span>,  <span class="token number">0</span> wallclock secs <span class="token punctuation">(</span> <span class="token number">0.01</span> usr  <span class="token number">0.01</span> sys +  <span class="token number">0.03</span> cusr  <span class="token number">0.01</span> csys <span class="token operator">=</span>  <span class="token number">0.06</span> CPU<span class="token punctuation">)</span>
+Result: PASS
+Removing /user/home_directory/git/cpan/JSON-MergePatch/.build/5DuYQ9x7
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br></div></div><h2 id="リリース" tabindex="-1"><a class="header-anchor" href="#リリース" aria-hidden="true">#</a> リリース</h2><p>テストが通ったらいよいよリリースします。</p><p>CPAN へのリリースには PAUSE ID が必要です。取得方法は<a href="http://blog.sojiro.me/blog/2015/05/17/get-pause-id/" target="_blank" rel="noopener noreferrer">こちら<span><svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg><span class="external-link-icon-sr-only">open in new window</span></span></a>。</p><p>リリースには <code>minil release</code> コマンドを使います。</p><div class="language-bash ext-sh line-numbers-mode"><pre class="language-bash"><code>$ minil release
+
+Release engineering requires Version::Next, but it is not available. Please <span class="token function">install</span> Version::Next using your preferred CPAN client at <span class="token punctuation">..</span>.
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p><strong>Version::Next</strong> がないと怒られたので入れて再度実行。</p><div class="language-bash ext-sh line-numbers-mode"><pre class="language-bash"><code>$ cpanm Version::Next
+<span class="token punctuation">..</span>.
+
+$ minil release
+
+Release engineering requires CPAN::Uploader, but it is not available. Please <span class="token function">install</span> CPAN::Uploader using your preferred CPAN client at <span class="token punctuation">..</span>.
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>今度は <strong>CPAN::Uploader</strong> がないと怒られたので入れて再度実行。</p><div class="language-bash ext-sh line-numbers-mode"><pre class="language-bash"><code>$ cpanm CPAN::Uploader
+<span class="token punctuation">..</span>.
+
+$ minil release
+
+Retrieving meta data from lib/JSON/MergePatch.pm.
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: <span class="token number">0.01</span>
+Next Release? <span class="token punctuation">[</span><span class="token number">0.01</span><span class="token punctuation">]</span> 
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: <span class="token number">0.01</span>
+<span class="token punctuation">..</span>.
+All tests successful.
+<span class="token assign-left variable">Files</span><span class="token operator">=</span><span class="token number">8</span>, <span class="token assign-left variable">Tests</span><span class="token operator">=</span><span class="token number">67</span>,  <span class="token number">0</span> wallclock secs <span class="token punctuation">(</span> <span class="token number">0.04</span> usr  <span class="token number">0.03</span> sys +  <span class="token number">0.18</span> cusr  <span class="token number">0.04</span> csys <span class="token operator">=</span>  <span class="token number">0.29</span> CPU<span class="token punctuation">)</span>
+Result: PASS
+Wrote JSON-MergePatch-0.01.tar.gz
+Upload to CPAN
+Release to CPAN ? <span class="token punctuation">[</span>y/n<span class="token punctuation">]</span>   y
+missing user argument at
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br></div></div><p>リリースバージョンの確認と、 CPAN にリリースするかの確認に答えていざリリース、と思いきや</p><div class="language-bash ext-sh line-numbers-mode"><pre class="language-bash"><code>missing user argument at
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br></div></div><p>と怒られました。</p><p>どうやら <code>~/.pause</code> ファイルに PAUSE のユーザー情報を記載する必要があるようです。</p><div class="language-bash ext-sh line-numbers-mode"><pre class="language-bash"><code>$ <span class="token function">vim</span> ~/.pause
+$ <span class="token function">cat</span> ~/.pause
+user SOJIRO
+password your_password
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>再度実行</p><div class="language-bash ext-sh line-numbers-mode"><pre class="language-bash"><code>$ minil release
+
+Retrieving meta data from lib/JSON/MergePatch.pm.
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: <span class="token number">0.01</span>
+Next Release? <span class="token punctuation">[</span><span class="token number">0.01</span><span class="token punctuation">]</span> 
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: <span class="token number">0.01</span>
+<span class="token punctuation">..</span>.
+All tests successful.
+<span class="token assign-left variable">Files</span><span class="token operator">=</span><span class="token number">8</span>, <span class="token assign-left variable">Tests</span><span class="token operator">=</span><span class="token number">67</span>,  <span class="token number">0</span> wallclock secs <span class="token punctuation">(</span> <span class="token number">0.04</span> usr  <span class="token number">0.03</span> sys +  <span class="token number">0.18</span> cusr  <span class="token number">0.05</span> csys <span class="token operator">=</span>  <span class="token number">0.30</span> CPU<span class="token punctuation">)</span>
+Result: PASS
+Wrote JSON-MergePatch-0.01.tar.gz
+Upload to CPAN
+Release to CPAN ? <span class="token punctuation">[</span>y/n<span class="token punctuation">]</span>   y
+registering upload with PAUSE web server
+POSTing upload <span class="token keyword">for</span> /user/home_directory/git/cpan/JSON-MergePatch/.build/ilpDOKuE/JSON-MergePatch-0.01.tar.gz to https://pause.perl.org/pause/authenquery
+PAUSE <span class="token function">add</span> message sent ok <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">]</span>
+Name: JSON::MergePatch
+Abstract: JSON Merge Patch implementation
+Version: <span class="token number">0.01</span>
+<span class="token punctuation">[</span>JSON-MergePatch<span class="token punctuation">]</span> $ <span class="token function">git</span> commit -a -m Checking <span class="token keyword">in</span> changes prior to tagging of version <span class="token number">0.01</span>.
+Changelog <span class="token function">diff</span> is:
+<span class="token function">diff</span> --git a/Changes b/Changes
+index 643c7bc<span class="token punctuation">..</span>dae7daa <span class="token number">100644</span>
+--- a/Changes
++++ b/Changes
+@@ -2,5 +2,7 @@ Revision <span class="token function">history</span> <span class="token keyword">for</span> Perl extension JSON-MergePatch
+
+ <span class="token punctuation">{</span><span class="token punctuation">{</span><span class="token variable">$NEXT</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+
++0.01 <span class="token number">2015</span>-07-02T18:29:20Z
++
+     - original version
+
+<span class="token punctuation">[</span>master 3bf0db2<span class="token punctuation">]</span> Checking <span class="token keyword">in</span> changes prior to tagging of version <span class="token number">0.01</span>.
+
+ <span class="token number">2</span> files changed, <span class="token number">17</span> insertions<span class="token punctuation">(</span>+<span class="token punctuation">)</span>, <span class="token number">1</span> deletion<span class="token punctuation">(</span>-<span class="token punctuation">)</span>
+Pushing to origin
+<span class="token punctuation">[</span>JSON-MergePatch<span class="token punctuation">]</span> $ <span class="token function">git</span> push origin master
+Counting objects: <span class="token number">7</span>, done.
+Delta compression using up to <span class="token number">8</span> threads.
+Compressing objects: <span class="token number">100</span>% <span class="token punctuation">(</span><span class="token number">4</span>/4<span class="token punctuation">)</span>, done.
+Writing objects: <span class="token number">100</span>% <span class="token punctuation">(</span><span class="token number">4</span>/4<span class="token punctuation">)</span>, <span class="token number">831</span> bytes <span class="token operator">|</span> <span class="token number">0</span> bytes/s, done.
+Total <span class="token number">4</span> <span class="token punctuation">(</span>delta <span class="token number">2</span><span class="token punctuation">)</span>, reused <span class="token number">0</span> <span class="token punctuation">(</span>delta <span class="token number">0</span><span class="token punctuation">)</span>
+To git@github.com:sojiro14/JSON-MergePatch.git
+
+   9c8c207<span class="token punctuation">..</span>3bf0db2  master -<span class="token operator">&gt;</span> master
+
+<span class="token punctuation">[</span>JSON-MergePatch<span class="token punctuation">]</span> $ <span class="token function">git</span> tag <span class="token number">0.01</span>
+<span class="token punctuation">[</span>JSON-MergePatch<span class="token punctuation">]</span> $ <span class="token function">git</span> push origin tag <span class="token number">0.01</span>
+Total <span class="token number">0</span> <span class="token punctuation">(</span>delta <span class="token number">0</span><span class="token punctuation">)</span>, reused <span class="token number">0</span> <span class="token punctuation">(</span>delta <span class="token number">0</span><span class="token punctuation">)</span>
+To git@github.com:sojiro14/JSON-MergePatch.git
+
+ * <span class="token punctuation">[</span>new tag<span class="token punctuation">]</span>         <span class="token number">0.01</span> -<span class="token operator">&gt;</span> <span class="token number">0.01</span>
+
+Removing /user/home_directory/git/cpan/JSON-MergePatch/.build/ilpDOKuE
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br></div></div><p>テストが実行された後、CPAN にリリースされました。最後にその時点の tag が切られて完了。</p><p>ついに CPAN モジュールをリリースしてしまいました。メンテナンスちゃんとしなくては。</p><h2 id="参照" tabindex="-1"><a class="header-anchor" href="#参照" aria-hidden="true">#</a> 参照</h2><ul><li><a href="http://blog.64p.org/entry/2013/05/14/080423" target="_blank" rel="noopener noreferrer">Minilla を用いた Perl モジュールの作り方<span><svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg><span class="external-link-icon-sr-only">open in new window</span></span></a></li><li><a href="http://hotolab.net/blog/first_minil/" target="_blank" rel="noopener noreferrer">はじめてのCPAN Authorになろうとして困ったメモ<span><svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg><span class="external-link-icon-sr-only">open in new window</span></span></a></li></ul><!--]--></div><footer class="page-meta"><!----><div class="meta-item last-updated"><span class="meta-item-label">Last Updated: </span><!----></div><div class="meta-item contributors"><span class="meta-item-label">Contributors: </span><span class="meta-item-info"><!--[--><!--[--><span class="contributor" title="email: taishi.hiraga+github@gmail.com">sojiro14</span><!----><!--]--><!--]--></span></div></footer><!----><!--[--><!--]--></main><!--]--></div><!----><!--]--></div>
+    <script type="module" src="/assets/app.1c49a48c.js" defer></script>
+  </body>
+</html>

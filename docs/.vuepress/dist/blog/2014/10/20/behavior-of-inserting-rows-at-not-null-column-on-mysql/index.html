@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="VuePress 2.0.0-beta.35">
+    <style>
+      :root {
+        --c-bg: #fff;
+      }
+      html.dark {
+        --c-bg: #22272e;
+      }
+      html, body {
+        background-color: var(--c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme');
+			const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (userMode === 'dark' || (userMode !== 'light' && systemDarkMode)) {
+				document.documentElement.classList.toggle('dark', true);
+			}
+    </script>
+    <link rel="icon" href="/favicon.png"><title>MySQLにおけるNOT NULLカラムへのインサート時の挙動 | Sojiro's Blog</title><meta name="description" content="Everything written here is a xxx.">
+    <link rel="modulepreload" href="/assets/app.1c49a48c.js"><link rel="modulepreload" href="/assets/index.html.7636e13a.js"><link rel="modulepreload" href="/assets/index.html.fe54ec3e.js"><link rel="modulepreload" href="/assets/plugin-vue_export-helper.21dcd24c.js">
+    <link rel="stylesheet" href="/assets/style.c3e6d599.css">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme-container"><!--[--><header ref_key="navbar" class="navbar"><div class="toggle-sidebar-button" title="toggle sidebar" aria-expanded="false" role="button" tabindex="0"><div class="icon" aria-hidden="true"><span></span><span></span><span></span></div></div><span><a href="/" class=""><img class="logo" src="/favicon.png" alt="Sojiro&#39;s Blog"><span class="site-name can-hide">Sojiro&#39;s Blog</span></a></span><div class="navbar-items-wrapper" style=""><!--[--><!--]--><nav class="navbar-items can-hide"><!--[--><div class="navbar-item"><a href="/" class="" aria-label="home"><!--[--><!--]--> home <!--[--><!--]--></a></div><div class="navbar-item"><a href="/archive/" class="" aria-label="archive"><!--[--><!--]--> archive <!--[--><!--]--></a></div><div class="navbar-item"><a href="/about/" class="" aria-label="about"><!--[--><!--]--> about <!--[--><!--]--></a></div><!--]--></nav><!--[--><!--]--><button class="toggle-dark-button" title="toggle dark mode"><svg style="" class="icon" focusable="false" viewBox="0 0 32 32"><path d="M16 12.005a4 4 0 1 1-4 4a4.005 4.005 0 0 1 4-4m0-2a6 6 0 1 0 6 6a6 6 0 0 0-6-6z" fill="currentColor"></path><path d="M5.394 6.813l1.414-1.415l3.506 3.506L8.9 10.318z" fill="currentColor"></path><path d="M2 15.005h5v2H2z" fill="currentColor"></path><path d="M5.394 25.197L8.9 21.691l1.414 1.415l-3.506 3.505z" fill="currentColor"></path><path d="M15 25.005h2v5h-2z" fill="currentColor"></path><path d="M21.687 23.106l1.414-1.415l3.506 3.506l-1.414 1.414z" fill="currentColor"></path><path d="M25 15.005h5v2h-5z" fill="currentColor"></path><path d="M21.687 8.904l3.506-3.506l1.414 1.415l-3.506 3.505z" fill="currentColor"></path><path d="M15 2.005h2v5h-2z" fill="currentColor"></path></svg><svg style="display:none;" class="icon" focusable="false" viewBox="0 0 32 32"><path d="M13.502 5.414a15.075 15.075 0 0 0 11.594 18.194a11.113 11.113 0 0 1-7.975 3.39c-.138 0-.278.005-.418 0a11.094 11.094 0 0 1-3.2-21.584M14.98 3a1.002 1.002 0 0 0-.175.016a13.096 13.096 0 0 0 1.825 25.981c.164.006.328 0 .49 0a13.072 13.072 0 0 0 10.703-5.555a1.01 1.01 0 0 0-.783-1.565A13.08 13.08 0 0 1 15.89 4.38A1.015 1.015 0 0 0 14.98 3z" fill="currentColor"></path></svg></button><form class="search-box" role="search"><input type="search" placeholder="Search" autocomplete="off" spellcheck="false" value><!----></form></div></header><!--]--><div class="sidebar-mask"></div><!--[--><aside class="sidebar"><nav class="navbar-items"><!--[--><div class="navbar-item"><a href="/" class="" aria-label="home"><!--[--><!--]--> home <!--[--><!--]--></a></div><div class="navbar-item"><a href="/archive/" class="" aria-label="archive"><!--[--><!--]--> archive <!--[--><!--]--></a></div><div class="navbar-item"><a href="/about/" class="" aria-label="about"><!--[--><!--]--> about <!--[--><!--]--></a></div><!--]--></nav><!--[--><!--]--><ul class="sidebar-items"><!--[--><li><p tabindex="0" class="sidebar-item sidebar-heading">MySQLにおけるNOT NULLカラムへのインサート時の挙動 <!----></p><!--[--><ul style="" class="sidebar-item-children"><!--[--><li><a aria-current="page" href="/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/#単列インサートと複数列インサートで挙動が変わる" class="router-link-active router-link-exact-active sidebar-item" aria-label="単列インサートと複数列インサートで挙動が変わる"><!--[--><!--]--> 単列インサートと複数列インサートで挙動が変わる <!--[--><!--]--></a><!----></li><li><a aria-current="page" href="/blog/2014/10/20/behavior-of-inserting-rows-at-not-null-column-on-mysql/#検証" class="router-link-active router-link-exact-active sidebar-item" aria-label="検証"><!--[--><!--]--> 検証 <!--[--><!--]--></a><!----></li><!--]--></ul><!--]--></li><!--]--></ul><!--[--><!--]--></aside><!--]--><!--[--><main class="page"><!--[--><!--]--><div class="theme-default-content"><!--[--><p>MySQLでカラムにNOT NULLを指定した際、そのカラムに対するインサート操作による挙動が特殊なのでまとめる。</p><h2 id="単列インサートと複数列インサートで挙動が変わる" tabindex="-1"><a class="header-anchor" href="#単列インサートと複数列インサートで挙動が変わる" aria-hidden="true">#</a> 単列インサートと複数列インサートで挙動が変わる</h2><p><code>NOT NULL</code>を指定したカラムを含むテーブルへのインサートでは、一度に1行のみ挿入する単列インサートと、一度に複数行を挿入する複数列インサート（バルクインサート）で挙動が変わる。</p><p><a href="http://dev.mysql.com/doc/refman/5.6/en/insert.html" target="_blank" rel="noopener noreferrer">MySQLマニュアル<span><svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewbox="0 0 100 100" width="15" height="15"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path><polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg><span class="external-link-icon-sr-only">open in new window</span></span></a>からの抜粋</p><blockquote><p>Inserting NULL into a column that has been declared NOT NULL. For multiple-row INSERT statements or INSERT INTO ... SELECT statements, the column is set to the implicit default value for the column data type. This is 0 for numeric types, the empty string (&#39;&#39;) for string types, and the “zero” value for date and time types. INSERT INTO ... SELECT statements are handled the same way as multiple-row inserts because the server does not examine the result set from the SELECT to see whether it returns a single row. (For a single-row INSERT, no warning occurs when NULL is inserted into a NOT NULL column. Instead, the statement fails with an error.)</p></blockquote><p>単列インサートの場合は<code>NOT NULL</code>が指定されたカラムに<code>NULL</code>値が挿入されるとそのクエリはエラーとなって失敗するが、複数列インサートの場合は警告(warning)を発するものの、クエリは正常に受け付けられる。</p><p>その際、<code>NULL</code>値が指定された各カラムにはそれぞれのカラムのデータ型の暗黙的なデフォルト値が挿入される。（数値型なら<code>0</code>、文字列型なら空文字<code>&#39;&#39;</code>、etc...）</p><h2 id="検証" tabindex="-1"><a class="header-anchor" href="#検証" aria-hidden="true">#</a> 検証</h2><ul><li>MySQLのバージョンは5.1.69 <ul><li>ただしマニュアルの該当箇所はバージョン5.7まで変更がないため、どのバージョンでも同じ挙動と思われる</li></ul></li><li>テーブル定義は以下</li></ul><div class="language-mysql ext-mysql line-numbers-mode"><pre class="language-mysql"><code>CREATE TABLE `not_null_test` (
+  `id` int(10) unsigned NOT NULL,
+  `test_score` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT &#39;0000-00-00 00:00:00&#39;,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h3 id="単列インサート" tabindex="-1"><a class="header-anchor" href="#単列インサート" aria-hidden="true">#</a> 単列インサート</h3><div class="language-mysql ext-mysql line-numbers-mode"><pre class="language-mysql"><code>mysql&gt; insert into
+not_null_test
+(id, test_score, created_at)
+values
+(1, NULL, NULL);
+
+ERROR 1048 (23000): Column &#39;test_score&#39; cannot be null
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h3 id="複数列インサート" tabindex="-1"><a class="header-anchor" href="#複数列インサート" aria-hidden="true">#</a> 複数列インサート</h3><div class="language-mysql ext-mysql line-numbers-mode"><pre class="language-mysql"><code>mysql&gt; insert into
+not_null_test
+(id, test_score, created_at)
+values
+(1, NULL, NULL),
+(2, NULL, NULL);
+
+Query OK, 2 rows affected, 2 warnings (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 2 
+
+mysql&gt; select * from not_null_test;
++----+------------+---------------------+
+| id | test_score | created_at          |
++----+------------+---------------------+
+|  1 |          0 | 2014-10-18 13:35:10 |
+|  2 |          0 | 2014-10-18 13:35:10 |
++----+------------+---------------------+
+2 rows in set (0.00 sec)
+</code></pre><div class="line-numbers"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><p>※ timestampにテーブル定義で設定したデフォルト値<code>&#39;0000-00-00 00:00:00&#39;</code>ではなく、型のデフォルト値である現在時刻が入っている点に注意</p><!--]--></div><footer class="page-meta"><!----><div class="meta-item last-updated"><span class="meta-item-label">Last Updated: </span><!----></div><div class="meta-item contributors"><span class="meta-item-label">Contributors: </span><span class="meta-item-info"><!--[--><!--[--><span class="contributor" title="email: taishi.hiraga+github@gmail.com">sojiro14</span><!----><!--]--><!--]--></span></div></footer><!----><!--[--><!--]--></main><!--]--></div><!----><!--]--></div>
+    <script type="module" src="/assets/app.1c49a48c.js" defer></script>
+  </body>
+</html>
