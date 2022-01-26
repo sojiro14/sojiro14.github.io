@@ -16,7 +16,7 @@ module.exports = {
     navbar: [
       { text: 'home', link: '/' },
       { text: 'archive', link: '/archive/' },
-      { text: 'about', link: '/about/' }
+      // { text: 'about', link: '/about/' }
     ],
     sidebarDepth: 1,
   },
@@ -43,6 +43,13 @@ module.exports = {
             placeholder: '搜索',
           },
         },
+      },
+    ],
+    [
+      'vuepress-plugin-use-pages',
+      {
+        startsWith: '/posts/',
+        file: 'posts.js',
       },
     ],
     [
