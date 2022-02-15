@@ -32,6 +32,7 @@ Python ならそのまま使えるコードが[ここ](https://github.com/google
 ```sh
 sudo pip3 install google-cloud-bigquery
 ```
+※ちなみにこのライブラリのインストール完了まで結構時間がかかる。 `grpcio` のライブラリのビルドに時間がかかるようなのでこれだけ別途落としてくると時間短縮できそうだが1時間もかからないので放置でもOK。
 
 ### サンプルコードをパクる
 Python でそのまま使えるサンプルコードは[ここ](https://github.com/googleapis/python-bigquery/blob/35627d145a41d57768f19d4392ef235928e00f72/samples/load_table_file.py)。
