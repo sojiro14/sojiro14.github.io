@@ -5,8 +5,9 @@ date: 2022-02-14 23:31:56+0900
 comments: true
 categories: [GCP, GCE, GCS, BigQuery]
 ---
+# GCEのインスタンスからGCSまたはBigQueryにデータを送る方法
 
-# この投稿は
+## この投稿は
 GCPのドキュメントをよく探ればちゃんと書いてあるけどすぐに見つけられないときのための備忘録。
 
 ## to GCS
