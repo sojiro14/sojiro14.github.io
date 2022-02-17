@@ -3,7 +3,7 @@ layout: Layout
 title: "Let's read ERC"
 date: 2022-02-16 23:22:39+0900
 comments: true
-categories: [ERC]
+categories: [ERC, Ethereum, NFT]
 ---
 # ERCを読んでみよう
 
