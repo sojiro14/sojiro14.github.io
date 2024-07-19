@@ -56,3 +56,23 @@ pip install onnxruntime-silicon
 vim requirements_macOS.txt
 pip install -r requirements_macOS.txt
 ```
+
+
+# Git LFS install
+https://git-lfs.com/
+```zsh
+brew install git-lfs
+```
+
+# Fast Hands-on
+```zsh
+# For macOS with Apple Silicon, Intel not supported, this maybe 20x slower than RTX 4090
+PYTORCH_ENABLE_MPS_FALLBACK=1 python inference.py
+```
+FFmpegがないエラー
+
+
+# FFmpeg install
+```zsh
+brew install ffmpeg
+```
