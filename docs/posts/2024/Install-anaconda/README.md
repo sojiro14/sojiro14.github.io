@@ -38,3 +38,21 @@ conda-forge チャンネルを追加した
 ```zsh
 conda activate LivePortrait
 ```
+
+# install requirements
+
+```zsh
+# for macOS with Apple Silicon
+pip install -r requirements_macOS.txt
+```
+
+このままだと python と `onnxruntime-silicon` の依存関係が合わずにエラーになるので
+まず `onnxruntime-silicon` だけインストールして requirements をそのバージョンで書き換えちゃう。
+```zsh
+pip install onnxruntime-silicon
+```
+
+```zsh
+vim requirements_macOS.txt
+pip install -r requirements_macOS.txt
+```
