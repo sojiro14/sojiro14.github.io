@@ -76,3 +76,10 @@ FFmpegがないエラー
 ```zsh
 brew install ffmpeg
 ```
+
+# 再度実行
+```zsh
+python inference.py -s assets/examples/source/s9.jpg -d assets/examples/driving/d0.mp4
+```
+
+成功
