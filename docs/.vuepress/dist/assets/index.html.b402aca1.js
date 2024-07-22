@@ -1,1 +1,0 @@
-const a={key:"v-705c21a6",path:"/archive/",title:"",lang:"ja-JP",frontmatter:{layout:"Archive"},excerpt:"",headers:[],git:{updatedTime:164308972e4,contributors:[{name:"sojiro14",email:"taishi.hiraga+github@gmail.com",commits:2}]},filePathRelative:"archive/README.md"};export{a as data};

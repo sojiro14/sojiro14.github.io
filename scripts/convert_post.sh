@@ -1,1 +1,0 @@
-regex="[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*).md"; if [[ `ls` =~ $regex ]]; then dir=${BASH_REMATCH[1]}; echo "$dir"; else echo 'unko'; fi | xargs mkdir; mv `ls 2*` `ls -d */`/README.md
