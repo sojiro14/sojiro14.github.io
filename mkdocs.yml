@@ -5,13 +5,29 @@ theme:
   logo: assets/images/logo.png
   favicon: assets/images/favicon.png
   palette:
-    primary: teal
-    accent: teal
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to system preference
 nav:
   - index.md
   - Blog:
     - blog/index.md
 plugins:
+  - search
   - blog:
       enabled: true
       blog_dir: blog
