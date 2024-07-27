@@ -2,11 +2,32 @@ site_name: Sojiro's Blog
 site_url: https://blog.sojiro.me
 theme:
   name: material
+  logo: assets/images/logo.png
+  favicon: assets/images/favicon.png
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to system preference
 nav:
   - index.md
   - Blog:
     - blog/index.md
 plugins:
+  - search
   - blog:
       enabled: true
       blog_dir: blog
@@ -43,4 +64,11 @@ plugins:
       draft: false
       draft_on_serve: true
       draft_if_future_date: false
-  
+extra:
+  social:
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/sojiro14
+    - icon: fontawesome/brands/github
+      link: https://github.com/sojiro14
+  generator: false
+copyright: Copyright &copy; 2014 - 2024 sojiro.me
