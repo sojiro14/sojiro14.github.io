@@ -45,4 +45,11 @@ plugins:
       draft: false
       draft_on_serve: true
       draft_if_future_date: false
-  
+extra:
+  social:
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/sojiro14
+    - icon: fontawesome/brands/github
+      link: https://github.com/sojiro14
+  generator: false
+copyright: Copyright &copy; 2014 - 2024 sojiro.me
