@@ -71,4 +71,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/sojiro14
   generator: false
+  analytics:
+    provider: google
+    property: G-ECN7E21ZM0
 copyright: Copyright &copy; 2014 - 2024 sojiro.me
