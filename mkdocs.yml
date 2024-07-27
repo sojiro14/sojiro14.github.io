@@ -4,6 +4,9 @@ theme:
   name: material
   logo: assets/images/logo.png
   favicon: assets/images/favicon.png
+  palette:
+    primary: teal
+    accent: teal
 nav:
   - index.md
   - Blog:
