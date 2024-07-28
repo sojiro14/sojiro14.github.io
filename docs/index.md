@@ -1,17 +1,12 @@
 # Home
+## Sojiro's Tech Playground 🔧
+Sojiro's Blog は [@sojiro14](https://x.com/sojiro14) が趣味で試した技術や気になった論文のメモを書き留める場所です。
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+## 🛠️ [Blog](/blog/)
+日々の開発で試したコードや、新しい技術に触れたときの感想をありのままに綴っています。誰かの学びのきっかけになれば嬉しいです。
 
-## Commands
+## 📄 [Paper Summaries](/papers/)
+気になった論文の要点をまとめて残していきます。興味のある分野の知識を深めるために、ご活用ください。
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+## ⚠️ Disclaimer
+あくまで個人的なメモなので、内容の正確性については保証できません。参考にする際は自己責任でお願いします。
