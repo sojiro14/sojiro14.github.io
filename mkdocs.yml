@@ -26,7 +26,7 @@ nav:
   - index.md
   - Blog:
     - blog/index.md
-  - Paper Summaries: Papers/
+  - Paper Summaries: Papers/papers/
 plugins:
   - search
   - blog:
