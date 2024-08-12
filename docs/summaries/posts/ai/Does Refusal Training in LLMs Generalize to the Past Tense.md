@@ -17,6 +17,7 @@ categories: [Computer Science, Computation and Language]
 ## 2. 主な発見
 
 研究者たちは、以下のLLMを対象に実験を行いました：
+
 - Llama-3 8B
 - Claude-3.5 Sonnet
 - GPT-3.5 Turbo

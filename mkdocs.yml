@@ -102,6 +102,9 @@ plugins:
       draft: false
       draft_on_serve: true
       draft_if_future_date: false
+  - social:
+      cards_layout_options:
+        font_family: Noto Sans JP
 extra:
   social:
     - icon: fontawesome/brands/x-twitter
