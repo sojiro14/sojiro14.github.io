@@ -5,7 +5,7 @@ Sojiro's Blog は [@sojiro14](https://x.com/sojiro14) が趣味で試した技�
 ## 🛠️ [Blog](/blog/)
 日々の開発で試したコードや、新しい技術に触れたときの感想をありのままに綴っています。誰かの学びのきっかけになれば嬉しいです。
 
-## 📄 [Paper Summaries](/Papers/summaries/)
+## 📄 [Paper Summaries](/summaries/)
 気になった論文の要点をまとめて残していきます。興味のある分野の知識を深めるために、ご活用ください。
 
 論文の要約には ChatGPT を主とした AI サービスを利用しています。
