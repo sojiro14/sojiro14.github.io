@@ -1,5 +1,6 @@
 ---
 title: Does Refusal Training in LLMs Generalize to the Past Tense?
+description: 大規模言語モデル（LLM）の拒否トレーニングは、過去形にも一般化されるのか？
 date: 2024-07-19
 comments: true
 categories: [Computer Science, Computation and Language]
