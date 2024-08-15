@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Redisに用意されたデータ型とその扱い"
+slug: rediss-data-type-and-usage
 date: 2014-07-27
 comments: true
 categories: [Redis]
