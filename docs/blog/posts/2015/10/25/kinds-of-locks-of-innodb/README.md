@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "InnoDBにおけるロックの種類"
+slug: kinds-of-locks-of-innodb
 date: 2015-10-25
 comments: true
 categories: [MySQL]
