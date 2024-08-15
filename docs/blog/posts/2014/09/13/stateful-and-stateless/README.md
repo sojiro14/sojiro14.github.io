@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "ステートフル ステートレスとはどういうことか"
+slug: stateful-and-stateless
 date: 2014-09-13
 comments: true
 categories: [Web]
