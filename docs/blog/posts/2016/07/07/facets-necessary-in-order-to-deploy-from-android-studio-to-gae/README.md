@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Android StudioからGAE for Javaアプリケーションをdeployするのに必要なFacet"
+slug: facets-necessary-in-order-to-deploy-from-android-studio-to-gae
 date: 2016-07-07
 comments: true
 categories: [GAE, Android Studio, Java]
