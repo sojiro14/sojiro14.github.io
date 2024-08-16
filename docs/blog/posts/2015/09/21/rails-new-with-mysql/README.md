@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Rails アプリを MySQL で作るときのメモ"
+slug: rails-new-with-mysql
 date: 2015-09-21
 comments: true
 categories: [Ruby on Rails]

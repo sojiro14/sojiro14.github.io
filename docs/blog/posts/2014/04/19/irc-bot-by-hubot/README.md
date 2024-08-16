@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "HUBOTを使ったirc-bot作成メモ"
+slug: irc-bot-by-hubot
 date: 2014-04-19
 comments: true
 categories: [HUBOT, IRC]

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Slack BotをHeroku上で動かす"
+slug: transfer-the-slack-bot-to-heroku
 date: 2015-05-04
 comments: true
 categories: [Heroku]

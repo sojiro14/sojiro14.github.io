@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Vagrant provisioning の謎"
+slug: mystery-of-vagrant-provisioning
 date: 2015-09-17
 comments: true
 categories: [Vagrant, RVM]

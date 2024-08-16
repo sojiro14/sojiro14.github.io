@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "minil を使った Changes ファイルの更新"
+slug: how-to-write-changes-with-minil
 date: 2016-02-21
 comments: true
 categories: [Perl]

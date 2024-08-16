@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Unix timeの扱い"
+slug: unix-time-handling
 date: 2017-06-18
 comments: true
 categories: [Linux]

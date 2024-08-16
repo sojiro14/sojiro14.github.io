@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "初めてのVagrant"
+slug: the-first-step-for-vagrant
 date: 2015-05-03
 comments: true
 categories: [Vagrant]

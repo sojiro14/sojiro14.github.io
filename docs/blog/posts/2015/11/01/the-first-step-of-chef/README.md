@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "初めてのChef"
+slug: the-first-step-of-chef
 date: 2015-11-01
 comments: true
 categories: [Chef]

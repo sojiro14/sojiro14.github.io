@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "初めてのYeoman (Grunt/Bowerとは)"
+slug: the-third-step-of-yeoman
 date: 2015-05-11
 comments: true
 categories: [Yeoman, Grunt, Bower]

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "VimにおけるTABとスペースの扱いについて"
+slug: tab-and-space-on-vim
 date: 2014-12-26
 comments: true
 categories: [Vim]

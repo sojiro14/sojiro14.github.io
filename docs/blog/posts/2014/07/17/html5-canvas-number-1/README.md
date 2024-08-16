@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "HTML5 Canvas #1  -Canvasを初めて使う-"
+slug: html5-canvas-number-1
 date: 2014-07-17
 comments: true
 categories: [Canvas]

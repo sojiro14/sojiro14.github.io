@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "GAE Datastore について"
+slug: about-gae-datastore
 date: 2016-08-07
 comments: true
 categories: [GAE, Datastore]

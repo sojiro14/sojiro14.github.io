@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "'hubot --create' は古い"
+slug: hubot-create-is-now-old
 date: 2015-05-05
 comments: true
 categories: [Hubot, Yeoman, yo]

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "PAUSE ID の取得"
+slug: get-pause-id
 date: 2015-05-17
 comments: true
 categories: [CPAN]

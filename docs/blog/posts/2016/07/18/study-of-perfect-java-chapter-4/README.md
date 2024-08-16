@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 4 変数とオブジェクト"
+slug: study-of-perfect-java-chapter-4
 date: 2016-07-18
 comments: true
 categories: [Java]

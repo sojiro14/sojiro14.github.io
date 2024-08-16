@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "HUBOTを使ったSlack Bot作成メモ"
+slug: slack-bot-by-hubot
 date: 2014-12-15
 comments: true
 categories: [HUBOT, Slack]

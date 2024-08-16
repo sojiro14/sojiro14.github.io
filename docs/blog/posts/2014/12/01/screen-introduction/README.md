@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "screenを使ってみる"
+slug: screen-introduction
 date: 2014-12-01
 comments: true
 categories: [screen, Shell]

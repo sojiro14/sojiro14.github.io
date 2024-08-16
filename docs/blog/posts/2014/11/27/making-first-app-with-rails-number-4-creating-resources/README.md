@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #4 -リソースの生成-"
+slug: making-first-app-with-rails-number-4-creating-resources
 date: 2014-11-27
 comments: true
 categories: [Ruby on Rails]

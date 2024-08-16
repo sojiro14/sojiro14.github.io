@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "xdg-open コマンドとは"
+slug: what-is-xdg-open-command
 date: 2015-05-12
 comments: true
 categories: [Linux]

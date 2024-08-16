@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "OctopressにDISQUSのコメント欄を導入する"
+slug: add-disqus-comment-section-on-my-blog-by-octopress
 date: 2014-08-09
 comments: true
 categories: [Octopress, Disqus]

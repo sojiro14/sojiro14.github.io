@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Github PagesとOctopressで作ったブログに独自ドメインを設定する"
+slug: setting-custom-domain-on-a-blog-by-octopress-and-github-pages
 date: 2015-01-30
 comments: true
 categories: [Octopress, Github Pages, Domain]

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "シェルの変更について"
+slug: changing-login-shell
 date: 2014-07-06
 comments: true
 categories: [Shell]

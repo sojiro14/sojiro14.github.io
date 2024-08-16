@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Node.jsを使ってWeb Serverを作ってみました"
+slug: making-a-web-server-with-node-dot-js
 date: 2015-01-07
 comments: true
 categories: [Node.js]

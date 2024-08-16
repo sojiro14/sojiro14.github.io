@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Homebrewをupdateしよう"
+slug: update-homebrew
 date: 2015-05-19
 comments: true
 categories: [Homebrew]

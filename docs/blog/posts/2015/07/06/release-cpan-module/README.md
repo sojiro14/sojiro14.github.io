@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "CPAN モジュールのリリース"
+slug: release-cpan-module
 date: 2015-07-06
 comments: true
 categories: [perl, CPAN]

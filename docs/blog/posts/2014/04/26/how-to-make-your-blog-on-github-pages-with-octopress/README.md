@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Github PagesとOctopressを使ったブログの作成"
+slug: how-to-make-your-blog-on-github-pages-with-octopress
 date: 2014-04-26
 comments: true
 categories: [Octopress, Github Pages]

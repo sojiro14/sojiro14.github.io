@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "初めてのYeoman (yoを使った雛形作成)"
+slug: the-first-step-of-yeoman
 date: 2015-05-06
 comments: true
 categories: [Yeoman, yo]

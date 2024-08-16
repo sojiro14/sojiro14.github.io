@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #2 -Herokuのセットアップ-"
+slug: first-app-with-rails-number-2-setup-heroku
 date: 2014-11-12
 comments: true
 categories: [Ruby on Rails, Heroku, Git]

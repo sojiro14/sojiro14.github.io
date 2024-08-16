@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #1 -railsのセットアップ-"
+slug: making-first-app-with-rails-number-1-setup-rails
 date: 2014-11-10
 comments: true
 categories: [Ruby, Ruby on Rails, Git, GitHub]

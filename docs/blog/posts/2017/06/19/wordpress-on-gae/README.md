@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "WordPress on GAE"
+slug: wordpress-on-gae
 date: 2017-06-19
 comments: true
 categories: [GAE, WordPress]

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Octopressのページに「もっと見る」を設定する方法"
+slug: add-excerpt-link-on-octopress-pages
 date: 2015-04-30
 comments: true
 categories: [Octopress]

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "RESTとはなにか"
+slug: what-is-rest
 date: 2014-09-14
 comments: true
 categories: [Web]

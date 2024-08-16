@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Node.jsとnpmのインストール"
+slug: install-node-js-and-npm
 date: 2017-10-01
 comments: true
 categories: [Node.js, npm]

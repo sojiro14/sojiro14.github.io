@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 5 クラス"
+slug: study-of-perfect-java-chapter-5
 date: 2016-07-20
 comments: true
 categories: [Java]

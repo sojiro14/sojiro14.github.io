@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "MySQLにおけるNOT NULLカラムへのインサート時の挙動"
+slug: behavior-of-inserting-rows-at-not-null-column-on-mysql
 date: 2014-10-20
 comments: true
 categories: [MySQL]

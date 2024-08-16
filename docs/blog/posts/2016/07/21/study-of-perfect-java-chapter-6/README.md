@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 6 コレクションと配列"
+slug: study-of-perfect-java-chapter-6
 date: 2016-07-21
 comments: true
 categories: [Java]

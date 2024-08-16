@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "vimで連番を振る方法"
+slug: writing-serial-numbers-with-vim
 date: 2014-06-14
 comments: true
 categories: [Vim]

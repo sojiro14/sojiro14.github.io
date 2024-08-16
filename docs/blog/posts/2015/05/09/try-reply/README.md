@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Replyを試してみる"
+slug: try-reply
 date: 2015-05-09
 comments: true
 categories: [Perl, REPL, Reply]

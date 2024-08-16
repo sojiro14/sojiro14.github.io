@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "VuePressでブログを再開するよ"
+slug: remake-blog-with-vuepress
 date: 2022-01-25
 comments: true
 categories: [VuePress]

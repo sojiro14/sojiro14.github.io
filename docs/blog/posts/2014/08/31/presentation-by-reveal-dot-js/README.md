@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "reveal.jsを使ったプレゼンテーションの作成"
+slug: presentation-by-reveal-dot-js
 date: 2014-08-31
 comments: true
 categories: [reveal.js]

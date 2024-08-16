@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "plenv で perl を管理する"
+slug: management-perl-versions-by-plenv
 date: 2016-03-05
 comments: true
 categories: [Perl]

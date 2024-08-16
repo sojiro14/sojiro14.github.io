@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "DockerでRails環境を構築した手順"
+slug: docker-rails-setup-tutorial
 date: 2016-06-26
 comments: true
 categories: [Docker, Ruby on Rails]

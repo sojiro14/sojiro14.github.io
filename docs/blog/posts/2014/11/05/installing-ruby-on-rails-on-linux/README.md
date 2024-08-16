@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "LinuxにRuby on Railsをインストールする"
+slug: installing-ruby-on-rails-on-linux
 date: 2014-11-05
 comments: true
 categories: [Ruby, Ruby on Rails, Linux, AWS]

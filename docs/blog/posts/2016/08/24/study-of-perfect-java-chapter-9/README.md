@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 9 文、式、演算子"
+slug: study-of-perfect-java-chapter-9
 date: 2016-08-24
 comments: true
 categories: [Java]

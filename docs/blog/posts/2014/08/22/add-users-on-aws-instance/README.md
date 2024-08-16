@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "AWSに複数のユーザーを設定した手順"
+slug: add-users-on-aws-instance
 date: 2014-08-22
 comments: true
 categories: [Linux, AWS]

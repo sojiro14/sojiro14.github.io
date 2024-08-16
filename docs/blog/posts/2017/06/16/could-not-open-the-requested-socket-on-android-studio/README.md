@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Could not open the requested socket エラーが出たら"
+slug: could-not-open-the-requested-socket-on-android-studio
 date: 2017-06-16
 comments: true
 categories: [GAE, Android Studio, Java]

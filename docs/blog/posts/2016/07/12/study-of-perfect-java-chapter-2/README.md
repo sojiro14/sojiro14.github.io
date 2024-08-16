@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 2 文字と文字列"
+slug: study-of-perfect-java-chapter-2
 date: 2016-07-12
 comments: true
 categories: [Java]

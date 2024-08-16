@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #5 -controllerとviewの追加-"
+slug: making-first-app-with-rails-number-5-add-controller-and-view
 date: 2014-11-29
 comments: true
 categories: [Ruby on Rails]

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "MEANとはなにか"
+slug: what-is-mean
 date: 2015-05-08
 comments: true
 categories: [MEAN]

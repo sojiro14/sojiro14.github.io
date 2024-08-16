@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 10 Javaプログラムの実行と制御構文"
+slug: study-of-perfect-java-chapter-10
 date: 2016-08-31
 comments: true
 categories: [Java]
@@ -73,14 +74,14 @@ for (初期化式; 条件式; 更新式) {
 初期化式と更新式は複数の式を `,` で区切って書ける
 
 ```java
-for (int i = 0, j = 0; (i < 10 && j < 10); i++, j++) { 
+for (int i = 0, j = 0; (i < 10 && j < 10); i++, j++) {
 }
 ```
 
 異なる型の宣言と初期化を並べるとエラー
 
 ```java
-for (int i = 0, byte j = 0; (i < 10 && j < 10); i++, j++) { 
+for (int i = 0, byte j = 0; (i < 10 && j < 10); i++, j++) {
 }
 ```
 
@@ -89,7 +90,7 @@ for文の外に出して回避
 ```java
 int i;
 byte j;
-for (i = 0, j = 0; (i < 10 && j < 10); i++, j++) { 
+for (i = 0, j = 0; (i < 10 && j < 10); i++, j++) {
 }
 ```
 

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "How to upload files from GCE instance to GCS / BigQuery"
+slug: upload-files-from-gce-instance-to-gcs-or-bq
 date: 2022-02-14
 comments: true
 categories: [GCP, GCE, GCS, BigQuery]

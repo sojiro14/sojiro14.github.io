@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "MacにNode.jsとMongoDBをインストールしたメモ"
+slug: installing-node-dot-js-and-mongodb-in-mac
 date: 2014-12-07
 comments: true
 categories: [Node.js, MongoDB]

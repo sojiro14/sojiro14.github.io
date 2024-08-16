@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Chef のリモート実行"
+slug: the-second-step-of-chef
 date: 2015-11-14
 comments: true
 categories: [Chef]

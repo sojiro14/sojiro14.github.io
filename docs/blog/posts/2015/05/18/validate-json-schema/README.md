@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "JSON Schema のバリデーション"
+slug: validate-json-schema
 date: 2015-05-18
 comments: true
 categories: [JSON Schema]

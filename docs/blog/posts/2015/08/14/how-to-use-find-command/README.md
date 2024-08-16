@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "find コマンドの使い方"
+slug: how-to-use-find-command
 date: 2015-08-14
 comments: true
 categories: [Linux]

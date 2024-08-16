@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "ファイルの内容を直接クリップボードに出力する"
+slug: copy-output-to-clipboard
 date: 2017-06-17
 comments: true
 categories: [Linux]

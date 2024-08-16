@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Linuxに最新のRubyをインストールする"
+slug: installing-latest-ruby-in-linux
 date: 2014-10-31
 comments: true
 categories: [Ruby, Ruby on Rails, Linux, AWS]

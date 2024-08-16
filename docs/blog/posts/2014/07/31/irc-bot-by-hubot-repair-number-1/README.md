@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "HUBOTを使ったirc-bot改修メモ #1 -noticeで発言させる-"
+slug: irc-bot-by-hubot-repair-number-1
 date: 2014-07-31
 comments: true
 categories: [HUBOT]

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "初めてのMongoDB"
+slug: the-first-step-for-mongodb
 date: 2015-01-02
 comments: true
 categories: [MongoDB]

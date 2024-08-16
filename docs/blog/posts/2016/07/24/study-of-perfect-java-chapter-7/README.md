@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "パーフェクトJava読書メモ chapter 7 インターフェース"
+slug: study-of-perfect-java-chapter-7
 date: 2016-07-24
 comments: true
 categories: [Java]

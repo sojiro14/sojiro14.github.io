@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Octopressのテーマを変える"
+slug: changing-octopress-theme
 date: 2014-05-03
 comments: true
 categories: [Octopress]

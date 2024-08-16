@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Webからデバイスのカメラを起動する"
+slug: start-up-a-web-camera-via-web
 date: 2015-05-13
 comments: true
 categories: [HTML5, WebRTC]

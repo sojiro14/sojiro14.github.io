@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "CPAN モジュールのための雛形を作る"
+slug: create-basic-model-for-cpan-module
 date: 2015-07-02
 comments: true
 categories: [perl, CPAN]

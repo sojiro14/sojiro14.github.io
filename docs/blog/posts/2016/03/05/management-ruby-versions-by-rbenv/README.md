@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "rbenv で ruby を管理する"
+slug: management-ruby-versions-by-rbenv
 date: 2016-03-05
 comments: true
 categories: [Ruby]

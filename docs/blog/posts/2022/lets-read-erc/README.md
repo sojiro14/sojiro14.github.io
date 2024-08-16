@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Let's read ERC"
+slug: lets-read-erc
 date: 2022-02-16
 comments: true
 categories: [ERC, Ethereum, NFT]

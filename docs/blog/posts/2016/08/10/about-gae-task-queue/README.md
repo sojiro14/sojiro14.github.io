@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "GAE Task Queue について"
+slug: about-gae-task-queue
 date: 2016-08-10
 comments: true
 categories: [GAE, Task Queue]

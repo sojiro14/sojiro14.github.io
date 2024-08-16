@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "AWSのLinuxにMongoDBをインストール"
+slug: installing-mongodb-on-linux-aws
 date: 2014-12-30
 comments: true
 categories: [MongoDB, AWS, Linux]

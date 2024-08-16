@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "値オブジェクトとコレクションオブジェクト"
+slug: value-object-and-collection-object
 date: 2017-08-25
 comments: true
 categories: [OOP, Java]

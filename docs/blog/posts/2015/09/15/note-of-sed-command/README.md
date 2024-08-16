@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "sed コマンドで置換"
+slug: note-of-sed-command
 date: 2015-09-15
 comments: true
 categories: [Linux]

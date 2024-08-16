@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "「トークン」とはなにか"
+slug: what-is-token
 date: 2015-05-07
 comments: true
 categories: [Web]

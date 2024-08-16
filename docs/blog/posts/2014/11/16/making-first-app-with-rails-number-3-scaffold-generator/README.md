@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Ruby on Railsで初めてアプリを作ってみる #3 -scaffoldジェネレータ-"
+slug: making-first-app-with-rails-number-3-scaffold-generator
 date: 2014-11-16
 comments: true
 categories: [Ruby on Rails]

@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "Amazon Linux AMIにagをインストールした手順"
+slug: howto-install-ag-in-amazon-linux-ami
 date: 2014-08-25
 comments: true
 categories: [Linux]

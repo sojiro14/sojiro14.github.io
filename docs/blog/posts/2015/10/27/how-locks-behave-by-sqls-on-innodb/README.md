@@ -1,6 +1,7 @@
 ---
 layout: Layout
 title: "InnoDBにおけるSQL別ロックの挙動"
+slug: how-locks-behave-by-sqls-on-innodb
 date: 2015-10-27
 comments: true
 categories: [MySQL]
