@@ -10,7 +10,7 @@ categories: [Computer Science, Machine Learning]
 - <https://arxiv.org/pdf/1704.00028>
 
 ---
-# Wasserstein GANの改良：勾配ペナルティの導入
+## Wasserstein GANの改良：勾配ペナルティの導入
 
 ## 1. はじめに
 
