@@ -1,5 +1,5 @@
 ---
-title: WaveNet: A Generative Model for Raw Audio
+title: "WaveNet: A Generative Model for Raw Audio"
 date: 2016-09-19
 comments: true
 categories: [Computer Science, Sound]
