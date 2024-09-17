@@ -1,6 +1,7 @@
 site_name: Sojiro's Blog
 site_url: https://blog.sojiro.me
 theme:
+  language: ja
   name: material
   logo: assets/images/logo.png
   favicon: assets/images/favicon.png
