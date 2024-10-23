@@ -8,6 +8,7 @@ categories: [Computer Science, Sound]
 # SongCreator: Lyrics-based Universal Song Generation
 - <https://arxiv.org/abs/2409.06029>
 - <https://arxiv.org/pdf/2409.06029>
+- <https://songcreator.github.io/>
 
 ---
 ## 1. 研究の概要と重要性
