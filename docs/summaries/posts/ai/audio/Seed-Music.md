@@ -1,5 +1,5 @@
 ---
-title: Seed-Music: A Unified Framework for High Quality and Controlled Music Generation
+title: "Seed-Music: A Unified Framework for High Quality and Controlled Music Generation"
 date: 2024-09-19
 comments: true
 categories: [Computer Science, Sound]
