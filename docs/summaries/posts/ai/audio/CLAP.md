@@ -6,7 +6,7 @@ categories: [Computer Science, Sound]
 ---
 
 # Large-scale Contrastive Language-Audio Pretraining with Feature Fusion and Keyword-to-Caption Augmentation
-- [https://arxiv.org/abs/2303.18223v10](https://arxiv.org/abs/2211.06687)
+- <https://arxiv.org/abs/2211.06687>
 - <https://arxiv.org/pdf/2211.06687>
 - <https://github.com/LAION-AI/CLAP>
 
