@@ -47,7 +47,7 @@ categories: [Computer Science, Sound]
 
 ### 3.1 基本構造
 
-![モデルアーキテクチャ](https://raw.githubusercontent.com/retrocirce/HTS-Audio-Transformer/main/figs/Architecture.png)
+![モデルアーキテクチャ](https://github.com/user-attachments/assets/0111c24a-bf6e-4029-8b64-a225cae56f0b)
 
 モデルは以下の主要コンポーネントで構成されています：
 
