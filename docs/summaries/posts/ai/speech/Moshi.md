@@ -1,3 +1,15 @@
+---
+title: "Moshi: a speech-text foundation model for real-time dialogue"
+date: 2024-09-18
+comments: true
+categories: [Speech to text]
+---
+
+# Moshi: a speech-text foundation model for real-time dialogue
+- <https://kyutai.org/Moshi.pdf>
+
+---
+
 # Moshi: リアルタイム対話のための音声-テキスト基盤モデル
 
 ## 序論
