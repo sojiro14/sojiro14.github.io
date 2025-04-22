@@ -1,0 +1,4343 @@
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://blog.sojiro.me/summaries/2020/04/30/jukebox-a-generative-model-for-music/">
+      
+      
+        <link rel="prev" href="../../../02/14/transformer-transducer-a-streamable-speech-recognition-model-with-transformer-encoders-and-rnn-t-loss/">
+      
+      
+        <link rel="next" href="../../../07/21/score-and-lyrics-free-singing-voice-generation/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Jukebox: A Generative Model for Music - Sojiro's Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-ECN7E21ZM0"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-ECN7E21ZM0",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-ECN7E21ZM0",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Jukebox: A Generative Model for Music - Sojiro's Blog" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://blog.sojiro.me/assets/images/social/summaries/posts/ai/audio/Jukebox.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://blog.sojiro.me/summaries/2020/04/30/jukebox-a-generative-model-for-music/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Jukebox: A Generative Model for Music - Sojiro's Blog" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://blog.sojiro.me/assets/images/social/summaries/posts/ai/audio/Jukebox.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#jukebox-a-generative-model-for-music" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../../../../.." title="Sojiro&#39;s Blog" class="md-header__button md-logo" aria-label="Sojiro's Blog" data-md-component="logo">
+      
+  <img src="../../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sojiro's Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Jukebox: A Generative Model for Music
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Sojiro&#39;s Blog" class="md-nav__button md-logo" aria-label="Sojiro's Blog" data-md-component="logo">
+      
+  <img src="../../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Sojiro's Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recent Posts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2024
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2022
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2017
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2016/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2016
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2015/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2015
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2014/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2014
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Categories
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/anaconda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Anaconda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/android-studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Android Studio
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/bigquery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BigQuery
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/bower/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bower
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/cpan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CPAN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/canvas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Canvas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/chef/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chef
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/datastore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datastore
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/disqus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Disqus
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/domain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Domain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/erc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ERC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/ethereum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ethereum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/gae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GAE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/gce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/gcs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/github-pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Github Pages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/grunt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grunt
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/html5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    HTML5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/heroku/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Heroku
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/homebrew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Homebrew
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/hubot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Hubot
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/irc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IRC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/json-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    JSON Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Java
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/liveportrait/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LivePortrait
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/mean/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MEAN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/mongodb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MongoDB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/mysql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MySQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/nft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/nodejs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Node.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OOP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/octopress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octopress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/perl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Perl
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/repl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REPL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/rvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RVM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/redis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Redis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/reply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reply
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/ruby/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ruby
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/ruby-on-rails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Shell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/slack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Slack
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/task-queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Task Queue
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/vagrant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vagrant
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vim
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/vuepress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    VuePress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/webrtc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WebRTC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/wordpress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WordPress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/yeoman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Yeoman
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/npm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    npm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/revealjs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    reveal.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/screen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    screen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/yo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    yo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Paper Summaries
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Paper Summaries
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recent Posts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2024
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2022
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2020
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2019
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2018
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2017
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2016/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2016
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2015/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2015
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2014/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2014
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/1972/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1972
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Categories
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/artificial-intelligence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Artificial Intelligence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/audio-and-speech-processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Audio and Speech Processing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/call-center/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Call Center
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/computation-and-language/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computation and Language
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/computer-science/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computer Science
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/computer-vision-and-pattern-recognition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computer Vision and Pattern Recognition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/digital-libraries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Digital Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/electrical-engineering-and-systems-science/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Electrical Engineering and Systems Science
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/emergence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Emergence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/information-retrieval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Information Retrieval
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/machine-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Machine Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/reductionism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reductionism
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sound/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sound
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/speech-to-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speech to text
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/statistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/synthetic-biology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Synthetic Biology
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E3%82%B5%E3%83%83%E3%82%AB%E3%83%BC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    サッカー
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E3%82%B7%E3%83%9F%E3%83%A5%E3%83%BC%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%87%E3%83%BC%E3%82%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    シミューレーションデータ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%84/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    スポーツ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E3%83%9E%E3%83%AB%E3%83%81%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    マルチエージェント
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E5%9F%BA%E7%9B%A4%E3%83%A2%E3%83%87%E3%83%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    基盤モデル
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E5%BB%BA%E7%AF%89%E7%9A%84%E6%BD%9C%E5%9C%A8%E4%BE%A1%E5%80%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    建築的潜在価値
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E5%BC%B7%E5%8C%96%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    強化学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    機械学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E6%B7%B1%E5%B1%A4%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深層学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E7%A4%BE%E4%BC%9A%E7%9A%84%E4%BE%A1%E5%80%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    社会的価値
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    言語モデル
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/%E9%AB%98%E7%B5%8C%E5%B9%B4%E8%B3%83%E8%B2%B8%E3%83%9E%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%B3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高経年賃貸マンション
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jukebox" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jukebox: 音楽生成のための生成モデル
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 概要
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 背景と課題
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 背景と課題">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 音楽生成の難しさ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-jukebox" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Jukeboxのアーキテクチャ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Jukeboxのアーキテクチャ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-vq-vae" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 VQ-VAEの構造
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-priorupsampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 PriorモデルとUpsampler
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 条件付け機能
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 実験結果
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 実験結果">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 データセット
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 生成された音楽の特徴
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 今後の課題
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 結論
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#music-priorsupsamplers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Music PriorsとUpsamplersの詳細解説
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 基本構造と役割
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. モデルアーキテクチャ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. モデルアーキテクチャ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Transformerの活用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-upsampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Upsamplerの条件付け機能
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 条件付けメカニズム
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 条件付けメカニズム">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 アーティスト、ジャンル、タイミングの条件付け
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 歌詞による条件付け
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 歌詞による条件付け">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lts-lyrics-to-singing" class="md-nav__link">
+    <span class="md-ellipsis">
+      歌詞と歌声の同期（LTS: Lyrics-to-singing）タスク
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      エンコーダー-デコーダーモデル
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. デコーダーの事前学習
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. サンプリング手法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. サンプリング手法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 祖先サンプリング
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 ウィンドウサンプリング
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 プライム付きサンプリング
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jukebox_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jukeboxが歌詞から音楽を生成できる仕組み
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 基本的なアプローチ
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 主要な技術要素
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 主要な技術要素">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 エンコーダー-デコーダーアーキテクチャ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 歌詞と音楽の同期システム
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 学習プロセス
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 学習プロセス">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 データセット
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 効率的な学習方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 特徴と限界
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 特徴と限界">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-jukebox" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Jukeboxの強み
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 現在の限界
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. なぜ実現可能なのか？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nus-autolyricsalign" class="md-nav__link">
+    <span class="md-ellipsis">
+      NUS AutoLyricsAlignの解説
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 基本概要
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 重要性
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 技術的な特徴
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 技術的な特徴">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 処理の流れ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 利点
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 実際の使用例
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    ブログトップへ戻る
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    メタデータ
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2020-04-30 00:00:00+00:00" class="md-ellipsis">2020年4月30日</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/electrical-engineering-and-systems-science/">Electrical Engineering and Systems Science</a>, 
+                              <a href="../../../../category/audio-and-speech-processing/">Audio and Speech Processing</a>, 
+                              <a href="../../../../category/sound/">Sound</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              このページは約3分で読めます
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<h1 id="jukebox-a-generative-model-for-music">Jukebox: A Generative Model for Music</h1>
+<ul>
+<li><a href="https://arxiv.org/abs/2005.00341">https://arxiv.org/abs/2005.00341</a></li>
+<li><a href="https://arxiv.org/pdf/2005.00341">https://arxiv.org/pdf/2005.00341</a></li>
+</ul>
+<hr />
+<h2 id="jukebox">Jukebox: 音楽生成のための生成モデル</h2>
+<h2 id="1">1. 概要</h2>
+<p>この論文は、OpenAIが開発した「Jukebox」という音楽生成AIモデルについて説明しています。Jukeboxは以下の特徴を持ちます：</p>
+<ul>
+<li>生の音声データから直接音楽を生成できる</li>
+<li>歌詞に合わせて歌声を生成できる</li>
+<li>アーティストや曲のジャンルを指定して生成できる</li>
+<li>数分間の長さの一貫した音楽を生成可能</li>
+</ul>
+<h2 id="2">2. 背景と課題</h2>
+<h3 id="21">2.1 音楽生成の難しさ</h3>
+<p>音楽生成には以下のような課題があります：</p>
+<ol>
+<li>音声データの膨大な情報量</li>
+<li>4分間の音楽 = 約1000万のサンプル点</li>
+<li>各サンプル点は16ビットの情報を持つ</li>
+<li>
+<p>画像生成と比べても非常に大きな情報量を扱う必要がある</p>
+</li>
+<li>
+<p>音楽の多様な要素</p>
+</li>
+<li>メロディ、作曲、音色、人の声など</li>
+<li>これらを統合的に生成する必要がある</li>
+</ol>
+<h2 id="3-jukebox">3. Jukeboxのアーキテクチャ</h2>
+<p>Jukeboxは以下の3つの主要コンポーネントで構成されています：</p>
+<ol>
+<li>VQ-VAE (Vector Quantized Variational AutoEncoder)</li>
+<li>Prior モデル</li>
+<li>Upsampler モデル</li>
+</ol>
+<h3 id="31-vq-vae">3.1 VQ-VAEの構造</h3>
+<p><img alt="VQ-VAE structure" src="https://github.com/user-attachments/assets/8e0d40e6-1c60-4018-a6e0-6923ca2b752a" /></p>
+<p>VQ-VAEは3つのレベルで音声を圧縮します：</p>
+<ul>
+<li>Bottom level: 8倍圧縮</li>
+<li>Middle level: 32倍圧縮</li>
+<li>Top level: 128倍圧縮</li>
+</ul>
+<p>各レベルは以下のコンポーネントを持ちます：
+1. エンコーダー：音声を潜在表現に変換
+2. ベクトル量子化：連続的な潜在表現を離散的なコードに変換
+3. デコーダー：コードを音声に戻す</p>
+<h3 id="32-priorupsampler">3.2 PriorモデルとUpsampler</h3>
+<p><img alt="Prior and Upsampler" src="https://github.com/user-attachments/assets/7860263b-b777-4426-a978-cc41f141a145" /></p>
+<p>これらのモデルは以下の役割を果たします：</p>
+<ol>
+<li>Priorモデル</li>
+<li>Top levelのコードを生成</li>
+<li>
+<p>アーティスト、ジャンル、歌詞などの条件付け情報を使用</p>
+</li>
+<li>
+<p>Upsamplerモデル</p>
+</li>
+<li>上位レベルのコードから下位レベルのコードを生成</li>
+<li>より細かい音楽の詳細を追加</li>
+</ol>
+<h2 id="4">4. 条件付け機能</h2>
+<p>Jukeboxは以下の要素で音楽生成を制御できます：</p>
+<ol>
+<li>アーティストとジャンル</li>
+<li>特定のアーティストのスタイルで生成</li>
+<li>
+<p>特定のジャンルの特徴を反映</p>
+</li>
+<li>
+<p>歌詞</p>
+</li>
+<li>指定した歌詞に合わせて歌声を生成</li>
+<li>
+<p>歌詞のタイミングも自動的に調整</p>
+</li>
+<li>
+<p>タイミング情報</p>
+</li>
+<li>曲の全体長</li>
+<li>現在の位置</li>
+<li>経過時間の割合</li>
+</ol>
+<h2 id="5">5. 実験結果</h2>
+<h3 id="51">5.1 データセット</h3>
+<ul>
+<li>120万曲のデータセット</li>
+<li>60万曲が英語の曲</li>
+<li>歌詞とメタデータ（アーティスト、アルバム、ジャンル、年など）を含む</li>
+</ul>
+<h3 id="52">5.2 生成された音楽の特徴</h3>
+<ol>
+<li>一貫性</li>
+<li>約24秒の範囲で強い一貫性を維持</li>
+<li>
+<p>ハーモニーやテクスチャの一貫性も保持</p>
+</li>
+<li>
+<p>音楽性</p>
+</li>
+<li>自然な調和とメロディ</li>
+<li>
+<p>歌詞のリズムと自然な同期</p>
+</li>
+<li>
+<p>多様性</p>
+</li>
+<li>異なるスタイルやジャンルの生成が可能</li>
+<li>同じ条件でも異なる曲を生成可能</li>
+</ol>
+<h2 id="6">6. 今後の課題</h2>
+<ol>
+<li>音楽構造の改善</li>
+<li>コーラスの繰り返しなど、長期的な構造の生成</li>
+<li>
+<p>より記憶に残るメロディの生成</p>
+</li>
+<li>
+<p>音質の向上</p>
+</li>
+<li>ノイズの削減</li>
+<li>
+<p>より自然な音質の実現</p>
+</li>
+<li>
+<p>生成速度の改善</p>
+</li>
+<li>現状1分の音楽生成に約1時間必要</li>
+<li>より高速な生成が望ましい</li>
+</ol>
+<h2 id="7">7. 結論</h2>
+<p>Jukeboxは以下の点で画期的な成果を達成しました：</p>
+<ul>
+<li>生の音声での音楽生成</li>
+<li>複数分の一貫した音楽生成</li>
+<li>歌詞、アーティスト、ジャンルの制御</li>
+<li>実用的な品質の実現</li>
+</ul>
+<p>これらの成果は音楽生成AIの新たな可能性を示すものとなっています。</p>
+<hr />
+<h2 id="music-priorsupsamplers">Music PriorsとUpsamplersの詳細解説</h2>
+<h2 id="1_1">1. 基本構造と役割</h2>
+<p>Music PriorsとUpsamplersは、VQ-VAEで圧縮された離散的なコード列から音楽を生成する重要なコンポーネントです。</p>
+<p>生成プロセスは以下の確率モデルで表現されます：</p>
+<pre><code>p(z) = p(z_top, z_middle, z_bottom)
+     = p(z_top)p(z_middle|z_top)p(z_bottom|z_middle, z_top)
+</code></pre>
+<p>この数式は3つの要素で構成されています：
+1. トップレベルPrior: p(z_top)
+2. ミドルレベルUpsampler: p(z_middle|z_top)
+3. ボトムレベルUpsampler: p(z_bottom|z_middle, z_top)</p>
+<h2 id="2_1">2. モデルアーキテクチャ</h2>
+<h3 id="21-transformer">2.1 Transformerの活用</h3>
+<ul>
+<li>Sparse Attention（疎な注意機構）を持つTransformerを使用</li>
+<li>Scalable Transformerと呼ばれる簡略化されたバージョンを採用</li>
+<li>実装がより容易で、スケーリングも改善</li>
+</ul>
+<h3 id="22-upsampler">2.2 Upsamplerの条件付け機能</h3>
+<p>上位レベルからの情報を取り込むため、以下の要素を使用：
+1. 深層残差WaveNet
+2. アップサンプリング用のストライド付き畳み込み
+3. レイヤー正規化</p>
+<p>これらの出力は、現在のレベルの埋め込みに追加の位置情報として加えられます。</p>
+<h2 id="3">3. 条件付けメカニズム</h2>
+<h3 id="31">3.1 アーティスト、ジャンル、タイミングの条件付け</h3>
+<p>モデルは以下の情報を条件として受け取ります：
+1. アーティストラベル
+2. ジャンルラベル
+3. タイミング信号
+   - 曲の全体の長さ
+   - 現在のサンプルの開始時間
+   - 曲の経過割合</p>
+<p>これにより：
+- 予測のエントロピー（不確実性）が低減
+- 特定のスタイルでの生成が可能
+- 曲の構造に応じた生成が可能（イントロ、エンディングなど）</p>
+<h3 id="32">3.2 歌詞による条件付け</h3>
+<h4 id="lts-lyrics-to-singing">歌詞と歌声の同期（LTS: Lyrics-to-singing）タスク</h4>
+<p>課題：
+- 歌詞のテキストのみを入力として使用
+- タイミングや発声情報は含まない
+- リード・バックボーカルと楽器の分離なし</p>
+<p>対策：
+1. 短いチャンク（24秒）での学習
+2. Spleeterを使用して音声を抽出
+3. NUS AutoLyricsAlignで歌詞の単語レベルの位置合わせを実施</p>
+<h4 id="-">エンコーダー-デコーダーモデル</h4>
+<p>特徴：
+1. 歌詞エンコーダー
+   - Transformerベース
+   - 歌詞の自己回帰モデリング損失を使用
+   - 最終層を歌詞の特徴として使用</p>
+<ol>
+<li>音楽デコーダー</li>
+<li>エンコーダー-デコーダー注意層を追加</li>
+<li>音楽トークンから歌詞トークンへの注意のみを許可</li>
+<li>歌詞エンコーダーの最終層の活性化に注意を向ける</li>
+</ol>
+<h2 id="4_1">4. デコーダーの事前学習</h2>
+<p>計算コストを削減するため：
+1. 事前学習済みの無条件トップレベルPriorをデコーダーとして使用
+2. モデルサージェリーを使用して歌詞エンコーダーを導入
+3. 出力投影の重みを0で初期化
+   - 追加層が初期化時に恒等関数として機能
+   - エンコーダーの状態とパラメータに対する勾配は維持</p>
+<h2 id="5_1">5. サンプリング手法</h2>
+<h3 id="51_1">5.1 祖先サンプリング</h3>
+<ol>
+<li>トップレベルコードを一つずつ生成</li>
+<li>条件付き情報を使用して制御</li>
+<li>生成されたコードをVQ-VAEデコーダーで音声に変換</li>
+</ol>
+<h3 id="52_1">5.2 ウィンドウサンプリング</h3>
+<ul>
+<li>モデルのコンテキスト長より長い音楽を生成</li>
+<li>前のコードの重複ウィンドウを使用して継続生成</li>
+<li>品質と速度のトレードオフが可能</li>
+</ul>
+<h3 id="53">5.3 プライム付きサンプリング</h3>
+<p>実際の曲の一部からスタートして新しい継続を生成：
+1. 既存の音声をVQ-VAEでコードに変換
+2. これらのコードを初期トークンとして使用
+3. 新しい継続を生成</p>
+<p>この詳細な構造により、Jukeboxは高品質で制御可能な音楽生成を実現しています。</p>
+<hr />
+<h2 id="jukebox_1">Jukeboxが歌詞から音楽を生成できる仕組み</h2>
+<h2 id="1_2">1. 基本的なアプローチ</h2>
+<p>Jukeboxは「Lyrics-to-singing (LTS)」と呼ばれるタスクを実現しています。これは以下の要素を含みます：</p>
+<ol>
+<li>歌詞のテキスト入力</li>
+<li>歌声の生成</li>
+<li>音楽との同期</li>
+</ol>
+<h2 id="2_2">2. 主要な技術要素</h2>
+<h3 id="21-">2.1 エンコーダー-デコーダーアーキテクチャ</h3>
+<ol>
+<li>歌詞エンコーダー</li>
+<li>Transformerベースのモデル</li>
+<li>歌詞を意味のある特徴表現に変換</li>
+<li>
+<p>自己回帰的な学習で歌詞の文脈を理解</p>
+</li>
+<li>
+<p>音楽デコーダー</p>
+</li>
+<li>歌詞の特徴を音楽生成に活用</li>
+<li>エンコーダー-デコーダー注意機構で歌詞と音楽を結びつけ</li>
+<li>歌詞のタイミングと音楽を同期</li>
+</ol>
+<h3 id="22">2.2 歌詞と音楽の同期システム</h3>
+<ol>
+<li>データの前処理</li>
+<li>Spleeter: 音楽から歌声を抽出</li>
+<li>NUS AutoLyricsAlign: 歌詞と歌声の位置合わせ</li>
+<li>
+<p>24秒の短いチャンクに分割して処理</p>
+</li>
+<li>
+<p>注意機構による同期</p>
+</li>
+<li>デコーダーが歌詞の関連部分に注目</li>
+<li>自然な歌唱タイミングを学習</li>
+<li>強調すべき単語やフレーズを認識</li>
+</ol>
+<h2 id="3_1">3. 学習プロセス</h2>
+<h3 id="31_1">3.1 データセット</h3>
+<ul>
+<li>60万曲の英語の楽曲</li>
+<li>歌詞とメタデータを含む</li>
+<li>アーティスト情報も活用</li>
+</ul>
+<h3 id="32_1">3.2 効率的な学習方法</h3>
+<ol>
+<li>デコーダーの事前学習</li>
+<li>無条件の音楽生成モデルを先に学習</li>
+<li>
+<p>計算コストを削減</p>
+</li>
+<li>
+<p>モデルサージェリー</p>
+</li>
+<li>事前学習済みモデルに歌詞処理能力を追加</li>
+<li>段階的な能力の向上</li>
+</ol>
+<h2 id="4_2">4. 特徴と限界</h2>
+<h3 id="41-jukebox">4.1 Jukeboxの強み</h3>
+<ol>
+<li>自然な歌声生成</li>
+<li>プロソディ（韻律）の適切な処理</li>
+<li>
+<p>言葉の強調の自然な表現</p>
+</li>
+<li>
+<p>柔軟な制御</p>
+</li>
+<li>アーティストスタイルの反映</li>
+<li>ジャンルに応じた歌い方の調整</li>
+</ol>
+<h3 id="42">4.2 現在の限界</h3>
+<ol>
+<li>処理速度</li>
+<li>
+<p>1分の音楽生成に約1時間必要</p>
+</li>
+<li>
+<p>品質の制約</p>
+</li>
+<li>時々不明瞭な発音</li>
+<li>一貫性の維持が難しい場合がある</li>
+</ol>
+<h2 id="5_2">5. なぜ実現可能なのか？</h2>
+<p>Jukeboxが歌詞からの音楽生成を実現できる理由：</p>
+<ol>
+<li>大規模データでの学習</li>
+<li>膨大な音楽-歌詞ペアからの学習</li>
+<li>
+<p>多様なパターンの理解</p>
+</li>
+<li>
+<p>階層的な処理</p>
+</li>
+<li>トップレベル: 全体の構造</li>
+<li>ミドルレベル: フレーズレベルの調整</li>
+<li>
+<p>ボトムレベル: 詳細な音声生成</p>
+</li>
+<li>
+<p>複数の条件付け</p>
+</li>
+<li>歌詞</li>
+<li>アーティストスタイル</li>
+<li>ジャンル</li>
+<li>
+<p>タイミング
+これらの要素が統合されることで、歌詞に基づいた自然な音楽生成が可能になっています。</p>
+</li>
+<li>
+<p>注意機構の効果的な活用</p>
+</li>
+<li>歌詞と音楽の関連付け</li>
+<li>適切なタイミングの学習</li>
+<li>文脈の理解と反映</li>
+</ol>
+<p>これらの要素が組み合わさることで、Jukeboxは歌詞から意味のある音楽を生成することができます。</p>
+<hr />
+<h2 id="nus-autolyricsalign">NUS AutoLyricsAlignの解説</h2>
+<h2 id="1_3">1. 基本概要</h2>
+<p>NUS AutoLyricsAlignは、音楽音声と歌詞のテキストを自動的に同期させるためのツールです。</p>
+<p>主な目的：
+- 音楽内の歌声と歌詞の単語を時間的に対応付ける
+- どの単語がいつ歌われているかを特定する</p>
+<h2 id="2_3">2. 重要性</h2>
+<p>Jukeboxにおける役割：
+1. 学習データの質向上
+   - 歌詞と音声の正確な対応付け
+   - より正確な歌声生成の学習が可能に</p>
+<ol>
+<li>前処理パイプライン
+   <code>生の音楽 → Spleeter(歌声抽出) → NUS AutoLyricsAlign(歌詞同期)</code></li>
+</ol>
+<h2 id="3_2">3. 技術的な特徴</h2>
+<h3 id="31_2">3.1 処理の流れ</h3>
+<ol>
+<li>音声からの特徴抽出</li>
+<li>歌詞テキストの音素への変換</li>
+<li>音声と音素の時間的アライメント</li>
+<li>単語レベルのタイムスタンプ生成</li>
+</ol>
+<h3 id="32_2">3.2 利点</h3>
+<ul>
+<li>自動化された処理</li>
+<li>単語レベルでの精密な同期</li>
+<li>大規模データセットへの適用が可能</li>
+</ul>
+<h2 id="4_3">4. 実際の使用例</h2>
+<p>Jukeboxでの活用：
+1. 学習データの準備
+   - 歌詞の時間情報の取得
+   - 適切なチャンク分割のための情報提供</p>
+<ol>
+<li>生成時の制御</li>
+<li>歌詞の自然なタイミング制御</li>
+<li>プロソディの適切な反映</li>
+</ol>
+<p>注：論文では詳細な技術説明は提供されていませんが、音楽生成における重要なツールとして言及されています。</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2014 - 2025 Sojiro's Blog. All rights reserved.
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/sojiro14" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sojiro14" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

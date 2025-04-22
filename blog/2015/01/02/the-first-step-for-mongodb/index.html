@@ -1,0 +1,3734 @@
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://blog.sojiro.me/blog/2015/01/02/the-first-step-for-mongodb/">
+      
+      
+        <link rel="prev" href="../../../../2014/12/30/installing-mongodb-on-linux-aws/">
+      
+      
+        <link rel="next" href="../../07/making-a-web-server-with-node-dot-js/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>初めてのMongoDB - Sojiro's Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-ECN7E21ZM0"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-ECN7E21ZM0",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-ECN7E21ZM0",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="初めてのMongoDB - Sojiro's Blog" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://blog.sojiro.me/assets/images/social/blog/posts/2015/01/02/the-first-step-for-mongodb/README.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://blog.sojiro.me/blog/2015/01/02/the-first-step-for-mongodb/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="初めてのMongoDB - Sojiro's Blog" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://blog.sojiro.me/assets/images/social/blog/posts/2015/01/02/the-first-step-for-mongodb/README.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../../../../.." title="Sojiro&#39;s Blog" class="md-header__button md-logo" aria-label="Sojiro's Blog" data-md-component="logo">
+      
+  <img src="../../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sojiro's Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              初めてのMongoDB
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Sojiro&#39;s Blog" class="md-nav__button md-logo" aria-label="Sojiro's Blog" data-md-component="logo">
+      
+  <img src="../../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Sojiro's Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recent Posts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2024
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2022
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2017
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2016/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2016
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2015/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2015
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2014/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2014
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Categories
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/anaconda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Anaconda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/android-studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Android Studio
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/bigquery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BigQuery
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/bower/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bower
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cpan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CPAN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/canvas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Canvas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/chef/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chef
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/datastore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datastore
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/disqus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Disqus
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/domain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Domain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/erc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ERC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ethereum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ethereum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GAE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/gcs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/github-pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Github Pages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/grunt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grunt
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/html5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    HTML5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/heroku/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Heroku
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/homebrew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Homebrew
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/hubot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Hubot
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/irc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IRC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/json-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    JSON Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Java
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/liveportrait/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LivePortrait
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/mean/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MEAN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/mongodb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MongoDB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/mysql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MySQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/nft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/nodejs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Node.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OOP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/octopress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octopress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/perl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Perl
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/repl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REPL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/rvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RVM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/redis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Redis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/reply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reply
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ruby/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ruby
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ruby-on-rails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Shell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/slack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Slack
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/task-queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Task Queue
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/vagrant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vagrant
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vim
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/vuepress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    VuePress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/webrtc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WebRTC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/wordpress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WordPress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/yeoman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Yeoman
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/npm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    npm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/revealjs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    reveal.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/screen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    screen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/yo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    yo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Paper Summaries
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Paper Summaries
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recent Posts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2024
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2022
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2020
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2019
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2018
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2017
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2016/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2016
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2015/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2015
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/2014/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2014
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/archive/1972/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1972
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Categories
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/artificial-intelligence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Artificial Intelligence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/audio-and-speech-processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Audio and Speech Processing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/call-center/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Call Center
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/computation-and-language/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computation and Language
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/computer-science/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computer Science
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/computer-vision-and-pattern-recognition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computer Vision and Pattern Recognition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/digital-libraries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Digital Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/electrical-engineering-and-systems-science/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Electrical Engineering and Systems Science
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/emergence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Emergence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/information-retrieval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Information Retrieval
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/machine-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Machine Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/reductionism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reductionism
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/sound/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sound
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/speech-to-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speech to text
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/statistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/synthetic-biology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Synthetic Biology
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E3%82%B5%E3%83%83%E3%82%AB%E3%83%BC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    サッカー
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E3%82%B7%E3%83%9F%E3%83%A5%E3%83%BC%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%87%E3%83%BC%E3%82%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    シミューレーションデータ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%84/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    スポーツ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E3%83%9E%E3%83%AB%E3%83%81%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    マルチエージェント
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E5%9F%BA%E7%9B%A4%E3%83%A2%E3%83%87%E3%83%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    基盤モデル
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E5%BB%BA%E7%AF%89%E7%9A%84%E6%BD%9C%E5%9C%A8%E4%BE%A1%E5%80%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    建築的潜在価値
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E5%BC%B7%E5%8C%96%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    強化学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    機械学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E6%B7%B1%E5%B1%A4%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深層学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E7%A4%BE%E4%BC%9A%E7%9A%84%E4%BE%A1%E5%80%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    社会的価値
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    言語モデル
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../summaries/category/%E9%AB%98%E7%B5%8C%E5%B9%B4%E8%B3%83%E8%B2%B8%E3%83%9E%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%B3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高経年賃貸マンション
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      データベース
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      コレクション
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      ドキュメント
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mongodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      MongoDBの起動
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#db" class="md-nav__link">
+    <span class="md-ellipsis">
+      DBの作成と選択
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    ブログトップへ戻る
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    メタデータ
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2015-01-02 00:00:00+00:00" class="md-ellipsis">2015年1月2日</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/mongodb/">MongoDB</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              このページは約3分で読めます
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<p>NoSQLの流れを汲むMongoDBを初めて使ってみるにあたり、基本的な操作をまとめてみる。</p>
+<h1 id="_1">基本的な用語</h1>
+<ul>
+<li>データベース(database)</li>
+<li>コレクション(collection)</li>
+<li>ドキュメント(document)</li>
+</ul>
+<h2 id="_2">データベース</h2>
+<p>MySQLなどのRDBMSにおけるデータベース、という言葉とほぼ同じ意味として使われる。
+データ管理の大元となる単位。</p>
+<h2 id="_3">コレクション</h2>
+<p>RDBMSにおけるテーブル(table)に相当するもの。
+MongoDBはスキーマレスなので、テーブルのように厳格なスキーマが決まっている訳ではなく、特定の対象に対するデータの集まり(正にコレクション)と言える。</p>
+<h2 id="_4">ドキュメント</h2>
+<p>RDBMSにおけるレコード(record)に相当するもの。
+各コレクションを構成する要素であり、BSONと呼ばれるJSONライクな形式で記述される。</p>
+<!-- more -->
+
+<h2 id="mongodb">MongoDBの起動</h2>
+<p>MongoDBの起動、停止には <code>service mongod</code> コマンドを使う</p>
+<pre><code class="language-bash">$ sudo service mongod status
+mongod is stopped
+$ sudo service mongod start
+Starting mongod:                                           [  OK  ]
+$ sudo service mongod status
+mongod (pid xxxx) is running...
+</code></pre>
+<p>停止させる時には以下のようにする</p>
+<pre><code class="language-bash">$ sudo service mongod stop
+Stopping mongod:                                           [  OK  ]
+$ sudo service mongod status
+mongod is stopped
+</code></pre>
+<h2 id="db">DBの作成と選択</h2>
+<p>MongoDBを起動したら、早速コンソールを立ち上げて操作してみる。</p>
+<pre><code class="language-bash">$ mongo testdb
+MongoDB shell version: 2.6.6
+connecting to: testdb
+&gt;
+</code></pre>
+<p><code>mongo</code> の後にDB名を指定してコンソールに入る。
+このとき、存在しないDB名を指定すると新規でDBが作られる。</p>
+<pre><code class="language-bash">&gt; show dbs;
+admin   (empty)
+local   0.078GB
+mydb    0.078GB
+testdb  (empty)
+</code></pre>
+<p>上記コマンドで既存のDBを確認することができる。 <code>testdb</code> は新規で作成された。</p>
+<p>使用するDBを変更するときは以下のようにする。今回は既に作ってある <code>mydb</code> を使うことにする。</p>
+<pre><code class="language-bash">&gt; use mydb
+switched to db mydb
+</code></pre>
+<p>これで <code>mydb</code> に操作対象が移った</p>
+<h1 id="_5">コレクションの操作</h1>
+<h2 id="_6">コレクションの確認</h2>
+<p>まず対象DBに存在するコレクションを確認してみる</p>
+<pre><code class="language-bash">&gt; show collections;
+system.indexes
+users
+</code></pre>
+<p>いま <code>system.indexes</code> と <code>users</code> というコレクションが存在することがわかる。</p>
+<p><code>system.indexes</code> は各DBのインデックス情報を管理するコレクションで、各DBにそれぞれ1つ作成されるもの</p>
+<h2 id="_7">コレクションの作成</h2>
+<p>次に新たにコレクションを作成してみる</p>
+<pre><code class="language-bash">&gt; db.createCollection('items');
+{ &quot;ok&quot; : 1 }
+&gt; show collections;
+items
+system.indexes
+users
+</code></pre>
+<p><code>items</code> という新たなコレクションが作成された</p>
+<h2 id="_8">コレクションの名前の変更</h2>
+<p><code>items</code> コレクションの名前を <code>weapons</code> に変更する</p>
+<pre><code class="language-bash">&gt; db.items.renameCollection('weapons');
+{ &quot;ok&quot; : 1 }
+&gt; show collections;
+system.indexes
+users
+weapons
+</code></pre>
+<p>コレクションの名前が変わったことが確認できる</p>
+<h2 id="_9">コレクションの削除</h2>
+<p><code>weapons</code> コレクションを削除する</p>
+<pre><code class="language-bash">&gt; db.weapons.drop();
+true
+&gt; show collections;
+system.indexes
+users
+</code></pre>
+<p><code>weapons</code> コレクションが削除された</p>
+<h1 id="_10">ドキュメントの操作</h1>
+<h2 id="find">ドキュメントの検索(find)</h2>
+<p>コレクションの操作の次はドキュメントの操作について見ていく。
+ドキュメントの検索には <code>find</code> メソッドを使う</p>
+<pre><code class="language-bash">&gt; db.users.find();
+{ &quot;_id&quot; : ObjectId(&quot;54a3fd93ce8a5464641af4eb&quot;), &quot;name&quot; : &quot;sojiro&quot;, &quot;score&quot; : 10 }
+{ &quot;_id&quot; : ObjectId(&quot;54a3fee1ce8a5464641af4ec&quot;), &quot;name&quot; : &quot;sojiro_1&quot;, &quot;score&quot; : 20 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ed&quot;), &quot;name&quot; : &quot;sojiro_2&quot;, &quot;score&quot; : 67 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ee&quot;), &quot;name&quot; : &quot;sojiro_3&quot;, &quot;score&quot; : 51 }
+</code></pre>
+<p>対象のコレクションを指定して <code>find</code> を引数無しで実行すると全件検索となる</p>
+<h2 id="_11">条件を指定して検索</h2>
+<p><code>{key:value}</code> を指定して検索も可能</p>
+<pre><code class="language-bash">&gt; db.users.find({name:&quot;sojiro&quot;});
+{ &quot;_id&quot; : ObjectId(&quot;54a3fd93ce8a5464641af4eb&quot;), &quot;name&quot; : &quot;sojiro&quot;, &quot;score&quot; : 10 }
+</code></pre>
+<p><code>{key:value}</code> の指定には正規表現を用いることもできる</p>
+<pre><code class="language-bash">&gt; db.users.find({name:/sojiro_[12]/});
+{ &quot;_id&quot; : ObjectId(&quot;54a3fee1ce8a5464641af4ec&quot;), &quot;name&quot; : &quot;sojiro_1&quot;, &quot;score&quot; : 20 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ed&quot;), &quot;name&quot; : &quot;sojiro_2&quot;, &quot;score&quot; : 67 }
+</code></pre>
+<h2 id="andor">ANDとOR</h2>
+<p>検索で複数の条件を組み合わせるには <code>$and</code> や <code>$or</code> を使う</p>
+<pre><code class="language-bash">&gt; db.users.find({
+    $and: [
+        {name:/sojiro_[12]/},
+        {score: {$lt: 60}},
+    ]
+});
+{ &quot;_id&quot; : ObjectId(&quot;54a3fee1ce8a5464641af4ec&quot;), &quot;name&quot; : &quot;sojiro_1&quot;, &quot;score&quot; : 20 }
+</code></pre>
+<p>ここで <code>$lt</code> は「〜より小さい」を表す演算子</p>
+<pre><code class="language-bash">&gt; db.users.find({
+    $or: [
+        {name:/sojiro_[12]/},
+        {score: {$gt: 50}},
+    ]
+});
+{ &quot;_id&quot; : ObjectId(&quot;54a3fee1ce8a5464641af4ec&quot;), &quot;name&quot; : &quot;sojiro_1&quot;, &quot;score&quot; : 20 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ed&quot;), &quot;name&quot; : &quot;sojiro_2&quot;, &quot;score&quot; : 67 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ee&quot;), &quot;name&quot; : &quot;sojiro_3&quot;, &quot;score&quot; : 51 }
+</code></pre>
+<p>ここで <code>$gt</code> は「〜より大きい」を表す演算子</p>
+<h2 id="_12">検索結果の限定</h2>
+<p>検索結果に特定のkeyだけを指定したい場合や、 <code>_id</code> を非表示にしたい場合がある</p>
+<pre><code class="language-bash">&gt; db.users.find({}, {name:1});
+{ &quot;_id&quot; : ObjectId(&quot;54a3fd93ce8a5464641af4eb&quot;), &quot;name&quot; : &quot;sojiro&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;54a3fee1ce8a5464641af4ec&quot;), &quot;name&quot; : &quot;sojiro_1&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ed&quot;), &quot;name&quot; : &quot;sojiro_2&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ee&quot;), &quot;name&quot; : &quot;sojiro_3&quot; }
+&gt; db.users.find({}, {name:0});
+{ &quot;_id&quot; : ObjectId(&quot;54a3fd93ce8a5464641af4eb&quot;), &quot;score&quot; : 10 }
+{ &quot;_id&quot; : ObjectId(&quot;54a3fee1ce8a5464641af4ec&quot;), &quot;score&quot; : 20 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ed&quot;), &quot;score&quot; : 67 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ee&quot;), &quot;score&quot; : 51 }
+</code></pre>
+<p><code>find()</code> の第二引数にkeyの表示、非表示を設定することができる</p>
+<pre><code class="language-bash">&gt; db.users.find({}, {name:1, score:1});
+</code></pre>
+<p>のように複数のkeyに対して表示非表示の設定ができるが、</p>
+<pre><code class="language-bash">&gt; db.users.find({}, {name:1, score:0});
+error: {
+    &quot;$err&quot; : &quot;Can't canonicalize query: BadValue Projection cannot have a mix of inclusion and exclusion.&quot;,
+    &quot;code&quot; : 17287
+}
+</code></pre>
+<p>key毎に表示非表示を別々に設定しようとすると怒られる</p>
+<p>ただし、 <code>_id</code> だけは例外である</p>
+<pre><code class="language-bash">&gt; db.users.find({}, {name:1, _id:0});
+{ &quot;name&quot; : &quot;sojiro&quot; }
+{ &quot;name&quot; : &quot;sojiro_1&quot; }
+{ &quot;name&quot; : &quot;sojiro_2&quot; }
+{ &quot;name&quot; : &quot;sojiro_3&quot; }
+</code></pre>
+<h2 id="insert">ドキュメントの挿入(insert)</h2>
+<p>これまで見てきた <code>users</code> コレクションに新たなドキュメントを追加してみる</p>
+<pre><code class="language-bash">&gt; db.users.insert({name:&quot;sojiro_4&quot;, score:40});
+WriteResult({ &quot;nInserted&quot; : 1 })
+&gt; db.users.find({name:&quot;sojiro_4&quot;});
+{ &quot;_id&quot; : ObjectId(&quot;54a777d7a49abc8e743c71ac&quot;), &quot;name&quot; : &quot;sojiro_4&quot;, &quot;score&quot; : 40 }
+</code></pre>
+<p>JavaScriptの使用も可能</p>
+<pre><code class="language-bash">&gt; db.users.insert({name:&quot;sojiro_5&quot;, score: Math.floor(Math.random() * 100)});
+WriteResult({ &quot;nInserted&quot; : 1 })
+&gt; db.users.find({name:&quot;sojiro_5&quot;});
+{ &quot;_id&quot; : ObjectId(&quot;54a77886a49abc8e743c71ad&quot;), &quot;name&quot; : &quot;sojiro_5&quot;, &quot;score&quot; : 38 }
+</code></pre>
+<h2 id="update">ドキュメントの更新(update)</h2>
+<p>MongoDBのupdateには少し癖がある。</p>
+<p>更新するドキュメントが属するコレクションと、対象ドキュメントの条件を指定するところは直感的だが、特定のkeyのみupdateする場合は <code>$set</code> を使う必要がある。</p>
+<pre><code class="language-bash">&gt; db.users.find({name:&quot;sojiro_4&quot;});
+{ &quot;_id&quot; : ObjectId(&quot;54a777d7a49abc8e743c71ac&quot;), &quot;name&quot; : &quot;sojiro_4&quot;, &quot;score&quot; : 40 }
+&gt; db.users.update({name:&quot;sojiro_4&quot;}, {$set: {score:44}});
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.users.find({name:&quot;sojiro_4&quot;});
+{ &quot;_id&quot; : ObjectId(&quot;54a777d7a49abc8e743c71ac&quot;), &quot;name&quot; : &quot;sojiro_4&quot;, &quot;score&quot; : 44 }
+</code></pre>
+<p><code>$set</code> を使わずにupdateを実行すると、対象ドキュメントの内容全てが書き変わる</p>
+<pre><code class="language-bash">&gt; db.users.find({name:&quot;sojiro_4&quot;});
+{ &quot;_id&quot; : ObjectId(&quot;54a777d7a49abc8e743c71ac&quot;), &quot;name&quot; : &quot;sojiro_4&quot;, &quot;score&quot; : 44 }
+&gt; db.users.update({name:&quot;sojiro_4&quot;}, {score:100});
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+&gt; db.users.find({name:&quot;sojiro_4&quot;});
+</code></pre>
+<p><code>{name: "sojiro_4"}</code> に該当するドキュメントが <code>{score:100}</code> に書き換えられたため、 <code>{name:"sojiro_4"}</code> では検索結果に出てこない</p>
+<pre><code class="language-bash">&gt; db.users.find();
+{ &quot;_id&quot; : ObjectId(&quot;54a3fd93ce8a5464641af4eb&quot;), &quot;name&quot; : &quot;sojiro&quot;, &quot;score&quot; : 10 }
+{ &quot;_id&quot; : ObjectId(&quot;54a3fee1ce8a5464641af4ec&quot;), &quot;name&quot; : &quot;sojiro_1&quot;, &quot;score&quot; : 20 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ed&quot;), &quot;name&quot; : &quot;sojiro_2&quot;, &quot;score&quot; : 67 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ee&quot;), &quot;name&quot; : &quot;sojiro_3&quot;, &quot;score&quot; : 51 }
+{ &quot;_id&quot; : ObjectId(&quot;54a777d7a49abc8e743c71ac&quot;), &quot;score&quot; : 100 }
+{ &quot;_id&quot; : ObjectId(&quot;54a77886a49abc8e743c71ad&quot;), &quot;name&quot; : &quot;sojiro_5&quot;, &quot;score&quot; : 38 }
+</code></pre>
+<h2 id="remove">ドキュメントの削除(remove)</h2>
+<pre><code class="language-bash">&gt; db.users.find();
+{ &quot;_id&quot; : ObjectId(&quot;54a3fd93ce8a5464641af4eb&quot;), &quot;name&quot; : &quot;sojiro&quot;, &quot;score&quot; : 10 }
+{ &quot;_id&quot; : ObjectId(&quot;54a3fee1ce8a5464641af4ec&quot;), &quot;name&quot; : &quot;sojiro_1&quot;, &quot;score&quot; : 20 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ed&quot;), &quot;name&quot; : &quot;sojiro_2&quot;, &quot;score&quot; : 67 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ee&quot;), &quot;name&quot; : &quot;sojiro_3&quot;, &quot;score&quot; : 51 }
+{ &quot;_id&quot; : ObjectId(&quot;54a777d7a49abc8e743c71ac&quot;), &quot;score&quot; : 100 }
+{ &quot;_id&quot; : ObjectId(&quot;54a77886a49abc8e743c71ad&quot;), &quot;name&quot; : &quot;sojiro_5&quot;, &quot;score&quot; : 38 }
+</code></pre>
+<p>ドキュメントの削除には <code>remove</code> メソッドを使い、このメソッドには <code>find</code> メソッドと同じように条件を指定することができる</p>
+<pre><code class="language-bash">&gt; db.users.remove({name:&quot;sojiro_5&quot;});
+WriteResult({ &quot;nRemoved&quot; : 1 })
+&gt; db.users.find();
+{ &quot;_id&quot; : ObjectId(&quot;54a3fd93ce8a5464641af4eb&quot;), &quot;name&quot; : &quot;sojiro&quot;, &quot;score&quot; : 10 }
+{ &quot;_id&quot; : ObjectId(&quot;54a3fee1ce8a5464641af4ec&quot;), &quot;name&quot; : &quot;sojiro_1&quot;, &quot;score&quot; : 20 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ed&quot;), &quot;name&quot; : &quot;sojiro_2&quot;, &quot;score&quot; : 67 }
+{ &quot;_id&quot; : ObjectId(&quot;54a40181ce8a5464641af4ee&quot;), &quot;name&quot; : &quot;sojiro_3&quot;, &quot;score&quot; : 51 }
+{ &quot;_id&quot; : ObjectId(&quot;54a777d7a49abc8e743c71ac&quot;), &quot;score&quot; : 100 }
+</code></pre>
+<p>以上MongoDBの基本的な操作</p>
+<h2 id="_13">参照</h2>
+<p><a href="http://dotinstall.com/lessons/basic_mongodb_v2">ドットインストール</a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2014 - 2025 Sojiro's Blog. All rights reserved.
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/sojiro14" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sojiro14" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

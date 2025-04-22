@@ -1,0 +1,4585 @@
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://blog.sojiro.me/summaries/category/machine-learning/">
+      
+      
+        <link rel="prev" href="../information-retrieval/">
+      
+      
+        <link rel="next" href="../reductionism/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Machine Learning - Sojiro's Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-ECN7E21ZM0"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-ECN7E21ZM0",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-ECN7E21ZM0",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Machine Learning - Sojiro's Blog" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://blog.sojiro.me/assets/images/social/summaries/category/machine-learning.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://blog.sojiro.me/summaries/category/machine-learning/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Machine Learning - Sojiro's Blog" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://blog.sojiro.me/assets/images/social/summaries/category/machine-learning.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#machine-learning" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../../.." title="Sojiro&#39;s Blog" class="md-header__button md-logo" aria-label="Sojiro's Blog" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sojiro's Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Machine Learning
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Sojiro&#39;s Blog" class="md-nav__button md-logo" aria-label="Sojiro's Blog" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Sojiro's Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recent Posts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2024
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2022
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2017
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2016/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2016
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2015/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2015
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2014/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2014
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Categories
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/anaconda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Anaconda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/android-studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Android Studio
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/bigquery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BigQuery
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/bower/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bower
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/cpan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CPAN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/canvas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Canvas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/chef/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chef
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/datastore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datastore
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/disqus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Disqus
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/domain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Domain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/erc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ERC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/ethereum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ethereum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/gae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GAE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/gce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/gcs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/github-pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Github Pages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/grunt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grunt
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/html5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    HTML5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/heroku/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Heroku
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/homebrew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Homebrew
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/hubot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Hubot
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/irc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IRC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/json-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    JSON Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Java
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/liveportrait/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LivePortrait
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/mean/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MEAN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/mongodb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MongoDB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/mysql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MySQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/nft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/nodejs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Node.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OOP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/octopress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octopress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/perl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Perl
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/repl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REPL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/rvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RVM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/redis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Redis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/reply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reply
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/ruby/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ruby
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/ruby-on-rails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Shell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/slack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Slack
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/task-queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Task Queue
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/vagrant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vagrant
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vim
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/vuepress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    VuePress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/webrtc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WebRTC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/wordpress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WordPress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/yeoman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Yeoman
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/npm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    npm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/revealjs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    reveal.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/screen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    screen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/yo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    yo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Paper Summaries
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Paper Summaries
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recent Posts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2024
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2022
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2020
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2019
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2018
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2017
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2016/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2016
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2015/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2015
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2014/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2014
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/1972/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1972
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Categories
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../artificial-intelligence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Artificial Intelligence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../audio-and-speech-processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Audio and Speech Processing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../call-center/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Call Center
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../computation-and-language/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computation and Language
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../computer-science/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computer Science
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../computer-vision-and-pattern-recognition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computer Vision and Pattern Recognition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../digital-libraries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Digital Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../electrical-engineering-and-systems-science/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Electrical Engineering and Systems Science
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../emergence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Emergence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../information-retrieval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Information Retrieval
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    
+      
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Machine Learning
+    
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../reductionism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reductionism
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../sound/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sound
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../speech-to-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speech to text
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../synthetic-biology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Synthetic Biology
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E3%82%B5%E3%83%83%E3%82%AB%E3%83%BC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    サッカー
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E3%82%B7%E3%83%9F%E3%83%A5%E3%83%BC%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%87%E3%83%BC%E3%82%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    シミューレーションデータ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%84/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    スポーツ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E3%83%9E%E3%83%AB%E3%83%81%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    マルチエージェント
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%9F%BA%E7%9B%A4%E3%83%A2%E3%83%87%E3%83%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    基盤モデル
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%BB%BA%E7%AF%89%E7%9A%84%E6%BD%9C%E5%9C%A8%E4%BE%A1%E5%80%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    建築的潜在価値
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%BC%B7%E5%8C%96%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    強化学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    機械学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B7%B1%E5%B1%A4%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深層学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%A4%BE%E4%BC%9A%E7%9A%84%E4%BE%A1%E5%80%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    社会的価値
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    言語モデル
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E9%AB%98%E7%B5%8C%E5%B9%B4%E8%B3%83%E8%B2%B8%E3%83%9E%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%B3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高経年賃貸マンション
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content" data-md-component="content">
+    <div class="md-content__inner">
+      <header class="md-typeset">
+        <h1 id="machine-learning">Machine Learning</h1>
+      </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-03-28 00:00:00+00:00">2023年3月28日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../computer-science/" class="md-meta__link">Computer Science</a>, 
+              <a href="./" class="md-meta__link">Machine Learning</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約1分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="ecosystem-graphs-the-social-footprint-of-foundation-models"><a class="toclink" href="../../2023/03/28/the-social-footprint-of-foundation-models/">Ecosystem Graphs: The Social Footprint of Foundation Models</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2303.15772">https://arxiv.org/abs/2303.15772</a></li>
+<li><a href="https://arxiv.org/pdf/2303.15772">https://arxiv.org/pdf/2303.15772</a></li>
+</ul>
+<hr />
+<h3 id="_1"><a class="toclink" href="../../2023/03/28/the-social-footprint-of-foundation-models/#_1">序論</a></h3>
+<p>この論文は、基礎モデル（Foundation Models, FM）が社会に与える影響を評価するための「Ecosystem Graphs」という新しいフレームワークを提案します。特に、ChatGPTやStable Diffusionなどのモデルがどのように利用され、影響を与えているかを可視化します。</p>
+<h3 id="_2"><a class="toclink" href="../../2023/03/28/the-social-footprint-of-foundation-models/#_2">背景</a></h3>
+<p>基礎モデルは、言語、画像、コード、タンパク質構造など多岐にわたる分野で広く利用され、社会に大きな影響を与えています。しかし、これらのモデルが具体的にどのように影響を与えているかを詳細に理解するためのツールは不足しています。</p>
+<h3 id="ecosystem-graphs"><a class="toclink" href="../../2023/03/28/the-social-footprint-of-foundation-models/#ecosystem-graphs">Ecosystem Graphsの提案</a></h3>
+<p>Ecosystem Graphsは、データセット、モデル、アプリケーションなどの「資産」をノードとして、技術的および社会的依存関係をエッジとしてグラフ構造で表現します。各ノードには詳細なメタデータが付与され、透明性を高めます。</p>
+<h3 id="_3"><a class="toclink" href="../../2023/03/28/the-social-footprint-of-foundation-models/#_3">実験と結果</a></h3>
+<p>Ecosystem Graphsを用いて、262の資産（64のデータセット、128のモデル、70のアプリケーション）と356の依存関係をドキュメント化しました。このグラフを通じて、主要な資産や組織間の関係を明らかにし、透明性を向上させました。</p>
+<h3 id="_4"><a class="toclink" href="../../2023/03/28/the-social-footprint-of-foundation-models/#_4">考察</a></h3>
+<p>Ecosystem Graphsは、研究者、産業界、政策立案者など多様なステークホルダーに対して価値を提供します。これにより、基礎モデルの開発と利用に関する理解が深まり、適切な対策が講じられることが期待されます。</p>
+<h3 id="_5"><a class="toclink" href="../../2023/03/28/the-social-footprint-of-foundation-models/#_5">結論</a></h3>
+<p>Ecosystem Graphsは、基礎モデルの社会的影響を評価するための強力なツールです。今後の研究や実践において、これを活用することで、より透明性の高いエコシステムの構築が可能となります。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2022-12-10 00:00:00+00:00">2022年12月10日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../statistics/" class="md-meta__link">Statistics</a>, 
+              <a href="./" class="md-meta__link">Machine Learning</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約2分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="auto-encoding-variational-bayes"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/">Auto-Encoding Variational Bayes</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/1312.6114">https://arxiv.org/abs/1312.6114</a></li>
+<li><a href="https://arxiv.org/pdf/1312.6114">https://arxiv.org/pdf/1312.6114</a></li>
+</ul>
+<hr />
+<h3 id="1"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#1">1. はじめに</a></h3>
+<p>この論文は、Diederik P. KingmaとMax Wellingによって2013年に発表された「Auto-Encoding Variational Bayes」についての解説です。VAEは、深層学習と確率的推論を組み合わせた強力な生成モデルであり、現在も広く使用されています。</p>
+<h3 id="2"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#2">2. 問題設定</a></h3>
+<h4 id="21"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#21">2.1 背景</a></h4>
+<ul>
+<li>連続潜在変数を持つ確率的モデルにおいて、効率的な推論と学習を行うことが課題</li>
+<li>従来の変分推論手法では、解析的に解けない場合が多い</li>
+<li>大規模データセットへの適用が困難</li>
+</ul>
+<h4 id="22"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#22">2.2 目的</a></h4>
+<ol>
+<li>パラメータθの効率的な近似最尤推定またはMAP推定</li>
+<li>観測値xが与えられた時の潜在変数zの効率的な近似事後推論</li>
+<li>変数xの効率的な近似周辺推論</li>
+</ol>
+<h3 id="3-auto-encoding-variational-bayes-aevb"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#3-auto-encoding-variational-bayes-aevb">3. 提案手法：Auto-Encoding Variational Bayes (AEVB)</a></h3>
+<h4 id="31"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#31">3.1 基本的なアイデア</a></h4>
+<ul>
+<li>変分下限の再パラメータ化により、確率的勾配降下法で最適化可能な推定量を導出</li>
+<li>認識モデル（エンコーダ）を用いて、効率的な近似事後推論を実現</li>
+</ul>
+<h4 id="32"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#32">3.2 変分下限の導出</a></h4>
+<p>変分下限L(θ, φ; x^(i))は以下のように表される：</p>
+<pre><code>L(θ, φ; x^(i)) = E[log p_θ(x^(i)|z)] - D_KL(q_φ(z|x^(i)) || p_θ(z))
+</code></pre>
+<p>ここで、
+- p_θ(x|z)：生成モデル（デコーダ）
+- q_φ(z|x)：近似事後分布（エンコーダ）
+- p_θ(z)：潜在変数の事前分布</p>
+<h4 id="33"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#33">3.3 再パラメータ化トリック</a></h4>
+<p>q_φ(z|x)からのサンプリングを、補助的なノイズ変数εを用いて以下のように表現：</p>
+<pre><code>z = g_φ(ε, x) with ε ~ p(ε)
+</code></pre>
+<p>これにより、勾配の計算が可能になる。</p>
+<h4 id="34-sgvbstochastic-gradient-variational-bayes"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#34-sgvbstochastic-gradient-variational-bayes">3.4 SGVB（Stochastic Gradient Variational Bayes）推定量</a></h4>
+<p>変分下限の推定量：</p>
+<pre><code>L̃(θ, φ; x^(i)) ≈ 1/L * Σ[log p_θ(x^(i), z^(i,l)) - log q_φ(z^(i,l)|x^(i))]
+</code></pre>
+<p>ここで、z^(i,l) = g_φ(ε^(l), x^(i))、ε^(l) ~ p(ε)</p>
+<h3 id="4-variational-auto-encoder"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#4-variational-auto-encoder">4. 実装例：Variational Auto-Encoder</a></h3>
+<h4 id="41"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#41">4.1 モデル構造</a></h4>
+<ul>
+<li>エンコーダ（q_φ(z|x)）：多層パーセプトロン（MLP）</li>
+<li>デコーダ（p_θ(x|z)）：MLPまたはベルヌーイMLP</li>
+<li>潜在変数の事前分布：標準正規分布</li>
+</ul>
+<h4 id="42"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#42">4.2 目的関数</a></h4>
+<pre><code>L(θ, φ; x^(i)) ≈ 1/2 * Σ(1 + log((σ_j^(i))^2) - (μ_j^(i))^2 - (σ_j^(i))^2)
+                  + 1/L * Σ[log p_θ(x^(i)|z^(i,l))]
+</code></pre>
+<p>ここで、z^(i,l) = μ^(i) + σ^(i) * ε^(l)、ε^(l) ~ N(0, I)</p>
+<h3 id="5"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#5">5. 実験結果</a></h3>
+<h4 id="51"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#51">5.1 データセット</a></h4>
+<ul>
+<li>MNIST（手書き数字）</li>
+<li>Frey Face（顔画像）</li>
+</ul>
+<h4 id="52"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#52">5.2 評価指標</a></h4>
+<ul>
+<li>変分下限</li>
+<li>推定周辺尤度</li>
+</ul>
+<h4 id="53"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#53">5.3 比較手法</a></h4>
+<ul>
+<li>Wake-Sleep アルゴリズム</li>
+<li>Monte Carlo EM</li>
+</ul>
+<h4 id="54"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#54">5.4 結果</a></h4>
+<p><img alt="Figure 2: Comparison of AEVB to Wake-Sleep" src="https://github.com/user-attachments/assets/1af8bbab-60a6-4d25-9d50-18b4550b22bf" /></p>
+<ul>
+<li>AEVBは他の手法よりも速く収束し、より良い解を得た</li>
+<li>潜在変数の次元数を増やしても過学習は起こらなかった</li>
+</ul>
+<h3 id="6"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#6">6. 考察と今後の展望</a></h3>
+<h4 id="61-vae"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#61-vae">6.1 VAEの利点</a></h4>
+<ul>
+<li>効率的な推論と学習が可能</li>
+<li>大規模データセットに適用可能</li>
+<li>幅広いモデルに応用可能</li>
+</ul>
+<h4 id="62"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#62">6.2 今後の研究方向</a></h4>
+<ol>
+<li>深層ニューラルネットワークを用いた階層的生成アーキテクチャの学習</li>
+<li>時系列モデルへの応用</li>
+<li>グローバルパラメータへのSGVBの適用</li>
+<li>教師あり学習への応用</li>
+</ol>
+<h3 id="7"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#7">7. 結論</a></h3>
+<p>VAEは、生成モデルの新しいパラダイムを提示し、効率的な推論と学習を可能にしました。理論的な裏付けと実験結果の両面から、このフレームワークの有効性が示されました。VAEは、深層学習と確率的推論の分野に大きな影響を与え、その後の多くの研究の基礎となっています。</p>
+<hr />
+<h2 id="vaevariational-auto-encoder"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#vaevariational-auto-encoder">高校生のためのVAE（Variational Auto-Encoder）解説</a></h2>
+<h3 id="1-vae"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#1-vae">1. VAEって何？</a></h3>
+<p>VAE（Variational Auto-Encoder）は、コンピューターに新しい画像や音楽を作らせる方法の一つです。2013年に考え出された、とてもクールな技術です。</p>
+<h3 id="2-vae"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#2-vae">2. なぜVAEが必要なの？</a></h3>
+<ol>
+<li>コンピューターに「創造性」を持たせたい</li>
+<li>大量のデータから効率よく学習させたい</li>
+<li>新しいデータを生成する能力を持たせたい</li>
+</ol>
+<h3 id="3-vae"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#3-vae">3. VAEのしくみ</a></h3>
+<p>VAEは、次の2つの部分からできています：</p>
+<ol>
+<li><strong>エンコーダ</strong>：入力（例：画像）を「潜在空間」という特別な場所に変換します。</li>
+<li><strong>デコーダ</strong>：潜在空間から元の形（画像など）に戻します。</li>
+</ol>
+<p>簡単に言うと、VAEは「圧縮→解凍」のようなものです。でも、普通の圧縮と違って、VAEは「意味」を理解しながら圧縮します。</p>
+<h3 id="4"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#4">4. どうやって学習するの？</a></h3>
+<p>VAEの学習は、次のような流れで行います：</p>
+<ol>
+<li>画像を入力する</li>
+<li>エンコーダで潜在空間に変換する</li>
+<li>デコーダで元の画像に戻す</li>
+<li>元の画像と比べて、どれくらい似ているか確認する</li>
+<li>より似るように、少しずつエンコーダとデコーダを調整する</li>
+</ol>
+<p>この過程を何度も繰り返すことで、VAEは徐々に上手になっていきます。</p>
+<h3 id="5-vae"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#5-vae">5. VAEの特徴</a></h3>
+<ol>
+<li><strong>確率的</strong>: 少しランダム性があるので、毎回少し違う結果が出ます。</li>
+<li><strong>連続的</strong>: 潜在空間では、似たものが近くに配置されます。</li>
+<li><strong>生成能力</strong>: 新しいデータを作り出せます。</li>
+</ol>
+<h3 id="6-vae"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#6-vae">6. VAEで何ができるの？</a></h3>
+<ol>
+<li><strong>画像生成</strong>: 実在しない人の顔や、架空の風景を作れます。</li>
+<li><strong>画像編集</strong>: 笑顔→悲しい顔、などの変換ができます。</li>
+<li><strong>異常検知</strong>: 普通じゃないものを見つけられます。</li>
+<li><strong>データ圧縮</strong>: 効率的にデータを保存できます。</li>
+</ol>
+<h3 id="7_1"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#7_1">7. 実験結果</a></h3>
+<p>研究者たちは、VAEを使って手書き数字（MNIST）や顔画像（Frey Face）のデータセットで実験しました。結果、VAEは他の方法より速く学習し、より良い結果を出しました。</p>
+<h3 id="8"><a class="toclink" href="../../2022/12/10/auto-encoding-variational-bayes/#8">8. まとめ</a></h3>
+<p>VAEは、コンピューターに「創造性」を持たせる強力な道具です。画像生成や編集、異常検知など、さまざまな分野で活用されています。まだ発展途上の技術ですが、将来はもっと驚くような使い方が見つかるかもしれません。</p>
+<p>VAEを理解することで、人工知能がどのように「考え」、「創造」するのかについての洞察が得られます。これからのテクノロジーの発展に、VAEは大きな役割を果たすでしょう！</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2022-12-06 00:00:00+00:00">2022年12月6日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../computer-science/" class="md-meta__link">Computer Science</a>, 
+              <a href="./" class="md-meta__link">Machine Learning</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約2分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="scaling-instruction-finetuned-language-models"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/">Scaling Instruction-Finetuned Language Models</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2210.11416">https://arxiv.org/abs/2210.11416</a></li>
+<li><a href="https://arxiv.org/pdf/2210.11416">https://arxiv.org/pdf/2210.11416</a></li>
+<li><a href="https://www.jmlr.org/papers/v25/23-0870.html">https://www.jmlr.org/papers/v25/23-0870.html</a></li>
+<li><a href="https://www.jmlr.org/papers/volume25/23-0870/23-0870.pdf">https://www.jmlr.org/papers/volume25/23-0870/23-0870.pdf</a></li>
+</ul>
+<hr />
+<h3 id="1"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#1">1. 研究の背景と目的</a></h3>
+<h4 id="11"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#11">1.1 言語モデルの進化</a></h4>
+<p>近年、GPT-3やPaLMなどの大規模言語モデルが登場し、様々なタスクで高い性能を示しています。しかし、これらのモデルには以下のような課題がありました：</p>
+<ul>
+<li>新しいタスクへの適応が難しい</li>
+<li>複雑な推論を要するタスクでの性能が不十分</li>
+<li>ゼロショット（例示なし）での性能が低い</li>
+</ul>
+<h4 id="12"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#12">1.2 研究の目的</a></h4>
+<p>この研究では、「指示によるファインチューニング（instruction finetuning）」という手法を拡張し、上記の課題を解決することを目指しています。具体的には以下の3点に注目しています：</p>
+<ol>
+<li>ファインチューニングに使用するタスク数の拡大</li>
+<li>モデルサイズの拡大</li>
+<li>思考の連鎖（Chain-of-Thought, CoT）データを用いたファインチューニング</li>
+</ol>
+<h3 id="2"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#2">2. 指示によるファインチューニングの概要</a></h3>
+<h4 id="21"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#21">2.1 指示によるファインチューニングとは</a></h4>
+<p>指示によるファインチューニングとは、様々なタスクを「指示」の形式で与え、モデルがそれらの指示に従って適切な出力を生成できるように学習させる手法です。</p>
+<p>例：
+- 指示：「以下の質問に答えてください：窒素の沸点は何度ですか？」
+- モデルの出力：「-320.4F」</p>
+<h4 id="22"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#22">2.2 本研究での拡張点</a></h4>
+<ol>
+<li>ファインチューニングに使用するタスク数を1,836まで拡大</li>
+<li>540Bパラメータの大規模モデル（PaLM）を使用</li>
+<li>思考の連鎖（CoT）データを含めたファインチューニング</li>
+</ol>
+<p><img alt="Figure 1" src="https://github.com/user-attachments/assets/899d22bc-33a2-4d8a-9a3b-fd925b4f642a" /></p>
+<h3 id="3"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#3">3. 研究手法</a></h3>
+<h4 id="31"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#31">3.1 使用したデータセット</a></h4>
+<p>研究チームは以下の4つのデータセットを組み合わせて使用しました：</p>
+<ol>
+<li>Muffin（80タスク）</li>
+<li>T0-SF（193タスク）</li>
+<li>SNI（1554タスク）</li>
+<li>CoT（9タスク）</li>
+</ol>
+<p>これらのデータセットには、質問応答、要約、感情分析、コード生成など、多岐にわたるタスクが含まれています。</p>
+<h4 id="32"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#32">3.2 モデルアーキテクチャ</a></h4>
+<p>主に以下のモデルを使用しています：</p>
+<ul>
+<li>PaLM（8B、62B、540Bパラメータ）</li>
+<li>T5（80M〜11Bパラメータ）</li>
+<li>U-PaLM（540Bパラメータ）</li>
+</ul>
+<h4 id="33"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#33">3.3 評価方法</a></h4>
+<p>以下のベンチマークを用いて評価を行いました：</p>
+<ol>
+<li>MMLU（57タスク）：数学、歴史、法律、医学などの知識を問うテスト</li>
+<li>BBH（23タスク）：BIG-Benchからの難しいタスク</li>
+<li>TyDiQA（8言語）：多言語質問応答タスク</li>
+<li>MGSM（10言語）：多言語の数学的問題解決タスク</li>
+</ol>
+<h3 id="4"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#4">4. 主要な研究結果</a></h3>
+<h4 id="41"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#41">4.1 タスク数とモデルサイズのスケーリング効果</a></h4>
+<p><img alt="Figure 4" src="https://github.com/user-attachments/assets/bb752224-b5cc-4d1f-b0fb-0ef58478ec88" /></p>
+<ul>
+<li>タスク数を増やすことで性能が向上（特に282タスクまで）</li>
+<li>モデルサイズを大きくすることで性能が大幅に向上</li>
+</ul>
+<h4 id="42-cot"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#42-cot">4.2 思考の連鎖（CoT）データの効果</a></h4>
+<ul>
+<li>CoTデータを含めることで、複雑な推論タスクでの性能が向上</li>
+<li>ゼロショットでのCoT推論能力も獲得</li>
+</ul>
+<p><img alt="Figure 6" src="https://github.com/user-attachments/assets/43e05fe9-360c-468d-b592-14ba5a07d097" /></p>
+<h4 id="43"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#43">4.3 様々なモデルでの効果</a></h4>
+<p>T5、PaLM、U-PaLMなど、異なるアーキテクチャや事前学習目的を持つモデルでも指示によるファインチューニングが有効であることが示されました。</p>
+<h4 id="44"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#44">4.4 オープンエンド生成タスクでの改善</a></h4>
+<p>人間の評価者によるテストでは、Flan-PaLMの出力がPaLMよりも79%の場合で好まれました。</p>
+<p><img alt="Figure 8" src="https://github.com/user-attachments/assets/aacfd78b-6a02-475c-b0ee-41c391307def" /></p>
+<h4 id="45"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#45">4.5 バイアスと有害性の軽減</a></h4>
+<p>指示によるファインチューニングは、モデルの出力における有害な内容やバイアスを軽減する効果も示しました。</p>
+<h3 id="5"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#5">5. 結論と今後の展望</a></h3>
+<h4 id="51"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#51">5.1 主な成果</a></h4>
+<ol>
+<li>指示によるファインチューニングは、タスク数とモデルサイズのスケーリングにより性能が向上</li>
+<li>CoTデータの導入により、複雑な推論能力が向上</li>
+<li>様々なモデルアーキテクチャに適用可能</li>
+<li>計算コストが比較的小さい（事前学習の0.2%程度）</li>
+</ol>
+<h4 id="52"><a class="toclink" href="../../2022/12/06/scaling-instruction-finetuned-language-models/#52">5.2 今後の課題と展望</a></h4>
+<ul>
+<li>さらなるタスク数の拡大とモデルサイズの拡大</li>
+<li>他の手法（UL2Rなど）との組み合わせ</li>
+<li>実世界のアプリケーションでの評価</li>
+<li>バイアスや有害性のさらなる軽減</li>
+</ul>
+<p>この研究は、大規模言語モデルの性能向上と応用範囲の拡大に大きく貢献する可能性があり、今後のAI研究に重要な影響を与えると考えられます。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2022-10-09 00:00:00+00:00">2022年10月9日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../computer-science/" class="md-meta__link">Computer Science</a>, 
+              <a href="./" class="md-meta__link">Machine Learning</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約2分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="deep-clustering-a-comprehensive-survey"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/">Deep Clustering: A Comprehensive Survey</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2210.04142">https://arxiv.org/abs/2210.04142</a></li>
+<li><a href="https://arxiv.org/pdf/2210.04142">https://arxiv.org/pdf/2210.04142</a></li>
+</ul>
+<hr />
+<h3 id="_1"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#_1">ディープクラスタリングの包括的サーベイ</a></h3>
+<h3 id="1"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#1">1. はじめに</a></h3>
+<p>本論文は、ディープクラスタリングに関する包括的なサーベイを提供しています。クラスタリングは機械学習とデータマイニングにおいて重要な役割を果たしており、良いデータ表現を学習することがクラスタリングアルゴリズムにとって重要です。</p>
+<p>近年、ディープニューラルネットワークを使用してクラスタリングに適した表現を学習するディープクラスタリングが、広範なクラスタリングタスクに適用されています。</p>
+<p>本サーベイの特徴:
+- データソースの観点からディープクラスタリング手法を体系的に分類
+- 方法論、事前知識、アーキテクチャの観点から手法を区別
+- 4つのカテゴリに分けて解説:
+  1. 従来の単一ビューディープクラスタリング
+  2. 半教師あり型ディープクラスタリング
+  3. マルチビューディープクラスタリング
+  4. 転移学習を用いたディープクラスタリング</p>
+<h3 id="2"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#2">2. ディープクラスタリングの基礎</a></h3>
+<h4 id="21"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#21">2.1 従来のクラスタリング手法</a></h4>
+<p>まず、従来のクラスタリング手法について簡単に説明します:</p>
+<ul>
+<li>中心ベースクラスタリング (例: k-means)</li>
+<li>密度ベースクラスタリング (例: DBSCAN)</li>
+<li>分布ベースクラスタリング</li>
+<li>階層的クラスタリング</li>
+<li>アンサンブルクラスタリング</li>
+<li>マルチビュークラスタリング</li>
+</ul>
+<p>これらの浅いモデルは、特徴が代表的である場合にのみ効果的ですが、複雑なデータに対しては特徴学習能力が乏しいため性能が限られています。</p>
+<h4 id="22"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#22">2.2 ディープクラスタリングの利点</a></h4>
+<p>ディープクラスタリングは以下の利点を持ちます:</p>
+<ol>
+<li>非線形マッピング能力に優れている</li>
+<li>さまざまなシナリオに柔軟に対応できる</li>
+<li>クラスタリングに適した特徴を効果的に抽出できる</li>
+<li>特徴学習とクラスタリングを同時に行える</li>
+</ol>
+<h3 id="3"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#3">3. 単一ビューディープクラスタリング</a></h3>
+<p>単一ビューディープクラスタリングは、同じ形式や構造のデータを扱います。主に以下の5つのカテゴリに分類されます:</p>
+<ol>
+<li>Deep Autoencoder (DAE) ベース</li>
+<li>Deep Neural Network (DNN) ベース</li>
+<li>Variational Autoencoder (VAE) ベース</li>
+<li>Generative Adversarial Network (GAN) ベース</li>
+<li>Graph Neural Network (GNN) ベース</li>
+</ol>
+<h4 id="31-dae"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#31-dae">3.1 DAEベースの手法</a></h4>
+<p>DAEは非線形マッピング関数を学習するために設計されたものです。主な特徴は:</p>
+<ul>
+<li>再構成損失を最小化することで低次元の埋め込み特徴空間を学習</li>
+<li>さまざまなクラスタリング目的関数を組み合わせて使用</li>
+</ul>
+<p>代表的な手法:
+- Deep Embedded Clustering (DEC)
+- Improved Deep Embedded Clustering (IDEC)
+- Deep Clustering Network (DCN)</p>
+<h4 id="32-dnn"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#32-dnn">3.2 DNNベースの手法</a></h4>
+<p>DNNベースの手法は、主に画像クラスタリングに焦点を当てています。特徴:</p>
+<ul>
+<li>畳み込みニューラルネットワークを使用して画像特徴学習とセマンティッククラスタリングを行う</li>
+<li>データ拡張技術を活用して性能を向上</li>
+</ul>
+<p>代表的な手法:
+- Deep Adaptive Image Clustering (DAC)
+- DeepCluster
+- Invariant Information Clustering (IIC)</p>
+<h4 id="33-vae"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#33-vae">3.3 VAEベースの手法</a></h4>
+<p>VAEは変分推論とディープオートエンコーダを組み合わせたモデルです。主な特徴:</p>
+<ul>
+<li>確率的生成モデルを使用</li>
+<li>潜在変数の分布を学習</li>
+</ul>
+<p>代表的な手法:
+- Variational Deep Embedding (VaDE)
+- Gaussian Mixture VAE (GMVAE)
+- Latent Tree VAE (LTVAE)</p>
+<h4 id="34-gan"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#34-gan">3.4 GANベースの手法</a></h4>
+<p>GANは敵対的学習を用いたモデルで、以下の特徴があります:</p>
+<ul>
+<li>生成器と識別器の対立的な学習</li>
+<li>データの潜在分布を学習する能力が高い</li>
+</ul>
+<p>代表的な手法:
+- CatGAN
+- ClusterGAN
+- Adversarial Deep Embedded Clustering (ADEC)</p>
+<h4 id="35-gnn"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#35-gnn">3.5 GNNベースの手法</a></h4>
+<p>GNNは任意のグラフ構造を持つデータに対してエンドツーエンドの微分可能な損失を可能にします。特徴:</p>
+<ul>
+<li>グラフ構造の情報を効果的に利用</li>
+<li>ノード間の関係性を考慮したクラスタリングが可能</li>
+</ul>
+<p>代表的な手法:
+- Deep Attentional Embedded Graph Clustering (DAEGC)
+- Adaptive Graph Convolution (AGC)
+- Structural Deep Clustering Network (SDCN)</p>
+<h3 id="4"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#4">4. 半教師あり型ディープクラスタリング</a></h3>
+<p>半教師あり型ディープクラスタリングは、少量の事前制約を持つデータを処理します。主な特徴:</p>
+<ul>
+<li>"must-link" と "cannot-link" の制約を使用</li>
+<li>教師なしクラスタリング損失と制約損失の組み合わせ</li>
+</ul>
+<p>代表的な手法:
+- Semi-supervised Deep Embedded Clustering (SDEC)
+- Deep Constrained Clustering (DECC)</p>
+<h3 id="5"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#5">5. マルチビューディープクラスタリング</a></h3>
+<p>マルチビューディープクラスタリングは、複数の表現を持つデータを扱います。主な特徴:</p>
+<ul>
+<li>複数のビューに含まれる一貫性のある情報と補完的な情報を活用</li>
+<li>クラスタリング性能の向上を目指す</li>
+</ul>
+<p>主なアプローチ:
+1. DECベース
+2. 部分空間クラスタリングベース
+3. GNNベース</p>
+<p>代表的な手法:
+- Deep Adversarial Multi-view Clustering (DAMC)
+- Deep Embedded Multi-view Clustering (DEMVC)
+- Multi-view Attribute Graph Convolution Networks (MAGCN)</p>
+<h3 id="6"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#6">6. 転移学習を用いたディープクラスタリング</a></h3>
+<p>転移学習を用いたディープクラスタリングは、ソースドメインから情報を転移してターゲットドメインのクラスタリングを改善します。主に以下の2つのアプローチがあります:</p>
+<ol>
+<li>DNNベース</li>
+<li>GANベース</li>
+</ol>
+<h4 id="61-dnn"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#61-dnn">6.1 DNNベースの手法</a></h4>
+<p>特徴:
+- ソースドメインとターゲットドメインの距離測定に焦点
+- 適切な測定戦略の選択が重要</p>
+<p>代表的な手法:
+- Deep Adaptation Networks (DAN)
+- Joint Adaptation Network (JAN)
+- Contrastive Adaptation Network (CAN)</p>
+<h4 id="62-gan"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#62-gan">6.2 GANベースの手法</a></h4>
+<p>特徴:
+- 識別器を用いてドメイン間の距離を測定
+- 生成モデルを活用してドメイン適応を行う</p>
+<p>代表的な手法:
+- Domain-Adversarial Neural Network (DANN)
+- Coupled Generative Adversarial Networks (Co-GAN)
+- CyCADA</p>
+<h3 id="7"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#7">7. 今後の研究方向</a></h3>
+<p>論文では、ディープクラスタリングの今後の研究方向として以下の点を挙げています:</p>
+<ol>
+<li>理論的探求: ディープクラスタリングの最適化に関する理論的基礎の解明</li>
+<li>大規模複雑データの処理: 異なるソースや形式の複雑なデータに対応する手法の開発</li>
+<li>モデル効率: 小規模データセットでの過学習防止と大規模データセットでの計算効率の改善</li>
+<li>マルチビューデータの融合: 異なるビューの情報を効果的に統合する手法の開発</li>
+<li>グラフ学習に基づくディープクラスタリング: グラフ構造情報を効果的に活用する手法の探求</li>
+</ol>
+<h3 id="8"><a class="toclink" href="../../2022/10/09/deep-clustering-a-comprehensive-survey/#8">8. まとめ</a></h3>
+<p>本サーベイでは、ディープクラスタリングの分野における最近の進展を包括的に紹介しました。単一ビュー、半教師あり、マルチビュー、転移学習の4つの主要なカテゴリに分けて手法を解説し、それぞれの特徴や代表的なアプローチを紹介しました。</p>
+<p>ディープクラスタリングは、複雑なデータセットに対して強力なクラスタリング能力を示しており、今後もさらなる発展が期待されます。特に、マルチソース情報を考慮したモデル（半教師あり、マルチビュー、教師なしドメイン適応）が実用的なアプリケーションでより注目を集めると予想されます。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2020-12-16 00:00:00+00:00">2020年12月16日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../computer-science/" class="md-meta__link">Computer Science</a>, 
+              <a href="./" class="md-meta__link">Machine Learning</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約2分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="denoising-diffusion-probabilistic-models"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/">Denoising Diffusion Probabilistic Models</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2006.11239">https://arxiv.org/abs/2006.11239</a></li>
+<li><a href="https://arxiv.org/pdf/2006.11239">https://arxiv.org/pdf/2006.11239</a></li>
+</ul>
+<hr />
+<h3 id="ddpm"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#ddpm">拡散確率モデルによるデノイジング (DDPM)</a></h3>
+<h3 id="1"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#1">1. はじめに</a></h3>
+<p>この論文は、拡散確率モデル(Diffusion Probabilistic Models)と呼ばれる新しい生成モデルの手法を提案しています。この手法は、非平衡熱力学の考え方に触発されたもので、高品質な画像生成を実現しています。</p>
+<h3 id="2"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#2">2. 拡散確率モデルの基本概念</a></h3>
+<p>拡散確率モデルは以下の2つのプロセスから構成されます：</p>
+<ol>
+<li><strong>前方プロセス</strong>：データにノイズを少しずつ加えていき、最終的に完全なノイズにする。</li>
+<li><strong>逆プロセス</strong>：ノイズから少しずつ元のデータの構造を復元していく。</li>
+</ol>
+<p>これらのプロセスはマルコフ連鎖として定式化され、逆プロセスを学習することで生成モデルを構築します。</p>
+<h3 id="3"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#3">3. モデルの詳細</a></h3>
+<h4 id="31"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#31">3.1 前方プロセス</a></h4>
+<p>前方プロセスは以下の式で表されます：</p>
+<p>q(x_1:T|x_0) = ∏^T_t=1 q(x_t|x_t-1)</p>
+<p>ここで、q(x_t|x_t-1)はガウシアンノイズを加える過程を表します。</p>
+<h4 id="32"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#32">3.2 逆プロセス</a></h4>
+<p>逆プロセスは以下の式で表されます：</p>
+<p>p_θ(x_0:T) = p(x_T) ∏^T_t=1 p_θ(x_t-1|x_t)</p>
+<p>ここで、p_θ(x_t-1|x_t)は学習されるガウシアン遷移を表します。</p>
+<h4 id="33"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#33">3.3 学習目的関数</a></h4>
+<p>モデルの学習は変分下界(ELBO)の最適化によって行われます：</p>
+<p>L = E_q[-log(p_θ(x_0:T) / q(x_1:T|x_0))]</p>
+<h3 id="4"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#4">4. 主要な貢献</a></h3>
+<ol>
+<li>拡散モデルとデノイジングスコアマッチングの関係性を明らかにしました。</li>
+<li>重み付き変分下界という新しい目的関数を提案し、サンプル品質を向上させました。</li>
+<li>様々なアーキテクチャや画像データセットで高品質なサンプルを生成することに成功しました。</li>
+</ol>
+<h3 id="5"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#5">5. 実験結果</a></h3>
+<p><img alt="Figure 1: CelebA-HQ 256×256 サンプル（左）と無条件 CIFAR10 サンプル（右）" src="https://github.com/user-attachments/assets/070dd54a-011a-4957-b854-21abf1e21001" /></p>
+<p>上図はCIFAR10データセットで生成されたサンプルです。</p>
+<p>主な結果は以下の通りです：</p>
+<ul>
+<li>CIFAR10で教師なしInception scoreが9.46、FIDスコアが3.17を達成（当時の最高性能）</li>
+<li>CelebA-HQやLSUNデータセットでも高品質なサンプルを生成</li>
+</ul>
+<h3 id="6"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#6">6. 進歩的な圧縮と生成</a></h3>
+<p>DDPMは、データの圧縮と進歩的な生成にも応用できることが示されました：</p>
+<ol>
+<li><strong>進歩的な圧縮</strong>：モデルを使って、データを徐々に圧縮していく過程を実現できます。</li>
+<li><strong>進歩的な生成</strong>：ノイズから始めて、徐々に画像の詳細を生成していく過程を可視化できます。</li>
+</ol>
+<h3 id="7"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#7">7. 結論</a></h3>
+<p>拡散確率モデルは、高品質な画像生成が可能な新しい手法として提案されました。この手法は、既存の生成モデルと比較して競争力のある結果を示し、また理論的にも興味深い性質を持っています。今後、画像以外のデータモダリティへの応用や、他の機械学習システムへの組み込みなど、さらなる発展が期待されます。</p>
+<hr />
+<h2 id="denoising-diffusion-probabilistic-models_1"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#denoising-diffusion-probabilistic-models_1">高校生のための Denoising Diffusion Probabilistic Models 解説</a></h2>
+<h3 id="1_1"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#1_1">1. はじめに</a></h3>
+<p>この論文は、「拡散確率モデル」という新しい方法で、コンピューターに本物そっくりの画像を作らせる研究についてです。</p>
+<h3 id="2_1"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#2_1">2. 拡散確率モデルって何？</a></h3>
+<p>この方法は、2つの重要な段階があります：</p>
+<ol>
+<li><strong>ノイズを加える段階</strong>：きれいな画像に少しずつノイズ（雑音）を加えていき、最後には完全なノイズにします。</li>
+<li><strong>ノイズを取り除く段階</strong>：ノイズから少しずつ元の画像らしい特徴を取り戻していきます。</li>
+</ol>
+<p>コンピューターは2番目の段階を学習します。これができるようになると、ノイズから始めて本物そっくりの画像を作れるようになります。</p>
+<h3 id="3_1"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#3_1">3. どうやって学習するの？</a></h3>
+<p>コンピューターは、たくさんの本物の画像を見て、「ノイズを取り除く」方法を学びます。これは、少しずつノイズの少ない画像に変えていく方法を学ぶということです。</p>
+<h3 id="4_1"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#4_1">4. この研究の大切なポイント</a></h3>
+<ol>
+<li>この方法が他の似たような方法とどう関係しているかを明らかにしました。</li>
+<li>より良い画像を作るための新しい学習方法を考え出しました。</li>
+<li>いろいろな種類の画像でこの方法を試して、とてもきれいな画像を作ることができました。</li>
+</ol>
+<h3 id="5_1"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#5_1">5. 実験結果</a></h3>
+<p><img alt="Figure 1: CelebA-HQ 256×256 サンプル（左）と無条件 CIFAR10 サンプル（右）" src="https://github.com/user-attachments/assets/070dd54a-011a-4957-b854-21abf1e21001" /></p>
+<p>この図は、コンピューターが作った顔の画像（左）と小さな物体の画像（右）です。とても本物そっくりですね。</p>
+<p>研究者たちは、この方法で作った画像の質を数字で測りました。その結果、多くの場合で今までの方法より良い点数を取ることができました。</p>
+<h3 id="6_1"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#6_1">6. この方法の面白い使い方</a></h3>
+<ol>
+<li><strong>画像を少しずつ圧縮する</strong>：大きなファイルサイズの画像を、少しずつ小さくしていけます。</li>
+<li><strong>画像を少しずつ作る</strong>：最初はぼんやりとした画像から始めて、だんだんはっきりとした画像に変化していく様子を見ることができます。</li>
+</ol>
+<h3 id="7_1"><a class="toclink" href="../../2020/12/16/denoising-diffusion-probabilistic-models/#7_1">7. まとめ</a></h3>
+<p>この新しい方法は、とてもきれいな偽物の画像を作ることができます。今までの方法よりも良い結果が出ていて、科学的にも面白い特徴があります。将来は、画像以外のデータ（例えば音声など）でも使えるかもしれません。また、他の人工知能の研究にも役立つ可能性があります。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2017-12-25 00:00:00+00:00">2017年12月25日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../computer-science/" class="md-meta__link">Computer Science</a>, 
+              <a href="./" class="md-meta__link">Machine Learning</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約1分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="improved-training-of-wasserstein-gans"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/">Improved Training of Wasserstein GANs</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/1704.00028">https://arxiv.org/abs/1704.00028</a></li>
+<li><a href="https://arxiv.org/pdf/1704.00028">https://arxiv.org/pdf/1704.00028</a></li>
+</ul>
+<hr />
+<h3 id="wasserstein-gan"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#wasserstein-gan">Wasserstein GANの改良：勾配ペナルティの導入</a></h3>
+<h3 id="1"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#1">1. はじめに</a></h3>
+<p>この論文は、Generative Adversarial Networks (GANs)の一種であるWasserstein GAN (WGAN)の改良版を提案しています。従来のWGANの問題点を指摘し、新しい手法を導入することで、より安定した学習と高品質な生成結果を実現しています。</p>
+<h3 id="2-ganwgan"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#2-ganwgan">2. 背景：GANとWGAN</a></h3>
+<h4 id="21-gan"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#21-gan">2.1 GANの基本概念</a></h4>
+<ul>
+<li>生成器(Generator)と識別器(Discriminator)の2つのネットワークが対立しながら学習</li>
+<li>学習が不安定になりやすい問題がある</li>
+</ul>
+<h4 id="22-wgan"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#22-wgan">2.2 WGANの特徴</a></h4>
+<ul>
+<li>Wasserstein距離を用いてGANを改良</li>
+<li>識別器（批評器と呼ばれる）にLipschitz制約を課す</li>
+<li>重みクリッピングを使用してLipschitz制約を実現</li>
+</ul>
+<h3 id="3"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#3">3. 問題点：重みクリッピングの限界</a></h3>
+<p>著者らは、WGANで使用される重みクリッピングに以下の問題があると指摘しています：</p>
+<ol>
+<li>容量の不十分な利用</li>
+<li>勾配の消失または爆発</li>
+</ol>
+<p>これらの問題を示すために、著者らはいくつかの実験を行いました。</p>
+<p><img alt="Figure 1: 重みクリッピングと勾配ペナルティの比較" src="https://github.com/user-attachments/assets/e49c6582-f82a-4909-b42c-c12d6b193573" /></p>
+<h3 id="4"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#4">4. 提案手法：勾配ペナルティ</a></h3>
+<p>著者らは、重みクリッピングの代わりに「勾配ペナルティ」を導入することを提案しています。</p>
+<h4 id="41"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#41">4.1 勾配ペナルティの定義</a></h4>
+<p>新しい目的関数は以下のようになります：</p>
+<pre><code>L = E[D(x̃)] - E[D(x)] + λ * E[(||∇D(x̂)||_2 - 1)^2]
+</code></pre>
+<p>ここで、x̂はデータ分布と生成分布の間の直線上からランダムにサンプリングされたポイントです。</p>
+<h4 id="42"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#42">4.2 勾配ペナルティの特徴</a></h4>
+<ul>
+<li>Lipschitz制約をソフトに実現</li>
+<li>バッチ正規化を使用しない</li>
+<li>ペナルティ係数λ=10を使用</li>
+</ul>
+<h3 id="5"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#5">5. 実験結果</a></h3>
+<p>著者らは、提案手法の有効性を示すためにいくつかの実験を行いました。</p>
+<h4 id="51"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#51">5.1 多様なアーキテクチャでの学習</a></h4>
+<p>200種類のランダムなアーキテクチャを生成し、従来のGANとWGAN-GPで学習を行いました。結果として、WGAN-GPの方が多くのアーキテクチャで成功しました。</p>
+<h4 id="52-lsun"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#52-lsun">5.2 LSUN寝室データセットでの実験</a></h4>
+<p>6種類の異なるアーキテクチャを用いて、LSUN寝室データセットで学習を行いました。WGAN-GPのみがすべてのアーキテクチャで安定した学習を実現しました。</p>
+<h4 id="53-cifar-10"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#53-cifar-10">5.3 CIFAR-10での性能評価</a></h4>
+<p>CIFAR-10データセットを用いて、Inception scoreを計算し、他の手法と比較しました。WGAN-GPは教師なし学習の中で最高のスコアを達成しました。</p>
+<h4 id="54"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#54">5.4 離散データの生成</a></h4>
+<p>文字レベルの言語モデルを学習させ、WGAN-GPが離散データの生成にも適用可能であることを示しました。</p>
+<h3 id="6"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#6">6. 考察</a></h3>
+<ul>
+<li>WGAN-GPは、多様なアーキテクチャと様々なタスクで安定した学習を実現</li>
+<li>高品質なサンプル生成が可能</li>
+<li>学習の進行を損失関数の値で監視可能</li>
+</ul>
+<h3 id="7"><a class="toclink" href="../../2017/12/25/improved-training-of-wasserstein-gans/#7">7. 結論</a></h3>
+<p>WGAN-GPは、従来のWGANの問題点を解決し、より安定した学習と高品質な生成を実現する手法です。様々なタスクやアーキテクチャに適用可能であり、GANの研究に新たな可能性を開きました。</p>
+<p>この改良により、GANの応用範囲がさらに広がることが期待されます。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2017-08-05 00:00:00+00:00">2017年8月5日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../statistics/" class="md-meta__link">Statistics</a>, 
+              <a href="./" class="md-meta__link">Machine Learning</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約3分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="categorical-reparameterization-with-gumbel-softmax"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/">Categorical Reparameterization with Gumbel-Softmax</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/1611.01144">https://arxiv.org/abs/1611.01144</a></li>
+<li><a href="https://arxiv.org/pdf/1611.01144">https://arxiv.org/pdf/1611.01144</a></li>
+</ul>
+<hr />
+<h3 id="gumbel-softmax"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#gumbel-softmax">Gumbel-Softmaxによるカテゴリカル再パラメータ化</a></h3>
+<h3 id="1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#1">1. 研究の背景と目的</a></h3>
+<h4 id="11"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#11">1.1 離散変数の重要性と課題</a></h4>
+<p>現代の機械学習、特に深層学習において、離散的な構造を持つデータを扱うことは非常に重要です。例えば:</p>
+<ul>
+<li>言語モデリング</li>
+<li>注意機構</li>
+<li>強化学習</li>
+</ul>
+<p>これらの分野では、カテゴリカル変数（複数の選択肢から1つを選ぶ変数）が頻繁に使用されます。</p>
+<p>しかし、カテゴリカル変数を含む確率的ニューラルネットワークの学習には大きな課題があります。通常のバックプロパゲーション（誤差逆伝播法）が使えないのです。</p>
+<h4 id="12"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#12">1.2 研究の目的</a></h4>
+<p>この論文の主な目的は、カテゴリカル変数を効率的に学習するための新しい手法を提案することです。具体的には:</p>
+<ol>
+<li>Gumbel-Softmax分布という新しい分布を導入</li>
+<li>この分布を使った勾配推定器の提案</li>
+<li>提案手法の有効性を実験で示す</li>
+</ol>
+<h3 id="2-gumbel-softmax"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#2-gumbel-softmax">2. Gumbel-Softmax分布</a></h3>
+<h4 id="21"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#21">2.1 定義</a></h4>
+<p>Gumbel-Softmax分布は、カテゴリカル分布を連続的に近似する分布です。数式で表すと：</p>
+<pre><code>y_i = exp((log(π_i) + g_i)/τ) / Σ_j exp((log(π_j) + g_j)/τ)
+</code></pre>
+<p>ここで：
+- π_i はカテゴリ i の確率
+- g_i は標準Gumbel分布からのサンプル
+- τ は温度パラメータ</p>
+<h4 id="22"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#22">2.2 特徴</a></h4>
+<ol>
+<li>τ（温度）を小さくしていくと、Gumbel-Softmax分布はカテゴリカル分布に近づきます。</li>
+<li>サンプリングした値 y は微分可能です。</li>
+</ol>
+<p><img alt="Figure 1" src="https://github.com/user-attachments/assets/d325550e-fe33-4129-9fc5-fc867ecd7346" /></p>
+<p>図1は、温度τを変化させたときのGumbel-Softmax分布のサンプルを示しています。</p>
+<h3 id="3-gumbel-softmax"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#3-gumbel-softmax">3. Gumbel-Softmax推定器</a></h3>
+<h4 id="31"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#31">3.1 基本的なアイデア</a></h4>
+<p>Gumbel-Softmax推定器の核心は、学習時にカテゴリカル変数のサンプルをGumbel-Softmax分布からのサンプルで置き換えることです。</p>
+<h4 id="32-straight-through-st-gumbel-softmax"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#32-straight-through-st-gumbel-softmax">3.2 Straight-Through (ST) Gumbel-Softmax</a></h4>
+<p>離散的な値が必要な場合（例：強化学習の行動選択）、以下の手順を踏みます：</p>
+<ol>
+<li>順伝播時：arg maxを使って離散化</li>
+<li>逆伝播時：連続的な近似を使用</li>
+</ol>
+<p>これにより、離散性を保ちつつ勾配を流すことができます。</p>
+<h3 id="4"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#4">4. 実験結果</a></h3>
+<p>論文では3つの主要な実験を行っています：</p>
+<h4 id="41"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#41">4.1 構造化出力予測</a></h4>
+<p>MNISTデータセットの上半分から下半分を予測するタスクです。</p>
+<p><img alt="Figure 3" src="https://github.com/user-attachments/assets/5bf9eda7-da7d-42b5-adde-91753722e089" /></p>
+<p>結果：Gumbel-Softmax（特にST版）が他の手法を上回る性能を示しました。</p>
+<h4 id="42-vae"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#42-vae">4.2 変分オートエンコーダ（VAE）</a></h4>
+<p>MNISTデータセットを用いた生成モデルの学習です。</p>
+<p><img alt="Figure 4" src="https://github.com/user-attachments/assets/0063a9f7-1578-4e6b-b819-e91d51b4216f" /></p>
+<p>結果：ここでもGumbel-Softmaxが最高性能を達成しました。</p>
+<h4 id="43"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#43">4.3 半教師あり学習</a></h4>
+<p>ラベルありデータが少ない状況での画像分類タスクです。</p>
+<p>結果：
+- 分類精度：他の手法と同等
+- 計算速度：大幅に向上（特にクラス数が多い場合）</p>
+<p><img alt="Figure 5" src="https://github.com/user-attachments/assets/f4e46bd4-6482-4c7b-811a-90503a6aae86" /></p>
+<h3 id="5"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#5">5. 結論と今後の展望</a></h3>
+<h4 id="51"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#51">5.1 主な貢献</a></h4>
+<ol>
+<li>カテゴリカル分布のための新しい再パラメータ化手法の提案</li>
+<li>低分散の勾配推定を実現</li>
+<li>様々なタスクでの有効性を実証</li>
+</ol>
+<h4 id="52"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#52">5.2 今後の展望</a></h4>
+<ul>
+<li>より複雑なモデルや大規模データセットでの検証</li>
+<li>他の応用分野（例：自然言語処理）での活用</li>
+<li>温度パラメータの最適な設定方法の研究</li>
+</ul>
+<p>この研究は、離散変数を扱う機械学習モデルの学習を大きく前進させる可能性を秘めています。特に、大規模なカテゴリカルデータを扱う際の計算効率の向上が期待されます。</p>
+<hr />
+<p>前提となる知識を追加してより分かりやすく解説</p>
+<h3 id="gumbel-softmax_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#gumbel-softmax_1">Gumbel-Softmaxによるカテゴリカル再パラメータ化：機械学習の新しい方法</a></h3>
+<h3 id="1_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#1_1">1. はじめに：機械学習とは？</a></h3>
+<h4 id="11_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#11_1">1.1 機械学習の基本</a></h4>
+<p>機械学習とは、コンピュータにデータから学習させ、タスクを実行する能力を向上させる技術です。例えば：</p>
+<ul>
+<li>画像認識：写真の中の物体を識別する</li>
+<li>音声認識：話し言葉をテキストに変換する</li>
+<li>推薦システム：ユーザーの好みに合った商品を提案する</li>
+</ul>
+<p>これらは全て、大量のデータからパターンを学習することで実現されています。</p>
+<h4 id="12_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#12_1">1.2 ニューラルネットワーク</a></h4>
+<p>機械学習の中でも特に注目されているのが、脳の仕組みを模倣した「ニューラルネットワーク」です。これは、多数の「ニューロン」（計算単位）を層状に連結したモデルで、複雑なパターンを学習できます。</p>
+<h3 id="2"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#2">2. 研究の背景：なぜこの研究が必要だったのか？</a></h3>
+<h4 id="21_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#21_1">2.1 離散的なデータの重要性</a></h4>
+<p>現実世界のデータには、連続的なもの（身長、体重など）と離散的なもの（性別、血液型など）があります。特に、複数の選択肢から1つを選ぶような「カテゴリカル変数」は非常に一般的です。例えば：</p>
+<ul>
+<li>言語：単語の選択</li>
+<li>画像：ピクセルの色</li>
+<li>意思決定：行動の選択</li>
+</ul>
+<h4 id="22_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#22_1">2.2 従来の手法の問題点</a></h4>
+<p>ニューラルネットワークは、通常「バックプロパゲーション」という方法で学習します。これは、出力の誤差を入力側に逆伝播させて、少しずつモデルを調整する方法です。</p>
+<p>しかし、カテゴリカル変数のような離散的なデータでは、この方法がうまく機能しません。なぜなら、離散的な選択は「微分不可能」（なめらかに変化しない）だからです。</p>
+<h3 id="3-gumbel-softmax_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#3-gumbel-softmax_1">3. Gumbel-Softmax：新しい解決策</a></h3>
+<h4 id="31_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#31_1">3.1 基本的なアイデア</a></h4>
+<p>研究者たちは、カテゴリカル変数を「連続的に近似する」方法を考案しました。これがGumbel-Softmax分布です。</p>
+<p>簡単に言えば：
+1. カテゴリカル変数を確率の分布で表現
+2. その分布を温度パラメータτで調整可能な連続的な分布に変換
+3. 学習中はこの連続的な近似を使用し、実際の使用時は離散的な選択に戻す</p>
+<h4 id="32"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#32">3.2 具体的な仕組み</a></h4>
+<ol>
+<li>各カテゴリに確率を割り当てる（例：赤30%, 青50%, 緑20%）</li>
+<li>それぞれにランダムなノイズ（Gumbel分布）を加える</li>
+<li>ソフトマックス関数（確率に変換する関数）を適用</li>
+<li>温度τで調整（低いτ→よりカテゴリカルに近い、高いτ→よりなめらか）</li>
+</ol>
+<p><img alt="Figure 1" src="https://github.com/user-attachments/assets/d325550e-fe33-4129-9fc5-fc867ecd7346" /></p>
+<p>この図は、温度τを変えたときのGumbel-Softmax分布のサンプルを示しています。τが小さいほど、discrete（離散的）な分布に近づきます。</p>
+<h3 id="4_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#4_1">4. 実験：本当に効果があるの？</a></h3>
+<p>研究者たちは、この新しい方法が実際に役立つかを確かめるために、いくつかの実験を行いました。</p>
+<h4 id="41-mnist"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#41-mnist">4.1 MNISTの画像生成</a></h4>
+<p>MNISTは、手書き数字の画像データセットです。この実験では：</p>
+<ol>
+<li>画像の上半分を入力として与える</li>
+<li>ニューラルネットワークに下半分を予測させる</li>
+</ol>
+<p><img alt="Figure 3" src="https://github.com/user-attachments/assets/5bf9eda7-da7d-42b5-adde-91753722e089" /></p>
+<p>結果：Gumbel-Softmaxを使った方法（特にST Gumbel-Softmax）が、他の方法よりも良い結果を出しました。</p>
+<h4 id="42-vae_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#42-vae_1">4.2 変分オートエンコーダ（VAE）</a></h4>
+<p>VAEは、データの特徴を学習し、新しいデータを生成できるモデルです。MNISTデータセットを使って実験しました。</p>
+<p><img alt="Figure 4" src="https://github.com/user-attachments/assets/0063a9f7-1578-4e6b-b819-e91d51b4216f" /></p>
+<p>結果：ここでもGumbel-Softmaxが最も良い性能を示しました。</p>
+<h4 id="43_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#43_1">4.3 半教師あり学習</a></h4>
+<p>これは、一部のデータにしかラベル（正解）がない状況での学習です。例えば、100枚の画像のうち10枚にしか「これは犬」「これは猫」といったラベルがない場合です。</p>
+<p>結果：
+- 分類の正確さ：他の方法と同じくらい良い
+- 計算速度：とても速くなった（特に分類するカテゴリの数が多い場合）</p>
+<p><img alt="Figure 5" src="https://github.com/user-attachments/assets/f4e46bd4-6482-4c7b-811a-90503a6aae86" /></p>
+<p>この図は、カテゴリ（クラス）の数が増えたときの計算速度の比較です。Gumbel-Softmaxを使うと、特に多くのカテゴリがある場合に大幅に速くなることがわかります。</p>
+<h3 id="5_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#5_1">5. まとめと今後の展望</a></h3>
+<h4 id="51_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#51_1">5.1 この研究の重要性</a></h4>
+<ol>
+<li>カテゴリカルな選択を、学習しやすい形に変換する新しい方法を提案</li>
+<li>様々な実験で、既存の方法より良い結果を示した</li>
+<li>特に、計算速度の大幅な向上を実現</li>
+</ol>
+<h4 id="52_1"><a class="toclink" href="../../2017/08/05/categorical-reparameterization-with-gumbel-softmax/#52_1">5.2 将来の可能性</a></h4>
+<ul>
+<li>より複雑な問題への応用（例：自然言語処理、ゲームAIなど）</li>
+<li>大規模なデータセットでの検証</li>
+<li>他の機械学習技術との組み合わせ</li>
+</ul>
+<p>この研究は、機械学習がより複雑な現実世界の問題を解決する上で、大きな一歩となる可能性があります。カテゴリカルな選択を含む多くの問題（例：商品の推薦、自動運転の意思決定など）で、より効率的で精度の高いシステムの開発につながるかもしれません。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2015-11-18 00:00:00+00:00">2015年11月18日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../computer-science/" class="md-meta__link">Computer Science</a>, 
+              <a href="./" class="md-meta__link">Machine Learning</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約2分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="deep-unsupervised-learning-using-nonequilibrium-thermodynamics"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/">Deep Unsupervised Learning using Nonequilibrium Thermodynamics</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/1503.03585">https://arxiv.org/abs/1503.03585</a></li>
+<li><a href="https://arxiv.org/pdf/1503.03585">https://arxiv.org/pdf/1503.03585</a></li>
+</ul>
+<hr />
+<h3 id="_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#_1">非平衡熱力学を用いた深層教師なし学習</a></h3>
+<h3 id="1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#1">1. はじめに</a></h3>
+<p>この論文は、複雑なデータセットをモデル化するための新しい確率モデルの枠組みを提案しています。この手法は非平衡統計物理学の概念に触発されており、データ分布の構造を徐々に破壊する前方拡散過程と、その構造を復元する逆拡散過程を学習することで、柔軟かつ扱いやすい生成モデルを実現しています。</p>
+<h3 id="2"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#2">2. 主要な概念</a></h3>
+<h4 id="21"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#21">2.1 拡散確率モデル</a></h4>
+<p>提案されたモデルは以下の特徴を持ちます：</p>
+<ol>
+<li>モデル構造の高い柔軟性</li>
+<li>正確なサンプリング</li>
+<li>他の分布との容易な乗算（例：事後分布の計算）</li>
+<li>モデルの対数尤度と個々の状態の確率の効率的な評価</li>
+</ol>
+<h4 id="22"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#22">2.2 前方拡散過程</a></h4>
+<p>データ分布q(x^(0))から始まり、単純な分布π(y)（例：ガウス分布）に向かって徐々に拡散していく過程を定義します。</p>
+<p>q(x^(0···T)) = q(x^(0)) ∏^T_t=1 q(x^(t)|x^(t-1))</p>
+<h4 id="23"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#23">2.3 逆拡散過程</a></h4>
+<p>生成モデルは、前方過程の逆を学習します：</p>
+<p>p(x^(0···T)) = p(x^(T)) ∏^T_t=1 p(x^(t-1)|x^(t))</p>
+<p>ここで、p(x^(T)) = π(x^(T))です。</p>
+<h3 id="3"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#3">3. モデルの学習</a></h3>
+<h4 id="31"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#31">3.1 目的関数</a></h4>
+<p>モデルの対数尤度の下界を最大化することで学習を行います：</p>
+<p>L ≥ K = -∑^T_t=2 E_q(x^(0),x^(t))[D_KL(q(x^(t-1)|x^(t),x^(0))||p(x^(t-1)|x^(t)))] + H_q(X^(T)|X^(0)) - H_q(X^(1)|X^(0)) - H_p(X^(T))</p>
+<h4 id="32"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#32">3.2 拡散率の設定</a></h4>
+<p>ガウス拡散の場合、拡散率β_tは勾配上昇法によって学習されます。二項拡散の場合は、各ステップで一定の割合の信号を消去するように設定されます。</p>
+<h3 id="4"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#4">4. 実験結果</a></h3>
+<p>著者らは以下のデータセットでモデルを評価しました：</p>
+<ol>
+<li>2次元スイスロール分布</li>
+<li>バイナリハートビート分布</li>
+<li>MNIST手書き数字</li>
+<li>CIFAR-10自然画像</li>
+<li>樹皮テクスチャ画像</li>
+<li>デッドリーブス画像</li>
+</ol>
+<p><img alt="Figure 1: スイスロール分布の学習結果" src="https://github.com/user-attachments/assets/ed8af005-d6ad-495d-a4c4-23db93158cbe" /></p>
+<p>この図は、2次元スイスロール分布に対する学習結果を示しています。上段は前方拡散過程、中段は学習された逆拡散過程、下段は逆拡散過程のドリフト項を表しています。</p>
+<h3 id="5"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#5">5. 主な結果</a></h3>
+<ol>
+<li>提案手法は、様々なデータ分布に対して高品質なサンプルを生成できることが示されました。</li>
+<li>学習されたモデルを用いて、画像の修復やノイズ除去などのタスクが可能であることが実証されました。</li>
+<li>一部のデータセットにおいて、既存手法を上回る対数尤度を達成しました。</li>
+</ol>
+<h3 id="6"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#6">6. 結論</a></h3>
+<p>非平衡熱力学の概念を応用した新しい確率モデリング手法を提案しました。この手法は、高い柔軟性と扱いやすさを兼ね備えており、様々なデータセットに対して効果的であることが示されました。今後、この手法が深層教師なし学習の分野に新たな可能性をもたらすことが期待されます。</p>
+<hr />
+<h2 id="deep-unsupervised-learning-using-nonequilibrium-thermodynamics_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#deep-unsupervised-learning-using-nonequilibrium-thermodynamics_1">高校生のための Deep Unsupervised Learning using Nonequilibrium Thermodynamics 解説</a></h2>
+<h3 id="1_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#1_1">1. はじめに</a></h3>
+<p>この論文は、コンピューターがデータの特徴を学習し、新しいデータを生成する方法について新しいアイデアを提案しています。この方法は、物理学の「非平衡熱力学」という考え方からヒントを得ています。</p>
+<h3 id="2_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#2_1">2. 主なアイデア</a></h3>
+<h4 id="21_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#21_1">2.1 拡散モデル</a></h4>
+<p>この新しい方法を「拡散モデル」と呼びます。特徴は以下の通りです：</p>
+<ol>
+<li>いろいろな種類のデータに対応できる</li>
+<li>正確にデータを生成できる</li>
+<li>他の情報と簡単に組み合わせられる</li>
+<li>データの確率を計算しやすい</li>
+</ol>
+<h4 id="22_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#22_1">2.2 データを「溶かす」過程</a></h4>
+<p>まず、元のデータを少しずつ「溶かして」いき、最終的には完全にランダムな状態（例えば、テレビの砂嵐のような状態）にします。</p>
+<h4 id="23_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#23_1">2.3 データを「戻す」過程</a></h4>
+<p>次に、ランダムな状態から少しずつ元のデータらしい状態に「戻す」方法を学習します。これが、新しいデータを生成する方法になります。</p>
+<h3 id="3_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#3_1">3. コンピューターの学習方法</a></h3>
+<p>コンピューターは、「戻す」過程をうまく行えるように訓練されます。具体的には、元のデータと生成されたデータの違いが小さくなるように学習します。</p>
+<h3 id="4_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#4_1">4. 実験結果</a></h3>
+<p>研究者たちは、この方法を以下のようなデータで試しました：</p>
+<ol>
+<li>渦巻き型の2次元データ</li>
+<li>規則的に繰り返すバイナリデータ</li>
+<li>手書き数字（MNIST）</li>
+<li>自然画像（CIFAR-10）</li>
+<li>木の樹皮の画像</li>
+<li>重なり合う円の画像</li>
+</ol>
+<p>この図は、渦巻き型のデータ（スイスロール分布）に対する学習結果を示しています。上段は「溶かす」過程、中段は学習された「戻す」過程を表しています。</p>
+<h3 id="5_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#5_1">5. 主な成果</a></h3>
+<ol>
+<li>この方法は、様々な種類のデータに対して、本物そっくりのデータを生成できました。</li>
+<li>画像の一部が欠けていても、それを補完することができました。</li>
+<li>一部のデータセットでは、他の方法よりも優れた性能を示しました。</li>
+</ol>
+<h3 id="6_1"><a class="toclink" href="../../2015/11/18/deep-unsupervised-learning-using-nonequilibrium-thermodynamics/#6_1">6. まとめ</a></h3>
+<p>この研究は、物理学のアイデアを使って新しい機械学習の方法を作り出しました。この方法は、様々なデータに対して柔軟に対応でき、扱いやすいという特徴があります。将来、この方法が機械学習の世界に新しい可能性をもたらすことが期待されています。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2014-06-10 00:00:00+00:00">2014年6月10日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../statistics/" class="md-meta__link">Statistics</a>, 
+              <a href="./" class="md-meta__link">Machine Learning</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約2分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="generative-adversarial-networks"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/">Generative Adversarial Networks</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/1406.2661">https://arxiv.org/abs/1406.2661</a></li>
+<li><a href="https://arxiv.org/pdf/1406.2661">https://arxiv.org/pdf/1406.2661</a></li>
+</ul>
+<hr />
+<h3 id="1"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#1">1. はじめに</a></h3>
+<p>Generative Adversarial Networks（GANs）は、Ian Goodfellow氏らによって2014年に提案された革新的な生成モデルフレームワークです。この論文では、GANsの基本概念、理論的根拠、そして実験結果について詳細に説明しています。</p>
+<h3 id="2-gans"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#2-gans">2. GANsの基本概念</a></h3>
+<p>GANsは2つのニューラルネットワークを同時に訓練する新しいフレームワークです：</p>
+<ol>
+<li><strong>Generator (G)</strong>: データ分布を捉え、偽のサンプルを生成します。</li>
+<li><strong>Discriminator (D)</strong>: サンプルが本物のデータから来たのか、それともGから生成されたのかを判別します。</li>
+</ol>
+<p>これらは互いに競争しながら学習を進めます。Gの目的はDを欺くことで、Dの目的はGが生成したサンプルと本物のデータを正確に区別することです。</p>
+<h3 id="3"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#3">3. 数学的フレームワーク</a></h3>
+<p>GANsの学習は以下のミニマックス問題として定式化されます：</p>
+<pre><code>min_G max_D V(D, G) = E_x~p_data(x)[log D(x)] + E_z~p_z(z)[log(1 - D(G(z)))]
+</code></pre>
+<p>ここで：
+- G(z)は、ノイズzから偽のサンプルを生成する関数
+- D(x)は、入力xが本物のデータである確率を出力する関数</p>
+<h3 id="4"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#4">4. 理論的結果</a></h3>
+<p>論文では、以下の重要な理論的結果が示されています：</p>
+<ol>
+<li>この問題の大域的最適解は、p_g = p_data（生成分布 = データ分布）の時に達成される。</li>
+<li>Algorithm 1（論文中で提案されている学習アルゴリズム）は、十分な容量と訓練時間が与えられれば、p_gをp_dataに収束させる。</li>
+</ol>
+<h3 id="5"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#5">5. 実験結果</a></h3>
+<p>著者らは、MNIST、Toronto Face Database (TFD)、CIFAR-10などのデータセットでGANsを訓練しました。以下は主な結果です：</p>
+<ol>
+<li>生成されたサンプルの視覚的品質は高く、既存の手法と競合可能。</li>
+<li>Parzen window-based log-likelihood estimatesでの評価では、GANsは他のモデルと同等以上の性能を示した。</li>
+</ol>
+<p><img alt="Figure 2: Visualization of samples from the model" src="https://github.com/user-attachments/assets/279d3954-25e3-4d55-80c8-267649a7d510" /></p>
+<p>この図は、GANsモデルが生成したサンプル画像を示しています。4つの部分（a, b, c, d）に分かれており、それぞれ異なるデータセットや設定での結果を表しています。</p>
+<p>a) MNIST（手書き数字）データセット：
+   - 0から9までの手書き数字が生成されています。
+   - 数字の形や太さが様々で、実際の手書き文字のようにバリエーションがあります。</p>
+<p>b) TFD（Toronto Face Database）：
+   - 様々な表情や角度の人間の顔が生成されています。
+   - 男性や女性、異なる年齢層の顔が含まれているようです。</p>
+<p>c) CIFAR-10（完全連結モデル）：
+   - 様々な物体や動物の小さな画像が生成されています。
+   - 画像の品質はやや粗いですが、物体の形状は認識可能です。</p>
+<p>d) CIFAR-10（畳み込みディスクリミネーターと「逆畳み込み」ジェネレーター）：
+   - cと同じデータセットですが、異なるモデル構造を使用しています。
+   - 画像の品質がcよりも向上し、より鮮明になっています。</p>
+<p>各部分の右端の列は、生成された画像に最も近い訓練データの例を示しています。これは、モデルが単に訓練データを記憶しているのではなく、新しい画像を生成していることを証明するためです。</p>
+<p>この図は、GANsが異なる種類のデータ（数字、顔、一般的な物体）に対して効果的に機能し、高品質かつ多様な画像を生成できることを示しています。また、モデルの構造（完全連結vs畳み込み）によって生成される画像の品質が変わることも示唆しています。</p>
+<h3 id="6-gans"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#6-gans">6. GANsの利点と欠点</a></h3>
+<h4 id="_1"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#_1">利点:</a></h4>
+<ul>
+<li>マルコフ連鎖が不要</li>
+<li>逆伝播のみで勾配が得られる</li>
+<li>学習中に推論が不要</li>
+<li>多様な関数をモデルに組み込める</li>
+</ul>
+<h4 id="_2"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#_2">欠点:</a></h4>
+<ul>
+<li>p_g(x)の明示的な表現がない</li>
+<li>GとDの同期を慎重に行う必要がある</li>
+</ul>
+<h3 id="7"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#7">7. 将来の展望</a></h3>
+<p>論文では、GANsの以下のような拡張可能性が示唆されています：</p>
+<ol>
+<li>条件付き生成モデル</li>
+<li>学習された近似推論</li>
+<li>半教師あり学習</li>
+<li>効率改善</li>
+</ol>
+<h3 id="8"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#8">8. 結論</a></h3>
+<p>GANsは、生成モデルの新しいパラダイムを提示し、多くの可能性を秘めています。理論的な裏付けと実験結果の両面から、このフレームワークの有効性が示されました。</p>
+<p>この論文は、深層学習と生成モデルの分野に大きな影響を与え、その後の多くの研究の基礎となりました。</p>
+<hr />
+<h2 id="gansgenerative-adversarial-networks"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#gansgenerative-adversarial-networks">高校生のためのGANs（Generative Adversarial Networks）解説</a></h2>
+<h3 id="1-gans"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#1-gans">1. GANsって何？</a></h3>
+<p>GANsは、コンピューターに新しい画像や音楽を作らせる方法です。2014年に考え出された、とってもクールな技術です。</p>
+<h3 id="2"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#2">2. どうやって働くの？</a></h3>
+<p>GANsは、2つのAI（人工知能）チームが競争するゲームみたいなものです：</p>
+<ol>
+<li><strong>Generator（ジェネレーター）</strong>: 偽物を作るチーム</li>
+<li><strong>Discriminator（ディスクリミネーター）</strong>: 本物と偽物を見分けるチーム</li>
+</ol>
+<p>例えば、お絵かきコンテストを想像してみてください：</p>
+<ul>
+<li>Generatorは偽物の絵を描く「画家」</li>
+<li>Discriminatorは本物か偽物かを当てる「審判」</li>
+</ul>
+<p>Generatorは審判を騙そうと頑張り、Discriminatorは騙されないように頑張ります。この競争を繰り返すことで、Generatorはどんどん上手に偽物を作れるようになります。</p>
+<h3 id="3_1"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#3_1">3. なぜすごいの？</a></h3>
+<ol>
+<li><strong>新しいものを作れる</strong>: 実際には存在しない人の顔や、誰も描いたことのない絵を作り出せます。</li>
+<li><strong>学習が早い</strong>: 他の方法より効率的に学習できます。</li>
+<li><strong>応用範囲が広い</strong>: 画像だけでなく、音楽や文章なども作れます。</li>
+</ol>
+<h3 id="4_1"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#4_1">4. どんなふうに使われているの？</a></h3>
+<ol>
+<li><strong>アート作成</strong>: 新しいスタイルの絵や音楽を作る</li>
+<li><strong>ゲーム開発</strong>: リアルな背景や人物を自動生成する</li>
+<li><strong>映画製作</strong>: 特殊効果や背景を作る</li>
+<li><strong>医療</strong>: 病気の新しい治療法を考え出す手助けをする</li>
+</ol>
+<h3 id="5_1"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#5_1">5. 実際にどんな結果が出ているの？</a></h3>
+<p>研究者たちは、GANsを使って様々な画像を作ってみました。例えば：</p>
+<ul>
+<li>実在しない人の顔写真</li>
+<li>手書きの数字</li>
+<li>動物の写真</li>
+</ul>
+<p>作られた画像は、本物とそっくりで見分けるのが難しいくらいです！</p>
+<h3 id="6"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#6">6. 難しい点は？</a></h3>
+<ol>
+<li><strong>バランスが大切</strong>: GeneratorとDiscriminatorの力が釣り合っていないと、うまく学習できません。</li>
+<li><strong>評価が難しい</strong>: 作られたものが本当に良いかどうか、機械的に判断するのが難しいです。</li>
+</ol>
+<h3 id="7_1"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#7_1">7. 未来はどうなる？</a></h3>
+<p>GANsは日々進化しています。将来は：</p>
+<ul>
+<li>もっとリアルな画像や動画が作れるようになる</li>
+<li>人間の創造性をサポートする新しいツールが生まれる</li>
+<li>医療や科学の発展に大きく貢献する</li>
+</ul>
+<p>可能性は無限大です！</p>
+<h3 id="_3"><a class="toclink" href="../../2014/06/10/generative-adversarial-networks/#_3">まとめ</a></h3>
+<p>GANsは、AIに創造性を持たせるすごい技術です。まだ新しい分野ですが、私たちの生活を大きく変える可能性を秘めています。これからのGANsの発展に注目です！</p>
+    
+  </div>
+</article>
+      
+      
+        
+          
+
+
+
+<nav class="md-pagination">
+  
+</nav>
+        
+      
+    </div>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2014 - 2025 Sojiro's Blog. All rights reserved.
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/sojiro14" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sojiro14" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

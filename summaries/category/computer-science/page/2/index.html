@@ -1,0 +1,4938 @@
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://blog.sojiro.me/summaries/category/computer-science/page/2/">
+      
+      
+        <link rel="prev" href="../../../computation-and-language/">
+      
+      
+        <link rel="next" href="../../../computer-vision-and-pattern-recognition/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Computer Science - Sojiro's Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-ECN7E21ZM0"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-ECN7E21ZM0",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-ECN7E21ZM0",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Computer Science - Sojiro's Blog" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://blog.sojiro.me/assets/images/social/summaries/category/computer-science/page/2.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://blog.sojiro.me/summaries/category/computer-science/page/2/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Computer Science - Sojiro's Blog" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://blog.sojiro.me/assets/images/social/summaries/category/computer-science/page/2.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#computer-science" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../../../../.." title="Sojiro&#39;s Blog" class="md-header__button md-logo" aria-label="Sojiro's Blog" data-md-component="logo">
+      
+  <img src="../../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sojiro's Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Computer Science
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Sojiro&#39;s Blog" class="md-nav__button md-logo" aria-label="Sojiro's Blog" data-md-component="logo">
+      
+  <img src="../../../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Sojiro's Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recent Posts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2024
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2022
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2017
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2016/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2016
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2015/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2015
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/archive/2014/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2014
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Categories
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/anaconda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Anaconda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/android-studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Android Studio
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/bigquery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BigQuery
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/bower/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bower
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/cpan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CPAN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/canvas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Canvas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/chef/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chef
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/datastore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datastore
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/disqus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Disqus
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/domain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Domain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/erc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ERC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/ethereum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ethereum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/gae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GAE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/gce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/gcs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GCS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/github-pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Github Pages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/grunt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grunt
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/html5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    HTML5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/heroku/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Heroku
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/homebrew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Homebrew
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/hubot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Hubot
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/irc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IRC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/json-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    JSON Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Java
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/liveportrait/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LivePortrait
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/mean/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MEAN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/mongodb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MongoDB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/mysql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MySQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/nft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/nodejs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Node.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OOP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/octopress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octopress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/perl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Perl
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/repl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REPL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/rvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RVM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/redis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Redis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/reply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reply
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/ruby/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ruby
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/ruby-on-rails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Shell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/slack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Slack
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/task-queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Task Queue
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/vagrant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vagrant
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/vim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vim
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/vuepress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    VuePress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/webrtc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WebRTC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/wordpress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WordPress
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/yeoman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Yeoman
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/npm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    npm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/revealjs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    reveal.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/screen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    screen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/category/yo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    yo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Paper Summaries
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Paper Summaries
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recent Posts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2024
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2023
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2022
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2021
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2020
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2019
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2018
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2017
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2016/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2016
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2015/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2015
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2014/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2014
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/1972/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1972
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Categories
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artificial-intelligence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Artificial Intelligence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../audio-and-speech-processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Audio and Speech Processing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../call-center/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Call Center
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../computation-and-language/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computation and Language
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+      
+    
+  
+  
+    <li class="md-nav__item">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="../../" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computer Science
+    
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../computer-vision-and-pattern-recognition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Computer Vision and Pattern Recognition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../digital-libraries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Digital Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../electrical-engineering-and-systems-science/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Electrical Engineering and Systems Science
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../emergence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Emergence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../information-retrieval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Information Retrieval
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../machine-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Machine Learning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reductionism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reductionism
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sound/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sound
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../speech-to-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speech to text
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../statistics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../synthetic-biology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Synthetic Biology
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E3%82%B5%E3%83%83%E3%82%AB%E3%83%BC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    サッカー
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E3%82%B7%E3%83%9F%E3%83%A5%E3%83%BC%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%87%E3%83%BC%E3%82%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    シミューレーションデータ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%84/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    スポーツ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E3%83%9E%E3%83%AB%E3%83%81%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    マルチエージェント
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%9F%BA%E7%9B%A4%E3%83%A2%E3%83%87%E3%83%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    基盤モデル
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BB%BA%E7%AF%89%E7%9A%84%E6%BD%9C%E5%9C%A8%E4%BE%A1%E5%80%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    建築的潜在価値
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BC%B7%E5%8C%96%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    強化学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    機械学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%B7%B1%E5%B1%A4%E5%AD%A6%E7%BF%92/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深層学習
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%A4%BE%E4%BC%9A%E7%9A%84%E4%BE%A1%E5%80%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    社会的価値
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    言語モデル
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%AB%98%E7%B5%8C%E5%B9%B4%E8%B3%83%E8%B2%B8%E3%83%9E%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%B3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高経年賃貸マンション
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content" data-md-component="content">
+    <div class="md-content__inner">
+      <header class="md-typeset">
+        <h1 id="computer-science">Computer Science</h1>
+      </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-01-30 00:00:00+00:00">2024年1月30日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../sound/" class="md-meta__link">Sound</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約3分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="simple-and-controllable-music-generation"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/">Simple and Controllable Music Generation</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2306.05284">https://arxiv.org/abs/2306.05284</a></li>
+<li><a href="https://arxiv.org/pdf/2306.05284">https://arxiv.org/pdf/2306.05284</a></li>
+<li><a href="https://qiita.com/xiao_ming/items/75b7144ff1ec5fd6c46e">https://qiita.com/xiao_ming/items/75b7144ff1ec5fd6c46e</a></li>
+</ul>
+<hr />
+<h3 id="musicgen"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#musicgen">MusicGen：効率的な音楽生成モデルの詳細解説</a></h3>
+<h3 id="1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#1">1. 研究背景と課題</a></h3>
+<h4 id="11"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#11">1.1 音楽生成の技術的課題</a></h4>
+<ul>
+<li>長時間シーケンスのモデリングが必要</li>
+<li>音楽は音声より高いサンプリングレートが必要（44.1kHz/48kHz vs 16kHz）</li>
+<li>複数の楽器による複雑な構造の処理</li>
+<li>人間は不協和音に敏感で、メロディの誤りに対する許容度が低い</li>
+</ul>
+<h4 id="12"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#12">1.2 既存研究の限界</a></h4>
+<ul>
+<li>複数のモデルを階層的に組み合わせる必要があった</li>
+<li>アップサンプリングによる品質低下</li>
+<li>制御が難しい</li>
+<li>計算コストが高い</li>
+</ul>
+<h3 id="2-musicgen"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#2-musicgen">2. MusicGenの技術アーキテクチャ</a></h3>
+<h4 id="21"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#21">2.1 基本構造の詳細</a></h4>
+<ul>
+<li>単一の言語モデルによる設計</li>
+<li>EnCodecによる音声の離散トークン化</li>
+<li>効率的なトークン配置パターン</li>
+<li>Transformerベースの自己回帰モデル</li>
+</ul>
+<h4 id="22"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#22">2.2 コードブックパターンの詳細実装</a></h4>
+<p><img alt="コードブックパターン" src="https://github.com/user-attachments/assets/5873e195-e818-4304-8f4e-fd07d722e35a" /></p>
+<h5 id="flattening-pattern"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#flattening-pattern">Flattening Pattern</a></h5>
+<ul>
+<li>すべてのコードブックを直列化</li>
+<li>理論的に完全な自己回帰分解が可能</li>
+<li>計算コストは高いが品質は最高</li>
+</ul>
+<h5 id="delay-pattern"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#delay-pattern">Delay Pattern</a></h5>
+<ul>
+<li>コードブック間に遅延を導入</li>
+<li>並列処理と品質のバランスを取る</li>
+<li>実用的な性能と効率性を実現</li>
+</ul>
+<h5 id="parallel-pattern"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#parallel-pattern">Parallel Pattern</a></h5>
+<ul>
+<li>すべてのコードブックを並列処理</li>
+<li>最も計算効率が良い</li>
+<li>品質は若干低下</li>
+</ul>
+<h5 id="coarse-first-pattern"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#coarse-first-pattern">Coarse First Pattern</a></h5>
+<ul>
+<li>粗いコードブックを優先的に処理</li>
+<li>2段階の生成プロセス</li>
+<li>品質と効率性のバランスを取る</li>
+</ul>
+<h4 id="23"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#23">2.3 モデルアーキテクチャの詳細</a></h4>
+<ul>
+<li>レイヤー正規化の使用</li>
+<li>残差接続の実装</li>
+<li>クロスアテンション機構</li>
+<li>ポジショナルエンコーディング</li>
+</ul>
+<h3 id="3"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#3">3. 条件付け手法の詳細実装</a></h3>
+<h4 id="31"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#31">3.1 テキストによる条件付け</a></h4>
+<h5 id="t5"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#t5">T5エンコーダー</a></h5>
+<ul>
+<li>事前学習済みモデルの活用</li>
+<li>テキスト表現の効率的な抽出</li>
+<li>汎用的な言語理解能力</li>
+</ul>
+<h5 id="flan-t5"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#flan-t5">FLAN-T5</a></h5>
+<ul>
+<li>インストラクションベースの言語モデル</li>
+<li>より高度なテキスト理解</li>
+<li>タスク特化型の処理</li>
+</ul>
+<h5 id="clap"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#clap">CLAP</a></h5>
+<ul>
+<li>テキストと音声の結合表現学習</li>
+<li>マルチモーダルな理解能力</li>
+<li>より自然な音楽生成</li>
+</ul>
+<h4 id="32"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#32">3.2 メロディーによる条件付け</a></h4>
+<h5 id="_1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#_1">クロマグラム処理</a></h5>
+<ul>
+<li>音楽の調性情報の抽出</li>
+<li>時間周波数表現の利用</li>
+<li>情報のボトルネック導入による過学習防止</li>
+</ul>
+<h5 id="_2"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#_2">教師なし学習アプローチ</a></h5>
+<ul>
+<li>教師データ不要</li>
+<li>スケーラブルな学習</li>
+<li>柔軟な適用可能性</li>
+</ul>
+<h3 id="4"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#4">4. 実験結果の詳細分析</a></h3>
+<h4 id="41"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#41">4.1 評価指標</a></h4>
+<ul>
+<li>FAD (Fréchet Audio Distance)</li>
+<li>KL divergence</li>
+<li>CLAP score</li>
+<li>人間による主観評価（品質・関連性）</li>
+</ul>
+<h4 id="42"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#42">4.2 比較実験結果</a></h4>
+<h5 id="_3"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#_3">定量的評価</a></h5>
+<ul>
+<li>FADスコア：3.1-3.8（モデルサイズによる）</li>
+<li>KL divergence：1.22-1.28</li>
+<li>CLAPスコア：0.31-0.32</li>
+</ul>
+<h5 id="_4"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#_4">主観評価結果</a></h5>
+<ul>
+<li>全体的品質：84.81/100</li>
+<li>テキスト関連性：82.47/100</li>
+<li>競合モデルを上回る評価</li>
+</ul>
+<h4 id="43"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#43">4.3 ステレオ音声生成の実装</a></h4>
+<p><img alt="ステレオパターン" src="https://github.com/user-attachments/assets/30f53d2c-6a24-419e-931d-54ffb507d48d" /></p>
+<h5 id="stereo-delay-pattern"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#stereo-delay-pattern">Stereo Delay Pattern</a></h5>
+<ul>
+<li>左右チャンネルの独立処理</li>
+<li>チャンネル間の遅延導入</li>
+<li>空間的な表現の実現</li>
+</ul>
+<h5 id="stereo-partial-delay-pattern"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#stereo-partial-delay-pattern">Stereo Partial Delay Pattern</a></h5>
+<ul>
+<li>部分的な遅延の導入</li>
+<li>効率的な処理</li>
+<li>品質維持の工夫</li>
+</ul>
+<h3 id="5"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#5">5. 技術的貢献の詳細</a></h3>
+<h4 id="51"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#51">5.1 モデルの簡素化</a></h4>
+<ul>
+<li>単一ステージの設計</li>
+<li>効率的なトークン配置</li>
+<li>計算コストの削減</li>
+</ul>
+<h4 id="52"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#52">5.2 制御機能の実装</a></h4>
+<ul>
+<li>テキストベースの制御</li>
+<li>メロディーベースの制御</li>
+<li>柔軟な生成オプション</li>
+</ul>
+<h4 id="53"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#53">5.3 品質向上の工夫</a></h4>
+<ul>
+<li>効率的なサンプリング</li>
+<li>ノイズ制御</li>
+<li>高解像度音声生成</li>
+</ul>
+<h3 id="6"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#6">6. 限界と今後の課題</a></h3>
+<h4 id="61"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#61">6.1 現在の制限事項</a></h4>
+<ul>
+<li>細かな制御の難しさ</li>
+<li>データ拡張の必要性</li>
+<li>データセットの偏り</li>
+</ul>
+<h4 id="62"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#62">6.2 社会的な課題</a></h4>
+<ul>
+<li>アーティストとの共存</li>
+<li>著作権問題</li>
+<li>倫理的考慮</li>
+</ul>
+<h4 id="63"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#63">6.3 将来の研究方向</a></h4>
+<ul>
+<li>より細かな制御機能の開発</li>
+<li>データセットの多様化</li>
+<li>計算効率の更なる向上</li>
+<li>ユーザーインターフェースの改善</li>
+</ul>
+<h3 id="7"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#7">7. 産業への影響と応用</a></h3>
+<h4 id="71"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#71">7.1 音楽制作への応用</a></h4>
+<ul>
+<li>プロフェッショナルツールとしての利用</li>
+<li>アマチュア向けの創作支援</li>
+<li>音楽教育への活用</li>
+</ul>
+<h4 id="72"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#72">7.2 技術的影響</a></h4>
+<ul>
+<li>音声処理技術への影響</li>
+<li>AI生成モデルの発展</li>
+<li>新しい表現手法の可能性</li>
+</ul>
+<h4 id="73"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#73">7.3 今後の展望</a></h4>
+<ul>
+<li>より自然な音楽生成</li>
+<li>リアルタイム処理の実現</li>
+<li>インタラクティブな音楽生成</li>
+</ul>
+<p>この研究は、AIによる音楽生成の分野に大きな進展をもたらし、特にモデルの単純化と品質向上の両立を実現した点で重要な意義を持ちます。今後のAI音楽生成技術の基礎となる可能性が高い研究といえます。</p>
+<hr />
+<h3 id="musicgen_1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#musicgen_1">MUSICGENの特徴と仕組みの詳細解説</a></h3>
+<h3 id="1_1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#1_1">1. 基本的な仕組み</a></h3>
+<h4 id="_5"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#_5">音楽の分解と再構成</a></h4>
+<ol>
+<li><strong>音声のデジタル化</strong></li>
+<li>音楽を細かい数値データに変換</li>
+<li>
+<p>1秒間に32,000回のサンプリング</p>
+</li>
+<li>
+<p><strong>トークン化</strong></p>
+</li>
+<li>EnCodecという技術で音楽を「トークン」に分解</li>
+<li>トークン = 音楽の特徴を表す小さな単位</li>
+<li>
+<p>例：メロディ、リズム、音色などの情報を含む</p>
+</li>
+<li>
+<p><strong>データの圧縮</strong></p>
+</li>
+<li>大量の音声データを効率的に扱える形に変換</li>
+<li>重要な特徴を残しながら情報を圧縮</li>
+</ol>
+<h3 id="2"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#2">2. 主要な機能と実現方法</a></h3>
+<h4 id="a"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#a">A. テキストによる音楽生成</a></h4>
+<ol>
+<li><strong>テキスト処理の仕組み</strong></li>
+<li>T5という言語モデルでテキストを解析</li>
+<li>音楽の特徴に関する情報を抽出</li>
+<li>
+<p>例：「90年代のロック」→ tempo(速さ), genre(ジャンル), instruments(楽器)などの情報に変換</p>
+</li>
+<li>
+<p><strong>生成プロセス</strong>
+   ```
+   入力：「エレキギターが印象的な明るいロック」
+   ↓
+   テキスト解析</p>
+</li>
+<li>テンポ：中速〜速め</li>
+<li>主要楽器：エレキギター</li>
+<li>雰囲気：明るい</li>
+<li>ジャンル：ロック
+   ↓
+   音楽生成</li>
+<li>指定された特徴に基づいて音楽を組み立て
+   ```</li>
+</ol>
+<h4 id="b"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#b">B. メロディによる制御</a></h4>
+<ol>
+<li><strong>クロマグラム技術</strong></li>
+<li>メロディの特徴を数値化</li>
+<li>音の高さと時間の関係を表現</li>
+<li>
+<p>例：ドレミファソラシドの音程情報を時間軸で記録</p>
+</li>
+<li>
+<p><strong>メロディの反映方法</strong>
+   ```
+   入力メロディ（ハミングなど）
+   ↓
+   クロマグラム分析</p>
+</li>
+<li>音の高さの変化を検出</li>
+<li>リズムパターンを認識
+   ↓
+   新しい音楽生成</li>
+<li>元のメロディの特徴を保持</li>
+<li>新しいアレンジやハーモニーを追加
+   ```</li>
+</ol>
+<h4 id="c"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#c">C. 高品質な音声生成</a></h4>
+<ol>
+<li><strong>トランスフォーマーモデル</strong></li>
+<li>AIの中核となる技術</li>
+<li>音楽の長期的な構造を理解</li>
+<li>
+<p>調和の取れた音楽を生成</p>
+</li>
+<li>
+<p><strong>品質向上の工夫</strong>
+   ```
+   生成プロセス
+   ↓
+   品質チェック</p>
+</li>
+<li>不協和音の検出</li>
+<li>リズムの一貫性確認
+   ↓
+   修正・調整</li>
+<li>問題箇所の修正</li>
+<li>全体のバランス調整
+   ```</li>
+</ol>
+<h3 id="3_1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#3_1">3. 独自の技術的特徴</a></h3>
+<h4 id="a_1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#a_1">A. コードブックパターン</a></h4>
+<ul>
+<li>音楽データを効率的に扱う独自の方法</li>
+<li>複数の情報を並列で処理</li>
+<li>処理速度と品質のバランスを最適化</li>
+</ul>
+<pre><code>従来の方法：
+データ → モデル1 → モデル2 → モデル3 → 音楽
+
+MUSICGENの方法：
+データ → 単一の高性能モデル → 音楽
+</code></pre>
+<h4 id="b_1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#b_1">B. ステレオ音声対応</a></h4>
+<ol>
+<li><strong>左右チャンネルの処理</strong></li>
+<li>独立したチャンネル処理</li>
+<li>空間的な音の広がりを表現</li>
+<li>
+<p>自然な立体音響を実現</p>
+</li>
+<li>
+<p><strong>効率的な処理</strong>
+   <code>モノラル音声の2倍の情報量
+   ↓
+   効率的な並列処理
+   ↓
+   計算コストを抑えながら高品質な立体音響を実現</code></p>
+</li>
+</ol>
+<h3 id="4_1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#4_1">4. 実用的な特徴</a></h3>
+<h4 id="a_2"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#a_2">A. 柔軟な制御</a></h4>
+<ul>
+<li>テキストとメロディの組み合わせ可能</li>
+<li>生成過程での微調整が可能</li>
+<li>ユーザーの意図を反映しやすい</li>
+</ul>
+<h4 id="b_2"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#b_2">B. 高速な処理</a></h4>
+<ul>
+<li>一般的なコンピュータでも実行可能</li>
+<li>リアルタイムに近い応答</li>
+<li>実用的な処理時間</li>
+</ul>
+<h4 id="c_1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#c_1">C. 安定した品質</a></h4>
+<ul>
+<li>一貫した音楽品質</li>
+<li>自然な音楽構造</li>
+<li>人間の耳に心地よい音楽生成</li>
+</ul>
+<p>このように、MUSICGENは複雑な音楽生成の課題を、革新的な技術と効率的な処理方法で解決しています。シンプルな構造でありながら、高品質な音楽生成を実現している点が大きな特徴です。</p>
+<hr />
+<h3 id="musicgen_2"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#musicgen_2">MUSICGENの音楽生成プロセスの詳細</a></h3>
+<h3 id="1_2"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#1_2">1. 音楽生成の全体的な流れ</a></h3>
+<pre><code class="language-mermaid">graph TD
+    A[テキスト入力] --&gt; B[特徴抽出]
+    B --&gt; C[トークン生成]
+    C --&gt; D[音楽構築]
+    D --&gt; E[最終的な音楽]
+</code></pre>
+<h3 id="2_1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#2_1">2. 各ステップの詳細</a></h3>
+<h4 id="step-1"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#step-1">Step 1: テキストから音楽的特徴への変換</a></h4>
+<pre><code>入力例：「エレキギターが印象的な明るいロック」
+
+↓ T5エンコーダーによる解析
+
+抽出される情報：
+- ジャンル: ロック
+- 主要楽器: エレキギター
+- テンポ: 中速〜速め
+- 雰囲気: 明るい
+</code></pre>
+<h4 id="step-2"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#step-2">Step 2: トークン生成プロセス</a></h4>
+<p>トランスフォーマーモデルが以下の要素を順番に生成：</p>
+<ol>
+<li><strong>基本構造の生成</strong></li>
+<li>テンポと拍子の設定</li>
+<li>曲の基本的な長さの決定</li>
+<li>
+<p>主要なコード進行の決定</p>
+</li>
+<li>
+<p><strong>メロディラインの生成</strong></p>
+</li>
+<li>主要なメロディの作成</li>
+<li>フレーズの構築</li>
+<li>
+<p>音の高さとリズムの決定</p>
+</li>
+<li>
+<p><strong>ハーモニーの構築</strong></p>
+</li>
+<li>コード進行の詳細化</li>
+<li>和音の重なりの決定</li>
+<li>
+<p>調性の維持</p>
+</li>
+<li>
+<p><strong>楽器パートの生成</strong></p>
+</li>
+<li>各楽器のパートを作成</li>
+<li>音色の特徴を反映</li>
+<li>パートごとのバランス調整</li>
+</ol>
+<h4 id="step-3"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#step-3">Step 3: 音楽データの構築方法</a></h4>
+<pre><code>時間軸 →
+|-------|-------|-------|-------|
+   ↑       ↑       ↑       ↑
+   1小節    2小節    3小節    4小節
+
+各小節内で：
+- メロディトークン
+- リズムトークン
+- ハーモニートークン
+- 音色トークン
+を組み合わせて音楽を構築
+</code></pre>
+<h4 id="step-4"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#step-4">Step 4: 自己回帰的な生成プロセス</a></h4>
+<ol>
+<li>
+<p><strong>シーケンシャルな生成</strong>
+   <code>前の音 → 次の音 → さらに次の音
+   （前の音を考慮しながら次の音を決定）</code></p>
+</li>
+<li>
+<p><strong>パターンの認識と適用</strong></p>
+</li>
+<li>繰り返しパターンの検出</li>
+<li>音楽的な規則性の維持</li>
+<li>
+<p>自然な展開の生成</p>
+</li>
+<li>
+<p><strong>一貫性の確保</strong></p>
+</li>
+<li>調性の維持</li>
+<li>リズムの一貫性</li>
+<li>メロディの自然な流れ</li>
+</ol>
+<h4 id="step-5"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#step-5">Step 5: 品質向上のための処理</a></h4>
+<ol>
+<li><strong>音楽理論に基づくチェック</strong></li>
+<li>不協和音の検出と修正</li>
+<li>リズムパターンの確認</li>
+<li>
+<p>メロディの自然さの確認</p>
+</li>
+<li>
+<p><strong>全体的なバランス調整</strong></p>
+</li>
+<li>音量バランスの調整</li>
+<li>周波数特性の最適化</li>
+<li>ステレオ感の調整</li>
+</ol>
+<h3 id="3_2"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#3_2">3. 技術的な特徴</a></h3>
+<h4 id="_6"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#_6">トークン処理の特徴</a></h4>
+<pre><code>音楽データの表現：
+1. コードブック1: 基本的な音楽情報
+2. コードブック2: 詳細な音色情報
+3. コードブック3: 音響的な特徴
+4. コードブック4: 微細な変化
+</code></pre>
+<h4 id="_7"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#_7">並列処理による効率化</a></h4>
+<pre><code>従来の方法：
+トークン1 → トークン2 → トークン3 → トークン4
+
+MUSICGENの方法：
+トークン1
+トークン2  → 同時処理
+トークン3
+トークン4
+</code></pre>
+<h3 id="4_2"><a class="toclink" href="../../../../2024/01/30/simple-and-controllable-music-generation/#4_2">4. 最終的な出力</a></h3>
+<ol>
+<li><strong>音楽データの統合</strong></li>
+<li>各トークンの情報を統合</li>
+<li>連続的な音声波形に変換</li>
+<li>
+<p>32kHzのサンプリングレートで出力</p>
+</li>
+<li>
+<p><strong>品質の最終確認</strong></p>
+</li>
+<li>音楽的な一貫性の確認</li>
+<li>技術的な品質チェック</li>
+<li>指定された特徴との整合性確認</li>
+</ol>
+<p>このように、MUSICGENは複雑な音楽生成プロセスを、効率的かつ高品質に実行しています。特に、トークンベースのアプローチと並列処理の組み合わせにより、従来のモデルより高速で高品質な音楽生成を実現しています。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-01-16 00:00:00+00:00">2024年1月16日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../sound/" class="md-meta__link">Sound</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約1分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="stemgen-a-music-generation-model-that-listens"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/">StemGen: A music generation model that listens</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2312.08723">https://arxiv.org/abs/2312.08723</a></li>
+<li><a href="https://arxiv.org/pdf/2312.08723">https://arxiv.org/pdf/2312.08723</a></li>
+</ul>
+<hr />
+<h3 id="stemgen-ai"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#stemgen-ai">StemGen: コンテキストを理解して音楽を生成するAIモデル</a></h3>
+<h3 id="1"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#1">1. 論文の概要</a></h3>
+<p>この論文は、ByteDanceの研究チームが開発した「StemGen」という新しい音楽生成AIモデルについて解説しています。従来の音楽生成AIと異なり、このモデルは既存の音楽（コンテキスト）を「聴いて」、それに合わせた新しいパートを生成することができます。</p>
+<h4 id="_1"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#_1">主なポイント</a></h4>
+<ul>
+<li>既存の音楽コンテキストを理解して適切な応答を生成</li>
+<li>非自己回帰的なTransformerベースのアーキテクチャを採用</li>
+<li>音声品質は最新の文章条件付きモデルと同等</li>
+<li>生成された音楽はコンテキストと高い一貫性を持つ</li>
+</ul>
+<h3 id="2-ai"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#2-ai">2. 従来の音楽生成AIとの違い</a></h3>
+<h4 id="_2"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#_2">従来のモデル</a></h4>
+<ul>
+<li>抽象的な条件（テキスト説明やスタイルカテゴリ）から音楽を生成</li>
+<li>完全なミックス済み音楽を出力</li>
+<li>既存の音楽との相互作用が限定的</li>
+</ul>
+<h4 id="stemgen"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#stemgen">StemGenの特徴</a></h4>
+<ul>
+<li>既存の音楽を入力として受け取る</li>
+<li>個別のステム（楽器パートなど）を生成</li>
+<li>音楽制作の実際のワークフローにより適合</li>
+</ul>
+<h3 id="3"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#3">3. モデルの仕組み</a></h3>
+<h4 id="_3"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#_3">トレーニングの方法</a></h4>
+<p><img alt="トレーニングの概要図" src="https://github.com/user-attachments/assets/8b4d3aeb-e182-4a36-86b8-2b35a494cda0" /></p>
+<ol>
+<li>音楽データをステム（個別パート）に分離</li>
+<li>ランダムにN個のステムを選んでミックス（コンテキスト）を作成</li>
+<li>残りのステムから1つを選んでターゲットとする</li>
+<li>コンテキストとターゲットのペアでモデルを学習</li>
+</ol>
+<h4 id="_4"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#_4">アーキテクチャの特徴</a></h4>
+<ul>
+<li>音声をトークン化して処理</li>
+<li>複数のオーディオチャンネルを単一のシーケンス要素に結合</li>
+<li>非自己回帰的なTransformerモデルを使用</li>
+<li>新しいトークン結合手法を導入</li>
+</ul>
+<h3 id="4"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#4">4. 技術的な革新点</a></h3>
+<h4 id="1_1"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#1_1">1. 因果バイアス付き反復デコーディング</a></h4>
+<ul>
+<li>シーケンスの早い要素から順にサンプリング</li>
+<li>より自然な音の遷移を実現</li>
+<li>振幅の不自然な揺らぎを防止</li>
+</ul>
+<h4 id="2"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#2">2. マルチソース分類器フリーガイダンス</a></h4>
+<ul>
+<li>音声コンテキストと他の条件付け情報を独立して制御</li>
+<li>より強力なコンテキストとの整合性を実現</li>
+<li>複数の条件付けソースに対して個別の重み付けが可能</li>
+</ul>
+<h3 id="5"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#5">5. 評価と結果</a></h3>
+<h4 id="_5"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#_5">評価指標</a></h4>
+<ol>
+<li>Fr´echet Audio Distance (FAD)</li>
+<li>生成音声の品質を評価</li>
+<li>
+<p>VGGish埋め込みを使用</p>
+</li>
+<li>
+<p>Music Information Retrieval Descriptor Distance (MIRDD)</p>
+</li>
+<li>ピッチ、リズム、構造などの音楽的特徴を評価</li>
+<li>複数のMIR記述子を使用</li>
+</ol>
+<h4 id="_6"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#_6">評価結果</a></h4>
+<ul>
+<li>FADスコアは最新の文章条件付きモデルと同等</li>
+<li>マルチソース分類器フリーガイダンスの効果を確認</li>
+<li>因果バイアスの導入により音質と音楽的整合性が向上</li>
+<li>人間の演奏データでトレーニングしたモデルがより良い結果を示す</li>
+</ul>
+<h3 id="6"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#6">6. 実用性と応用</a></h3>
+<h4 id="_7"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#_7">想定される用途</a></h4>
+<ul>
+<li>音楽制作における新しいパートの生成</li>
+<li>既存の楽曲への追加パート作成</li>
+<li>プロデューサーや音楽家の創作支援</li>
+</ul>
+<h4 id="_8"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#_8">利点</a></h4>
+<ul>
+<li>既存のワークフローとの親和性が高い</li>
+<li>音楽的なコンテキストを理解して適切な応答を生成</li>
+<li>高品質な音声出力が可能</li>
+</ul>
+<h3 id="7"><a class="toclink" href="../../../../2024/01/16/stemgen-a-music-generation-model-that-listens/#7">7. 結論と今後の展望</a></h3>
+<ul>
+<li>ステムベースの音楽生成の新しいフレームワークを確立</li>
+<li>音声品質と音楽的整合性の両面で高いパフォーマンスを実現</li>
+<li>実際の音楽制作現場での活用が期待される</li>
+</ul>
+<p>この研究は、AIを使った音楽生成の新しいアプローチを示すとともに、実際の音楽制作ワークフローにより適した方法を提案しています。既存の音楽との調和を保ちながら新しいパートを生成できる能力は、音楽制作の現場に大きな可能性をもたらすと考えられます。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-11-24 00:00:00+00:00">2023年11月24日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../computation-and-language/" class="md-meta__link">Computation and Language</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約1分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="a-survey-of-large-language-models"><a class="toclink" href="../../../../2023/11/24/a-survey-of-large-language-models/">A Survey of Large Language Models</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2303.18223v10">https://arxiv.org/abs/2303.18223v10</a></li>
+<li><a href="https://arxiv.org/pdf/2303.18223v10">https://arxiv.org/pdf/2303.18223v10</a></li>
+<li><a href="https://ar5iv.labs.arxiv.org/html/2303.18223">https://ar5iv.labs.arxiv.org/html/2303.18223</a></li>
+</ul>
+<hr />
+<h3 id="_1"><a class="toclink" href="../../../../2023/11/24/a-survey-of-large-language-models/#_1">序論</a></h3>
+<p>本論文は、大規模言語モデル（LLM）の発展とその現状を包括的に調査し、研究者がLLMの理解と利用を深めるための基礎を提供することを目的としています。</p>
+<h3 id="_2"><a class="toclink" href="../../../../2023/11/24/a-survey-of-large-language-models/#_2">大規模言語モデルとは</a></h3>
+<p>LLMとは、膨大なデータを学習することで、文章の生成や理解を可能にする人工知能モデルです。これらのモデルは、言語処理の精度を飛躍的に向上させ、多くの応用分野で活用されています。</p>
+<h3 id="_3"><a class="toclink" href="../../../../2023/11/24/a-survey-of-large-language-models/#_3">進化の過程</a></h3>
+<p>初期の言語モデルは統計的手法に基づいていましたが、現在のLLMはニューラルネットワークを用いており、文脈に応じた高度な表現を学習します。特にGPT-4などの最新モデルは、一般的なタスク解決能力を持つとされています。</p>
+<h3 id="_4"><a class="toclink" href="../../../../2023/11/24/a-survey-of-large-language-models/#_4">大規模言語モデルの特徴</a></h3>
+<p>LLMは、以下の三つの主要な特徴を持っています：
+1. <strong>新たな能力の発現</strong>：従来の小規模なモデルでは見られなかった高度なタスク処理能力。
+2. <strong>人間とAIのインターフェースの変革</strong>：プロンプトを通じた操作方法の普及。
+3. <strong>研究とエンジニアリングの融合</strong>：大規模なデータ処理と分散トレーニングが必要。</p>
+<h3 id="_5"><a class="toclink" href="../../../../2023/11/24/a-survey-of-large-language-models/#_5">研究の課題</a></h3>
+<p>LLMの研究には以下の課題があります：
+1. <strong>出現能力の解明</strong>：LLMがなぜ新たな能力を持つのかの理解が不足。
+2. <strong>訓練の難しさ</strong>：高い計算リソースが必要であり、繰り返しの実験が困難。
+3. <strong>人間の価値観との整合性</strong>：有害な内容を生成するリスクの管理。</p>
+<h3 id="_6"><a class="toclink" href="../../../../2023/11/24/a-survey-of-large-language-models/#_6">結論</a></h3>
+<p>本論文は、LLMの進化とその特徴を体系的にまとめ、今後の研究や応用における指針を示しています。詳細な分析やリソースは、<a href="https://github.com/RUCAIBox/LLMSurvey">GitHubプロジェクト</a>で提供されています。</p>
+<hr />
+<h3 id="ai-generated-diagram"><a class="toclink" href="../../../../2023/11/24/a-survey-of-large-language-models/#ai-generated-diagram">AI generated diagram</a></h3>
+<pre><code class="language-mermaid">graph TD
+    A[大規模言語モデルの調査] --&gt; B[大規模言語モデルとは]
+    A --&gt; C[進化の過程]
+    A --&gt; D[大規模言語モデルの特徴]
+    A --&gt; E[研究の課題]
+    A --&gt; F[結論]
+
+    B --&gt; B1[LLMとは]
+    B1 --&gt; B2[文章の生成や理解]
+    B1 --&gt; B3[多くの応用分野で活用]
+
+    C --&gt; C1[統計的手法からニューラルネットワークへ]
+    C1 --&gt; C2[文脈に応じた高度な表現]
+    C1 --&gt; C3[最新モデル（GPT-4）]
+
+    D --&gt; D1[新たな能力の発現]
+    D --&gt; D2[人間とAIのインターフェースの変革]
+    D --&gt; D3[研究とエンジニアリングの融合]
+
+    E --&gt; E1[出現能力の解明]
+    E --&gt; E2[訓練の難しさ]
+    E --&gt; E3[人間の価値観との整合性]
+
+    F --&gt; F1[LLMの進化と特徴のまとめ]
+    F --&gt; F2[今後の研究や応用の指針]
+    F --&gt; F3[GitHubプロジェクト]
+</code></pre>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-11-03 00:00:00+00:00">2023年11月3日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../computation-and-language/" class="md-meta__link">Computation and Language</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約1分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="dont-make-your-llm-an-evaluation-benchmark-cheater"><a class="toclink" href="../../../../2023/11/03/dont-make-your-llm-an-evaluation-benchmark-cheater/">Don't Make Your LLM an Evaluation Benchmark Cheater</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2311.01964">https://arxiv.org/abs/2311.01964</a></li>
+<li><a href="https://arxiv.org/pdf/2311.01964">https://arxiv.org/pdf/2311.01964</a></li>
+</ul>
+<hr />
+<h3 id="_1"><a class="toclink" href="../../../../2023/11/03/dont-make-your-llm-an-evaluation-benchmark-cheater/#_1">序論</a></h3>
+<p>本論文では、大規模言語モデル（LLM）の評価における不適切なベンチマークの使用とその影響について議論します。特に、評価セットに関連するデータがモデル訓練に使用される「ベンチマーク漏洩」の問題に焦点を当てます。</p>
+<h3 id="_2"><a class="toclink" href="../../../../2023/11/03/dont-make-your-llm-an-evaluation-benchmark-cheater/#_2">評価ベンチマークの問題</a></h3>
+<p>LLMの性能を評価するために、多くの高品質な評価ベンチマークが提案されています。しかし、これらのベンチマークの適切な使用と、公正なモデル比較に対する懸念が増しています。</p>
+<h3 id="_3"><a class="toclink" href="../../../../2023/11/03/dont-make-your-llm-an-evaluation-benchmark-cheater/#_3">ベンチマーク漏洩の影響</a></h3>
+<p>ベンチマーク漏洩は、テストデータや関連データが訓練データに含まれる現象を指します。これにより、LLMの評価結果が不正に向上し、モデルの性能評価が信頼できなくなります。</p>
+<h3 id="_4"><a class="toclink" href="../../../../2023/11/03/dont-make-your-llm-an-evaluation-benchmark-cheater/#_4">実験と結果</a></h3>
+<p>実験では、異なる漏洩設定で複数のモデルを訓練し、評価しました。その結果、ベンチマーク漏洩が評価結果を不正に向上させることが確認されました。特に、小規模なモデルでも大規模なモデルを上回る結果を示すことがありました。</p>
+<h3 id="_5"><a class="toclink" href="../../../../2023/11/03/dont-make-your-llm-an-evaluation-benchmark-cheater/#_5">改善策</a></h3>
+<p>評価ベンチマークの適切な使用を促進するために、以下の改善策を提案します：
+- データ汚染のチェックを実施
+- 評価ベンチマークの多様なソースからの収集
+- テストプロンプトの漏洩を避ける</p>
+<h3 id="_6"><a class="toclink" href="../../../../2023/11/03/dont-make-your-llm-an-evaluation-benchmark-cheater/#_6">結論</a></h3>
+<p>ベンチマーク漏洩の問題は、LLMの評価において重大なリスクをもたらします。適切な評価方法を確立し、公正な比較を実現するために、提案された改善策を採用することが重要です。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-10-12 00:00:00+00:00">2023年10月12日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../computation-and-language/" class="md-meta__link">Computation and Language</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約1分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="llmmaps-a-visual-metaphor-for-stratified-evaluation-of-large-language-models"><a class="toclink" href="../../../../2023/10/12/a-visual-metaphor-for-stratified-evaluation-of-large-language-models/">LLMMaps -- A Visual Metaphor for Stratified Evaluation of Large Language Models</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2304.00457">https://arxiv.org/abs/2304.00457</a></li>
+<li><a href="https://arxiv.org/pdf/2304.00457">https://arxiv.org/pdf/2304.00457</a></li>
+</ul>
+<hr />
+<h3 id="llmmaps-"><a class="toclink" href="../../../../2023/10/12/a-visual-metaphor-for-stratified-evaluation-of-large-language-models/#llmmaps-">LLMMaps - 大規模言語モデルの階層的評価のための視覚的メタファー</a></h3>
+<h3 id="_1"><a class="toclink" href="../../../../2023/10/12/a-visual-metaphor-for-stratified-evaluation-of-large-language-models/#_1">序論</a></h3>
+<p>この論文では、大規模言語モデル（LLM）の性能を詳細に評価するための新しい視覚化手法「LLMMaps」を提案します。特に、質問応答データセットを用いてLLMの知識能力を評価するための方法を提供します。</p>
+<h3 id="_2"><a class="toclink" href="../../../../2023/10/12/a-visual-metaphor-for-stratified-evaluation-of-large-language-models/#_2">背景</a></h3>
+<p>LLMは多くのタスクで優れた性能を示していますが、誤情報を生成する「幻覚」問題があります。これにより、LLMの評価が重要となっていますが、従来の評価方法は全体的な精度を報告するだけで、詳細な洞察を提供していません。</p>
+<h3 id="llmmaps"><a class="toclink" href="../../../../2023/10/12/a-visual-metaphor-for-stratified-evaluation-of-large-language-models/#llmmaps">LLMMapsの設計</a></h3>
+<p>LLMMapsは、質問応答データセットとLLMの応答を内部知識構造に変換し、さまざまなサブフィールドにおける性能を可視化します。また、複数のLLMの詳細な比較も可能です。</p>
+<h3 id="_3"><a class="toclink" href="../../../../2023/10/12/a-visual-metaphor-for-stratified-evaluation-of-large-language-models/#_3">知識分野の階層化</a></h3>
+<p>質問応答データセットを知識階層に基づいて階層化する方法を提案します。この階層化により、LLMの性能をより細かく評価し、開発者が改善すべき分野を特定することができます。</p>
+<h3 id="_4"><a class="toclink" href="../../../../2023/10/12/a-visual-metaphor-for-stratified-evaluation-of-large-language-models/#_4">実験と結果</a></h3>
+<p>BLOOM、GPT-2、GPT-3、ChatGPT、LLaMa-13Bなどの最新のLLMを用いて、LLMMapsの有効性を確認しました。また、ユーザー評価を通じて、その利便性と限界を検証しました。</p>
+<h3 id="_5"><a class="toclink" href="../../../../2023/10/12/a-visual-metaphor-for-stratified-evaluation-of-large-language-models/#_5">結論</a></h3>
+<p>LLMMapsは、LLMの知識能力を詳細に評価するための有力なツールです。これにより、開発者はLLMの性能を向上させるための具体的な指針を得ることができます。</p>
+<p><img alt="LLMMaps" src="https://raw.githubusercontent.com/viscom-ulm/LLMMaps/362b44670acd3652e16acd181eef35d48ff877d4/chatgpt_pubmedqa.svg" /></p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-10-12 00:00:00+00:00">2023年10月12日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../artificial-intelligence/" class="md-meta__link">Artificial Intelligence</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約1分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="learn-from-model-beyond-fine-tuning-a-survey"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/">Learn From Model Beyond Fine-Tuning: A Survey</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2310.08184">https://arxiv.org/abs/2310.08184</a></li>
+<li><a href="https://arxiv.org/pdf/2310.08184">https://arxiv.org/pdf/2310.08184</a></li>
+</ul>
+<hr />
+<h3 id="_1"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_1">序論</a></h3>
+<p>本論文は、従来のファインチューニングを超えた「Learn From Model（LFM）」アプローチについて包括的にレビューします。LFMは、既存の大規模言語モデル（FM）を活用し、新しいタスクへの適応や性能向上を図る手法です。</p>
+<h3 id="_2"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_2">モデルチューニング</a></h3>
+<h4 id="_3"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_3">ファインチューニング</a></h4>
+<p>ファインチューニングは、既存のモデルに新しいデータで再訓練を行い、特定のタスクに適応させる方法です。これにより、モデルのパフォーマンスを向上させることができますが、計算コストが高く、過学習のリスクもあります。</p>
+<h4 id="_4"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_4">アダプターチューニング</a></h4>
+<p>アダプターチューニングは、モデルの内部パラメータを固定し、追加のトレーニング可能なパラメータ（アダプター）を挿入して、特定のタスクに適応させる方法です。これにより、計算コストを削減しつつ、性能を維持します。</p>
+<h4 id="_5"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_5">プロンプトチューニング</a></h4>
+<p>プロンプトチューニングは、モデルのパラメータを固定し、最適なプロンプトを設計してモデルの性能を引き出す方法です。ホワイトボックスとブラックボックスの設定があり、後者はモデルのパラメータにアクセスできない状況でも効果を発揮します。</p>
+<h4 id="_6"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_6">インストラクションチューニング</a></h4>
+<p>インストラクションチューニングは、モデルに命令形式でデータを提供し、特定のタスクを実行する能力を向上させる方法です。これにより、見たことのないタスクにも対応できる汎用性が向上します。</p>
+<h3 id="_7"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_7">モデル蒸留</a></h3>
+<p>モデル蒸留は、大規模な教師モデルから小規模な生徒モデルへ知識を移転し、計算リソースが限られた環境でも高性能を維持する手法です。</p>
+<h3 id="_8"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_8">モデル再利用</a></h3>
+<p>モデル再利用は、複数のモデルの予測を組み合わせて全体の性能を向上させる方法です。これにより、個々のモデルの強みを活かしつつ、弱点を補完します。</p>
+<h3 id="_9"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_9">メタラーニング</a></h3>
+<p>メタラーニングは、新しいタスクに迅速に適応できるモデルを設計する手法です。これにより、連続的な学習や複数タスクの同時処理が可能になります。</p>
+<h3 id="_10"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_10">モデル編集</a></h3>
+<p>モデル編集は、モデルの知識を直接調整して性能を向上させる方法です。これにより、再訓練のコストを抑えつつ、モデルの適応性を高めます。</p>
+<h3 id="_11"><a class="toclink" href="../../../../2023/10/12/learn-from-model-beyond-fine-tuning/#_11">結論</a></h3>
+<p>LFMは、データ中心の学習を超え、既存の大規模モデルを活用する新しいパラダイムです。これにより、計算コストの削減、データプライバシーの保護、モデルの汎用性の向上が期待されます。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-10-02 00:00:00+00:00">2023年10月2日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../computation-and-language/" class="md-meta__link">Computation and Language</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約1分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="textbooks-are-all-you-need"><a class="toclink" href="../../../../2023/10/02/textbooks-are-all-you-need/">Textbooks Are All You Need</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2306.11644">https://arxiv.org/abs/2306.11644</a></li>
+<li><a href="https://arxiv.org/pdf/2306.11644">https://arxiv.org/pdf/2306.11644</a></li>
+</ul>
+<hr />
+<h3 id="_1"><a class="toclink" href="../../../../2023/10/02/textbooks-are-all-you-need/#_1">序論</a></h3>
+<p>本論文では、コード生成に特化した新しい大規模言語モデルphi-1を紹介します。このモデルは、他の競合モデルに比べて大幅に小型化されているにもかかわらず、高い性能を発揮します。</p>
+<h3 id="_2"><a class="toclink" href="../../../../2023/10/02/textbooks-are-all-you-need/#_2">研究の目的</a></h3>
+<p>モデルの性能向上には高品質なデータが重要であることを示し、特に「教科書品質」のデータを使用することで、小規模なモデルでも高性能を達成できることを目指しています。</p>
+<h3 id="_3"><a class="toclink" href="../../../../2023/10/02/textbooks-are-all-you-need/#_3">方法</a></h3>
+<p>phi-1は、GPT-3.5を使用して生成された教科書データと、Webから収集された高品質なデータを組み合わせて訓練されました。また、Pythonのコード生成タスクに特化したデータセットで微調整を行いました。</p>
+<h3 id="_4"><a class="toclink" href="../../../../2023/10/02/textbooks-are-all-you-need/#_4">結果</a></h3>
+<p>phi-1は、HumanEvalとMBPPのベンチマークで高い精度を達成しました。特に、微調整後のphi-1は、多くの既存モデルを上回る性能を示しています。</p>
+<h3 id="_5"><a class="toclink" href="../../../../2023/10/02/textbooks-are-all-you-need/#_5">結論</a></h3>
+<p>高品質なデータを使用することで、計算資源を大幅に節約しつつ、高性能なモデルを訓練できることが示されました。phi-1は、小規模なデータセットと少ない訓練時間で優れた結果を達成しています。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-08-03 00:00:00+00:00">2023年8月3日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../sound/" class="md-meta__link">Sound</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約2分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/">MusicLDM: Enhancing Novelty in Text-to-Music Generation Using Beat-Synchronous Mixup Strategies</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2308.01546">https://arxiv.org/abs/2308.01546</a></li>
+<li><a href="https://arxiv.org/pdf/2308.01546">https://arxiv.org/pdf/2308.01546</a></li>
+</ul>
+<hr />
+<h3 id="musicldm"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#musicldm">MusicLDM: テキストから音楽生成を改善する研究</a></h3>
+<h3 id="1"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#1">1. 研究の概要と背景</a></h3>
+<p>この研究は、テキストから音楽を生成する新しいAIモデル「MusicLDM」を提案しています。</p>
+<h4 id="11"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#11">1.1 主な課題</a></h4>
+<p>テキストから音楽を生成する際の2つの主要な課題があります：</p>
+<ol>
+<li>学習データの不足</li>
+<li>画像生成と比べて、テキストと音楽のペアデータが少ない</li>
+<li>
+<p>音楽には旋律、ハーモニー、リズム、音色など複雑な要素がある</p>
+</li>
+<li>
+<p>著作権とコピー問題</p>
+</li>
+<li>生成された音楽が既存の曲に似すぎると著作権侵害の恐れ</li>
+<li>オリジナリティのある音楽生成が必要</li>
+</ol>
+<h4 id="12"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#12">1.2 提案手法</a></h4>
+<p>研究チームは以下の2つのアプローチで解決を図りました：</p>
+<ol>
+<li>MusicLDMモデルの開発</li>
+<li>Stable DiffusionとAudioLDMのアーキテクチャを音楽生成用に最適化</li>
+<li>
+<p>CLAPとHifi-GANを音楽データで再学習</p>
+</li>
+<li>
+<p>新しいデータ拡張手法の提案</p>
+</li>
+<li>ビート同期オーディオミックスアップ(BAM)</li>
+<li>ビート同期潜在空間ミックスアップ(BLM)</li>
+</ol>
+<h3 id="2-musicldm"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#2-musicldm">2. MusicLDMの技術詳細</a></h3>
+<h4 id="21"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#21">2.1 モデルのアーキテクチャ</a></h4>
+<pre><code class="language-mermaid">graph LR
+    %% Input Section
+    AW[Audio Waveform] --&gt; |STFT+MelFB| MS[Mel-spectrogram]
+    IT[Input Text: 'A spectacular dramatic trailer']
+
+    %% CLAP Processing
+    AW --&gt; |Audio Encoder| CAE[CLAP Audio Encoder]
+    IT --&gt; |Text Encoder| CTE[CLAP Text Encoder]
+
+    %% VAE Processing
+    MS --&gt; VAE_E[VAE Encoder]
+    VAE_E --&gt; LR[Latent Representation]
+
+    %% U-Net Diffusion
+    subgraph LDM[U-Net Latent Diffusion Model]
+        direction LR
+        F1[FiLM] --&gt; UN1[U-Net Block 1]
+        UN1 --&gt; UN2[U-Net Block 2]
+        UN2 --&gt; UN3[...]
+        CAE --&gt; |Audio Embedding| F1
+        CTE --&gt; |Text Embedding| F1
+    end
+
+    LR --&gt; LDM
+
+    %% Output Processing
+    LDM --&gt; VAE_D[VAE Decoder]
+    VAE_D --&gt; |OR| HG[Hifi-GAN]
+
+    %% Styling
+    classDef input fill:#e6f3ff,stroke:#2196F3
+    classDef encoder fill:#ffece6,stroke:#FF5722
+    classDef vae fill:#e6ffe6,stroke:#4CAF50
+    classDef diffusion fill:#ffe6f9,stroke:#9C27B0
+
+    class AW,IT,MS input
+    class CAE,CTE encoder
+    class VAE_E,VAE_D,LR vae
+    class LDM,F1,UN1,UN2,UN3 diffusion
+
+    %% Notes
+    subgraph Legend
+        I[Input] ---|STFT| E[Encoding] ---|Diffusion| D[Decoding]
+    end
+
+</code></pre>
+<p>MusicLDMは以下の3つの主要コンポーネントで構成されています：</p>
+<ol>
+<li>CLAP (Contrastive Language-Audio Pretraining)</li>
+<li>テキストと音声の関係性を学習するモデル</li>
+<li>
+<p>音声エンコーダーとテキストエンコーダーを含む</p>
+</li>
+<li>
+<p>VAE (Variational Auto-Encoder)</p>
+</li>
+<li>音声をより扱いやすい潜在表現に変換</li>
+<li>
+<p>エンコーダーとデコーダーで構成</p>
+</li>
+<li>
+<p>潜在拡散モデル</p>
+</li>
+<li>U-Net構造を持つ</li>
+<li>テキストの特徴を条件として音楽を生成</li>
+</ol>
+<h4 id="22"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#22">2.2 ビート同期ミックスアップ戦略</a></h4>
+<pre><code class="language-mermaid">graph LR
+    subgraph Pre-Processing
+        MD[Music Dataset] --&gt; BT[Beat Transformer]
+        BT --&gt; |tempo| TG[Tempo Grouping]
+        BT --&gt; |downbeat| DA[Downbeat Alignment]
+    end
+
+    subgraph BAM[Beat-Synchronous Audio Mix-Up]
+        TG --&gt; |aligned pairs| AM[Audio Mixing]
+        DA --&gt; |aligned pairs| AM
+        AM --&gt; CLAP
+        CLAP --&gt; DM1[Diffusion Model]
+    end
+
+    subgraph BLM[Beat-Synchronous Latent Mix-Up]
+        TG --&gt; |aligned pairs| VAE[VAE Encoder]
+        DA --&gt; |aligned pairs| VAE
+        VAE --&gt; LM[Latent Mixing]
+        LM --&gt; DM2[Diffusion Model]
+    end
+
+    style Pre-Processing fill:#e6f3ff
+    style BAM fill:#e6ffe6
+    style BLM fill:#ffe6f9
+
+    %% Adding notes
+    classDef note fill:#fff4e6,stroke:#ffa94d
+    class MD,BT,TG,DA note
+</code></pre>
+<p>2つのミックスアップ戦略が提案されています：</p>
+<ol>
+<li>ビート同期オーディオミックスアップ(BAM)</li>
+<li>音声波形レベルでのミックス</li>
+<li>テンポとビートを合わせて混合</li>
+<li>
+<p>音楽的な一貫性を保持</p>
+</li>
+<li>
+<p>ビート同期潜在空間ミックスアップ(BLM)</p>
+</li>
+<li>VAEの潜在空間でのミックス</li>
+<li>より自然な音楽生成が可能</li>
+<li>計算コストは高い</li>
+</ol>
+<h3 id="3"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#3">3. 実験と結果</a></h3>
+<h4 id="31"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#31">3.1 実験設定</a></h4>
+<ul>
+<li>データセット：Audiostock（9,000曲の訓練データ、1,000曲のテストデータ）</li>
+<li>サンプリングレート：16kHz</li>
+<li>音声長：10.24秒</li>
+</ul>
+<h4 id="32"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#32">3.2 評価指標</a></h4>
+<ol>
+<li>生成品質</li>
+<li>FD (Frechet Distance)</li>
+<li>IS (Inception Score)</li>
+<li>
+<p>KL (Kullback-Leibler) ダイバージェンス</p>
+</li>
+<li>
+<p>テキストとの関連性</p>
+</li>
+<li>
+<p>テキスト-音声類似度</p>
+</li>
+<li>
+<p>独創性</p>
+</li>
+<li>最近傍音声類似度比率</li>
+</ol>
+<h4 id="33"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#33">3.3 主な実験結果</a></h4>
+<ol>
+<li>生成品質の比較：</li>
+<li>MusicLDMは既存モデルより優れた性能</li>
+<li>
+<p>BLMが最も高い品質を達成</p>
+</li>
+<li>
+<p>テキストとの関連性：</p>
+</li>
+<li>オリジナルMusicLDMが最高スコア</li>
+<li>
+<p>ミックスアップ戦略でもある程度の関連性を維持</p>
+</li>
+<li>
+<p>独創性評価：</p>
+</li>
+<li>BLMが最も低い類似度比率を達成</li>
+<li>コピー問題の軽減に効果的</li>
+</ol>
+<h3 id="4"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#4">4. 制限事項と今後の課題</a></h3>
+<ol>
+<li>サンプリングレートの制限</li>
+<li>現在は16kHzで生成</li>
+<li>
+<p>音楽制作標準の44.1kHzへの対応が必要</p>
+</li>
+<li>
+<p>リソース制約</p>
+</li>
+<li>より大規模なデータセットでの検証が必要</li>
+<li>
+<p>GPU処理能力の制限</p>
+</li>
+<li>
+<p>音楽同期技術</p>
+</li>
+<li>ビート以外の同期方法の探索</li>
+<li>調性やインストゥルメントの整合性</li>
+</ol>
+<h3 id="5"><a class="toclink" href="../../../../2023/08/03/musicldm-enhancing-novelty-in-text-to-music-generation-using-beat-synchronous-mixup-strategies/#5">5. 結論と展望</a></h3>
+<p>MusicLDMは以下の点で革新的な成果を示しました：</p>
+<ol>
+<li>技術的成果</li>
+<li>高品質な音楽生成を実現</li>
+<li>データ効率の改善</li>
+<li>
+<p>コピー問題の軽減</p>
+</li>
+<li>
+<p>実用的意義</p>
+</li>
+<li>音楽制作支援への応用</li>
+<li>
+<p>創造的表現の新しい可能性</p>
+</li>
+<li>
+<p>今後の発展</p>
+</li>
+<li>より高品質な音楽生成</li>
+<li>実用的なアプリケーション開発</li>
+</ol>
+<p>研究チームは、特にBLM戦略の効果を強調し、テキストから音楽を生成する技術の新しい可能性を示しました。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-08-02 00:00:00+00:00">2023年8月2日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../computation-and-language/" class="md-meta__link">Computation and Language</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約2分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="attention-is-all-you-need"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/">Attention Is All You Need</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
+<li><a href="https://arxiv.org/pdf/1706.03762">https://arxiv.org/pdf/1706.03762</a></li>
+</ul>
+<hr />
+<h3 id="_1"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_1">序論</a></h3>
+<p>この論文では、従来のリカレントニューラルネットワーク（RNN）や畳み込みニューラルネットワーク（CNN）を排除し、セルフアテンション機構（Self-Attention）のみを使用した新しいネットワークアーキテクチャ「Transformer」を提案します。</p>
+<h3 id="_2"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_2">背景</a></h3>
+<p>リカレントモデルはシーケンスの各位置を順次処理するため、並列化が困難でした。一方、アテンション機構はシーケンス内の全ての位置間の依存関係を捉えることができ、計算効率の向上が期待されます。</p>
+<h3 id="_3"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_3">モデルアーキテクチャ</a></h3>
+<h4 id="_4"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_4">エンコーダとデコーダ</a></h4>
+<ul>
+<li><strong>エンコーダ</strong>: セルフアテンション機構とポイントワイズの全結合層を持つ。</li>
+<li><strong>デコーダ</strong>: エンコーダと同様の構造に加え、エンコーダの出力に対するアテンション機構を持つ。</li>
+</ul>
+<h4 id="_5"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_5">アテンションメカニズム</a></h4>
+<ul>
+<li><strong>スケールド・ドットプロダクトアテンション</strong>: クエリとキーのドット積にスケーリングを施し、ソフトマックス関数で重みを計算。</li>
+<li><strong>マルチヘッドアテンション</strong>: 複数のアテンション機構を並行して実行し、異なる表現空間から情報を抽出。</li>
+</ul>
+<h3 id="_6"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_6">訓練方法</a></h3>
+<ul>
+<li><strong>データ</strong>: WMT 2014英独・英仏翻訳データセットを使用。</li>
+<li><strong>ハードウェア</strong>: 8つのNVIDIA P100 GPUで訓練。</li>
+<li><strong>最適化手法</strong>: Adamオプティマイザを使用し、学習率を段階的に変化。</li>
+</ul>
+<h3 id="_7"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_7">結果</a></h3>
+<ul>
+<li><strong>性能向上</strong>: Transformerモデルは、従来の最先端モデルよりも高いBLEUスコアを達成。</li>
+<li><strong>効率性</strong>: 同等の性能を持つ他のモデルに比べて、訓練にかかる時間が大幅に短縮。</li>
+</ul>
+<h3 id="_8"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_8">結論</a></h3>
+<p>Transformerは、リカレントや畳み込み層を使わずに高い性能と効率を実現する新しいアーキテクチャです。この研究は、アテンション機構の可能性を示し、今後のモデル設計に大きな影響を与えるでしょう。</p>
+<hr />
+<h3 id="1"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#1">1. 概要と重要性</a></h3>
+<p>主なポイント:
+- RNNやCNNを使用せず、attention機構のみで構成された初めての系列変換モデル
+- 並列処理が容易で学習が高速
+- 機械翻訳タスクで当時の最高性能を達成
+- 現代の大規模言語モデルの基礎となったアーキテクチャ</p>
+<h3 id="2-transformer"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#2-transformer">2. Transformerの基本構造</a></h3>
+<h4 id="21"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#21">2.1 全体アーキテクチャ</a></h4>
+<p><img alt="Transformer Architecture" src="https://github.com/user-attachments/assets/0b43806c-8786-4cab-9fd2-caaff444c2c6" /></p>
+<p>Transformerは以下の主要コンポーネントで構成されています:</p>
+<ul>
+<li>エンコーダー: 入力系列を処理</li>
+<li>デコーダー: 出力系列を生成</li>
+<li>Multi-Head Attention: 複数の注意機構を並列に実行</li>
+<li>Position-wise Feed-Forward Networks: 位置ごとの全結合層</li>
+</ul>
+<h4 id="22"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#22">2.2 主要な特徴</a></h4>
+<ol>
+<li>Self-Attention</li>
+<li>系列内の異なる位置間の関係性を計算</li>
+<li>長距離依存関係の学習が容易</li>
+<li>
+<p>並列計算が可能</p>
+</li>
+<li>
+<p>Multi-Head Attention</p>
+</li>
+<li>異なる表現部分空間からの情報を同時に注目</li>
+<li>
+<p>複数のattentionを並列に計算</p>
+</li>
+<li>
+<p>Position Encoding</p>
+</li>
+<li>系列の順序情報を保持するため</li>
+<li>正弦波関数を使用した位置エンコーディング</li>
+</ol>
+<h3 id="3-attention"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#3-attention">3. Attention機構の詳細</a></h3>
+<h4 id="31-scaled-dot-product-attention"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#31-scaled-dot-product-attention">3.1 Scaled Dot-Product Attention</a></h4>
+<p><img alt="Attention Mechanism" src="https://github.com/user-attachments/assets/16f74df8-13d2-4cc0-be5c-8875d2c8dc75" /></p>
+<p>数式: $$Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$</p>
+<p>特徴:
+- Query, Key, Valueの3つの要素で構成
+- スケーリング因子($$\sqrt{d_k}$$)で勾配消失を防止
+- 行列演算で効率的に実装可能</p>
+<h4 id="32-multi-head-attention"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#32-multi-head-attention">3.2 Multi-Head Attention</a></h4>
+<p>複数のattentionを並列に計算:
+1. 入力を線形変換で複数の部分空間に投影
+2. 各部分空間でattentionを計算
+3. 結果を結合して再度線形変換</p>
+<h3 id="4"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#4">4. モデルの詳細設定</a></h3>
+<h4 id="41"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#41">4.1 基本設定</a></h4>
+<ul>
+<li>エンコーダー/デコーダー層数: 6</li>
+<li>d_model (モデルの次元): 512</li>
+<li>Attention heads: 8</li>
+<li>Feed-forward層の次元: 2048</li>
+</ul>
+<h4 id="42"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#42">4.2 正規化と残差接続</a></h4>
+<ul>
+<li>各サブレイヤーの後にLayer Normalization</li>
+<li>残差接続で勾配伝播を改善</li>
+</ul>
+<h3 id="5"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#5">5. 学習設定と最適化</a></h3>
+<h4 id="51"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#51">5.1 トレーニングデータ</a></h4>
+<ul>
+<li>WMT 2014 英独翻訳データセット (450万文対)</li>
+<li>WMT 2014 英仏翻訳データセット (3600万文対)</li>
+</ul>
+<h4 id="52"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#52">5.2 最適化設定</a></h4>
+<ul>
+<li>Adam optimizer使用</li>
+<li>Warmup付き学習率スケジューリング</li>
+<li>Dropout率: 0.1</li>
+<li>Label smoothing: 0.1</li>
+</ul>
+<h3 id="6"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#6">6. 実験結果</a></h3>
+<h4 id="61"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#61">6.1 機械翻訳性能</a></h4>
+<ul>
+<li>英独翻訳: BLEU 28.4 (当時の最高スコア)</li>
+<li>英仏翻訳: BLEU 41.8</li>
+<li>従来モデルより少ない計算コストで優れた性能を達成</li>
+</ul>
+<h4 id="62"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#62">6.2 解析タスクへの応用</a></h4>
+<ul>
+<li>英語構文解析でも高い性能を達成</li>
+<li>少量データでも良好な汎化性能を示す</li>
+</ul>
+<h3 id="7-transformer"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#7-transformer">7. Transformerの利点</a></h3>
+<ol>
+<li>計算効率</li>
+<li>並列処理が可能</li>
+<li>
+<p>トレーニング時間の大幅な削減</p>
+</li>
+<li>
+<p>モデリング能力</p>
+</li>
+<li>長距離依存関係の効果的な学習</li>
+<li>
+<p>柔軟な注意機構による適応的な情報統合</p>
+</li>
+<li>
+<p>解釈可能性</p>
+</li>
+<li>Attention分布の可視化が可能</li>
+<li>モデルの判断過程を理解しやすい</li>
+</ol>
+<h3 id="8"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#8">8. 今後の展望</a></h3>
+<p>著者らは以下の方向性を示しています:
+- テキスト以外のモダリティへの適用
+- 大規模な入出力の効率的な処理
+- より非逐次的な生成方法の探究</p>
+<h2 id="_9"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_9">まとめ</a></h2>
+<p>Transformerは:
+- Attention機構のみで高性能な系列変換を実現
+- 並列処理による効率的な学習を可能に
+- 現代の大規模言語モデルの基礎となる革新的なアーキテクチャ</p>
+<p>この論文は深層学習の歴史における重要な転換点となり、現在のAI技術の発展に大きく貢献しています。</p>
+<hr />
+<h3 id="1-transformer"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#1-transformer">1. Transformerって何？</a></h3>
+<h4 id="_10"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_10">簡単な説明</a></h4>
+<p>Transformerは2017年にGoogleの研究者たちが発表した、人工知能の新しい仕組みです。
+この技術は現在のChatGPTなど、最新のAI技術の土台となっている超重要な発明です。</p>
+<h4 id="_11"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_11">主にできること</a></h4>
+<ul>
+<li>文章の翻訳</li>
+<li>文章の理解</li>
+<li>文章の生成</li>
+</ul>
+<p>例えば「こんにちは」を「Hello」に翻訳したり、質問に答えたりできます。</p>
+<h3 id="2"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#2">2. なぜすごいの？</a></h3>
+<h4 id="_12"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_12">従来の問題点</a></h4>
+<p>それまでのAIには3つの大きな問題がありました：
+1. 処理が遅い
+2. 長い文章を理解するのが苦手
+3. 前後の文脈を正確に理解できない</p>
+<h4 id="transformer"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#transformer">Transformerの革新点</a></h4>
+<p>これらの問題を解決するため、Transformerは「注目する仕組み（Attention）」を導入しました。</p>
+<p>例えば：
+「私は昨日買った本を読んだ」という文があった時
+- 「買った」が「本」に関係している
+- 「読んだ」も「本」に関係している
+というように、文章の中の関連する部分同士を直接結びつけることができます。</p>
+<h3 id="3-transformer"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#3-transformer">3. Transformerの仕組み</a></h3>
+<h4 id="_13"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_13">全体の構造</a></h4>
+<p>Transformerは大きく2つのパーツで構成されています：</p>
+<ol>
+<li>エンコーダー（入力を理解する部分）</li>
+<li>デコーダー（出力を生成する部分）</li>
+</ol>
+<h4 id="_14"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_14">わかりやすい例え</a></h4>
+<p>Transformerの仕組みを「翻訳する人」に例えると：</p>
+<ol>
+<li>エンコーダー = 日本語の文章を読んで理解する</li>
+<li>デコーダー = 理解した内容を英語で表現する</li>
+</ol>
+<h3 id="4-attention"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#4-attention">4. 「注目」の仕組み（Attention）</a></h3>
+<h4 id="_15"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_15">基本的な考え方</a></h4>
+<p>人間が文章を読むときのように、重要な部分に「注目」する仕組みです。</p>
+<p>例：
+「私は赤いりんごを食べた」という文で
+- 「食べた」という動作の対象は「りんご」
+- 「赤い」は「りんご」の特徴</p>
+<p>このように、文章の中の関連する部分同士をつなげて理解します。</p>
+<h4 id="multi-head-attention"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#multi-head-attention">Multi-Head Attention</a></h4>
+<p>さらにTransformerは、複数の視点から同時に文章を理解します。</p>
+<p>例えると：
+- 文法的な関係を見る目
+- 意味的な関係を見る目
+- 文脈を理解する目
+など、複数の「目」で同時に文章を見ているようなものです。</p>
+<h3 id="5_1"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#5_1">5. 位置の情報</a></h3>
+<h4 id="_16"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_16">なぜ必要？</a></h4>
+<p>「私は昨日公園で本を読んだ」という文で、
+単語の順序が重要です。順番が変わると意味が変わってしまいます。</p>
+<h4 id="_17"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_17">どうやって？</a></h4>
+<p>Transformerは、各単語に「位置」の情報を追加します。
+数学的な波（サイン波とコサイン波）を使って、各単語がどの位置にあるかを記録します。</p>
+<h3 id="6_1"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#6_1">6. 実際の性能</a></h3>
+<h4 id="_18"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_18">翻訳の例</a></h4>
+<p>英語からドイツ語への翻訳で、当時の最高記録を達成：
+- より正確な翻訳
+- より自然な表現
+- より速い処理</p>
+<h4 id="_19"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_19">その他のできること</a></h4>
+<ul>
+<li>文章の要約</li>
+<li>質問への回答</li>
+<li>文章の分析</li>
+</ul>
+<h3 id="7"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#7">7. なぜ革命的なの？</a></h3>
+<h4 id="ai"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#ai">AIの世界を変えた理由</a></h4>
+<ol>
+<li>処理速度が劇的に向上</li>
+<li>より自然な言語理解が可能に</li>
+<li>より長い文章も扱えるように</li>
+</ol>
+<h4 id="_20"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_20">現代への影響</a></h4>
+<ul>
+<li>ChatGPT</li>
+<li>Google翻訳</li>
+<li>その他の最新AI技術</li>
+</ul>
+<p>これらはすべてTransformerの技術を基礎としています。</p>
+<h3 id="8_1"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#8_1">8. まとめ</a></h3>
+<h4 id="transformer_1"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#transformer_1">Transformerの特徴</a></h4>
+<ul>
+<li>「注目」の仕組みで文章をより深く理解</li>
+<li>複数の視点から同時に分析</li>
+<li>高速で効率的な処理が可能</li>
+</ul>
+<h4 id="_21"><a class="toclink" href="../../../../2023/08/02/attention-is-all-you-need/#_21">今後の可能性</a></h4>
+<ul>
+<li>画像処理への応用</li>
+<li>音声認識への応用</li>
+<li>より高度な言語理解</li>
+</ul>
+<p>Transformerは、人工知能が人間の言語をより深く理解し、処理できるようになった重要な転換点といえます。現代のAI革命の出発点となった、とても重要な発明なのです。</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-07-19 00:00:00+00:00">2023年7月19日</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../" class="md-meta__link">Computer Science</a>, 
+              <a href="../../../digital-libraries/" class="md-meta__link">Digital Libraries</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              このページは約1分で読めます
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="on-the-origin-of-llms-an-evolutionary-tree-and-graph-for-15821-large-language-models"><a class="toclink" href="../../../../2023/07/19/an-evolutionary-tree-and-graph-for-15821-large-language-models/">On the Origin of LLMs: An Evolutionary Tree and Graph for 15,821 Large Language Models</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2307.09793">https://arxiv.org/abs/2307.09793</a></li>
+<li><a href="https://arxiv.org/pdf/2307.09793">https://arxiv.org/pdf/2307.09793</a></li>
+</ul>
+<hr />
+<h3 id="llm15821"><a class="toclink" href="../../../../2023/07/19/an-evolutionary-tree-and-graph-for-15821-large-language-models/#llm15821">LLMの起源：15,821の大規模言語モデルの進化的ツリーとグラフ</a></h3>
+<h3 id="_1"><a class="toclink" href="../../../../2023/07/19/an-evolutionary-tree-and-graph-for-15821-large-language-models/#_1">序論</a></h3>
+<p>本論文は、大規模言語モデル（LLM）の進化的な関係を明らかにすることを目的としています。特に、2022年以降のLLMの急速な発展とその多様性を体系的に理解するための研究です。</p>
+<h3 id="_2"><a class="toclink" href="../../../../2023/07/19/an-evolutionary-tree-and-graph-for-15821-large-language-models/#_2">研究の背景</a></h3>
+<p>LLMは、特にChatGPTやBardのように、多くのユーザーに利用されています。毎週多くの新しいLLMが発表され、Hugging Faceに登録されていますが、それらの総合的なインデックスは存在しません。</p>
+<h3 id="_3"><a class="toclink" href="../../../../2023/07/19/an-evolutionary-tree-and-graph-for-15821-large-language-models/#_3">方法</a></h3>
+<p>Hugging Faceに登録されているLLMの名称を用いて、階層的クラスタリングを実施しました。n-gramsやTF-IDF（Term Frequency-Inverse Document Frequency）を用いて、LLMのコミュニティを特定し、意味のあるサブグループに分類しました。</p>
+<h3 id="_4"><a class="toclink" href="../../../../2023/07/19/an-evolutionary-tree-and-graph-for-15821-large-language-models/#_4">結果</a></h3>
+<p>本研究では、LLMのファミリーを特定し、それらを意味のあるサブグループに分類することに成功しました。また、15,821のLLMを視覚的に探索できるウェブアプリケーション「Constellation」を公開しました。</p>
+<h3 id="_5"><a class="toclink" href="../../../../2023/07/19/an-evolutionary-tree-and-graph-for-15821-large-language-models/#_5">結論</a></h3>
+<p>「Constellation」を利用することで、研究者や開発者はLLMの関係性やトレンドを迅速に把握することが可能となりました。これは、LLMのさらなる発展や新しい研究の基盤となるでしょう。</p>
+<h3 id="_6"><a class="toclink" href="../../../../2023/07/19/an-evolutionary-tree-and-graph-for-15821-large-language-models/#_6">補足情報</a></h3>
+<p>詳細な分析結果や視覚化ツールについては、<a href="https://constellation.sites.stanford.edu">こちら</a>で確認できます。</p>
+<p><img alt="Output" src="https://constellation.sites.stanford.edu/sites/g/files/sbiybj29536/files/styles/card_1900x950/public/media/image/high_res_image-min_0.png?h=07184d4b&amp;itok=101XVkZ-" /></p>
+<hr />
+<h3 id="ai-generated-diagram"><a class="toclink" href="../../../../2023/07/19/an-evolutionary-tree-and-graph-for-15821-large-language-models/#ai-generated-diagram">AI generated diagram</a></h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[データ収集] --&gt; B[パラメータ抽出]
+    B --&gt; C[テキスト特徴抽出]
+    C --&gt; D[階層的クラスタリング]
+    D --&gt; E[コミュニティ検出]
+    E --&gt; F[視覚化]
+    F --&gt; G[ウェブアプリケーションの展開]
+    G --&gt; H[結果のレビュー]
+    H --&gt; I[結論: 大規模言語モデルの理解と分類を強化]
+
+    A[Start: データ収集 \nHugging Faceからのモデル名、ダウンロード数、いいね数の収集]
+    B[パラメータ抽出 \n正規表現を使用してモデル名からパラメータを抽出]
+    C[テキスト特徴抽出 \nTF-IDFとn-gramsを使用してモデル名から特徴を抽出]
+    D[階層的クラスタリング \n類似性に基づいてモデルをグループ化]
+    E[コミュニティ検出 \nルーヴァン法を使用してグラフ内のコミュニティを検出]
+    F[視覚化 \nインタラクティブなダイアグラムやワードクラウド、散布図をウェブアプリで提供]
+    G[ウェブアプリケーションの展開 \nデータの動的探索を可能にする公開ウェブアプリケーション]
+    H[結果のレビュー \n得られた結果を確認し、モデル間の関係を評価]
+    I[End: 結論 \n大規模言語モデルの体系的な整理と分類を通じて理解を深める]
+</code></pre>
+    
+  </div>
+</article>
+      
+      
+        
+          
+
+
+
+<nav class="md-pagination">
+  <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__current">2</span> <a class="md-pagination__link" href="../3/">3</a> <a class="md-pagination__link" href="../4/">4</a>
+</nav>
+        
+      
+    </div>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2014 - 2025 Sojiro's Blog. All rights reserved.
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/sojiro14" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/sojiro14" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
